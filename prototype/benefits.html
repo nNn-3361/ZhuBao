@@ -13,6 +13,13 @@ button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2p
 .zb-nav-toggle{display:none}
 @media (max-width: 760px){.zb-nav-links{display:none !important}.zb-nav-toggle{display:inline-flex !important}}
 @media (min-width: 761px){.zb-nav-menu{display:none !important}}
+.zb-ben-grid{display:grid;grid-template-columns:260px minmax(0,1fr) 300px;gap:24px;align-items:start}
+.zb-ben-grid > *{max-width:none !important}
+.zb-ben-aside{display:flex;flex-direction:column;gap:16px}
+@media (max-width: 1180px){.zb-ben-grid{grid-template-columns:240px minmax(0,1fr)}.zb-ben-aside{grid-column:1 / -1;display:grid !important;grid-template-columns:1fr 1fr;align-items:start}}
+@media (max-width: 760px){.zb-ben-grid{grid-template-columns:minmax(0,1fr)}.zb-ben-aside{grid-template-columns:minmax(0,1fr)}}
+.zb-res-item:last-child{border-bottom:0 !important}
+@media (max-width: 760px){.zb-ben-wrap{padding:20px 16px 32px !important}}
 </style>
 <style>#dc-root>div{margin-left:auto;margin-right:auto}</style>
 </head>
@@ -51,7 +58,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2p
 </sc-if>
 </header>
 
-<div style="max-width: 1360px; margin: 0 auto; padding: 28px 32px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
+<div class="zb-ben-wrap" style="max-width: 1360px; margin: 0 auto; padding: 28px 32px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
 
 <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
 <div>
@@ -65,7 +72,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2p
 </div>
 </div>
 
-<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div class="zb-ben-grid">
 
 <section aria-label="年齡階段" style="flex: 1 1 260px; max-width: 320px; min-width: 0; background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 20px 16px">
 <h2 style="margin: 0 0 12px 4px; font-size: 14px; font-weight: 600; color: #5F6B64; letter-spacing: 0.06em">依寶寶年齡</h2>
@@ -101,8 +108,8 @@ button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2p
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{it.chev}}"></path></svg>
 </button>
 <sc-if value="{{it.open}}" hint-placeholder-val="{{false}}">
-<div style="border-top: 1px solid #E4DED2; padding: 18px 20px 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px">
-<div style="display: flex; flex-direction: column; gap: 12px">
+<div style="border-top: 1px solid #E4DED2; padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 12px; max-width: 680px">
 <div style="display: flex; flex-direction: column; gap: 6px">
 <span style="align-self: flex-start; font-size: 11px; font-weight: 600; color: #2F5470; background: #E3ECF2; border-radius: 999px; padding: 2px 8px">AI 說明</span>
 <span style="font-size: 13px; font-weight: 600; color: #5F6B64; margin-top: 4px">補助什麼</span>
@@ -113,12 +120,10 @@ button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2p
 </ul>
 </div>
 </div>
-<div style="display: flex; flex-direction: column; gap: 12px; justify-content: space-between">
-<dl style="margin: 0; display: grid; grid-template-columns: 72px minmax(0, 1fr); row-gap: 8px; font-size: 13px">
-<dt style="color: #5F6B64">來源</dt><dd style="margin: 0"><a href="{{it.srcUrl}}">{{it.srcTitle}}</a></dd>
-</dl>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px dashed #E4DED2; padding-top: 14px">
+<span style="font-size: 13px; color: #5F6B64">來源：<a href="{{it.srcUrl}}">{{it.srcTitle}}</a></span>
 <sc-if value="{{it.showCta}}" hint-placeholder-val="{{true}}">
-<a href="{{it.srcUrl}}" style="min-height: 46px; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 15px; font-weight: 600; text-decoration: none">{{it.cta}}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
+<a href="{{it.srcUrl}}" style="min-height: 44px; padding: 0 20px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 15px; font-weight: 600; text-decoration: none">{{it.cta}}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
 </sc-if>
 </div>
 </div>
@@ -127,12 +132,12 @@ button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2p
 </sc-for>
 </section>
 
-<aside aria-label="這個階段的資源" style="flex: 1 1 280px; max-width: 360px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<aside aria-label="這個階段的資源" class="zb-ben-aside" style="min-width: 0">
 <div style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 4px">
 <h2 style="margin: 0 0 8px; font-size: 16px; font-weight: 600">這個階段的資源</h2>
 <sc-if value="{{sel.noRes}}" hint-placeholder-val="{{false}}"><p style="margin: 0; font-size: 13px; color: #5F6B64">這個階段暫無整理好的資源。</p></sc-if>
 <sc-for list="{{sel.resources}}" as="r" hint-placeholder-count="3">
-<div style="display: flex; flex-direction: column; gap: 4px; padding: 12px 0; border-bottom: 1px solid #E4DED2">
+<div class="zb-res-item" style="display: flex; flex-direction: column; gap: 4px; padding: 12px 0; border-bottom: 1px solid #E4DED2">
 <span style="align-self: flex-start; font-size: 12px; color: #2E5E4E; background: #E4EEE7; border-radius: 999px; padding: 2px 10px">{{r.tag}}</span>
 <span style="font-size: 14px; line-height: 1.6">{{r.text}}</span>
 <sc-if value="{{r.url}}" hint-placeholder-val="{{false}}"><a href="{{r.url}}" style="font-size: 12px">{{r.src}}</a></sc-if>
@@ -157,7 +162,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2p
 <h2 id="h-other" style="margin: 0; font-size: 20px; font-weight: 600">其他福利與親子空間</h2>
 <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #5F6B64">不分寶寶年齡、隨時可以使用的新竹市服務。</p>
 </div>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px">
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 12px">
 <sc-for list="{{others}}" as="o" hint-placeholder-count="6">
 <article style="background: #FFFFFF; border: 1px solid #E4DED2; border-left: 4px solid #2E5E4E; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 8px">
 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px">
