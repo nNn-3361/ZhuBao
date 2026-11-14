@@ -161,6 +161,30 @@ button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2p
 
 </div>
 
+<section aria-labelledby="h-other" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h2 id="h-other" style="margin: 0; font-size: 20px; font-weight: 600">其他福利與親子空間</h2>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #5F6B64">不分寶寶年齡、隨時可以使用的新竹市服務。</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px">
+<sc-for list="{{others}}" as="o" hint-placeholder-count="6">
+<article style="background: #FFFFFF; border: 1px solid #E4DED2; border-left: 4px solid #2E5E4E; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px">
+<h3 style="margin: 0; font-size: 16px; font-weight: 600; line-height: 1.4">{{o.name}}</h3>
+<span style="flex-shrink: 0; font-size: 12px; color: #2E5E4E; background: #E4EEE7; border-radius: 999px; padding: 3px 10px">{{o.tag}}</span>
+</div>
+<dl style="margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; font-size: 13px; line-height: 1.6">
+<dt style="color: #5F6B64">對象</dt><dd style="margin: 0">{{o.who}}</dd>
+<dt style="color: #5F6B64">內容</dt><dd style="margin: 0">{{o.what}}</dd>
+<dt style="color: #5F6B64">地點</dt><dd style="margin: 0">{{o.where}}</dd>
+</dl>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #5F6B64">{{o.note}}</p>
+<a href="{{o.url}}" style="margin-top: auto; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">{{o.cta}}</a>
+</article>
+</sc-for>
+</div>
+</section>
+
 <p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64; border-top: 1px solid #E4DED2; padding-top: 16px">資格由官方規則判定，AI 只負責白話說明。結果僅供參考，最終資格以主管機關審核為準。</p>
 
 </div>
@@ -248,6 +272,15 @@ class Component extends DCLogic {
       s3: [
       ]
     };
+    const WPCC = 'https://wpcc.hccg.gov.tw/';
+    const others = [
+      { name: '北區親子館', tag: '親子空間', who: '0–6 歲幼兒與家長', what: '免費遊戲空間與親子課程，需預約場次', where: '南勢六街 11 號 2 樓（南勢社會福利館）', note: '電話 03-5230866。', cta: '預約場次', url: WPCC + 'enrollment/' },
+      { name: '東區親子館', tag: '親子空間', who: '0–6 歲幼兒與家長', what: '免費遊戲空間與親子課程，需預約場次', where: '中央路 241 號 3 樓（衛生社福大樓）', note: '電話 03-5330761。', cta: '預約場次', url: WPCC + 'enrollment/' },
+      { name: '香山區親子館', tag: '親子空間', who: '0–6 歲幼兒與家長', what: '免費遊戲空間與親子課程，需預約場次', where: '育德街 188 號 1 樓（香山區行政大樓）', note: '電話 03-5301268。', cta: '預約場次', url: WPCC + 'enrollment/' },
+      { name: '到宅坐月子服務', tag: '產後照顧', who: '設籍並居住新竹市的產婦', what: '每小時 300 元；弱勢家庭最高 120 小時免費', where: '月嫂到你家', note: '預產期前 3 個月起可申請。也可洽新竹市月子照顧服務人員職業工會 03-5265126。', cta: '到平台申請', url: 'https://hsinchu-nanny.hccg.gov.tw/home' },
+      { name: '育兒指導服務', tag: '育兒支持', who: '新竹市家長', what: '照顧、發展和教養問題可申請專人指導，免費', where: '新竹市', note: '社會處提供申請表。', cta: '看申請表', url: 'https://society.hccg.gov.tw/ch/home.jsp?id=10375&parentpath=&mcustomize=onemessages_view.jsp&toolsflag=Y&dataserno=201603280009&t=SocietyOnes&mserno=201603090002' },
+      { name: '好孕專車', tag: '懷孕期間', who: '孕產婦', what: '產檢交通車資補助', where: '新竹市', note: '準備下一胎時可以用，搭車去產檢的車資可向市府申請補助。', cta: '看市府公告', url: 'https://society.hccg.gov.tw/ch/home.jsp?id=13&parentpath=0,2&mcustomize=municipalnews_view.jsp&dataserno=056cfd89-4747-4689-8936-b5db75043300&aplistdn=ou%3Dmunicipalnews,ou%3Dmessage,ou%3Dap_root,o%3Dhccg,c%3Dtw&toolsflag=Y&mserno=201601300108' }
+    ];
     const STAGES = [
       { id: 'preg', title: '孕期', range: '已結束', phase: 'past', items: [] },
       { id: 's0', title: '出生到 2 個月', range: '9/10 – 11/9', phase: 'past', items: ['birthHC', 'centralTop', 'lowInc', 'post1'] },
@@ -301,6 +334,7 @@ class Component extends DCLogic {
       { k: 'auto', text: '自動入帳 ' + tally.auto }, { k: 'expired', text: '已過期限 ' + tally.expired }
     ].filter((c) => tally[c.k] > 0).map((c) => ({ text: c.text, icon: ICON[c.k], style: pill(c.k) }));
     return {
+      others,
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
