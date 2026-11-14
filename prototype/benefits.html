@@ -316,7 +316,8 @@ class Component extends DCLogic {
         cta: it.cta, showCta: !!it.cta && it.status !== 'no'
       };
     };
-    const stages = STAGES.map((st, i) => {
+    const ORDER = STAGES.slice().reverse();
+    const stages = ORDER.map((st, i) => {
       const built = st.items.map(build);
       built.forEach((b) => { tally[b.status] += 1; });
       const nCheck = built.filter((b) => b.status === 'check').length;
@@ -326,8 +327,8 @@ class Component extends DCLogic {
         countText: st.items.length === 0 ? '已結束' : (nCheck > 0 ? st.items.length + ' 項，' + nCheck + ' 項需確認' : st.items.length + ' 項'),
         titleColor: st.phase === 'past' ? '#5F6B64' : '#1F2A24',
         dotStyle: dot[st.phase],
-        lineTop: i === 0 ? 'transparent' : (st.phase === 'past' || st.phase === 'now' ? '#6F9A82' : '#D8D1C3'),
-        lineBottom: i === STAGES.length - 1 ? 'transparent' : (st.phase === 'past' ? '#6F9A82' : '#D8D1C3'),
+        lineTop: i === 0 ? 'transparent' : (st.phase === 'past' ? '#6F9A82' : '#D8D1C3'),
+        lineBottom: i === ORDER.length - 1 ? 'transparent' : (st.phase === 'past' || st.phase === 'now' ? '#6F9A82' : '#D8D1C3'),
         pressed: selected ? 'true' : 'false',
         btnStyle: 'min-height: 56px; margin: 4px 0; padding: 8px 12px; border-radius: 12px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; text-align: left; font-family: inherit; cursor: pointer; border: 1px solid ' + (selected ? '#2E5E4E' : 'transparent') + '; background: ' + (selected ? '#E4EEE7' : 'transparent'),
         select: () => this.setState({ stage: st.id }),
