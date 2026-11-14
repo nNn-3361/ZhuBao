@@ -79,10 +79,59 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #2E5E
 
 <section aria-label="對話" style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
 
+<style>
+@keyframes zbDot { 0%, 80%, 100% { opacity: 0.25 } 40% { opacity: 1 } }
+.zb-dot { display: inline-block; width: 8px; height: 8px; border-radius: 999px; background: #2E5E4E; animation: zbDot 1.2s infinite ease-in-out; }
+.zb-dot:nth-child(2) { animation-delay: 0.2s } .zb-dot:nth-child(3) { animation-delay: 0.4s }
+@media (prefers-reduced-motion: reduce) { .zb-dot { animation: none; opacity: 0.6 } }
+</style>
+<sc-if value="{{isWelcome}}" hint-placeholder-val="{{false}}">
+<article aria-label="竹寶" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 4px 16px 16px 16px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 8px">
+<svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"></circle><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+<span style="font-size: 13px; font-weight: 600; color: #2E5E4E">竹寶</span>
+</div>
+<p style="margin: 0; font-size: 16px; line-height: 1.7">嗨，我是竹寶。我知道寶寶 2 個月 4 天、住北區、由自己或家人照顧。補助、健康、托育的問題都可以打在下面問我，我會照你的情況回答，並附上官方來源。</p>
+</article>
+</sc-if>
+
+<sc-if value="{{hasQ}}" hint-placeholder-val="{{true}}">
 <div style="display: flex; justify-content: flex-end">
 <div style="max-width: 80%; background: #2E5E4E; color: #FFFFFF; border-radius: 16px 16px 4px 16px; padding: 12px 16px; font-size: 15px; line-height: 1.6">{{q}}</div>
 </div>
+</sc-if>
 
+<sc-if value="{{isThinking}}" hint-placeholder-val="{{false}}">
+<article aria-label="竹寶正在查資料" role="status" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 4px 16px 16px 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px">
+<svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"></circle><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+<span style="font-size: 14px; font-weight: 600; color: #2E5E4E">竹寶正在查資料</span>
+<span aria-hidden="true" style="display: inline-flex; gap: 4px"><span class="zb-dot"></span><span class="zb-dot"></span><span class="zb-dot"></span></span>
+</div>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 14px">
+<sc-for list="{{steps}}" as="st" hint-placeholder-count="3">
+<li style="{{st.style}}"><span style="width: 18px; text-align: center">{{st.mark}}</span>{{st.label}}</li>
+</sc-for>
+</ul>
+</article>
+</sc-if>
+
+<sc-if value="{{isFallback}}" hint-placeholder-val="{{false}}">
+<article aria-label="竹寶的回答" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 4px 16px 16px 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 8px">
+<svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"></circle><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+<span style="font-size: 13px; font-weight: 600; color: #2E5E4E">竹寶</span>
+</div>
+<p style="margin: 0; font-size: 16px; line-height: 1.7">這題竹寶還在學習中。這個 Demo 版先準備了下面幾題，點一下就能看竹寶怎麼回答：</p>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{demoChips}}" as="d" hint-placeholder-count="3">
+<button type="button" onClick="{{d.pick}}" style="min-height: 44px; padding: 8px 14px; border-radius: 12px; border: 1px solid #2E5E4E; background: #FFFFFF; color: #2E5E4E; font-family: inherit; font-size: 14px; font-weight: 600; text-align: left; cursor: pointer">{{d.q}}</button>
+</sc-for>
+</div>
+</article>
+</sc-if>
+
+<sc-if value="{{isAnswer}}" hint-placeholder-val="{{true}}">
 <article aria-label="竹寶的回答" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 4px 16px 16px 16px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
 <div style="display: flex; align-items: center; gap: 8px">
 <svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"></circle><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
@@ -96,7 +145,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #2E5E
 <sc-if value="{{hasPrep}}" hint-placeholder-val="{{true}}">
 <div style="display: flex; flex-direction: column; gap: 6px">
 <span style="font-size: 13px; font-weight: 600; color: #5F6B64">{{prepTitle}}</span>
-<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; line-height: 1.7">
+<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 1.7">
 <sc-for list="{{prep}}" as="p" hint-placeholder-count="3"><li>{{p}}</li></sc-for>
 </ul>
 </div>
@@ -106,8 +155,12 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #2E5E
 <a href="{{n.url}}" style="{{n.style}}">{{n.label}}</a>
 </sc-for>
 </div>
-<div style="font-size: 12px; color: #5F6B64; border-top: 1px solid #E4DED2; padding-top: 10px">來源：<a href="{{srcUrl}}">{{srcTitle}}</a></div>
+<div style="font-size: 12px; line-height: 1.7; color: #5F6B64; border-top: 1px solid #E4DED2; padding-top: 10px; display: flex; flex-wrap: wrap; gap: 4px 12px">
+<span>來源：</span>
+<sc-for list="{{srcs}}" as="sr" hint-placeholder-count="2"><a href="{{sr.url}}">{{sr.title}}</a></sc-for>
+</div>
 </article>
+</sc-if>
 
 <div style="display: flex; flex-direction: column; gap: 10px">
 <span style="font-size: 13px; font-weight: 600; color: #5F6B64">也可以問</span>
@@ -123,10 +176,9 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #2E5E
 
 <form onSubmit="{{send}}" style="display: flex; gap: 8px; background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 8px">
 <label for="ask" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">輸入問題</label>
-<input id="ask" type="text" placeholder="輸入問題，例如：生育津貼要去哪裡申請？" style="flex: 1; min-width: 0; height: 48px; border: 0; background: transparent; padding: 0 10px; font-family: inherit; font-size: 16px; color: #1F2A24">
+<input id="ask" type="text" placeholder="輸入問題，例如：寶寶出生後，我可以領哪些補助？" autocomplete="off" style="flex: 1; min-width: 0; height: 48px; border: 0; background: transparent; padding: 0 10px; font-family: inherit; font-size: 16px; color: #1F2A24">
 <button type="submit" style="min-height: 48px; padding: 0 18px; border-radius: 12px; border: 0; background: #2E5E4E; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">送出</button>
 </form>
-<sc-if value="{{showDemoNote}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 0; font-size: 13px; color: #7A4F0B">這是 Demo 版，請先點上方的問題看看竹寶怎麼回答。</p></sc-if>
 <p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64">竹寶的 AI 只負責白話說明，資格以主管機關審核為準。寶寶有緊急狀況請直接撥 119，或看<a href="help.html">協助</a>頁的專線。</p>
 </section>
 
@@ -140,55 +192,109 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #2E5E
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { menuOpen: false, qa: 'switch', demoNote: false };
+    this.state = { menuOpen: false, qa: null, q: '', phase: 'welcome', step: 0 };
   }
   renderVals() {
     const s = this.state;
+    const S = {
+      dosi: ['衛福部社會保險司・生育補助', 'https://dep.mohw.gov.tw/DOSI/cp-3544-86293-102.html'],
+      civil: ['新竹市民政處・生育津貼', 'https://dep-civil.hccg.gov.tw/ch/home.jsp?id=272&parentpath=0%2C4%2C51'],
+      allow: ['新竹市政府・育兒津貼申辦公告', 'https://www.hccg.gov.tw/hccg/app/data/view?module=news&id=30122&serno=168fff14-5734-45d5-9823-44254b02e80c'],
+      lawLow: ['新竹市低收入戶產婦及嬰兒營養費補助辦法', 'https://law.hccg.gov.tw/LawContent.aspx?id=FL086082'],
+      cdc: ['疾管署・兒童預防接種時程', 'https://www.cdc.gov.tw/Category/Page/TxRW-x3WzvPhvEtxM628GA'],
+      hpaPost: ['國健署・產後健康照護', 'https://www.hpa.gov.tw/Pages/Detail.aspx?nodeid=4996&pid=19790'],
+      hpaChild: ['國健署・兒童預防保健', 'https://www.hpa.gov.tw/Pages/List.aspx?nodeid=202'],
+      book: ['國健署・兒童健康手冊（內附嬰兒大便辨識卡）', 'https://www.mohw.gov.tw/cp-88-214-1.html']
+    };
+    const DEMO = {
+      money: { group: '補助', q: '寶寶出生後，我可以領哪些補助？', keys: [['補助', '領'], ['補助', '哪些'], ['津貼', '哪些']],
+        answer: '依你的資料，有 4 項可以留意：2 筆生育補助、每月的育兒津貼，還有一項是低收入戶才有的營養費。',
+        mine: '寶寶 2026/9/10 出生、第 1 胎、由自己或家人照顧。你填的地區是北區，但還沒確認父或母是否設籍新竹市，這會影響市府的生育津貼。',
+        prepTitle: '竹寶幫你整理', prep: [
+          '中央生育補助：每胎 10 萬元。有參加社會保險的人不用申請，會自動入帳。',
+          '新竹市生育津貼：每胎 3 萬元。父或母要設籍新竹市，向戶政事務所申請。',
+          '育兒津貼：未滿 2 歲、自己或家人帶就可以申辦，金額與申辦方式請看市府公告。',
+          '低收入戶產婦及嬰兒營養費：2 萬元，只限新竹市列冊低收入戶，要在 2026/12/10 前向區公所申請。'],
+        next: [['看補助及其他福利', 'benefits.html'], ['補填戶籍資料', 'setup.html']],
+        srcs: [S.dosi, S.civil, S.allow, S.lawLow] },
+      month: { group: '健康', q: '寶寶這個月要做什麼？', keys: [['這個月'], ['要做什麼'], ['這個月', '注意']],
+        answer: '這個月有 3 件事：帶寶寶打 2 個月的疫苗、安排第 2 次兒童預防保健，還有媽媽的第 2 次產後健康照護。',
+        mine: '寶寶 11/10 滿 2 個月，今天是 11/14。媽媽的產後健康照護第 2 次要在 12/10 前完成，還剩 26 天。',
+        prepTitle: '照順序做', prep: [
+          '五合一疫苗和 13 價肺炎鏈球菌疫苗第 1 劑：滿 2 個月就能打，公費免費。帶兒童健康手冊和健保卡到合約院所。',
+          '第 2 次兒童預防保健：公費免費，建議月齡請看兒童健康手冊。',
+          '第 2 次產後健康照護：12/10 前，到有提供產檢的健保特約院所，帶健保卡和孕媽咪健康手冊。'],
+        next: [['看這個年紀要注意的事', 'index.html']],
+        srcs: [S.cdc, S.hpaChild, S.hpaPost] },
+      stool: { group: '健康', q: '寶寶的便便顏色很淡，正常嗎？', keys: [['便便'], ['大便'], ['便', '顏色']],
+        answer: '如果便便是淡黃色或灰白色，可能和膽道閉鎖有關，請儘快帶寶寶就醫。竹寶沒辦法判斷病情，要由醫師確認。',
+        mine: '你今天 10:05 在寶寶日記記錄的便便是黃色，屬於常見顏色。之後如果記到淡黃或灰白色，竹寶會馬上提醒你。',
+        prepTitle: '先對照，再就醫', prep: [
+          '打開兒童健康手冊裡的嬰兒大便辨識卡，對照便便的顏色。',
+          '拍下便便的照片，就醫時給醫師看。',
+          '帶兒童健康手冊和健保卡。'],
+        next: [['記到寶寶日記', 'diary.html'], ['看緊急專線', 'help.html']],
+        srcs: [S.book] }
+    };
     const QA = {
       switch: { group: '補助', q: '送托之後，我的補助會怎麼變？',
         answer: '送到準公共托嬰中心或保母後，可以改領托育補助，原本的育兒津貼就不會同時領。',
         mine: '你現在自己帶寶寶，所以符合育兒津貼，托育補助顯示「不符合」。打算送托時，北區有準公共托嬰中心可以先參觀。',
         prepTitle: '送托前可以先做', prep: ['確認托育單位是不是「準公共」，才能領托育補助。', '送托後依社會處規定提出托育補助申請。'],
         next: [['看托育', 'childcare.html'], ['看補助及其他福利', 'benefits.html']],
-        src: ['新竹市社會處・準公共化專區', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20'] },
+        srcs: [['新竹市社會處・準公共化專區', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20']] },
       lowinc: { group: '補助', q: '低收入戶的產婦營養費要準備什麼？',
         answer: '新竹市列冊低收入戶的產婦，每案可以領 2 萬元，要在寶寶出生後 3 個月內向區公所申請。',
         mine: '寶寶 9/10 出生，申請期限是 2026/12/10。你在設定時略過了這一題，如果是低收入戶，記得在期限前申請。',
         prepTitle: '帶到戶籍所在地的區公所', prep: ['申請書', '寶寶的新式戶口名簿影本與出生證明', '郵局存摺正面影本', '領款收據（請別人代辦要附委託書）'],
         next: [['看補助及其他福利', 'benefits.html']],
-        src: ['新竹市低收入戶產婦及嬰兒營養費補助辦法', 'https://law.hccg.gov.tw/LawContent.aspx?id=FL086082'] },
+        srcs: [['新竹市低收入戶產婦及嬰兒營養費補助辦法', 'https://law.hccg.gov.tw/LawContent.aspx?id=FL086082']] },
       fever: { group: '健康', q: '寶寶半夜發燒怎麼辦？',
         answer: '竹寶沒辦法判斷寶寶的病情。3 個月以下的寶寶發燒，建議儘快就醫。',
         mine: '寶寶現在 2 個月，屬於要特別小心的年紀。如果寶寶呼吸困難、叫不醒或抽搐，請直接撥 119。',
         prepTitle: '就醫時帶著', prep: ['兒童健康手冊和健保卡', '發燒開始的時間與量到的體溫'],
         next: [['看緊急專線', 'help.html']],
-        src: ['衛生福利部國民健康署', 'https://www.hpa.gov.tw/Pages/List.aspx?nodeid=202'] },
+        srcs: [['衛生福利部國民健康署', 'https://www.hpa.gov.tw/Pages/List.aspx?nodeid=202']] },
       vax: { group: '健康', q: '2 個月要打哪些疫苗？',
         answer: '滿 2 個月要打五合一疫苗和 13 價肺炎鏈球菌疫苗的第 1 劑，都是公費免費。',
         mine: '寶寶 11/10 已滿 2 個月，現在就可以打。第 2 劑在 2027/1/10 滿 4 個月之後。',
         prepTitle: '去接種時帶著', prep: ['兒童健康手冊', '健保卡'],
         next: [['看這個年紀要注意的事', 'index.html']],
-        src: ['衛生福利部疾病管制署・兒童預防接種時程', 'https://www.cdc.gov.tw/Category/Page/TxRW-x3WzvPhvEtxM628GA'] },
+        srcs: [['衛生福利部疾病管制署・兒童預防接種時程', 'https://www.cdc.gov.tw/Category/Page/TxRW-x3WzvPhvEtxM628GA']] },
       nursery: { group: '托育', q: '北區有哪些準公共托嬰中心？',
         answer: '北區的準公共托嬰中心都列在社會處的名冊上，例如新竹市私立茱蒂園托嬰中心。',
         mine: '你的戶籍在北區，竹寶在托育頁會把北區排在最前面。送準公共托嬰中心可以領托育補助。',
         prepTitle: '', prep: [],
         next: [['看托育', 'childcare.html']],
-        src: ['新竹市社會處・115 年準公共化托嬰中心名冊', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20'] },
+        srcs: [['新竹市社會處・115 年準公共化托嬰中心名冊', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20']] },
       weekend: { group: '活動', q: '這週末可以帶寶寶去哪？',
         answer: '這週六上午北區親子館有寶寶共讀，0 歲寶寶也能參加，免費但要先預約。',
         mine: '寶寶 2 個月，適合安靜、室內、可以推嬰兒車的地方。竹北遠百的聖誕樹展也在室內。',
         prepTitle: '', prep: [],
         next: [['看親子活動', 'activities.html']],
-        src: ['新竹市托育資源中心親子館', 'https://wpcc.hccg.gov.tw/'] }
+        srcs: [['新竹市托育資源中心親子館', 'https://wpcc.hccg.gov.tw/']] }
     };
-    const cur = QA[s.qa] || QA.switch;
+    const ALL = Object.assign({}, DEMO, QA);
+    const cur = ALL[s.qa] || DEMO.money;
     const chip = (on) => 'min-height: 40px; padding: 0 14px; border-radius: 999px; font-family: inherit; font-size: 14px; cursor: pointer; text-align: left; ' + (on ? 'background: #E4EEE7; color: #2E5E4E; border: 1px solid #2E5E4E; font-weight: 600' : 'background: #FCFAF6; color: #1F2A24; border: 1px solid #E4DED2');
-    const pick = (k) => () => this.setState({ qa: k, demoNote: false });
+    const ask = (k, text) => {
+      (this._tm || []).forEach(clearTimeout);
+      this.setState({ q: text, qa: k, phase: 'thinking', step: 0 });
+      const end = k ? 'answer' : 'fallback';
+      this._tm = [setTimeout(() => this.setState({ step: 1 }), 600), setTimeout(() => this.setState({ step: 2 }), 1200), setTimeout(() => this.setState({ phase: end }), 1900)];
+    };
+    const norm = (x) => String(x || '').replace(/[\s，。？?！!、,.]/g, '');
+    const match = (text) => {
+      const n = norm(text);
+      for (const k of Object.keys(ALL)) if (norm(ALL[k].q) === n) return k;
+      for (const k of Object.keys(DEMO)) if (DEMO[k].keys.some((ks) => ks.every((w) => n.indexOf(w) >= 0))) return k;
+      return null;
+    };
+    const pick = (k) => () => ask(k, ALL[k].q);
     const keys = Object.keys(QA);
     const groups = ['補助', '健康', '托育', '活動'].map((g) => ({
       label: g,
-      items: keys.filter((k) => QA[k].group === g).map((k) => ({ q: QA[k].q, pick: pick(k), style: chip(k === s.qa) }))
+      items: keys.filter((k) => ALL[k].group === g).map((k) => ({ q: ALL[k].q, pick: pick(k), style: chip(k === s.qa) }))
     }));
     const recent = ['switch', 'lowinc', 'fever'].map((k) => ({
       q: QA[k].q, pick: pick(k),
@@ -202,10 +308,15 @@ class Component extends DCLogic {
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
-      q: cur.q, answer: cur.answer, mine: cur.mine, hasPrep: cur.prep.length > 0, prepTitle: cur.prepTitle, prep: cur.prep,
-      next, srcTitle: cur.src[0], srcUrl: cur.src[1], groups, recent,
-      send: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ demoNote: true }); },
-      showDemoNote: !!s.demoNote
+      answer: cur.answer, mine: cur.mine, hasPrep: cur.prep.length > 0, prepTitle: cur.prepTitle, prep: cur.prep,
+      next, srcs: cur.srcs.map((x) => ({ title: x[0], url: x[1] })), groups, recent,
+      isWelcome: s.phase === 'welcome', hasQ: s.phase !== 'welcome', isThinking: s.phase === 'thinking',
+      isAnswer: s.phase === 'answer', isFallback: s.phase === 'fallback',
+      q: s.q,
+      steps: ['讀取寶寶的資料', '比對中央與新竹市的規定', '整理官方來源'].map((l, i) => ({ label: l, mark: i < s.step ? '✓' : (i === s.step ? '…' : '・'),
+        style: 'display: flex; align-items: center; gap: 8px; color: ' + (i <= s.step ? '#1F2A24' : '#9AA39D') + (i < s.step ? '; font-weight: 400' : '') })),
+      demoChips: Object.keys(DEMO).map((k) => ({ q: DEMO[k].q, pick: pick(k) })),
+      send: (e) => { if (e && e.preventDefault) e.preventDefault(); const f = e.target; const inp = f.querySelector('input'); const text = (inp && inp.value || '').trim(); if (!text) return; ask(match(text), text); }
     };
   }
 }
