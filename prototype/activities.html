@@ -53,13 +53,13 @@ button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2p
 <div style="max-width: 1360px; margin: 0 auto; padding: 24px 24px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
 
 <div style="display: flex; flex-direction: column; gap: 6px">
-<h1 style="margin: 0; font-size: 26px; font-weight: 600; line-height: 1.3">親子活動與優惠</h1>
-<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">新竹市的項目有綠色標示並排在前面，過了日期的活動會自動下架。</p>
+<h1 style="margin: 0; font-size: 26px; font-weight: 600; line-height: 1.3">親子活動</h1>
+<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">新竹市的活動有綠色標示並排在前面，過了日期的活動會自動下架。</p>
 </div>
 
 <div style="display: flex; gap: 12px; align-items: flex-start; background: #E4EEE7; border-radius: 14px; padding: 14px 16px">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E5E4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 21V7M12 7H7.5a2.5 2.5 0 1 1 0-5C11 2 12 7 12 7ZM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7Z"></path></svg>
-<div style="font-size: 14px; line-height: 1.6; color: #1F2A24">每張卡片都連到官方頁面，可以直接預約或申請。</div>
+<div style="font-size: 14px; line-height: 1.6; color: #1F2A24">親子館、到宅坐月子等長期服務，放在<a href="benefits.html" style="color: #2E5E4E; font-weight: 600">補助及其他福利</a>頁。</div>
 </div>
 
 <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
@@ -147,48 +147,38 @@ class Component extends DCLogic {
     const s = this.state;
     const WPCC = 'https://wpcc.hccg.gov.tw/';
     const DATA = [
-      { name: '寶寶共讀時光', area: '新竹市', kind: '活動', time: ['這個週末', '11 月', '12 月'], ages: ['0–1 歲', '1–3 歲'], free: true,
+      { name: '寶寶共讀時光', area: '新竹市', kind: '室內', time: ['這個週末', '11 月', '12 月'], ages: ['0–1 歲', '1–3 歲'], free: true,
         dateBig: '每週六', dateSmall: '10:00',
         when: '每週六 10:00–10:40', where: '北區親子館（南勢六街 11 號 2 樓）', price: '免費，需線上預約', who: '0–3 歲寶寶與家長',
         note: '說故事姊姊帶唸繪本、唱兒歌，0 歲寶寶也可以參加。', cta: '預約場次', url: WPCC + 'enrollment/' },
-      { name: '7 米聖誕樹點燈展', area: '新竹縣', place: '竹北市', kind: '活動', time: ['這個週末', '11 月', '12 月'], ages: ['0–1 歲', '1–3 歲', '3–6 歲'], free: true,
+      { name: '7 米聖誕樹點燈展', area: '新竹縣', place: '竹北市', kind: '室內', time: ['這個週末', '11 月', '12 月'], ages: ['0–1 歲', '1–3 歲', '3–6 歲'], free: true,
         dateBig: '展至', dateSmall: '2027/1/3',
         when: '即日起至 2027/1/3', where: '竹北遠百', price: '免費參觀', who: '全年齡',
         note: '室內展區，推嬰兒車也方便。同場有羽絨外套愛心認購。', cta: '活動資訊', url: 'https://n.yam.com/Article/20261113740563' },
-      { name: '冬日暖暖節・聖誕序曲', area: '新竹市', kind: '活動', time: ['11 月'], ages: ['1–3 歲', '3–6 歲'], free: true,
+      { name: '冬日暖暖節・聖誕序曲', area: '新竹市', kind: '市集', time: ['11 月'], ages: ['1–3 歲', '3–6 歲'], free: true,
         dateBig: '11/28', dateSmall: '週六–週日',
         when: '11/28（六）– 11/29（日）', where: '東區 IFG 遠雄廣場', price: '免費入場', who: '全年齡',
         note: '冬日市集、街頭表演與聖誕手作攤位。', cta: '活動資訊', url: 'https://www.twmarket.tw/' },
-      { name: '安全玩具自己做', area: '新竹市', kind: '活動', time: ['12 月'], ages: ['3–6 歲'], free: true,
+      { name: '安全玩具自己做', area: '新竹市', kind: '手作', time: ['12 月'], ages: ['3–6 歲'], free: true,
         dateBig: '12/5', dateSmall: '週六 10:00',
         when: '12/5（六）10:00–11:30', where: '香山區親子館（育德街 188 號）', price: '免費，需報名', who: '2–6 歲幼兒與家長',
         note: '用回收材料做會動的小魚玩具，材料由親子館準備。', cta: '報名', url: WPCC },
-      { name: '聖誕點燈市集', area: '新竹縣', place: '竹北市', kind: '活動', time: ['12 月'], ages: ['1–3 歲', '3–6 歲'], free: true,
+      { name: '聖誕點燈市集', area: '新竹縣', place: '竹北市', kind: '市集', time: ['12 月'], ages: ['1–3 歲', '3–6 歲'], free: true,
         dateBig: '12/12', dateSmall: '週六 12:00',
         when: '12/12（六）12:00–19:00', where: '新竹縣政府前廣場', price: '免費入場', who: '全年齡，有親子互動區',
         note: '約 150 組攤位，有手作 DIY、創意闖關和大型氣墊。', cta: '活動資訊', url: 'https://eventgo.tw/event/916079da-2617-4d5a-8ea3-52a5c8691bda' },
-      { name: '冬日親子野餐日', area: '其他縣市', place: '桃園市', kind: '活動', time: ['12 月'], ages: ['0–1 歲', '1–3 歲', '3–6 歲'], free: true,
+      { name: '冬日親子野餐日', area: '其他縣市', place: '桃園市', kind: '戶外', time: ['12 月'], ages: ['0–1 歲', '1–3 歲', '3–6 歲'], free: true,
         dateBig: '12/20', dateSmall: '週日 10:00',
         when: '12/20（日）10:00–16:00', where: '桃園市藝文特區廣場', price: '免費', who: '全年齡',
         note: '草地野餐、親子瑜伽和繪本角，備有哺乳與換尿布帳篷。', cta: '活動資訊', url: '#' },
-      { name: '北區親子館', area: '新竹市', kind: '親子空間', time: ['長期'], ages: ['0–1 歲', '1–3 歲', '3–6 歲'], free: true,
-        when: '依場次開放', where: '南勢六街 11 號 2 樓（南勢社會福利館）', price: '免費，需預約場次', who: '0–6 歲幼兒與家長',
-        note: '電話 03-5230866。', cta: '預約場次', url: WPCC + 'enrollment/' },
-      { name: '東區親子館', area: '新竹市', kind: '親子空間', time: ['長期'], ages: ['0–1 歲', '1–3 歲', '3–6 歲'], free: true,
-        when: '依場次開放', where: '中央路 241 號 3 樓（衛生社福大樓）', price: '免費，需預約場次', who: '0–6 歲幼兒與家長',
-        note: '電話 03-5330761。', cta: '預約場次', url: WPCC + 'enrollment/' },
-      { name: '香山區親子館', area: '新竹市', kind: '親子空間', time: ['長期'], ages: ['0–1 歲', '1–3 歲', '3–6 歲'], free: true,
-        when: '依場次開放', where: '育德街 188 號 1 樓（香山區行政大樓）', price: '免費，需預約場次', who: '0–6 歲幼兒與家長',
-        note: '電話 03-5301268。', cta: '預約場次', url: WPCC + 'enrollment/' },
-      { name: '到宅坐月子服務', area: '新竹市', kind: '優惠福利', time: ['長期'], ages: ['0–1 歲'], free: false,
-        when: '預產期前 3 個月起可申請', where: '月嫂到你家', price: '每小時 300 元；弱勢家庭最高 120 小時免費', who: '設籍並居住新竹市的產婦',
-        note: '在媒合平台登記，或洽新竹市月子照顧服務人員職業工會 03-5265126。', cta: '到平台申請', url: 'https://hsinchu-nanny.hccg.gov.tw/home' },
-      { name: '好孕專車', area: '新竹市', kind: '優惠福利', time: ['長期'], ages: [], free: true,
-        when: '懷孕期間', where: '新竹市', price: '產檢交通車資補助', who: '孕產婦',
-        note: '搭車去產檢的車資，可以向市府申請補助。', cta: '看市府公告', url: 'https://society.hccg.gov.tw/ch/home.jsp?id=13&parentpath=0,2&mcustomize=municipalnews_view.jsp&dataserno=056cfd89-4747-4689-8936-b5db75043300&aplistdn=ou%3Dmunicipalnews,ou%3Dmessage,ou%3Dap_root,o%3Dhccg,c%3Dtw&toolsflag=Y&mserno=201601300108' },
-      { name: '育兒指導服務', area: '新竹市', kind: '優惠福利', time: ['長期'], ages: ['0–1 歲', '1–3 歲', '3–6 歲'], free: true,
-        when: '隨時可申請', where: '新竹市', price: '免費', who: '新竹市家長',
-        note: '照顧、發展和教養問題都可以申請專人指導，社會處提供申請表。', cta: '看申請表', url: 'https://society.hccg.gov.tw/ch/home.jsp?id=10375&parentpath=&mcustomize=onemessages_view.jsp&toolsflag=Y&dataserno=201603280009&t=SocietyOnes&mserno=201603090002' }
+      { name: '公園草地親子野餐', area: '新竹市', kind: '戶外', time: ['12 月'], ages: ['0–1 歲', '1–3 歲', '3–6 歲'], free: true,
+        dateBig: '12/13', dateSmall: '週日 10:00',
+        when: '12/13（日）10:00–15:00', where: '東區 新竹公園草地', price: '免費，自備野餐墊', who: '全年齡',
+        note: '現場有說故事、泡泡秀和親子律動，備有哺乳與換尿布帳篷。', cta: '活動資訊', url: '#' },
+      { name: '親子樂園 兒童免費入園（限時 3 天）', area: '新竹縣', place: '關西鎮', kind: '戶外', time: ['12 月'], ages: ['0–1 歲', '1–3 歲', '3–6 歲'], free: true,
+        dateBig: '12/25', dateSmall: '–12/27',
+        when: '12/25（五）– 12/27（日）', where: '新竹縣關西鎮親子樂園', price: '12 歲以下兒童免費，大人需購票', who: '12 歲以下兒童與家長',
+        note: '只有這 3 天，憑兒童健保卡或戶口名簿入園。嬰兒車可租借。', cta: '活動資訊', url: '#' }
     ];
     const base = 'min-height: 40px; padding: 0 14px; border-radius: 999px; font-family: inherit; font-size: 14px; cursor: pointer; ';
     const on = base + 'background: #2E5E4E; color: #FFFFFF; border: 1px solid #2E5E4E; font-weight: 600';
@@ -204,14 +194,13 @@ class Component extends DCLogic {
       knob: 'position: absolute; top: 3px; left: ' + (s[key] ? '21px' : '3px') + '; width: 20px; height: 20px; border-radius: 999px; background: #FFFFFF'
     });
     const order = { '新竹市': 0, '新竹縣': 1, '其他縣市': 2 };
-    const kindOrder = { '活動': 0, '親子空間': 1, '優惠福利': 2 };
     const filtered = DATA.filter((d) =>
       (s.area === '全部' || d.area === s.area) &&
       (s.kind === '全部' || d.kind === s.kind) &&
       (s.time === '全部' || d.time.indexOf(s.time) >= 0) &&
       (s.age === '全部' || d.ages.indexOf(s.age) >= 0) &&
       (!s.free || d.free)
-    ).sort((a, b) => (kindOrder[a.kind] - kindOrder[b.kind]) || (order[a.area] - order[b.area]));
+    ).sort((a, b) => order[a.area] - order[b.area]);
     const cityArea = 'display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #E4EEE7; color: #2E5E4E';
     const otherArea = 'display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 3px 10px; border-radius: 999px; border: 1px solid #E4DED2; color: #5F6B64';
     const results = filtered.map((d) => {
@@ -233,14 +222,14 @@ class Component extends DCLogic {
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
       filters: [
         mk('area', '地區', ['全部', '新竹市', '新竹縣', '其他縣市']),
-        mk('kind', '類型', ['全部', '活動', '親子空間', '優惠福利']),
-        mk('time', '時間', ['全部', '這個週末', '11 月', '12 月', '長期']),
+        mk('kind', '類型', ['全部', '戶外', '室內', '手作', '市集']),
+        mk('time', '時間', ['全部', '這個週末', '11 月', '12 月']),
         mk('age', '適合年齡（寶寶現在 2 個月）', ['全部', '0–1 歲', '1–3 歲', '3–6 歲'])
       ],
       toggles: [tg('free', '只看免費')],
       reset: () => this.setState({ area: '全部', kind: '全部', time: '全部', age: '全部', free: false }),
-      results, noResult: results.length === 0, emptyText: '沒有符合條件的項目。可以放寬條件，或清除篩選。',
-      resultText: '共 ' + results.length + ' 項'
+      results, noResult: results.length === 0, emptyText: '沒有符合條件的活動。可以放寬條件，或清除篩選。',
+      resultText: '共 ' + results.length + ' 場活動'
     };
   }
 }
