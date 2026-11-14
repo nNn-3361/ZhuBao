@@ -10,6 +10,60 @@
 body{margin:0}
 a{color:#2E5E4E}a:hover{color:#1F4337}
 input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2px}
+/*zb-ui-start*/
+.zb-bam-row{display:flex;gap:8px;align-items:stretch}
+.zb-bam-row>button{flex:1;min-width:0}
+.zb-bam{position:relative;width:40px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.zb-culm{width:12px;flex-shrink:0;background:linear-gradient(90deg,#4F8065 0%,#80AE8F 45%,#5E8F73 100%)}
+.zb-culm-a{height:26px}
+.zb-culm-b{flex:1 1 auto;min-height:12px}
+.zb-node{width:20px;height:7px;border-radius:4px;background:#3F6F57;flex-shrink:0;position:relative;z-index:1;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.zb-bam-top .zb-culm-a{border-radius:6px 6px 0 0;height:20px;margin-top:6px}
+.zb-bam-bottom .zb-culm-b{border-radius:0 0 3px 3px}
+.zb-leaf{position:absolute;top:23px;width:26px;height:12px;fill:#6F9A82;pointer-events:none}
+.zb-leaf-r{left:24px;transform-origin:left center;transform:rotate(-30deg)}
+.zb-leaf-l{right:24px;transform-origin:right center;transform:rotate(30deg);display:none}
+.zb-alt .zb-leaf-r{display:none}.zb-alt .zb-leaf-l{display:block}
+.zb-bam-future .zb-culm,.zb-bam-future .zb-node{opacity:.28}
+.zb-bam-future .zb-leaf{opacity:.25}
+.zb-bam-now .zb-culm-a{opacity:.28}
+.zb-bam-now .zb-node{background:#2E5E4E;animation:zbGlow 2.4s ease-in-out infinite}
+.zb-bam-now .zb-leaf{fill:#8FC16F}
+.zb-bam-now .zb-leaf-l,.zb-bam-now .zb-leaf-r{display:block}
+.zb-bam-now .zb-leaf-r{animation:zbIdleR 3.2s ease-in-out infinite}
+.zb-bam-now .zb-leaf-l{animation:zbIdleL 3.2s ease-in-out infinite}
+.zb-bam-row[data-on="true"] .zb-leaf-r{animation:zbSwayR .8s ease-in-out 2}
+.zb-bam-row[data-on="true"] .zb-leaf-l{animation:zbSwayL .8s ease-in-out 2}
+@keyframes zbGlow{0%,100%{box-shadow:0 0 0 3px rgba(143,193,111,.35),0 0 8px rgba(46,94,78,.35)}50%{box-shadow:0 0 0 6px rgba(143,193,111,.25),0 0 18px rgba(46,94,78,.6)}}
+@keyframes zbIdleR{0%,100%{transform:rotate(-30deg)}50%{transform:rotate(-20deg)}}
+@keyframes zbIdleL{0%,100%{transform:rotate(30deg)}50%{transform:rotate(20deg)}}
+@keyframes zbSwayR{0%,100%{transform:rotate(-30deg)}30%{transform:rotate(0deg)}65%{transform:rotate(-44deg)}}
+@keyframes zbSwayL{0%,100%{transform:rotate(30deg)}30%{transform:rotate(0deg)}65%{transform:rotate(44deg)}}
+@keyframes zbLeafTitle{0%,100%{transform:rotate(-18deg)}35%{transform:rotate(8deg)}70%{transform:rotate(-30deg)}}
+@keyframes zbWiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}60%{transform:rotate(8deg)}}
+button,a{-webkit-tap-highlight-color:transparent}
+button,a[style*="min-height"]{transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease,background-color .2s ease,border-color .2s ease,color .2s ease}
+button:active,a[style*="min-height"]:active{transform:scale(.94);box-shadow:none;transition-duration:.06s}
+.zb-bam-row button:active{transform:scale(.98)}
+h1::after{content:"";display:inline-block;width:26px;height:13px;margin-left:10px;vertical-align:middle;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 14'%3E%3Cpath d='M1 7C8 0 22 0 29 7C22 14 8 14 1 7Z' fill='%238FC16F'/%3E%3Cpath d='M3 7H25' stroke='%236F9A82' stroke-width='1'/%3E%3C/svg%3E") no-repeat center/contain;transform:rotate(-18deg);transform-origin:left center}
+@media (hover:hover){
+button:not([aria-expanded]):not([role="switch"]):not([role="checkbox"]):hover,a[style*="min-height"]:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(46,94,78,.18)}
+button[aria-expanded]:hover{background-color:rgba(46,94,78,.05) !important}
+button[role="switch"]:hover,button[role="checkbox"]:hover{color:#2E5E4E !important}
+.zb-nav-links a:not([aria-current]):hover{background:#E4EEE7 !important;color:#2E5E4E !important}
+.zb-bam-row button:hover{transform:none;box-shadow:none}
+.zb-bam-row:hover button[aria-pressed="false"]{background:#F1EDE4 !important}
+.zb-bam-row:hover .zb-leaf-r{animation:zbSwayR .8s ease-in-out infinite}
+.zb-bam-row:hover .zb-leaf-l{animation:zbSwayL .8s ease-in-out infinite}
+.zb-bam-row:hover .zb-node{transform:scaleX(1.18)}
+h1:hover::after{animation:zbLeafTitle .9s ease-in-out}
+header svg:first-child:hover{animation:zbWiggle .6s ease-in-out}
+}
+@media (prefers-reduced-motion:reduce){
+#dc-root *,x-dc *,h1::after{animation:none !important;transition:none !important}
+button:hover,button:active,a:hover,a:active{transform:none !important}
+}
+/*zb-ui-end*/
 </style>
 <style>#dc-root>div{margin-left:auto;margin-right:auto}</style>
 </head>
