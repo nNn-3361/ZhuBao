@@ -156,11 +156,11 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #2E5E
 
 <section aria-labelledby="h-grow" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
 <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap">
-<h2 id="h-grow" style="margin: 0; font-size: 17px; font-weight: 600">生長紀錄</h2>
-<span style="font-size: 12px; color: #5F6B64">11/10 兒童健檢時量測</span>
+<h2 id="h-grow" style="margin: 0; font-size: 17px; font-weight: 600">身高與體重</h2>
+<span style="font-size: 12px; color: #5F6B64">{{growDate}}</span>
 </div>
-<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
-<sc-for list="{{growth}}" as="g" hint-placeholder-count="3">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{growth}}" as="g" hint-placeholder-count="2">
 <div style="background: #F6F2EA; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 2px">
 <span style="font-size: 12px; color: #5F6B64">{{g.label}}</span>
 <span style="font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums">{{g.value}}</span>
@@ -220,7 +220,7 @@ class Component extends DCLogic {
       diaper: ['尿布', '#7A4F0B', '#F6E9CC', 'M3 7h18v3a9 9 0 0 1-18 0Z M7 7v3M17 7v3'],
       sleep: ['睡眠', '#2F5470', '#E3ECF2', 'M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z'],
       temp: ['體溫', '#8E3A33', '#F5E4E0', 'M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0Z'],
-      grow: ['生長', '#6B3655', '#F3E8EE', 'M3 20h18M6 20V10M12 20V4M18 20v-7'],
+      grow: ['身高體重', '#6B3655', '#F3E8EE', 'M3 20h18M6 20V10M12 20V4M18 20v-7'],
       note: ['筆記', '#56625B', '#ECE8E0', 'M4 4h12l4 4v12H4ZM8 12h8M8 16h5']
     };
     const BASE = [
@@ -246,7 +246,10 @@ class Component extends DCLogic {
         { key: 'pos', label: '睡姿', opts: ['仰睡', '側睡', '趴睡'] }
       ],
       temp: [ { key: 'deg', label: '體溫（耳溫或肛溫）', opts: ['36.5', '37.0', '37.5', '38.0', '38.5'] } ],
-      grow: [ { key: 'w', label: '體重', opts: ['5.6 kg', '5.8 kg', '6.0 kg'] } ],
+      grow: [
+        { key: 'h', label: '身高', opts: ['57 cm', '58 cm', '59 cm', '60 cm', '61 cm'] },
+        { key: 'w', label: '體重', opts: ['5.6 kg', '5.8 kg', '6.0 kg', '6.2 kg', '6.4 kg'] }
+      ],
       note: [ { key: 'tag', label: '記什麼', opts: ['吐奶', '紅疹', '用藥', '其他'] } ]
     };
     const SW = { '黃色': '#E2B53E', '綠色': '#7E9A3E', '褐色': '#8A5A2B', '淡黃色': '#EFE3A6', '灰白色': '#DCDAD2' };
@@ -280,6 +283,7 @@ class Component extends DCLogic {
       if (s.form === 'sleep') e.min = ({ '30 分鐘': 30, '1 小時': 60, '2 小時': 120, '3 小時': 180 })[sel.len] || 0;
       if (s.form === 'diaper' && (sel.color === '淡黃色' || sel.color === '灰白色')) e.alert = 'stool';
       if (s.form === 'temp' && parseFloat(sel.deg) >= 38) e.alert = 'fever';
+      if (s.form === 'grow') { e.h = sel.h; e.w = sel.w; }
       this.setState({ added: s.added.concat([e]), form: null, sel: {} });
     };
     const feeds = entries.filter((e) => e.k === 'feed');
@@ -329,9 +333,14 @@ class Component extends DCLogic {
       { t: '便便顏色：及早發現膽道閉鎖', d: '淡黃或灰白色的便便要儘快就醫。對照兒童健康手冊裡的嬰兒大便辨識卡，早發現早治療。' },
       { t: '睡眠與睡姿：預防嬰兒猝死', d: '記錄睡姿可以提醒全家一起讓寶寶仰睡，也能看出作息是否穩定。' },
       { t: '體溫：小寶寶發燒要早點處理', d: '未滿 3 個月發燒要儘快就醫，記下時間和溫度，醫師判斷更快。' },
-      { t: '生長與發展：看長得好不好', d: '體重、身長、頭圍畫成曲線，連續偏離時才需要擔心，比單次數字更有意義。' }
+      { t: '身高體重與發展：看長得好不好', d: '身高、體重畫成曲線，連續偏離時才需要擔心，比單次數字更有意義。' }
     ];
-    const titles = { feed: '喝奶', diaper: '尿布', sleep: '睡眠', temp: '體溫', grow: '生長', note: '筆記' };
+    const lastGrow = s.added.filter((e) => e.k === 'grow').pop();
+    const growH = (lastGrow && lastGrow.h) || '58 cm';
+    const growW = (lastGrow && lastGrow.w) || '5.6 kg';
+    const growNote = lastGrow ? '今天記錄' : '約第 50 百分位';
+    const growDate = lastGrow ? '今天 16:53 記錄' : '11/10 兒童健檢時量測';
+    const titles = { feed: '喝奶', diaper: '尿布', sleep: '睡眠', temp: '體溫', grow: '身高體重', note: '筆記' };
     return {
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
@@ -339,7 +348,7 @@ class Component extends DCLogic {
       quick, formOpen: !!s.form, formTitle: s.form ? titles[s.form] + '紀錄' : '', fields, formWarn, save,
       closeForm: () => this.setState({ form: null, sel: {} }),
       alerts: alertsOut, summary, log, bars, metricTabs, chartLabel: '最近 7 天' + ser.label + '（' + ser.unit + '）', chartNote: ser.label + '（' + ser.unit + '）・' + ser.note,
-      growth: [ { label: '體重', value: '5.6 kg', pct: '約第 50 百分位' }, { label: '身長', value: '58 cm', pct: '約第 50 百分位' }, { label: '頭圍', value: '39 cm', pct: '約第 50 百分位' } ],
+      growth: [ { label: '身高', value: growH, pct: growNote }, { label: '體重', value: growW, pct: growNote } ], growDate,
       miles, why
     };
   }
