@@ -103,23 +103,14 @@ button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2p
 <sc-if value="{{it.open}}" hint-placeholder-val="{{false}}">
 <div style="border-top: 1px solid #E4DED2; padding: 18px 20px 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px">
 <div style="display: flex; flex-direction: column; gap: 12px">
-<sc-if value="{{it.hasQuestions}}" hint-placeholder-val="{{false}}">
-<div style="background: #F6E9CC; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
-<div style="font-size: 13px; font-weight: 600; color: #7A4F0B">還需要確認，回答後立即更新</div>
-<sc-for list="{{it.questions}}" as="q" hint-placeholder-count="1">
-<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap">
-<span style="font-size: 14px">{{q.text}}</span>
-<div style="display: flex; gap: 8px">
-<button type="button" onClick="{{q.yes}}" style="min-height: 40px; padding: 0 18px; border-radius: 999px; border: 1px solid #2E5E4E; background: #FCFAF6; color: #2E5E4E; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">是</button>
-<button type="button" onClick="{{q.no}}" style="min-height: 40px; padding: 0 18px; border-radius: 999px; border: 1px solid #E4DED2; background: #FCFAF6; color: #1F2A24; font-family: inherit; font-size: 14px; cursor: pointer">否</button>
-</div>
-</div>
-</sc-for>
-</div>
-</sc-if>
 <div style="display: flex; flex-direction: column; gap: 6px">
 <span style="align-self: flex-start; font-size: 11px; font-weight: 600; color: #2F5470; background: #E3ECF2; border-radius: 999px; padding: 2px 8px">AI 說明</span>
-<p style="margin: 0; font-size: 14px; line-height: 1.75">{{it.desc}}</p>
+<span style="font-size: 13px; font-weight: 600; color: #5F6B64; margin-top: 4px">補助什麼</span>
+<p style="margin: 0; font-size: 14px; line-height: 1.75">{{it.what}}</p>
+<span style="font-size: 13px; font-weight: 600; color: #5F6B64; margin-top: 6px">重要資訊</span>
+<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; line-height: 1.7">
+<sc-for list="{{it.points}}" as="pt" hint-placeholder-count="3"><li>{{pt.t}}</li></sc-for>
+</ul>
 </div>
 </div>
 <div style="display: flex; flex-direction: column; gap: 12px; justify-content: space-between">
@@ -281,6 +272,21 @@ class Component extends DCLogic {
       { name: '育兒指導服務', tag: '育兒支持', who: '新竹市家長', what: '照顧、發展和教養問題可申請專人指導，免費', where: '新竹市', note: '社會處提供申請表。', cta: '看申請表', url: 'https://society.hccg.gov.tw/ch/home.jsp?id=10375&parentpath=&mcustomize=onemessages_view.jsp&toolsflag=Y&dataserno=201603280009&t=SocietyOnes&mserno=201603090002' },
       { name: '好孕專車', tag: '懷孕期間', who: '孕產婦', what: '產檢交通車資補助', where: '新竹市', note: '準備下一胎時可以用，搭車去產檢的車資可向市府申請補助。', cta: '看市府公告', url: 'https://society.hccg.gov.tw/ch/home.jsp?id=13&parentpath=0,2&mcustomize=municipalnews_view.jsp&dataserno=056cfd89-4747-4689-8936-b5db75043300&aplistdn=ou%3Dmunicipalnews,ou%3Dmessage,ou%3Dap_root,o%3Dhccg,c%3Dtw&toolsflag=Y&mserno=201601300108' }
     ];
+    const INFO = {
+      birthHC: ['寶寶出生後，新竹市政府發給家長的一次性現金，幫忙支應生產和新生兒的開銷。', ['每胎 30,000 元。', '父或母須設籍新竹市。', '寶寶出生後向戶政事務所申請。', '竹寶還不確定父或母是否設籍新竹市，可以到上方「修改資料」補上。']],
+      centralTop: ['中央政府對 115 年 1 月 1 日起出生的寶寶發的生育補助，補貼生產後的家庭開銷。', ['每胎 10 萬元。', '有參加社會保險的人不用另外申請，會自動入帳。', '參加國民年金或沒有社會保險的媽媽，可在辦出生登記時一併申請，也可以線上或向勞保局申請。']],
+      lowInc: ['給新竹市低收入戶產婦和新生兒的營養費，補貼產後調養和寶寶營養的開銷。', ['每案 20,000 元。', '對象是新竹市列冊的低收入戶婦女。', '要在寶寶出生後 3 個月內（2026/12/10 前）向戶籍所在地的區公所申請。', '竹寶還不確定是否為低收入戶，可以到上方「修改資料」補上。']],
+      post1: ['國健署提供的公費產後檢查，由醫師關心媽媽產後的身體恢復。', ['第 1 次要在產後 1 個月內（2026/10/10 前），已經過了。', '第 2 次在產後 1 到 3 個月內，仍可預約。']],
+      post2: ['國健署提供的第 2 次公費產後檢查，由醫師關心媽媽產後的身體恢復，免付費。', ['產後 1 到 3 個月內（2026/12/10 前）。', '到有提供產檢的健保特約院所。', '內容包含運動、營養、避孕與下一胎諮詢。', '記得帶健保卡和孕媽咪健康手冊。']],
+      check2: ['國健署提供的公費兒童健康檢查，看寶寶的生長和發展，免付費。', ['未滿 7 歲共 7 次，其中 4 次在 1 歲 6 個月前。', '每次的建議月齡請看兒童健康手冊。', '記得帶健保卡和兒童健康手冊。']],
+      vax2: ['政府免費提供的幼兒常規疫苗，預防嚴重的傳染病。', ['依疾管署兒童預防接種時程接種。', '帶兒童健康手冊到合約院所。', '接種項目以疾管署最新時程表為準。']],
+      allowance: ['給未滿 2 歲寶寶家長的每月育兒津貼，補貼自己或家人在家照顧的開銷。', ['對象是未滿 2 歲的寶寶。', '金額與申辦方式請看市府公告。', '之後如果改送托育，會改領托育補助。']],
+      tempcare: ['臨時有事時，可以把寶寶短時間托給合格托育單位照顧的服務。', ['據點、時段和預約方式請看社會處臨托服務頁面。', '費用請見官方頁面。']],
+      check3: ['國健署提供的公費兒童健康檢查，看寶寶的生長和發展，免付費。', ['1 歲 6 個月前共 4 次。', '建議月齡請看兒童健康手冊。']],
+      vax4: ['政府免費提供的幼兒常規疫苗，預防嚴重的傳染病。', ['接種項目以疾管署最新時程表和兒童健康手冊為準。']],
+      nursery: ['送托到準公共托嬰中心或保母時，政府補助一部分托育費用。', ['目前由自己或家人照顧，所以不符合。', '之後如果送托，請領規定請看社會處準公共化專區。']],
+      check4: ['國健署提供的公費兒童健康檢查，看寶寶的生長和發展，免付費。', ['建議月齡請看兒童健康手冊。']]
+    };
     const STAGES = [
       { id: 'preg', title: '孕期', range: '已結束', phase: 'past', items: [] },
       { id: 's0', title: '出生到 2 個月', range: '9/10 – 11/9', phase: 'past', items: ['birthHC', 'centralTop', 'lowInc', 'post1'] },
@@ -300,17 +306,18 @@ class Component extends DCLogic {
       const qs = it.questions || [];
       return {
         status: it.status, name: it.name, meta: it.meta, desc: it.desc,
-        label: it.status === 'check' ? '需確認 ' + qs.length + ' 項' : PILL[it.status][2],
+        label: PILL[it.status][2], what: INFO[id][0], points: INFO[id][1].map((x) => ({ t: x })),
         icon: ICON[it.status], pillStyle: pill(it.status),
         open: s.open === id, expanded: s.open === id ? 'true' : 'false',
         chev: s.open === id ? 'm6 15 6-6 6 6' : 'm6 9 6 6 6-6',
         toggle: () => this.setState({ open: s.open === id ? null : id }),
         questions: qs, hasQuestions: qs.length > 0,
         srcTitle: SRC[it.src][0], srcUrl: SRC[it.src][1], srcConf: SRC[it.src][2],
-        cta: it.cta, showCta: !!it.cta && it.status !== 'no' && it.status !== 'check'
+        cta: it.cta, showCta: !!it.cta && it.status !== 'no'
       };
     };
-    const stages = STAGES.map((st, i) => {
+    const ORDER = STAGES.slice().reverse();
+    const stages = ORDER.map((st, i) => {
       const built = st.items.map(build);
       built.forEach((b) => { tally[b.status] += 1; });
       const nCheck = built.filter((b) => b.status === 'check').length;
@@ -320,8 +327,8 @@ class Component extends DCLogic {
         countText: st.items.length === 0 ? '已結束' : (nCheck > 0 ? st.items.length + ' 項，' + nCheck + ' 項需確認' : st.items.length + ' 項'),
         titleColor: st.phase === 'past' ? '#5F6B64' : '#1F2A24',
         dotStyle: dot[st.phase],
-        lineTop: i === 0 ? 'transparent' : (st.phase === 'past' || st.phase === 'now' ? '#6F9A82' : '#D8D1C3'),
-        lineBottom: i === STAGES.length - 1 ? 'transparent' : (st.phase === 'past' ? '#6F9A82' : '#D8D1C3'),
+        lineTop: i === 0 ? 'transparent' : (st.phase === 'past' ? '#6F9A82' : '#D8D1C3'),
+        lineBottom: i === ORDER.length - 1 ? 'transparent' : (st.phase === 'past' || st.phase === 'now' ? '#6F9A82' : '#D8D1C3'),
         pressed: selected ? 'true' : 'false',
         btnStyle: 'min-height: 56px; margin: 4px 0; padding: 8px 12px; border-radius: 12px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; text-align: left; font-family: inherit; cursor: pointer; border: 1px solid ' + (selected ? '#2E5E4E' : 'transparent') + '; background: ' + (selected ? '#E4EEE7' : 'transparent'),
         select: () => this.setState({ stage: st.id }),
