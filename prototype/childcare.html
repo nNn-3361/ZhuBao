@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>竹寶・找托育</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#F6F2EA}
+a{color:#2E5E4E}a:hover{color:#1F4337}
+button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2px}
+.zb-nav-toggle{display:none}
+@media (max-width: 760px){.zb-nav-links{display:none !important}.zb-nav-toggle{display:inline-flex !important}}
+@media (min-width: 761px){.zb-nav-menu{display:none !important}}
+</style>
+<style>#dc-root>div{margin-left:auto;margin-right:auto}</style>
+</head>
+<body>
+<template id="dc-tpl">
+<div style="width: 100%; min-height: 1180px; box-sizing: border-box; background: #F6F2EA; font-family: 'Noto Sans TC', system-ui, sans-serif; color: #1F2A24">
+
+<header style="border-bottom: 1px solid #E4DED2; background: #FCFAF6">
+<div style="max-width: 1360px; margin: 0 auto; padding: 14px 24px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap">
+<div style="display: flex; align-items: center; gap: 10px">
+<svg width="26" height="26" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"></circle><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+<span style="font-size: 17px; font-weight: 600; letter-spacing: 0.04em">竹寶</span>
+</div>
+<nav class="zb-nav-links" aria-label="主選單" style="display: flex; gap: 4px; flex-wrap: wrap">
+<a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
+<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
+<a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
+<a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 14px">托育</a>
+<a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
+<a href="ask.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">AI 問答</a>
+<a href="help.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">協助</a>
+</nav>
+<button type="button" class="zb-nav-toggle" aria-expanded="{{menuExpanded}}" aria-controls="zb-menu" onClick="{{toggleMenu}}" style="min-height: 44px; align-items: center; gap: 8px; padding: 0 14px; border-radius: 12px; border: 1px solid #E4DED2; background: #FCFAF6; font-family: inherit; font-size: 14px; color: #1F2A24; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="{{menuIcon}}"></path></svg>{{menuLabel}}</button>
+</div>
+<sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
+<nav id="zb-menu" class="zb-nav-menu" aria-label="主選單" style="border-top: 1px solid #E4DED2; background: #FCFAF6; padding: 8px 16px 16px; display: flex; flex-direction: column">
+<a href="index.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">主頁</a>
+<a href="diary.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">寶寶日記</a>
+<a href="benefits.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">補助及其他福利</a>
+<a href="#" aria-current="page" style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 16px">托育<span style="font-size: 12px; font-weight: 400">目前位置</span></a>
+<a href="activities.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">親子活動</a>
+<a href="ask.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">AI 問答</a>
+<a href="help.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">協助</a>
+</nav>
+</sc-if>
+</header>
+
+<div style="max-width: 1360px; margin: 0 auto; padding: 24px 24px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-size: 26px; font-weight: 600; line-height: 1.3">找托嬰中心與保母</h1>
+<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">只列出主管機關登記的合格托育單位。依你的戶籍區（北區）優先排序。</p>
+</div>
+
+<div style="display: flex; gap: 12px; align-items: flex-start; background: #F6E9CC; border-radius: 14px; padding: 14px 16px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A4F0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px"><path d="M12 9v4M12 17h.01M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path></svg>
+<div style="font-size: 14px; line-height: 1.6; color: #5A3A08">送托會影響補助：自己帶和送托能領的補助不同。送托前，請先看<a href="https://society.hccg.gov.tw/ch/home.jsp?id=10330&amp;parentpath=0%2C3%2C20" style="color: #5A3A08">社會處準公共化專區</a>的請領規定，或回到<a href="benefits.html" style="color: #5A3A08">補助及其他福利</a>看你目前的狀態。</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+<section aria-label="篩選" style="flex: 1 1 260px; max-width: 320px; min-width: 0; background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 18px">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="3">
+<fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+<legend style="font-size: 14px; font-weight: 600; padding: 0; margin-bottom: 8px">{{f.label}}</legend>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{f.options}}" as="o" hint-placeholder-count="4">
+<button type="button" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button>
+</sc-for>
+</div>
+</fieldset>
+</sc-for>
+<fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px">
+<legend style="font-size: 14px; font-weight: 600; padding: 0; margin-bottom: 8px">其他條件</legend>
+<sc-for list="{{toggles}}" as="t" hint-placeholder-count="1">
+<button type="button" role="switch" aria-checked="{{t.checked}}" onClick="{{t.flip}}" style="min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0; background: transparent; border: 0; font-family: inherit; font-size: 14px; color: #1F2A24; cursor: pointer; text-align: left">
+<span>{{t.label}}</span>
+<span style="{{t.track}}"><span style="{{t.knob}}"></span></span>
+</button>
+</sc-for>
+</fieldset>
+<button type="button" onClick="{{reset}}" style="min-height: 44px; border-radius: 12px; border: 1px solid #E4DED2; background: transparent; font-family: inherit; font-size: 14px; color: #5F6B64; cursor: pointer">清除篩選</button>
+</section>
+
+<section aria-label="結果" style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">{{resultText}}</h2>
+</div>
+
+<sc-if value="{{noResult}}" hint-placeholder-val="{{false}}">
+<div style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 24px; font-size: 14px; line-height: 1.6; color: #5F6B64">沒有符合條件的托育單位。可以換個行政區或類型，或清除篩選。</div>
+</sc-if>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px">
+<sc-for list="{{results}}" as="r" hint-placeholder-count="4">
+<article style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; gap: 6px; flex-wrap: wrap">
+<span style="{{r.typeStyle}}">{{r.type}}</span>
+<sc-if value="{{r.quasi}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #E4EEE7; color: #2E5E4E"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>可領托育補助</span></sc-if>
+<sc-if value="{{r.planned}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #F6E9CC; color: #7A4F0B">籌備中</span></sc-if>
+</div>
+<div>
+<h3 style="margin: 0; font-size: 16px; font-weight: 600; line-height: 1.4">{{r.name}}</h3>
+<div style="font-size: 13px; color: #5F6B64; margin-top: 4px">{{r.district}}・{{r.age}}</div>
+</div>
+<div style="display: flex; gap: 6px; flex-wrap: wrap">
+<sc-for list="{{r.tags}}" as="tg" hint-placeholder-count="2">
+<span style="font-size: 12px; padding: 2px 8px; border-radius: 6px; border: 1px solid #E4DED2; color: #5F6B64">{{tg}}</span>
+</sc-for>
+</div>
+<dl style="margin: 0; display: grid; grid-template-columns: 56px minmax(0, 1fr); row-gap: 4px; font-size: 13px">
+<dt style="color: #5F6B64">空位</dt><dd style="margin: 0">{{r.vacancy}}</dd>
+<dt style="color: #5F6B64">費用</dt><dd style="margin: 0">{{r.fee}}</dd>
+</dl>
+<p style="margin: 0; font-size: 13px; line-height: 1.6">{{r.note}}</p>
+<div style="margin-top: auto; padding-top: 8px; border-top: 1px solid #E4DED2; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: #5F6B64">
+<span style="min-width: 0; overflow-wrap: anywhere">來源 <a href="{{r.srcUrl}}">{{r.srcTitle}}</a></span>
+<sc-if value="{{r.canContact}}" hint-placeholder-val="{{true}}"><a href="#" style="min-height: 40px; display: inline-flex; align-items: center; padding: 0 14px; border-radius: 10px; border: 1px solid #2E5E4E; color: #2E5E4E; font-size: 13px; font-weight: 600; text-decoration: none">預約參觀</a></sc-if>
+</div>
+</article>
+</sc-for>
+</div>
+
+<div style="background: #FCFAF6; border: 1px dashed #C9C2B4; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 14px; font-weight: 600">居家保母為什麼沒有姓名？</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.7; color: #5F6B64">居家托育人員是個人，姓名與住址屬於個人資料。竹寶只會顯示本人同意公開的欄位。</p>
+</div>
+</section>
+
+</div>
+
+<p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64; border-top: 1px solid #E4DED2; padding-top: 16px">竹寶不做媒合排名，也不收托育單位費用。空位與收費以各單位與主管機關公告為準。</p>
+
+</div>
+</div>
+</template>
+<div id="dc-root"></div>
+<script src="zhubao-runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { menuOpen: false, type: '全部', district: '全部', quasiOnly: false };
+  }
+  renderVals() {
+    const s = this.state;
+    const SRC = {
+      roster: ['新竹市社會處・115 年準公共化托嬰中心名冊（115.03.11）', 'https://society.hccg.gov.tw/uploaddowndoc?file=Daycare%2F202603201414590.pdf&filedisplay=%E6%96%B0%E7%AB%B9%E5%B8%82115%E5%B9%B4%E6%BA%96%E5%85%AC%E6%89%98%E5%AC%B0%E4%B8%AD%E5%BF%83%E6%B8%85%E5%86%8A.pdf&flag=doc', ''],
+      eastPub: ['新竹市政府・東區公托完工公告', 'https://www.hccg.gov.tw/ch/home.jsp?id=48&parentpath=0,16&mcustomize=municipalnews_view.jsp&dataserno=202111100004&ou=message,ou=ap_root,o=hccg,c=tw&toolsflag=Y&mserno=201601300313', ''],
+      kd: ['新竹市社會處・關東公托開工公告', 'https://society.hccg.gov.tw/ch/home.jsp?id=13&parentpath=0,2&mcustomize=municipalnews_view.jsp&toolsflag=Y&dataserno=92e5e4a3-b53f-4b04-9e5f-d5fed34ba88d&t=MunicipalNews&mserno=201601300041', ''],
+    };
+    const DATA = [
+      { name: '新竹市私立茱蒂園托嬰中心', type: '準公共托嬰中心', district: '北區', age: '未滿 2 歲', quasi: true, tags: ['準公共化'], vacancy: '請洽中心', fee: '請洽中心', note: '列在新竹市社會處 115 年準公共化托嬰中心名冊。', src: 'roster' },
+      { name: '東區公共托嬰中心', type: '公共托嬰', district: '東區', age: '未滿 2 歲', quasi: false, tags: ['市府公共托嬰'], vacancy: '依招生公告', fee: '依招生公告', note: '新竹市政府設立的公共托嬰中心。', src: 'eastPub', contact: false },
+      { name: '關東公共托嬰中心', type: '公共托嬰', district: '東區', age: '未滿 2 歲', quasi: false, planned: true, tags: ['已開工'], vacancy: '開放報名時通知你', fee: '依招生公告', note: '市府公告已開工，開放報名時會在主頁提醒你。', src: 'kd', contact: false }
+    ];
+    const TYPE_STYLE = {
+      '準公共托嬰中心': 'font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #ECE8E0; color: #3D4842',
+      '公共托嬰': 'font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #E3ECF2; color: #2F5470',
+      '居家保母': 'font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #F3E8EE; color: #6B3655'
+    };
+    const base = 'min-height: 40px; padding: 0 14px; border-radius: 999px; font-family: inherit; font-size: 14px; cursor: pointer; ';
+    const on = base + 'background: #2E5E4E; color: #FFFFFF; border: 1px solid #2E5E4E; font-weight: 600';
+    const off = base + 'background: #FCFAF6; color: #1F2A24; border: 1px solid #E4DED2';
+    const mk = (key, label, opts) => ({
+      label,
+      options: opts.map((o) => ({ label: o, pressed: s[key] === o ? 'true' : 'false', style: s[key] === o ? on : off, pick: () => this.setState({ [key]: o }) }))
+    });
+    const tg = (key, label) => ({
+      label, checked: s[key] ? 'true' : 'false',
+      flip: () => this.setState({ [key]: !s[key] }),
+      track: 'width: 44px; height: 26px; border-radius: 999px; flex-shrink: 0; position: relative; display: inline-block; background: ' + (s[key] ? '#2E5E4E' : '#D8D1C3'),
+      knob: 'position: absolute; top: 3px; left: ' + (s[key] ? '21px' : '3px') + '; width: 20px; height: 20px; border-radius: 999px; background: #FFFFFF'
+    });
+    const typeMap = { '托嬰中心': '準公共托嬰中心', '公共托嬰': '公共托嬰', '居家保母': '居家保母' };
+    const filtered = DATA.filter((d) =>
+      (s.type === '全部' || d.type === typeMap[s.type]) &&
+      (s.district === '全部' || d.district === s.district) &&
+      (!s.quasiOnly || d.quasi)
+    ).sort((a, b) => (a.district === '北區' ? 0 : 1) - (b.district === '北區' ? 0 : 1));
+    const results = filtered.map((d) => ({
+      name: d.name, type: d.type, typeStyle: TYPE_STYLE[d.type], district: d.district, age: d.age,
+      quasi: d.quasi && !d.planned, planned: !!d.planned, tags: d.tags, vacancy: d.vacancy, fee: d.fee, note: d.note,
+      srcTitle: SRC[d.src][0], srcUrl: SRC[d.src][1], conf: SRC[d.src][2], canContact: d.contact !== false
+    }));
+    return {
+      menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
+      menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
+      toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
+      filters: [
+        mk('type', '類型', ['全部', '托嬰中心', '公共托嬰', '居家保母']),
+        mk('district', '行政區', ['全部', '東區', '北區', '香山區'])
+      ],
+      toggles: [tg('quasiOnly', '只看準公共（可領托育補助）')],
+      reset: () => this.setState({ type: '全部', district: '全部', quasiOnly: false }),
+      results, noResult: results.length === 0,
+      resultText: '共 ' + results.length + ' 個托育單位'
+    };
+  }
+}
+
+window.Component = Component;
+</script>
+</body>
+</html>

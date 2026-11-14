@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>竹寶・寶寶日記</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#F6F2EA}
+a{color:#2E5E4E}a:hover{color:#1F4337}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #2E5E4E;outline-offset:2px}
+.zb-nav-toggle{display:none}
+@media (max-width: 760px){.zb-nav-links{display:none !important}.zb-nav-toggle{display:inline-flex !important}}
+@media (min-width: 761px){.zb-nav-menu{display:none !important}}
+</style>
+<style>#dc-root>div{margin-left:auto;margin-right:auto}</style>
+</head>
+<body>
+<template id="dc-tpl">
+<div style="width: 100%; min-height: 2000px; box-sizing: border-box; background: #F6F2EA; font-family: 'Noto Sans TC', system-ui, sans-serif; color: #1F2A24">
+
+<header style="border-bottom: 1px solid #E4DED2; background: #FCFAF6">
+<div style="max-width: 1200px; margin: 0 auto; padding: 14px 24px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px">
+<svg width="26" height="26" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"></circle><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+<span style="font-size: 17px; font-weight: 600; letter-spacing: 0.04em">竹寶</span>
+</div>
+<nav class="zb-nav-links" aria-label="主選單" style="display: flex; gap: 4px; flex-wrap: wrap">
+<a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
+<a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 14px">寶寶日記</a>
+<a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
+<a href="childcare.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">托育</a>
+<a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
+<a href="ask.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">AI 問答</a>
+<a href="help.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">協助</a>
+</nav>
+<button type="button" class="zb-nav-toggle" aria-expanded="{{menuExpanded}}" aria-controls="zb-menu" onClick="{{toggleMenu}}" style="min-height: 44px; align-items: center; gap: 8px; padding: 0 14px; border-radius: 12px; border: 1px solid #E4DED2; background: #FCFAF6; font-family: inherit; font-size: 14px; color: #1F2A24; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="{{menuIcon}}"></path></svg>{{menuLabel}}</button>
+</div>
+<sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
+<nav id="zb-menu" class="zb-nav-menu" aria-label="主選單" style="border-top: 1px solid #E4DED2; background: #FCFAF6; padding: 8px 16px 16px; display: flex; flex-direction: column">
+<a href="index.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">主頁</a>
+<a href="#" aria-current="page" style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 16px">寶寶日記<span style="font-size: 12px; font-weight: 400">目前位置</span></a>
+<a href="benefits.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">補助及其他福利</a>
+<a href="childcare.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">托育</a>
+<a href="activities.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">親子活動</a>
+<a href="ask.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">AI 問答</a>
+<a href="help.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">協助</a>
+</nav>
+</sc-if>
+</header>
+
+<main style="max-width: 1200px; margin: 0 auto; padding: 24px 24px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
+
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-size: 26px; font-weight: 600">寶寶日記</h1>
+<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">一鍵記錄喝奶、尿布、睡眠和體溫。竹寶會幫你看有沒有需要注意的地方，看醫生時也能直接給醫師看。</p>
+</div>
+<div style="display: flex; align-items: center; gap: 6px; font-size: 14px">
+<button type="button" aria-label="前一天" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #E4DED2; background: #FCFAF6; cursor: pointer; font-size: 16px">‹</button>
+<span style="min-width: 120px; text-align: center; font-weight: 600">今天 11/14（六）</span>
+<button type="button" aria-label="後一天" disabled style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #E4DED2; background: #FCFAF6; color: #B9B2A4; font-size: 16px">›</button>
+</div>
+</div>
+
+<section aria-label="快速記錄" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px">
+<sc-for list="{{quick}}" as="q" hint-placeholder-count="6">
+<button type="button" aria-pressed="{{q.pressed}}" onClick="{{q.pick}}" style="{{q.style}}">
+<span style="{{q.iconWrap}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{q.icon}}"></path></svg></span>
+<span style="font-size: 15px; font-weight: 600">{{q.label}}</span>
+<span style="font-size: 12px; color: #5F6B64; font-weight: 400">{{q.last}}</span>
+</button>
+</sc-for>
+</section>
+
+<sc-if value="{{formOpen}}" hint-placeholder-val="{{true}}">
+<section aria-label="新增紀錄" style="background: #FCFAF6; border: 1px solid #2E5E4E; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 600">新增{{formTitle}}・16:53</h2>
+<button type="button" onClick="{{closeForm}}" style="min-height: 40px; padding: 0 12px; border-radius: 10px; border: 1px solid #E4DED2; background: transparent; font-family: inherit; font-size: 14px; cursor: pointer">取消</button>
+</div>
+<sc-for list="{{fields}}" as="f" hint-placeholder-count="2">
+<fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+<legend style="font-size: 14px; font-weight: 600; padding: 0; margin-bottom: 8px">{{f.label}}</legend>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{f.options}}" as="o" hint-placeholder-count="4">
+<button type="button" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="{{o.style}}"><span style="{{o.swatch}}"></span>{{o.label}}</button>
+</sc-for>
+</div>
+<sc-if value="{{f.hint}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; line-height: 1.6; color: #5F6B64">{{f.hint}}</span></sc-if>
+</fieldset>
+</sc-for>
+<sc-if value="{{formWarn}}" hint-placeholder-val="{{false}}"><div role="alert" style="background: #F5E4E0; color: #8E3A33; border-radius: 12px; padding: 12px 14px; font-size: 14px; line-height: 1.6; font-weight: 600">{{formWarn}}</div></sc-if>
+<button type="button" onClick="{{save}}" style="align-self: flex-start; min-height: 48px; padding: 0 24px; border-radius: 12px; border: 0; background: #2E5E4E; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">儲存</button>
+</section>
+</sc-if>
+
+<sc-for list="{{alerts}}" as="a" hint-placeholder-count="1">
+<div role="status" style="{{a.style}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px"><path d="{{a.icon}}"></path></svg><div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14px">{{a.title}}</strong><span style="font-size: 13px; line-height: 1.6">{{a.body}}</span></div></div>
+</sc-for>
+
+<section aria-labelledby="h-today" style="display: flex; flex-direction: column; gap: 12px">
+<h2 id="h-today" style="margin: 0; font-size: 20px; font-weight: 600">今天到目前</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px">
+<sc-for list="{{summary}}" as="m" hint-placeholder-count="4">
+<article style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 13px; font-weight: 600; color: {{m.color}}">{{m.label}}</span>
+<span style="font-size: 26px; font-weight: 600; line-height: 1.2; font-variant-numeric: tabular-nums">{{m.value}}</span>
+<span style="font-size: 13px; color: #3D4842">{{m.detail}}</span>
+<span style="font-size: 12px; line-height: 1.5; color: #5F6B64; border-top: 1px solid #EFEAE0; padding-top: 6px; margin-top: 2px">{{m.ref}}</span>
+</article>
+</sc-for>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+
+<section aria-labelledby="h-log" style="flex: 1 1 340px; min-width: 0; background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 4px">
+<h2 id="h-log" style="margin: 0 0 8px; font-size: 17px; font-weight: 600">今天的紀錄</h2>
+<ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column">
+<sc-for list="{{log}}" as="l" hint-placeholder-count="8">
+<li style="display: grid; grid-template-columns: 52px 32px minmax(0, 1fr); align-items: center; gap: 8px; min-height: 48px; border-bottom: 1px solid #EFEAE0; font-size: 14px">
+<span style="font-variant-numeric: tabular-nums; color: #5F6B64">{{l.time}}</span>
+<span style="{{l.iconWrap}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{l.icon}}"></path></svg></span>
+<span style="min-width: 0"><strong style="font-weight: 600">{{l.kind}}</strong>　{{l.detail}}</span>
+</li>
+</sc-for>
+</ol>
+</section>
+
+<div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+
+<section aria-labelledby="h-week" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap">
+<h2 id="h-week" style="margin: 0; font-size: 17px; font-weight: 600">最近 7 天</h2>
+<div role="group" aria-label="切換指標" style="display: flex; gap: 6px">
+<sc-for list="{{metricTabs}}" as="t" hint-placeholder-count="3">
+<button type="button" aria-pressed="{{t.pressed}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}</button>
+</sc-for>
+</div>
+</div>
+<div role="img" aria-label="{{chartLabel}}" style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; align-items: end; height: 160px; padding-top: 8px; border-bottom: 1px solid #E4DED2">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="7">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; height: 100%">
+<span style="font-size: 12px; font-variant-numeric: tabular-nums; color: #3D4842">{{b.v}}</span>
+<div style="{{b.style}}"></div>
+</div>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; font-size: 12px; color: #5F6B64; text-align: center">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="7"><span>{{b.day}}</span></sc-for>
+</div>
+<span style="font-size: 12px; color: #5F6B64">{{chartNote}}</span>
+</section>
+
+<section aria-labelledby="h-grow" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap">
+<h2 id="h-grow" style="margin: 0; font-size: 17px; font-weight: 600">生長紀錄</h2>
+<span style="font-size: 12px; color: #5F6B64">11/10 兒童健檢時量測</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{growth}}" as="g" hint-placeholder-count="3">
+<div style="background: #F6F2EA; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 12px; color: #5F6B64">{{g.label}}</span>
+<span style="font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums">{{g.value}}</span>
+<span style="font-size: 12px; color: #2E5E4E">{{g.pct}}</span>
+</div>
+</sc-for>
+</div>
+<span style="font-size: 12px; line-height: 1.6; color: #5F6B64">對照兒童健康手冊的生長曲線。連續兩次掉到很低或跳得很高，竹寶會提醒你問醫師。</span>
+</section>
+
+<section aria-labelledby="h-mile" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 8px">
+<h2 id="h-mile" style="margin: 0; font-size: 17px; font-weight: 600">2–4 個月的發展</h2>
+<sc-for list="{{miles}}" as="ml" hint-placeholder-count="4">
+<button type="button" role="checkbox" aria-checked="{{ml.checked}}" onClick="{{ml.flip}}" style="min-height: 44px; display: flex; align-items: center; gap: 10px; padding: 0; background: transparent; border: 0; font-family: inherit; font-size: 14px; color: #1F2A24; text-align: left; cursor: pointer">
+<span style="{{ml.box}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>{{ml.label}}<span style="margin-left: auto; font-size: 12px; color: #5F6B64">{{ml.date}}</span>
+</button>
+</sc-for>
+<span style="font-size: 12px; line-height: 1.6; color: #5F6B64">每個寶寶速度不同。到 4 個月還沒出現的項目，下次健檢時可以問醫師。</span>
+</section>
+
+</div>
+</div>
+
+<section aria-labelledby="h-why" style="display: flex; flex-direction: column; gap: 12px">
+<h2 id="h-why" style="margin: 0; font-size: 20px; font-weight: 600">為什麼要記這些？</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px">
+<sc-for list="{{why}}" as="w" hint-placeholder-count="6">
+<article style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 15px; font-weight: 600">{{w.t}}</span>
+<span style="font-size: 13px; line-height: 1.7; color: #3D4842">{{w.d}}</span>
+</article>
+</sc-for>
+</div>
+</section>
+
+<div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between; background: #E4EEE7; border-radius: 16px; padding: 16px 18px">
+<span style="font-size: 14px; line-height: 1.6">看醫生或健檢時，把最近 7 天的摘要給醫師看，比口頭回想更準確。</span>
+<a href="#" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 18px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">產生看診摘要</a>
+</div>
+
+<p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64; border-top: 1px solid #E4DED2; padding-top: 16px">參考範圍整理自國民健康署兒童健康手冊與常見兒科建議，每個寶寶不同。日記只存在這支手機。寶寶不舒服請就醫，緊急狀況請撥 119。</p>
+</main>
+</div>
+</template>
+<div id="dc-root"></div>
+<script src="zhubao-runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { menuOpen: false, form: null, sel: {}, added: [], metric: 'sleep', miles: { smile: true, track: true, head: false, coo: true } };
+  }
+  renderVals() {
+    const s = this.state;
+    const K = {
+      feed: ['喝奶', '#2E5E4E', '#E4EEE7', 'M9 2h6M10 2v3l-2 3v12a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V8l-2-3V2M8 12h8'],
+      diaper: ['尿布', '#7A4F0B', '#F6E9CC', 'M3 7h18v3a9 9 0 0 1-18 0Z M7 7v3M17 7v3'],
+      sleep: ['睡眠', '#2F5470', '#E3ECF2', 'M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z'],
+      temp: ['體溫', '#8E3A33', '#F5E4E0', 'M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0Z'],
+      grow: ['生長', '#6B3655', '#F3E8EE', 'M3 20h18M6 20V10M12 20V4M18 20v-7'],
+      note: ['筆記', '#56625B', '#ECE8E0', 'M4 4h12l4 4v12H4ZM8 12h8M8 16h5']
+    };
+    const BASE = [
+      { t: '02:30', k: 'feed', d: '配方奶 120 ml' }, { t: '05:50', k: 'sleep', d: '00:30–05:50・5 小時 20 分', min: 320 },
+      { t: '06:10', k: 'feed', d: '配方奶 120 ml' }, { t: '07:00', k: 'diaper', d: '濕' },
+      { t: '08:40', k: 'sleep', d: '07:20–08:40・1 小時 20 分', min: 80 }, { t: '09:30', k: 'feed', d: '親餵母乳 左右各 10 分鐘' },
+      { t: '10:05', k: 'diaper', d: '濕＋便便・黃色' }, { t: '12:45', k: 'feed', d: '配方奶 120 ml' },
+      { t: '13:00', k: 'diaper', d: '濕' }, { t: '15:10', k: 'sleep', d: '13:00–15:10・2 小時 10 分', min: 130 },
+      { t: '15:20', k: 'diaper', d: '濕' }, { t: '16:00', k: 'feed', d: '親餵母乳 15 分鐘' }
+    ];
+    const entries = BASE.concat(s.added);
+    const FORMS = {
+      feed: [
+        { key: 'type', label: '方式', opts: ['親餵母乳', '瓶餵母乳', '配方奶'] },
+        { key: 'amt', label: '份量', opts: ['60 ml', '90 ml', '120 ml', '150 ml', '10 分鐘', '15 分鐘', '20 分鐘'] }
+      ],
+      diaper: [
+        { key: 'type', label: '狀態', opts: ['濕', '便便', '濕＋便便'] },
+        { key: 'color', label: '便便顏色（有便便時選）', opts: ['黃色', '綠色', '褐色', '淡黃色', '灰白色'], hint: '請對照兒童健康手冊裡的嬰兒大便辨識卡。' }
+      ],
+      sleep: [
+        { key: 'len', label: '睡了多久', opts: ['30 分鐘', '1 小時', '2 小時', '3 小時'] },
+        { key: 'pos', label: '睡姿', opts: ['仰睡', '側睡', '趴睡'] }
+      ],
+      temp: [ { key: 'deg', label: '體溫（耳溫或肛溫）', opts: ['36.5', '37.0', '37.5', '38.0', '38.5'] } ],
+      grow: [ { key: 'w', label: '體重', opts: ['5.6 kg', '5.8 kg', '6.0 kg'] } ],
+      note: [ { key: 'tag', label: '記什麼', opts: ['吐奶', '紅疹', '用藥', '其他'] } ]
+    };
+    const SW = { '黃色': '#E2B53E', '綠色': '#7E9A3E', '褐色': '#8A5A2B', '淡黃色': '#EFE3A6', '灰白色': '#DCDAD2' };
+    const sel = s.sel || {};
+    let formWarn = '';
+    if (s.form === 'diaper' && (sel.color === '淡黃色' || sel.color === '灰白色')) formWarn = '淡黃或灰白色的便便可能和膽道閉鎖有關。請儘快帶寶寶就醫，並把這筆紀錄給醫師看。';
+    if (s.form === 'temp' && parseFloat(sel.deg) >= 38) formWarn = '寶寶未滿 3 個月，體溫 38 度以上請儘快就醫。呼吸困難或叫不醒請直接撥 119。';
+    if (s.form === 'sleep' && (sel.pos === '趴睡' || sel.pos === '側睡')) formWarn = '睡覺時請讓寶寶仰睡，比較不容易發生嬰兒猝死。';
+    const optBase = 'min-height: 44px; padding: 0 14px; border-radius: 999px; font-family: inherit; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; ';
+    const fields = s.form ? FORMS[s.form].map((f) => ({
+      label: f.label, hint: f.hint || '',
+      options: f.opts.map((o) => {
+        const on = sel[f.key] === o;
+        return { label: o, pressed: on ? 'true' : 'false',
+          style: optBase + (on ? 'background: #2E5E4E; color: #FFFFFF; border: 1px solid #2E5E4E; font-weight: 600' : 'background: #FFFFFF; color: #1F2A24; border: 1px solid #E4DED2'),
+          swatch: SW[o] ? 'width: 14px; height: 14px; border-radius: 999px; border: 1px solid rgba(0,0,0,0.15); background: ' + SW[o] : 'display: none',
+          pick: () => this.setState({ sel: Object.assign({}, sel, { [f.key]: o }) }) };
+      })
+    })) : [];
+    const lastOf = (k) => { const e = entries.filter((x) => x.k === k); return e.length ? '上次 ' + e[e.length - 1].t : '今天還沒記'; };
+    const quick = Object.keys(K).map((k) => ({
+      label: K[k][0], icon: K[k][3], last: lastOf(k), pressed: s.form === k ? 'true' : 'false',
+      pick: () => this.setState({ form: s.form === k ? null : k, sel: {} }),
+      iconWrap: 'width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: ' + K[k][2] + '; color: ' + K[k][1],
+      style: 'min-height: 112px; padding: 14px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; border-radius: 16px; font-family: inherit; color: #1F2A24; text-align: left; cursor: pointer; ' + (s.form === k ? 'background: #FCFAF6; border: 2px solid #2E5E4E' : 'background: #FCFAF6; border: 1px solid #E4DED2')
+    }));
+    const save = () => {
+      if (!s.form) return;
+      const d = Object.values(sel).join('・') || K[s.form][0];
+      const e = { t: '16:53', k: s.form, d };
+      if (s.form === 'sleep') e.min = ({ '30 分鐘': 30, '1 小時': 60, '2 小時': 120, '3 小時': 180 })[sel.len] || 0;
+      if (s.form === 'diaper' && (sel.color === '淡黃色' || sel.color === '灰白色')) e.alert = 'stool';
+      if (s.form === 'temp' && parseFloat(sel.deg) >= 38) e.alert = 'fever';
+      this.setState({ added: s.added.concat([e]), form: null, sel: {} });
+    };
+    const feeds = entries.filter((e) => e.k === 'feed');
+    const ml = feeds.reduce((a, e) => { const m = /(\d+) ml/.exec(e.d); return a + (m ? +m[1] : 0); }, 0);
+    const diapers = entries.filter((e) => e.k === 'diaper');
+    const wet = diapers.filter((e) => e.d.indexOf('濕') >= 0).length;
+    const pooList = diapers.filter((e) => e.d.indexOf('便') >= 0);
+    const poo = pooList.length;
+    const lastPoo = pooList.length ? (/(黃色|綠色|褐色|淡黃色|灰白色)/.exec(pooList[pooList.length - 1].d) || [''])[0] : '';
+    const sleepMin = entries.filter((e) => e.k === 'sleep').reduce((a, e) => a + (e.min || 0), 0);
+    const temps = entries.filter((e) => e.k === 'temp');
+    const summary = [
+      { label: '喝奶', color: '#2E5E4E', value: feeds.length + ' 次', detail: '配方奶共 ' + ml + ' ml・親餵 ' + feeds.filter((e) => e.d.indexOf('親餵') >= 0).length + ' 次', ref: '2 個月寶寶一天常見 6 到 8 次，依寶寶需求餵。' },
+      { label: '尿布', color: '#7A4F0B', value: wet + ' 片濕', detail: '便便 ' + poo + ' 次' + (lastPoo ? '・最近一次' + lastPoo : ''), ref: '一天 6 片以上濕尿布，通常表示奶喝得夠。' },
+      { label: '睡眠', color: '#2F5470', value: Math.floor(sleepMin / 60) + ' 小時 ' + (sleepMin % 60) + ' 分', detail: '最長一段 5 小時 20 分', ref: '0 到 3 個月一天大約睡 14 到 17 小時，晚上還沒記的會再加上去。' },
+      { label: '體溫', color: '#8E3A33', value: temps.length ? temps[temps.length - 1].d : '今天沒量', detail: '身體不舒服時再量就好', ref: '未滿 3 個月，38 度以上請儘快就醫。' }
+    ];
+    const alerts = [];
+    s.added.forEach((e) => {
+      if (e.alert === 'stool') alerts.push({ title: '便便顏色需要注意', body: '你剛記錄了淡黃或灰白色的便便。請儘快帶寶寶就醫，並把這筆紀錄給醫師看。' });
+      if (e.alert === 'fever') alerts.push({ title: '寶寶發燒了', body: '寶寶未滿 3 個月，體溫 38 度以上請儘快就醫。呼吸困難、叫不醒或抽搐請撥 119。' });
+    });
+    const alertsOut = alerts.length ? alerts.map((a) => ({ title: a.title, body: a.body, icon: 'M12 9v4M12 17h.01M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z',
+      style: 'display: flex; gap: 12px; align-items: flex-start; background: #F5E4E0; color: #8E3A33; border-radius: 14px; padding: 14px 16px' }))
+      : [{ title: '今天一切正常', body: '喝奶、尿布和便便顏色都在常見範圍內。記得在 12/10 前預約第 2 次產後健康照護。', icon: 'M20 6 9 17l-5-5',
+        style: 'display: flex; gap: 12px; align-items: flex-start; background: #E4EEE7; color: #2E5E4E; border-radius: 14px; padding: 14px 16px' }];
+    const log = entries.slice().sort((a, b) => b.t.localeCompare(a.t)).map((e) => ({ time: e.t, kind: K[e.k][0], detail: e.d, icon: K[e.k][3],
+      iconWrap: 'width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: ' + K[e.k][2] + '; color: ' + K[e.k][1] }));
+    const DAYS = ['11/8', '11/9', '11/10', '11/11', '11/12', '11/13', '今天'];
+    const SERIES = {
+      sleep: { label: '睡眠', unit: '小時', vals: [14.5, 15, 13.5, 14, 15.5, 14.5, +(sleepMin / 60).toFixed(1)], max: 18, color: '#2F5470', note: '今天還沒過完，晚上的睡眠會再加上去。' },
+      feed: { label: '喝奶', unit: '次', vals: [7, 8, 7, 7, 6, 7, feeds.length], max: 10, color: '#2E5E4E', note: '次數穩定就好，不需要每天一樣。' },
+      wet: { label: '濕尿布', unit: '片', vals: [7, 8, 6, 7, 7, 8, wet], max: 10, color: '#7A4F0B', note: '每天 6 片以上通常表示奶喝得夠。' }
+    };
+    const ser = SERIES[s.metric];
+    const bars = ser.vals.map((v, i) => ({ v: String(v), day: DAYS[i],
+      style: 'width: 70%; max-width: 40px; border-radius: 6px 6px 0 0; height: ' + Math.round(v / ser.max * 120) + 'px; background: ' + (i === 6 ? ser.color : ser.color + '99') }));
+    const tabStyle = (on) => 'min-height: 36px; padding: 0 12px; border-radius: 999px; font-family: inherit; font-size: 13px; cursor: pointer; ' + (on ? 'background: #2E5E4E; color: #FFFFFF; border: 1px solid #2E5E4E; font-weight: 600' : 'background: #FFFFFF; color: #1F2A24; border: 1px solid #E4DED2');
+    const metricTabs = Object.keys(SERIES).map((k) => ({ label: SERIES[k].label, pressed: s.metric === k ? 'true' : 'false', style: tabStyle(s.metric === k), pick: () => this.setState({ metric: k }) }));
+    const MILES = [['smile', '看到人會笑', '10/20'], ['track', '眼睛會跟著東西移動', '10/28'], ['head', '趴著時能抬頭', ''], ['coo', '會發出咿咿啊啊的聲音', '11/6']];
+    const miles = MILES.map((m) => { const on = !!s.miles[m[0]]; return { label: m[1], date: on ? m[2] || '今天' : '還沒', checked: on ? 'true' : 'false',
+      box: 'width: 22px; height: 22px; flex-shrink: 0; border-radius: 6px; display: flex; align-items: center; justify-content: center; ' + (on ? 'background: #2E5E4E; border: 1px solid #2E5E4E' : 'background: #FFFFFF; border: 1px solid #C9C2B4'),
+      flip: () => this.setState({ miles: Object.assign({}, s.miles, { [m[0]]: !on }) }) }; });
+    const why = [
+      { t: '喝奶：知道奶量夠不夠', d: '次數和份量突然變少，可能是身體不舒服的早期訊號。看醫生時也能說得清楚。' },
+      { t: '尿布：最簡單的脫水指標', d: '濕尿布變少可能是喝不夠或脫水，比看奶量更直接。' },
+      { t: '便便顏色：及早發現膽道閉鎖', d: '淡黃或灰白色的便便要儘快就醫。對照兒童健康手冊裡的嬰兒大便辨識卡，早發現早治療。' },
+      { t: '睡眠與睡姿：預防嬰兒猝死', d: '記錄睡姿可以提醒全家一起讓寶寶仰睡，也能看出作息是否穩定。' },
+      { t: '體溫：小寶寶發燒要早點處理', d: '未滿 3 個月發燒要儘快就醫，記下時間和溫度，醫師判斷更快。' },
+      { t: '生長與發展：看長得好不好', d: '體重、身長、頭圍畫成曲線，連續偏離時才需要擔心，比單次數字更有意義。' }
+    ];
+    const titles = { feed: '喝奶', diaper: '尿布', sleep: '睡眠', temp: '體溫', grow: '生長', note: '筆記' };
+    return {
+      menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
+      menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
+      toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
+      quick, formOpen: !!s.form, formTitle: s.form ? titles[s.form] + '紀錄' : '', fields, formWarn, save,
+      closeForm: () => this.setState({ form: null, sel: {} }),
+      alerts: alertsOut, summary, log, bars, metricTabs, chartLabel: '最近 7 天' + ser.label + '（' + ser.unit + '）', chartNote: ser.label + '（' + ser.unit + '）・' + ser.note,
+      growth: [ { label: '體重', value: '5.6 kg', pct: '約第 50 百分位' }, { label: '身長', value: '58 cm', pct: '約第 50 百分位' }, { label: '頭圍', value: '39 cm', pct: '約第 50 百分位' } ],
+      miles, why
+    };
+  }
+}
+
+window.Component = Component;
+</script>
+</body>
+</html>

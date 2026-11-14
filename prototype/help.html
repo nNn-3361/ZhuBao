@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>竹寶・協助</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#F6F2EA}
+a{color:#2E5E4E}a:hover{color:#1F4337}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #2E5E4E;outline-offset:2px}
+.zb-nav-toggle{display:none}
+@media (max-width: 760px){.zb-nav-links{display:none !important}.zb-nav-toggle{display:inline-flex !important}}
+@media (min-width: 761px){.zb-nav-menu{display:none !important}}
+</style>
+<style>#dc-root>div{margin-left:auto;margin-right:auto}</style>
+</head>
+<body>
+<template id="dc-tpl">
+<div style="width: 100%; min-height: 1500px; box-sizing: border-box; background: #F6F2EA; font-family: 'Noto Sans TC', system-ui, sans-serif; color: #1F2A24">
+
+<header style="border-bottom: 1px solid #E4DED2; background: #FCFAF6">
+<div style="max-width: 1200px; margin: 0 auto; padding: 14px 24px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px">
+<svg width="26" height="26" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"></circle><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+<span style="font-size: 17px; font-weight: 600; letter-spacing: 0.04em">竹寶</span>
+</div>
+<nav class="zb-nav-links" aria-label="主選單" style="display: flex; gap: 4px; flex-wrap: wrap">
+<a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
+<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
+<a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
+<a href="childcare.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">托育</a>
+<a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
+<a href="ask.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">AI 問答</a>
+<a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 14px">協助</a>
+</nav>
+<button type="button" class="zb-nav-toggle" aria-expanded="{{menuExpanded}}" aria-controls="zb-menu" onClick="{{toggleMenu}}" style="min-height: 44px; align-items: center; gap: 8px; padding: 0 14px; border-radius: 12px; border: 1px solid #E4DED2; background: #FCFAF6; font-family: inherit; font-size: 14px; color: #1F2A24; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="{{menuIcon}}"></path></svg>{{menuLabel}}</button>
+</div>
+<sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
+<nav id="zb-menu" class="zb-nav-menu" aria-label="主選單" style="border-top: 1px solid #E4DED2; background: #FCFAF6; padding: 8px 16px 16px; display: flex; flex-direction: column">
+<a href="index.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">主頁</a>
+<a href="diary.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">寶寶日記</a>
+<a href="benefits.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">補助及其他福利</a>
+<a href="childcare.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">托育</a>
+<a href="activities.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">親子活動</a>
+<a href="ask.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">AI 問答</a>
+<a href="#" aria-current="page" style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 16px">協助<span style="font-size: 12px; font-weight: 400">目前位置</span></a>
+</nav>
+</sc-if>
+</header>
+
+<main style="max-width: 1200px; margin: 0 auto; padding: 24px 24px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-size: 26px; font-weight: 600">需要協助</h1>
+<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">遇到困難時可以找的專線與窗口，以及竹寶的使用說明。</p>
+</div>
+
+<section aria-labelledby="h-sos" style="background: #FCFAF6; border: 2px solid #A2413A; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<h2 id="h-sos" style="margin: 0; font-size: 17px; font-weight: 600; color: #8E3A33; display: flex; align-items: center; gap: 8px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path></svg>緊急與關懷專線</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px">
+<sc-for list="{{hotlines}}" as="h" hint-placeholder-count="4">
+<a href="{{h.tel}}" style="min-height: 72px; display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 12px 14px; border-radius: 12px; background: {{h.bg}}; color: #1F2A24; text-decoration: none">
+<span style="font-size: 22px; font-weight: 600; color: {{h.color}}; font-variant-numeric: tabular-nums">{{h.num}}</span>
+<span style="font-size: 13px; line-height: 1.5">{{h.label}}</span>
+</a>
+</sc-for>
+</div>
+</section>
+
+<section aria-labelledby="h-desk" style="display: flex; flex-direction: column; gap: 12px">
+<h2 id="h-desk" style="margin: 0; font-size: 20px; font-weight: 600">依需求找窗口</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px">
+<sc-for list="{{desks}}" as="d" hint-placeholder-count="4">
+<article style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="{{d.iconWrap}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{d.icon}}"></path></svg></span>
+<h3 style="margin: 0; font-size: 16px; font-weight: 600">{{d.need}}</h3>
+</div>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{d.items}}" as="it" hint-placeholder-count="2">
+<li style="display: flex; flex-direction: column; gap: 2px; font-size: 14px; line-height: 1.5; padding-bottom: 8px; border-bottom: 1px solid #EFEAE0">
+<a href="{{it.url}}" style="font-weight: 600">{{it.name}}</a>
+<span style="font-size: 13px; color: #5F6B64">{{it.what}}</span>
+</li>
+</sc-for>
+</ul>
+</article>
+</sc-for>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+
+<section aria-labelledby="h-faq" style="flex: 999 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<h2 id="h-faq" style="margin: 0 0 4px; font-size: 20px; font-weight: 600">常見問題</h2>
+<sc-for list="{{faqs}}" as="f" hint-placeholder-count="6">
+<div style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 14px; overflow: hidden">
+<button type="button" aria-expanded="{{f.expanded}}" onClick="{{f.toggle}}" style="width: 100%; min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; background: transparent; border: 0; font-family: inherit; font-size: 15px; font-weight: 600; color: #1F2A24; text-align: left; cursor: pointer">{{f.q}}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="{{f.chev}}"></path></svg></button>
+<sc-if value="{{f.open}}" hint-placeholder-val="{{false}}"><p style="margin: 0; padding: 0 16px 16px; font-size: 14px; line-height: 1.7; color: #3D4842">{{f.a}}</p></sc-if>
+</div>
+</sc-for>
+</section>
+
+<aside style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<section aria-labelledby="h-how" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<h2 id="h-how" style="margin: 0; font-size: 17px; font-weight: 600">竹寶怎麼用</h2>
+<ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{steps}}" as="st" hint-placeholder-count="3">
+<li style="display: flex; gap: 12px; align-items: flex-start">
+<span style="width: 28px; height: 28px; flex-shrink: 0; border-radius: 999px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center">{{st.n}}</span>
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">{{st.t}}</span><span style="font-size: 13px; line-height: 1.6; color: #5F6B64">{{st.d}}</span></span>
+</li>
+</sc-for>
+</ol>
+</section>
+<section aria-labelledby="h-priv" style="background: #E4EEE7; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+<h2 id="h-priv" style="margin: 0; font-size: 17px; font-weight: 600; color: #2E5E4E">你的資料</h2>
+<p style="margin: 0; font-size: 14px; line-height: 1.7">竹寶不收姓名與身分證字號。寶寶資料只存在這支手機，隨時可以修改或清除。</p>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<a href="setup.html" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">修改寶寶資料</a>
+<button type="button" onClick="{{askClear}}" style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #A2413A; background: #FCFAF6; color: #8E3A33; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">清除所有資料</button>
+</div>
+<sc-if value="{{confirmClear}}" hint-placeholder-val="{{false}}">
+<div role="alert" style="background: #FCFAF6; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.6">
+<span>確定要清除嗎？寶寶資料和提醒都會刪除，無法復原。</span>
+<div style="display: flex; gap: 8px"><button type="button" onClick="{{cancelClear}}" style="min-height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid #E4DED2; background: #FFFFFF; font-family: inherit; font-size: 14px; cursor: pointer">取消</button><a href="setup.html" style="min-height: 40px; display: inline-flex; align-items: center; padding: 0 14px; border-radius: 10px; background: #A2413A; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">確定清除</a></div>
+</div>
+</sc-if>
+</section>
+<a href="#" style="min-height: 52px; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 14px; border: 1px solid #2E5E4E; color: #2E5E4E; font-size: 15px; font-weight: 600; text-decoration: none">給竹寶意見回饋</a>
+</aside>
+
+</div>
+</main>
+</div>
+</template>
+<div id="dc-root"></div>
+<script src="zhubao-runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { menuOpen: false, faq: 0, confirmClear: false };
+  }
+  renderVals() {
+    const s = this.state;
+    const hotlines = [
+      { num: '119', label: '緊急救護：寶寶呼吸困難、叫不醒、抽搐', tel: 'tel:119', bg: '#F5E4E0', color: '#8E3A33' },
+      { num: '113', label: '保護專線：家暴、兒少保護', tel: 'tel:113', bg: '#F5E4E0', color: '#8E3A33' },
+      { num: '0800-870-870', label: '孕產婦關懷專線：產後情緒、哺餵與照顧問題', tel: 'tel:0800870870', bg: '#E4EEE7', color: '#2E5E4E' },
+      { num: '1999', label: '新竹市民服務專線：市政與補助問題', tel: 'tel:1999', bg: '#E4EEE7', color: '#2E5E4E' }
+    ];
+    const DESK = [
+      { need: '申請補助', color: '#7A4F0B', bg: '#F6E9CC', icon: 'M4 7h16v12H4zM4 11h16M8 3v4M16 3v4', items: [
+        { name: '戶政事務所', what: '新竹市生育津貼、出生登記時一併申請中央生育補助', url: 'https://dep-civil.hccg.gov.tw/ch/home.jsp?id=272&parentpath=0%2C4%2C51' },
+        { name: '戶籍所在地區公所', what: '低收入戶產婦及嬰兒營養費', url: 'https://law.hccg.gov.tw/LawContent.aspx?id=FL086082' } ] },
+      { need: '托育與婦女福利', color: '#6B3655', bg: '#F3E8EE', icon: 'M3 11 12 4l9 7M5 10v10h14V10', items: [
+        { name: '社會處婦女福利及托育科', what: '準公共托育、托育補助、到宅坐月子・03-5352386 分機 801', url: 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20' },
+        { name: '月子照顧服務人員職業工會', what: '到宅坐月子媒合・03-5265126', url: 'https://hsinchu-nanny.hccg.gov.tw/home' } ] },
+      { need: '寶寶健康', color: '#2F5470', bg: '#E3ECF2', icon: 'M20.8 5.6a5 5 0 0 0-7.1 0L12 7.3l-1.7-1.7a5 5 0 0 0-7.1 7.1L12 21.5l8.8-8.8a5 5 0 0 0 0-7.1Z', items: [
+        { name: '國民健康署', what: '兒童免費健檢、產後健康照護', url: 'https://www.hpa.gov.tw/Pages/List.aspx?nodeid=202' },
+        { name: '疾病管制署', what: '公費疫苗與接種時程', url: 'https://www.cdc.gov.tw/Category/Page/TxRW-x3WzvPhvEtxM628GA' } ] },
+      { need: '親子空間與育兒支持', color: '#2E5E4E', bg: '#E4EEE7', icon: 'M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11ZM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z', items: [
+        { name: '北區親子館', what: '南勢六街 11 號 2 樓・03-5230866', url: 'https://wpcc.hccg.gov.tw/' },
+        { name: '東區親子館', what: '中央路 241 號 3 樓・03-5330761', url: 'https://wpcc.hccg.gov.tw/' },
+        { name: '香山區親子館', what: '育德街 188 號 1 樓・03-5301268', url: 'https://wpcc.hccg.gov.tw/' } ] }
+    ];
+    const desks = DESK.map((d) => ({ need: d.need, icon: d.icon, items: d.items,
+      iconWrap: 'width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: ' + d.bg + '; color: ' + d.color }));
+    const FAQ = [
+      ['竹寶的資格判斷準嗎？', '竹寶依官方公布的規則，用你填的資料判斷。結果只供參考，最後能不能領，以主管機關審核為準。'],
+      ['我的資料存在哪裡？', '只存在你的手機。竹寶不收姓名與身分證字號，也不會把資料傳給其他單位。'],
+      ['竹寶可以幫我申請補助嗎？', '竹寶不代辦。每一項補助都會帶你到官方的申請頁面，並告訴你要準備哪些文件。'],
+      ['寶寶資料填錯了怎麼辦？', '點「修改寶寶資料」重新填寫，主頁與補助頁會馬上重新計算。'],
+      ['竹寶會一直通知我嗎？', '只有遇到期限、疫苗、健檢這類和寶寶有關的事才會提醒你，也可以在設定裡關掉。'],
+      ['竹寶是政府的服務嗎？', '竹寶是 N.A.W.Y 團隊為 115 年新竹政策黑客松做的原型。內容都連到政府的官方頁面。']
+    ];
+    const faqs = FAQ.map((f, i) => ({ q: f[0], a: f[1], open: s.faq === i, expanded: s.faq === i ? 'true' : 'false',
+      chev: s.faq === i ? 'm18 15-6-6-6 6' : 'm6 9 6 6 6-6', toggle: () => this.setState({ faq: s.faq === i ? null : i }) }));
+    const steps = [
+      { n: '1', t: '填寶寶資料', d: '出生日期、戶籍區和幾個簡單問題，不用填姓名。' },
+      { n: '2', t: '看主頁和補助', d: '主頁告訴你這個年紀要注意什麼，補助頁列出能領的每一項。' },
+      { n: '3', t: '按按鈕去辦', d: '每一項都連到官方頁面，期限快到時竹寶會提醒你。' }
+    ];
+    return {
+      menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
+      menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
+      toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
+      hotlines, desks, faqs, steps,
+      confirmClear: !!s.confirmClear,
+      askClear: () => this.setState({ confirmClear: true }),
+      cancelClear: () => this.setState({ confirmClear: false })
+    };
+  }
+}
+
+window.Component = Component;
+</script>
+</body>
+</html>
