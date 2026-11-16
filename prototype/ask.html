@@ -90,6 +90,42 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-list .zb-acc-body{border-top:1px solid #EFEAE0;padding-top:14px}
 .zb-list ul.zb-acc-body>li:first-child{border-top:0 !important}
 /*zb-col-end*/
+/*zb-ask-start*/
+.zb-ask-grid{display:grid;grid-template-columns:280px minmax(0,1fr);gap:24px;align-items:start}
+.zb-ask-side{position:sticky;top:16px;min-width:0;display:flex;flex-direction:column;gap:14px}
+.zb-hist{background:#FCFAF6;border:1px solid #E4DED2;border-radius:16px;padding:8px;display:flex;flex-direction:column;gap:4px}
+.zb-hist-head{display:flex;align-items:center;gap:4px;padding:4px 4px 4px 8px}
+.zb-hist-toggle{flex:1;min-width:0;min-height:40px;display:flex;align-items:center;gap:8px;padding:0;border:0;background:transparent;font-family:inherit;color:#1F2A24;text-align:left;cursor:default}
+.zb-hist-toggle .zb-chev{display:none;margin-left:auto}
+.zb-hist-clear{min-height:36px;padding:0 10px;border-radius:10px;border:0;background:transparent;color:#5F6B64;font-family:inherit;font-size:13px;cursor:pointer;transition:background .15s ease,color .15s ease,transform .2s cubic-bezier(.34,1.56,.64,1)}
+.zb-hist-clear:hover{background:#F1ECE2;color:#1F2A24}.zb-hist-clear:active{transform:scale(.92)}
+.zb-hist-list{display:flex;flex-direction:column;gap:2px}
+.zb-hist-item{position:relative;min-height:52px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 10px 8px 16px;border-radius:12px;border:0;background:transparent;font-family:inherit;text-align:left;cursor:pointer;color:#1F2A24;transition:background .15s ease,transform .22s cubic-bezier(.34,1.56,.64,1)}
+.zb-hist-item::before{content:"";position:absolute;left:6px;top:12px;bottom:12px;width:3px;border-radius:2px;background:#D9E5DC;transition:background .15s ease}
+.zb-hist-item:hover{background:#F1ECE2;transform:translateX(3px)}
+.zb-hist-item:active{transform:scale(.97)}
+.zb-hist-item[aria-current="true"]{background:#E4EEE7}
+.zb-hist-item[aria-current="true"]::before{background:#2E5E4E}
+.zb-hist-q{font-size:14px;line-height:1.5}
+.zb-hist-item[aria-current="true"] .zb-hist-q{color:#2E5E4E;font-weight:600}
+.zb-hist-t{font-size:12px;color:#5F6B64}
+.zb-hints{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.zb-hints-label{font-size:12px;color:#5F6B64;margin-right:2px}
+.zb-hint{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid #E4DED2;background:#FCFAF6;color:#1F2A24;font-family:inherit;font-size:13px;cursor:pointer;transition:background .15s ease,border-color .15s ease,color .15s ease,transform .22s cubic-bezier(.34,1.56,.64,1)}
+.zb-hint:hover{background:#E4EEE7;border-color:#2E5E4E;color:#2E5E4E;transform:translateY(-2px)}
+.zb-hint:active{transform:scale(.94)}
+@keyframes zbFilled{0%{box-shadow:0 0 0 0 rgba(46,94,78,.35)}100%{box-shadow:0 0 0 8px rgba(46,94,78,0)}}
+.zb-filled{animation:zbFilled .6s ease-out}
+@media (max-width:860px){
+.zb-ask{padding:20px 16px 36px !important}
+.zb-ask-grid{grid-template-columns:minmax(0,1fr);gap:14px}
+.zb-ask-side{position:static}
+.zb-hist-toggle{cursor:pointer}
+.zb-hist-toggle .zb-chev{display:block}
+.zb-hist[data-open="false"] .zb-hist-list{display:none}
+}
+@media (prefers-reduced-motion:reduce){.zb-hist-item,.zb-hint,.zb-hist-clear{transition:none}.zb-hist-item:hover,.zb-hint:hover{transform:none}.zb-filled{animation:none}}
+/*zb-ask-end*/
 </style>
 <style>#dc-root>div{margin-left:auto;margin-right:auto}</style>
 </head>
@@ -127,15 +163,36 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </sc-if>
 </header>
 
-<main class="zb-col" style="max-width: 1200px; margin: 0 auto; padding: 24px 24px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+<main class="zb-ask" style="max-width: 1080px; margin: 0 auto; padding: 24px 24px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
 <div style="display: flex; flex-direction: column; gap: 6px">
 <h1 style="margin: 0; font-size: 26px; font-weight: 600">問竹寶</h1>
 <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">依寶寶的資料，用白話回答補助、托育、健康的問題。每個回答都附官方來源。</p>
 </div>
 
-<div style="display: flex; flex-direction: column; gap: 20px">
+<div class="zb-ask-grid">
 
-<aside style="order: 2; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<aside class="zb-ask-side">
+<section aria-labelledby="h-hist" class="zb-hist" data-open="{{histExpanded}}">
+<div class="zb-hist-head">
+<button type="button" class="zb-hist-toggle" aria-expanded="{{histExpanded}}" aria-controls="zb-hist-list" onClick="{{toggleHist}}">
+<span id="h-hist" style="font-size: 16px; font-weight: 600">歷史問答</span>
+<span style="font-size: 13px; color: #5F6B64">{{histCount}} / 5</span>
+<svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+</button>
+<sc-if value="{{hasHist}}" hint-placeholder-val="{{true}}">
+<button type="button" class="zb-hist-clear" onClick="{{clearHist}}">清除</button>
+</sc-if>
+</div>
+<div id="zb-hist-list" class="zb-hist-list">
+<sc-if value="{{noHist}}" hint-placeholder-val="{{false}}">
+<p style="margin: 0; padding: 4px 6px 8px; font-size: 13px; line-height: 1.7; color: #5F6B64">問過的問題會留在這裡，最多 5 筆。在任何一頁右下角的竹寶問的也會記下來。</p>
+</sc-if>
+<sc-for list="{{hist}}" as="hi" hint-placeholder-count="3">
+<button type="button" class="zb-hist-item" data-k="{{hi.id}}" aria-current="{{hi.current}}" onClick="{{hi.pick}}"><span class="zb-hist-q">{{hi.q}}</span><span class="zb-hist-t">{{hi.when}}</span></button>
+</sc-for>
+</div>
+</section>
+
 <section aria-labelledby="h-me" class="zb-acc" data-open="{{meExpanded}}">
 <button type="button" class="zb-acc-head" aria-expanded="{{meExpanded}}" onClick="{{toggleMe}}">
 <span class="zb-acc-title">
@@ -156,25 +213,9 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 </sc-if>
 </section>
-<section aria-labelledby="h-recent" class="zb-acc" data-open="{{recentExpanded}}">
-<button type="button" class="zb-acc-head" aria-expanded="{{recentExpanded}}" onClick="{{toggleRecent}}">
-<span class="zb-acc-title">
-<span id="h-recent" style="font-size: 16px; font-weight: 600">最近問過</span>
-<span style="font-size: 13px; color: #5F6B64">{{recentCount}} 題</span>
-</span>
-<svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-</button>
-<sc-if value="{{recentOpen}}" hint-placeholder-val="{{false}}">
-<div class="zb-acc-body" style="gap: 4px">
-<sc-for list="{{recent}}" as="r" hint-placeholder-count="3">
-<button type="button" onClick="{{r.pick}}" style="{{r.style}}">{{r.q}}</button>
-</sc-for>
-</div>
-</sc-if>
-</section>
 </aside>
 
-<section aria-label="對話" style="order: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<section aria-label="對話" style="min-width: 0; display: flex; flex-direction: column; gap: 14px">
 
 <style>
 @keyframes zbDot { 0%, 80%, 100% { opacity: 0.25 } 40% { opacity: 1 } }
@@ -259,18 +300,12 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </article>
 </sc-if>
 
-<div style="display: flex; flex-direction: column; gap: 10px">
-<span style="font-size: 13px; font-weight: 600; color: #5F6B64">也可以問</span>
-<sc-for list="{{groups}}" as="g" hint-placeholder-count="4">
-<div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center">
-<span style="width: 40px; font-size: 12px; color: #5F6B64">{{g.label}}</span>
-<sc-for list="{{g.items}}" as="it" hint-placeholder-count="2">
-<button type="button" onClick="{{it.pick}}" style="{{it.style}}">{{it.q}}</button>
+<div class="zb-hints" role="group" aria-label="試試看這些問題，點一下會填進輸入框">
+<span class="zb-hints-label">試試看</span>
+<sc-for list="{{hints}}" as="hn" hint-placeholder-count="3">
+<button type="button" class="zb-hint" onClick="{{hn.fill}}">{{hn.q}}</button>
 </sc-for>
 </div>
-</sc-for>
-</div>
-
 <form onSubmit="{{send}}" style="display: flex; gap: 8px; background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 8px">
 <label for="ask" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">輸入問題</label>
 <input id="ask" type="text" placeholder="輸入問題，例如：寶寶出生後，我可以領哪些補助？" autocomplete="off" style="flex: 1; min-width: 0; height: 48px; border: 0; background: transparent; padding: 0 10px; font-family: inherit; font-size: 16px; color: #1F2A24">
@@ -284,148 +319,76 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 </template>
 <div id="dc-root"></div>
+<script src="zhubao-ai.js"></script>
 <script src="zhubao-runtime.js"></script>
 <script>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { menuOpen: false, qa: null, q: '', phase: 'welcome', step: 0 };
+    const AI = window.ZBAI;
+    let k = null;
+    try { k = new URLSearchParams(location.search).get('k'); } catch (e) { k = null; }
+    const hist = AI.history();
+    if (k && AI.ALL[k]) {
+      const h0 = hist.find((x) => x.k === k);
+      this.state = { menuOpen: false, qa: k, q: AI.ALL[k].q, phase: 'answer', step: 0, hist, cur: h0 ? h0.t : null };
+    } else {
+      this.state = { menuOpen: false, qa: null, q: '', phase: 'welcome', step: 0, hist, cur: null };
+    }
   }
   renderVals() {
     const s = this.state;
-    const S = {
-      dosi: ['衛福部社會保險司・生育補助', 'https://dep.mohw.gov.tw/DOSI/cp-3544-86293-102.html'],
-      civil: ['新竹市民政處・生育津貼', 'https://dep-civil.hccg.gov.tw/ch/home.jsp?id=272&parentpath=0%2C4%2C51'],
-      allow: ['新竹市政府・育兒津貼申辦公告', 'https://www.hccg.gov.tw/hccg/app/data/view?module=news&id=30122&serno=168fff14-5734-45d5-9823-44254b02e80c'],
-      lawLow: ['新竹市低收入戶產婦及嬰兒營養費補助辦法', 'https://law.hccg.gov.tw/LawContent.aspx?id=FL086082'],
-      cdc: ['疾管署・兒童預防接種時程', 'https://www.cdc.gov.tw/Category/Page/TxRW-x3WzvPhvEtxM628GA'],
-      hpaPost: ['國健署・產後健康照護', 'https://www.hpa.gov.tw/Pages/Detail.aspx?nodeid=4996&pid=19790'],
-      hpaChild: ['國健署・兒童預防保健', 'https://www.hpa.gov.tw/Pages/List.aspx?nodeid=202'],
-      book: ['國健署・兒童健康手冊（內附嬰兒大便辨識卡）', 'https://www.mohw.gov.tw/cp-88-214-1.html']
-    };
-    const DEMO = {
-      money: { group: '補助', q: '寶寶出生後，我可以領哪些補助？', keys: [['補助', '領'], ['補助', '哪些'], ['津貼', '哪些']],
-        answer: '依你的資料，有 4 項可以留意：2 筆生育補助、每月的育兒津貼，還有一項是低收入戶才有的營養費。',
-        mine: '寶寶 2026/9/10 出生、第 1 胎、由自己或家人照顧。你填的地區是北區，但還沒確認父或母是否設籍新竹市，這會影響市府的生育津貼。',
-        prepTitle: '竹寶幫你整理', prep: [
-          '中央生育補助：每胎 10 萬元。有參加社會保險的人不用申請，會自動入帳。',
-          '新竹市生育津貼：每胎 3 萬元。父或母要設籍新竹市，向戶政事務所申請。',
-          '育兒津貼：未滿 2 歲、自己或家人帶就可以申辦，金額與申辦方式請看市府公告。',
-          '低收入戶產婦及嬰兒營養費：2 萬元，只限新竹市列冊低收入戶，要在 2026/12/10 前向區公所申請。'],
-        next: [['看補助及其他福利', 'benefits.html'], ['補填戶籍資料', 'setup.html']],
-        srcs: [S.dosi, S.civil, S.allow, S.lawLow] },
-      month: { group: '健康', q: '寶寶這個月要做什麼？', keys: [['這個月'], ['要做什麼'], ['這個月', '注意']],
-        answer: '這個月有 3 件事：帶寶寶打 2 個月的疫苗、安排第 2 次兒童預防保健，還有媽媽的第 2 次產後健康照護。',
-        mine: '寶寶 11/10 滿 2 個月，今天是 11/14。媽媽的產後健康照護第 2 次要在 12/10 前完成，還剩 26 天。',
-        prepTitle: '照順序做', prep: [
-          '五合一疫苗和 13 價肺炎鏈球菌疫苗第 1 劑：滿 2 個月就能打，公費免費。帶兒童健康手冊和健保卡到合約院所。',
-          '第 2 次兒童預防保健：公費免費，建議月齡請看兒童健康手冊。',
-          '第 2 次產後健康照護：12/10 前，到有提供產檢的健保特約院所，帶健保卡和孕媽咪健康手冊。'],
-        next: [['看這個年紀要注意的事', 'index.html']],
-        srcs: [S.cdc, S.hpaChild, S.hpaPost] },
-      stool: { group: '健康', q: '寶寶的便便顏色很淡，正常嗎？', keys: [['便便'], ['大便'], ['便', '顏色']],
-        answer: '如果便便是淡黃色或灰白色，可能和膽道閉鎖有關，請儘快帶寶寶就醫。竹寶沒辦法判斷病情，要由醫師確認。',
-        mine: '你今天 10:05 在寶寶日記記錄的便便是黃色，屬於常見顏色。之後如果記到淡黃或灰白色，竹寶會馬上提醒你。',
-        prepTitle: '先對照，再就醫', prep: [
-          '打開兒童健康手冊裡的嬰兒大便辨識卡，對照便便的顏色。',
-          '拍下便便的照片，就醫時給醫師看。',
-          '帶兒童健康手冊和健保卡。'],
-        next: [['記到寶寶日記', 'diary.html'], ['看緊急專線', 'help.html']],
-        srcs: [S.book] }
-    };
-    const QA = {
-      switch: { group: '補助', q: '送托之後，我的補助會怎麼變？',
-        answer: '送到準公共托嬰中心或保母後，可以改領托育補助，原本的育兒津貼就不會同時領。',
-        mine: '你現在自己帶寶寶，所以符合育兒津貼，托育補助顯示「不符合」。打算送托時，北區有準公共托嬰中心可以先參觀。',
-        prepTitle: '送托前可以先做', prep: ['確認托育單位是不是「準公共」，才能領托育補助。', '送托後依社會處規定提出托育補助申請。'],
-        next: [['看托育', 'childcare.html'], ['看補助及其他福利', 'benefits.html']],
-        srcs: [['新竹市社會處・準公共化專區', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20']] },
-      lowinc: { group: '補助', q: '低收入戶的產婦營養費要準備什麼？',
-        answer: '新竹市列冊低收入戶的產婦，每案可以領 2 萬元，要在寶寶出生後 3 個月內向區公所申請。',
-        mine: '寶寶 9/10 出生，申請期限是 2026/12/10。你在設定時略過了這一題，如果是低收入戶，記得在期限前申請。',
-        prepTitle: '帶到戶籍所在地的區公所', prep: ['申請書', '寶寶的新式戶口名簿影本與出生證明', '郵局存摺正面影本', '領款收據（請別人代辦要附委託書）'],
-        next: [['看補助及其他福利', 'benefits.html']],
-        srcs: [['新竹市低收入戶產婦及嬰兒營養費補助辦法', 'https://law.hccg.gov.tw/LawContent.aspx?id=FL086082']] },
-      fever: { group: '健康', q: '寶寶半夜發燒怎麼辦？',
-        answer: '竹寶沒辦法判斷寶寶的病情。3 個月以下的寶寶發燒，建議儘快就醫。',
-        mine: '寶寶現在 2 個月，屬於要特別小心的年紀。如果寶寶呼吸困難、叫不醒或抽搐，請直接撥 119。',
-        prepTitle: '就醫時帶著', prep: ['兒童健康手冊和健保卡', '發燒開始的時間與量到的體溫'],
-        next: [['看緊急專線', 'help.html']],
-        srcs: [['衛生福利部國民健康署', 'https://www.hpa.gov.tw/Pages/List.aspx?nodeid=202']] },
-      vax: { group: '健康', q: '2 個月要打哪些疫苗？',
-        answer: '滿 2 個月要打五合一疫苗和 13 價肺炎鏈球菌疫苗的第 1 劑，都是公費免費。',
-        mine: '寶寶 11/10 已滿 2 個月，現在就可以打。第 2 劑在 2027/1/10 滿 4 個月之後。',
-        prepTitle: '去接種時帶著', prep: ['兒童健康手冊', '健保卡'],
-        next: [['看這個年紀要注意的事', 'index.html']],
-        srcs: [['衛生福利部疾病管制署・兒童預防接種時程', 'https://www.cdc.gov.tw/Category/Page/TxRW-x3WzvPhvEtxM628GA']] },
-      nursery: { group: '托育', q: '北區有哪些準公共托嬰中心？',
-        answer: '北區的準公共托嬰中心都列在社會處的名冊上，例如新竹市私立茱蒂園托嬰中心。',
-        mine: '你的戶籍在北區，竹寶在托育頁會把北區排在最前面。送準公共托嬰中心可以領托育補助。',
-        prepTitle: '', prep: [],
-        next: [['看托育', 'childcare.html']],
-        srcs: [['新竹市社會處・115 年準公共化托嬰中心名冊', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20']] },
-      weekend: { group: '活動', q: '這週末可以帶寶寶去哪？',
-        answer: '這週六上午北區親子館有寶寶共讀，0 歲寶寶也能參加，免費但要先預約。',
-        mine: '寶寶 2 個月，適合安靜、室內、可以推嬰兒車的地方。竹北遠百的聖誕樹展也在室內。',
-        prepTitle: '', prep: [],
-        next: [['看親子活動', 'activities.html']],
-        srcs: [['新竹市托育資源中心親子館', 'https://wpcc.hccg.gov.tw/']] }
-    };
-    const ALL = Object.assign({}, DEMO, QA);
+    const AI = window.ZBAI;
+    const ALL = AI.ALL, DEMO = AI.DEMO;
     const cur = ALL[s.qa] || DEMO.money;
-    const chip = (on) => 'min-height: 40px; padding: 0 14px; border-radius: 999px; font-family: inherit; font-size: 14px; cursor: pointer; text-align: left; ' + (on ? 'background: #E4EEE7; color: #2E5E4E; border: 1px solid #2E5E4E; font-weight: 600' : 'background: #FCFAF6; color: #1F2A24; border: 1px solid #E4DED2');
     const ask = (k, text) => {
       (this._tm || []).forEach(clearTimeout);
-      this.setState({ q: text, qa: k, phase: 'thinking', step: 0 });
+      const hist = AI.remember(k, text);
+      this.setState({ q: text, qa: k, phase: 'thinking', step: 0, hist, cur: hist[0].t });
       const end = k ? 'answer' : 'fallback';
       this._tm = [setTimeout(() => this.setState({ step: 1 }), 600), setTimeout(() => this.setState({ step: 2 }), 1200), setTimeout(() => this.setState({ phase: end }), 1900)];
     };
-    const norm = (x) => String(x || '').replace(/[\s，。？?！!、,.]/g, '');
-    const match = (text) => {
-      const n = norm(text);
-      for (const k of Object.keys(ALL)) if (norm(ALL[k].q) === n) return k;
-      for (const k of Object.keys(DEMO)) if (DEMO[k].keys.some((ks) => ks.every((w) => n.indexOf(w) >= 0))) return k;
-      return null;
-    };
     const pick = (k) => () => ask(k, ALL[k].q);
-    const keys = Object.keys(QA);
-    const groups = ['補助', '健康', '托育', '活動'].map((g) => ({
-      label: g,
-      items: keys.filter((k) => ALL[k].group === g).map((k) => ({ q: ALL[k].q, pick: pick(k), style: chip(k === s.qa) }))
-    }));
-    const recent = ['switch', 'lowinc', 'fever'].map((k) => ({
-      q: QA[k].q, pick: pick(k),
-      style: 'min-height: 44px; padding: 8px 10px; border-radius: 10px; border: 0; font-family: inherit; font-size: 14px; line-height: 1.5; text-align: left; cursor: pointer; ' + (k === s.qa ? 'background: #E4EEE7; color: #2E5E4E; font-weight: 600' : 'background: transparent; color: #1F2A24')
-    }));
+    const showPast = (h) => () => {
+      (this._tm || []).forEach(clearTimeout);
+      this.setState({ q: h.q, qa: h.k, phase: h.k && ALL[h.k] ? 'answer' : 'fallback', cur: h.t, histOpen: false });
+    };
+    const fill = (q) => () => {
+      const inp = document.getElementById('ask');
+      if (!inp) return;
+      inp.value = q;
+      inp.focus();
+      const f = inp.closest('form');
+      if (f) { f.classList.remove('zb-filled'); void f.offsetWidth; f.classList.add('zb-filled'); }
+    };
     const next = cur.next.map((n, i) => ({
       label: n[0], url: n[1],
       style: 'min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; text-decoration: none; ' + (i === 0 ? 'background: #2E5E4E; color: #FFFFFF' : 'border: 1px solid #2E5E4E; color: #2E5E4E')
     }));
+    const hist = s.hist || [];
     return {
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
+      meOpen: !!s.meOpen, meExpanded: s.meOpen ? 'true' : 'false', toggleMe: () => this.setState({ meOpen: !s.meOpen }),
+      histExpanded: s.histOpen ? 'true' : 'false', toggleHist: () => this.setState({ histOpen: !s.histOpen }),
+      hist: hist.map((h) => ({ id: 'h' + h.t, q: h.q, when: AI.when(h.t), current: h.t === s.cur && s.phase !== 'welcome' ? 'true' : 'false', pick: showPast(h) })),
+      histCount: hist.length, hasHist: hist.length > 0, noHist: hist.length === 0,
+      clearHist: () => this.setState({ hist: AI.clearHistory(), cur: null }),
+      hints: Object.keys(DEMO).map((k) => ({ q: DEMO[k].q, fill: fill(DEMO[k].q) })),
       answer: cur.answer, mine: cur.mine, hasPrep: cur.prep.length > 0, prepTitle: cur.prepTitle, prep: cur.prep,
-      next, srcs: cur.srcs.map((x) => ({ title: x[0], url: x[1] })), groups, recent,
+      next, srcs: cur.srcs.map((x) => ({ title: x[0], url: x[1] })),
       isWelcome: s.phase === 'welcome', hasQ: s.phase !== 'welcome', isThinking: s.phase === 'thinking',
       isAnswer: s.phase === 'answer', isFallback: s.phase === 'fallback',
       q: s.q,
       steps: ['讀取寶寶的資料', '比對中央與新竹市的規定', '整理官方來源'].map((l, i) => ({ label: l, mark: i < s.step ? '✓' : (i === s.step ? '…' : '・'),
         style: 'display: flex; align-items: center; gap: 8px; color: ' + (i <= s.step ? '#1F2A24' : '#9AA39D') + (i < s.step ? '; font-weight: 400' : '') })),
       demoChips: Object.keys(DEMO).map((k) => ({ q: DEMO[k].q, pick: pick(k) })),
-      send: (e) => { if (e && e.preventDefault) e.preventDefault(); const f = e.target; const inp = f.querySelector('input'); const text = (inp && inp.value || '').trim(); if (!text) return; inp.value = ''; ask(match(text), text); }
+      send: (e) => { if (e && e.preventDefault) e.preventDefault(); const f = e.target; const inp = f.querySelector('input'); const text = (inp && inp.value || '').trim(); if (!text) return; inp.value = ''; ask(AI.match(text), text); }
     };
   }
 }
 
-const __rv = Component.prototype.renderVals;
-Component.prototype.renderVals = function () {
-  const v = __rv.call(this); const s = this.state;
-  v.meOpen = !!s.meOpen; v.meExpanded = s.meOpen ? 'true' : 'false'; v.toggleMe = () => this.setState({ meOpen: !s.meOpen });
-  v.recentOpen = !!s.recentOpen; v.recentExpanded = s.recentOpen ? 'true' : 'false'; v.toggleRecent = () => this.setState({ recentOpen: !s.recentOpen });
-  v.recentCount = (v.recent || []).length;
-  return v;
-};
 window.Component = Component;
 </script>
 </body>
