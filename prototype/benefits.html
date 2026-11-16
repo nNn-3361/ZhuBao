@@ -140,7 +140,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 <div style="display: flex; gap: 8px; flex-wrap: wrap">
 <sc-for list="{{counts}}" as="c" hint-placeholder-count="4">
-<span style="{{c.style}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{c.icon}}"></path></svg>{{c.text}}</span>
+<span style="{{c.style}}">{{c.text}}</span>
 </sc-for>
 </div>
 </div>
@@ -174,7 +174,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <span style="font-size: 16px; font-weight: 600">{{it.name}}</span>
 <span style="font-size: 13px; color: #5F6B64; font-variant-numeric: tabular-nums">{{it.meta}}</span>
 </div>
-<span style="{{it.pillStyle}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{it.icon}}"></path></svg>{{it.label}}</span>
+<span style="{{it.pillStyle}}">{{it.label}}</span>
 <svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
 </button>
 <sc-if value="{{it.open}}" hint-placeholder-val="{{false}}">

@@ -145,7 +145,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <section aria-label="快速記錄" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
 <sc-for list="{{quick}}" as="q" hint-placeholder-count="6">
 <button type="button" aria-pressed="{{q.pressed}}" onClick="{{q.pick}}" style="{{q.style}}">
-<span style="{{q.iconWrap}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{q.icon}}"></path></svg></span>
 <span style="font-size: 15px; font-weight: 600">{{q.label}}</span>
 <span style="font-size: 12px; color: #5F6B64; font-weight: 400">{{q.last}}</span>
 </button>
@@ -175,7 +174,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </sc-if>
 
 <sc-for list="{{alerts}}" as="a" hint-placeholder-count="1">
-<div role="status" style="{{a.style}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px"><path d="{{a.icon}}"></path></svg><div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14px">{{a.title}}</strong><span style="font-size: 13px; line-height: 1.6">{{a.body}}</span></div></div>
+<div role="status" style="{{a.style}}"><div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14px">{{a.title}}</strong><span style="font-size: 13px; line-height: 1.6">{{a.body}}</span></div></div>
 </sc-for>
 
 <section aria-labelledby="h-today" style="display: flex; flex-direction: column; gap: 12px">
@@ -198,10 +197,9 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <h2 id="h-log" style="margin: 0 0 8px; font-size: 17px; font-weight: 600">今天的紀錄</h2>
 <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column">
 <sc-for list="{{logShown}}" as="l" hint-placeholder-count="8">
-<li style="display: grid; grid-template-columns: 52px 32px minmax(0, 1fr); align-items: center; gap: 8px; min-height: 48px; border-bottom: 1px solid #EFEAE0; font-size: 14px">
+<li style="display: grid; grid-template-columns: 52px minmax(0, 1fr); align-items: center; gap: 8px; min-height: 48px; border-bottom: 1px solid #EFEAE0; font-size: 14px">
 <span style="font-variant-numeric: tabular-nums; color: #5F6B64">{{l.time}}</span>
-<span style="{{l.iconWrap}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{l.icon}}"></path></svg></span>
-<span style="min-width: 0"><strong style="font-weight: 600">{{l.kind}}</strong>　{{l.detail}}</span>
+<span style="min-width: 0"><strong style="font-weight: 600; color: {{l.kindColor}}">{{l.kind}}</strong>　{{l.detail}}</span>
 </li>
 </sc-for>
 </ol>
@@ -361,7 +359,7 @@ class Component extends DCLogic {
       label: K[k][0], icon: K[k][3], last: lastOf(k), pressed: s.form === k ? 'true' : 'false',
       pick: () => this.setState({ form: s.form === k ? null : k, sel: {} }),
       iconWrap: 'width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: ' + K[k][2] + '; color: ' + K[k][1],
-      style: 'min-height: 112px; padding: 14px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; border-radius: 16px; font-family: inherit; color: #1F2A24; text-align: left; cursor: pointer; ' + (s.form === k ? 'background: #FCFAF6; border: 2px solid #2E5E4E' : 'background: #FCFAF6; border: 1px solid #E4DED2')
+      style: 'min-height: 76px; padding: 14px 14px 14px 18px; box-shadow: inset 4px 0 0 ' + K[k][1] + '; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; border-radius: 16px; font-family: inherit; color: #1F2A24; text-align: left; cursor: pointer; ' + (s.form === k ? 'background: #FCFAF6; border: 2px solid #2E5E4E' : 'background: #FCFAF6; border: 1px solid #E4DED2')
     }));
     const save = () => {
       if (!s.form) return;
@@ -398,7 +396,7 @@ class Component extends DCLogic {
       : [{ title: '今天一切正常', body: '喝奶、尿布和便便顏色都在常見範圍內。記得在 12/10 前預約第 2 次產後健康照護。', icon: 'M20 6 9 17l-5-5',
         style: 'display: flex; gap: 12px; align-items: flex-start; background: #E4EEE7; color: #2E5E4E; border-radius: 14px; padding: 14px 16px' }];
     const log = entries.slice().sort((a, b) => b.t.localeCompare(a.t)).map((e) => ({ time: e.t, kind: K[e.k][0], detail: e.d, icon: K[e.k][3],
-      iconWrap: 'width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: ' + K[e.k][2] + '; color: ' + K[e.k][1] }));
+      kindColor: K[e.k][1] }));
     const DAYS = ['11/8', '11/9', '11/10', '11/11', '11/12', '11/13', '今天'];
     const SERIES = {
       sleep: { label: '睡眠', unit: '小時', vals: [14.5, 15, 13.5, 14, 15.5, 14.5, +(sleepMin / 60).toFixed(1)], max: 18, color: '#2F5470', note: '今天還沒過完，晚上的睡眠會再加上去。' },
