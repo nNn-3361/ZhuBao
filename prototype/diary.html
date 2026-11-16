@@ -114,6 +114,11 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-rec button.zb-tile[aria-pressed="true"]{background:#2E5E4E !important}
 .zb-tile[aria-pressed="true"] .zb-tile-name{color:#FFFFFF}
 .zb-tile[aria-pressed="true"] .zb-tile-last{color:#D9E5DC;font-weight:600}
+.zb-step{display:inline-flex;align-items:center;gap:6px}
+.zb-step button{width:48px;height:48px;border-radius:999px;border:1px solid #E4DED2;background:#FFFFFF;font-family:inherit;font-size:22px;line-height:1;color:#2E5E4E;cursor:pointer}
+.zb-step button:hover{border-color:#2E5E4E;background:#E4EEE7}
+.zb-step output{min-width:104px;text-align:center;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.zb-text{min-height:48px;padding:0 14px;border-radius:12px;border:1px solid #E4DED2;background:#FFFFFF;font-family:inherit;font-size:16px;color:#1F2A24;width:100%;box-sizing:border-box}
 .zb-edit{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid #B9CDBF;background:transparent;color:#2E5E4E;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
 .zb-bar{height:100%;padding:0;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;font-family:inherit;cursor:pointer;border-radius:8px 8px 0 0}
 .zb-bar:hover{background:rgba(46,94,78,.06)}
@@ -213,6 +218,8 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <button type="button" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="{{o.style}}"><span style="{{o.swatch}}"></span>{{o.label}}</button>
 </sc-for>
 </div>
+<sc-if value="{{f.isStep}}" hint-placeholder-val="{{false}}"><div class="zb-step"><button type="button" aria-label="{{f.decAria}}" onClick="{{f.dec}}">−</button><output aria-live="polite">{{f.val}}</output><button type="button" aria-label="{{f.incAria}}" onClick="{{f.inc}}">＋</button></div></sc-if>
+<sc-if value="{{f.isText}}" hint-placeholder-val="{{false}}"><input type="text" class="zb-text" maxlength="60" placeholder="例如：餵完吐了一小口，精神很好" value="{{f.val}}" onInput="{{f.input}}"></sc-if>
 <sc-if value="{{f.hint}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; line-height: 1.6; color: #5F6B64">{{f.hint}}</span></sc-if>
 </fieldset>
 </sc-for>
@@ -285,10 +292,10 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 <section aria-labelledby="h-grow" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
 <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap">
-<h2 id="h-grow" style="margin: 0; font-size: 17px; font-weight: 600">身高與體重</h2>
+<h2 id="h-grow" style="margin: 0; font-size: 17px; font-weight: 600">身高、體重與頭圍</h2>
 <span style="font-size: 12px; color: #5F6B64">{{growDate}}</span>
 </div>
-<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
 <sc-for list="{{growth}}" as="g" hint-placeholder-count="2">
 <div style="background: #F6F2EA; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 2px">
 <span style="font-size: 12px; color: #5F6B64">{{g.label}}</span>
@@ -376,7 +383,7 @@ class Component extends DCLogic {
       { sl: 13.5, f: 7, w: 6, poo: ['黃色'], grow: true },
       { sl: 14, f: 7, w: 7, poo: ['黃色'], note: true },
       { sl: 15.5, f: 6, w: 7, poo: ['綠色'] },
-      { sl: 14.5, f: 7, w: 8, poo: ['黃色', '褐色'] }
+      { sl: 14.5, f: 7, w: 8, poo: ['黃色', '綠色'] }
     ];
     const gen = (i) => {
       const p = PAST[i], out = [];
@@ -392,31 +399,55 @@ class Component extends DCLogic {
         const n = t === '09:35' ? 0 : t === '17:05' ? 1 : -1;
         out.push({ t, k: 'diaper', d: n >= 0 && p.poo[n] ? '濕＋便便・' + p.poo[n] : '濕' });
       });
-      if (p.grow) out.push({ t: '10:30', k: 'grow', d: '58 cm・5.6 kg（兒童健檢）' });
+      if (p.grow) out.push({ t: '10:30', k: 'grow', d: '58.0 cm・5.6 kg・頭圍 39.0 cm（兒童健檢）' });
       if (p.note) out.push({ t: '13:20', k: 'note', d: '吐奶・餵完吐了一小口，精神很好' });
       return out;
     };
-    /* ---- 一鍵記錄的紀錄：先記時間，細節之後補 ---- */
+    /* ---- 一鍵記錄：沿用上次的方式與份量，提示列可以改，也能補記時間 ---- */
+    const isPoo = (x) => !!x.type && x.type !== '濕';
+    const BAD = ['淡黃色', '灰白色'];
+    const fmt1 = (n) => (Math.round(n * 10) / 10).toFixed(1);
     const describe = (e) => {
       const x = e.sel || {};
-      if (e.k === 'feed') return [x.type, x.amt].filter(Boolean).join(' ');
-      if (e.k === 'diaper') return (x.type || '濕') + (x.color && x.type !== '濕' ? '・' + x.color : '');
-      if (e.k === 'sleep') return e.open ? '睡覺中' + (x.pos ? '・' + x.pos : '') : hm(e.start) + '–' + hm(e.end) + '・' + dur(e.min) + (x.pos ? '・' + x.pos : '');
-      if (e.k === 'temp') return x.deg ? x.deg + ' 度' : '';
-      if (e.k === 'grow') return [x.h, x.w].filter(Boolean).join('・');
-      if (e.k === 'note') return x.tag || '';
+      if (e.k === 'feed') return x.type === '親餵母乳' ? ['親餵母乳', x.side, x.amt].filter(Boolean).join(' ') : [x.type, x.amt].filter(Boolean).join(' ');
+      if (e.k === 'diaper') return x.type ? x.type + (isPoo(x) && x.color ? '・' + x.color : '') : '';
+      if (e.k === 'sleep') return e.open ? '睡覺中・' + hm(e.start) + ' 入睡' : hm(e.start) + '–' + hm(e.end) + '・' + dur(e.min);
+      if (e.k === 'temp') return x.deg ? [x.how, x.deg + ' 度'].filter(Boolean).join(' ') : '';
+      if (e.k === 'grow') return [x.h && x.h + ' cm', x.w && x.w + ' kg', x.hc && '頭圍 ' + x.hc + ' cm'].filter(Boolean).join('・');
+      if (e.k === 'note') return [x.tag, x.text].filter(Boolean).join('・');
       return '';
     };
     const alertOf = (e) => {
       const x = e.sel || {};
-      if (e.k === 'diaper' && x.type !== '濕' && (x.color === '淡黃色' || x.color === '灰白色')) return 'stool';
+      if (e.k === 'diaper' && isPoo(x) && BAD.indexOf(x.color) >= 0) return 'stool';
       if (e.k === 'temp' && parseFloat(x.deg) >= 38) return 'fever';
-      if (e.k === 'sleep' && (x.pos === '趴睡' || x.pos === '側睡')) return 'pos';
       return null;
     };
     const addedOf = (i) => (s.added[i] || []);
-    const entriesFor = (i) => (i === TODAY ? BASE : gen(i)).concat(addedOf(i).map((e) => ({ id: e.id, t: e.t, k: e.k, d: describe(e), min: e.open ? 0 : (e.min || 0), alert: alertOf(e), mine: true })));
+    const entriesFor = (i) => (i === TODAY ? BASE : gen(i)).concat(addedOf(i).map((e) => ({ id: e.id, t: e.t, k: e.k, d: describe(e), sel: e.sel, min: e.open ? 0 : (e.min || 0), alert: alertOf(e), mine: true })));
     const entries = entriesFor(s.day);
+    /* 習慣：找最近一筆同類紀錄（看到選的那一天為止） */
+    const latest = (k, ok) => {
+      for (let i = s.day; i >= 0; i--) {
+        const es = entriesFor(i).filter((e) => e.k === k).sort((a, b) => b.t.localeCompare(a.t));
+        for (const e of es) { const v = ok(e); if (v) return v; }
+      }
+      return null;
+    };
+    const feedOf = (e) => {
+      if (e.sel && e.sel.type) return e.sel;
+      let m;
+      if (/親餵/.test(e.d)) return { type: '親餵母乳', side: /左右|兩邊/.test(e.d) ? '兩邊' : /左/.test(e.d) ? '左邊' : /右/.test(e.d) ? '右邊' : '兩邊', amt: (m = /(\d+) 分鐘/.exec(e.d)) ? m[1] + ' 分鐘' : '15 分鐘' };
+      if ((m = /(配方奶|瓶餵母乳) (\d+) ml/.exec(e.d))) return { type: m[1], amt: m[2] + ' ml' };
+      return null;
+    };
+    const habitFeed = (type) => latest('feed', (e) => { const f = feedOf(e); return f && (!type || f.type === type) ? f : null; })
+      || (type === '親餵母乳' ? { type, side: '兩邊', amt: '15 分鐘' } : { type: type || '配方奶', amt: '120 ml' });
+    const DEF = {
+      temp: () => latest('temp', (e) => (e.sel && e.sel.deg ? { how: e.sel.how, deg: e.sel.deg } : null)) || { how: '', deg: '36.8' },
+      grow: () => latest('grow', (e) => (e.sel && e.sel.h ? { h: e.sel.h, w: e.sel.w, hc: e.sel.hc } : null)) || { h: '58.0', w: '5.6', hc: '39.0' },
+      note: () => ({ tag: '', text: '' })
+    };
 
     /* ---- 狀態更新 ---- */
     const setAdded = (i, list, extra) => this.setState(Object.assign({ added: Object.assign({}, s.added, { [i]: list }) }, extra || {}));
@@ -429,92 +460,122 @@ class Component extends DCLogic {
     };
     const findEntry = (i, id) => addedOf(i).find((e) => e.id === id);
     const patchEntry = (i, id, patch) => addedOf(i).map((e) => (e.id === id ? Object.assign({}, e, patch, patch.sel ? { sel: Object.assign({}, e.sel, patch.sel) } : {}) : e));
-    const openEdit = (i, id) => { clearToastTimer(); const e = findEntry(i, id); this.setState({ edit: { day: i, id }, form: null, sel: Object.assign({}, e ? e.sel : {}), toast: null }); };
-    const CHIPS = {
-      feed: [['配方奶 120 ml', { type: '配方奶', amt: '120 ml' }], ['親餵 15 分鐘', { type: '親餵母乳', amt: '15 分鐘' }], ['更多細節', null]],
-      diaper: [['有便便', 'poo'], ['更多細節', null]],
-      sleepStart: [['仰睡', { pos: '仰睡' }], ['更多細節', null]],
-      sleepEnd: [['更多細節', null]]
+    const openEdit = (i, id) => { clearToastTimer(); const e = findEntry(i, id); this.setState({ edit: { day: i, id }, form: null, sel: Object.assign({ at: 0 }, e ? e.sel : {}), toast: null }); };
+    const openForm = (k) => { clearToastTimer(); this.setState({ form: k, edit: null, sel: Object.assign({ at: 0 }, DEF[k]()), toast: null }); };
+    /* 把時間往前調 m 分鐘（從第一次記的時間算） */
+    const timed = (e, m) => {
+      if (e.k === 'sleep' && e.open) { const st = e.s0 - m; return { start: st, t: hm(st), at: m }; }
+      if (e.k === 'sleep') { const en = e.t0 - m; let mm = en - e.start; if (mm < 0) mm += 1440; return { end: en, min: Math.max(mm, 1), t: hm(en), at: m }; }
+      return { t: hm(e.t0 - m), at: m };
     };
-    const chipFn = (i, id, def) => () => {
-      if (def === null) { openEdit(i, id); return; }
-      if (def === 'poo') {
-        const list = patchEntry(i, id, { sel: { type: '濕＋便便' } });
-        clearToastTimer();
-        const e = list.find((x) => x.id === id);
-        this.setState({ added: Object.assign({}, s.added, { [i]: list }), edit: { day: i, id }, form: null, sel: Object.assign({}, e.sel), toast: null });
-        return;
-      }
-      const list = patchEntry(i, id, { sel: def });
+    const done = (i, list, id, title) => {
       const e = list.find((x) => x.id === id);
-      setAdded(i, list, { toast: showToast({ title: '已補充', sub: K[e.k][0] + '・' + describe(e), chips: [], undo: null }, 2200) });
+      setAdded(i, list, { toast: showToast({ title: title || '已記錄 ' + K[e.k][0] + '・' + e.t, sub: describe(e), chips: [], undo: null }, 2400) });
     };
+    const toastFor = (i, id, list, before, title, sub, chips) => setAdded(i, list, { edit: null, form: null,
+      toast: showToast({ title, sub, chips: chips.map((c) => ({ label: c[0], pick: c[1] })), undo: before ? { day: i, list: before } : null }, 8000) });
+    const shiftChip = (i, id, m, label) => [label, () => { const e = findEntry(i, id); const list = patchEntry(i, id, timed(e, m)); done(i, list, id, '已改成 ' + list.find((x) => x.id === id).t); }];
+    const editChip = (i, id) => ['改細節', () => openEdit(i, id)];
+    const diaperColorChips = (i, id) => ['黃色', '綠色', '淡黃色', '灰白色'].map((c) => [c, () => done(i, patchEntry(i, id, { sel: { color: c } }), id)]);
     const tap = (k) => {
-      const i = s.day, before = addedOf(i), t = nowMin();
+      const i = s.day, before = addedOf(i), t = nowMin(), tag = isToday ? '' : '（補記到 ' + dayShort + '）';
       const open = k === 'sleep' && before.find((e) => e.k === 'sleep' && e.open);
       if (open) {
         let m = t - open.start; if (m < 0) m += 1440;
-        const list = patchEntry(i, open.id, { open: false, end: t, min: m, t: hm(t) });
-        setAdded(i, list, { edit: null, form: null,
-          toast: showToast({ title: '醒來了・' + hm(t), sub: '這次睡了 ' + dur(m), chips: CHIPS.sleepEnd.map((c) => ({ label: c[0], pick: chipFn(i, open.id, c[1]) })), undo: { day: i, list: before } }, 7000) });
+        const list = patchEntry(i, open.id, { open: false, end: t, t0: t, min: Math.max(m, 1), t: hm(t), at: 0 });
+        toastFor(i, open.id, list, before, '醒來了・' + hm(t), '這次睡了 ' + dur(Math.max(m, 1)), [shiftChip(i, open.id, 10, '10 分鐘前醒的'), shiftChip(i, open.id, 30, '30 分鐘前醒的')]);
         return;
       }
       const id = 'n' + (++this._seq);
-      const e = { id, t: hm(t), k, sel: k === 'diaper' ? { type: '濕' } : {} };
-      if (k === 'sleep') { e.open = true; e.start = t; }
-      const title = (k === 'sleep' ? '開始睡覺・' : '已記錄 ' + K[k][0] + '・') + hm(t) + (isToday ? '' : '（補記到 ' + dayShort + '）');
-      const chips = CHIPS[k === 'sleep' ? 'sleepStart' : k].map((c) => ({ label: c[0], pick: chipFn(i, id, c[1]) }));
-      setAdded(i, before.concat([e]), { edit: null, form: null,
-        toast: showToast({ title, sub: k === 'sleep' ? '醒來時再按一次「醒來了」' : '要補充嗎？不用也可以', chips, undo: { day: i, list: before } }, 7000) });
+      const e = { id, t: hm(t), t0: t, k, sel: {} };
+      if (k === 'feed') {
+        e.sel = Object.assign({}, habitFeed());
+        const alt = habitFeed(e.sel.type === '親餵母乳' ? '配方奶' : '親餵母乳');
+        const list = before.concat([e]);
+        toastFor(i, id, list, before, '已記錄 喝奶・' + hm(t) + tag, describe(e) + '（跟上次一樣）', [
+          [describe({ k: 'feed', sel: alt }), () => done(i, patchEntry(i, id, { sel: { type: alt.type, side: alt.side || '', amt: alt.amt } }), id, '已改好')],
+          shiftChip(i, id, 10, '10 分鐘前'), editChip(i, id)]);
+        return;
+      }
+      if (k === 'diaper') {
+        const list = before.concat([e]);
+        const poo = (type) => () => {
+          const l2 = patchEntry(i, id, { sel: { type } });
+          setAdded(i, l2, { toast: showToast({ title: '便便是什麼顏色？', sub: '對照兒童健康手冊的嬰兒黃金九色卡', chips: diaperColorChips(i, id).concat([['先不選', () => done(i, l2, id)]]).map((c) => ({ label: c[0], pick: c[1] })), undo: { day: i, list: before } }, 12000) });
+        };
+        toastFor(i, id, list, before, '換尿布・' + hm(t) + tag, '是哪一種？', [
+          ['只有濕', () => done(i, patchEntry(i, id, { sel: { type: '濕' } }), id)], ['有便便', poo('便便')], ['濕＋便便', poo('濕＋便便')]]);
+        return;
+      }
+      /* 睡覺 */
+      e.open = true; e.start = t; e.s0 = t;
+      toastFor(i, id, before.concat([e]), before, '開始睡覺・' + hm(t) + tag, '睡覺時請讓寶寶仰睡。醒來時再按「醒來了」', [shiftChip(i, id, 10, '10 分鐘前睡著'), shiftChip(i, id, 30, '30 分鐘前睡著')]);
     };
 
     /* ---- 補充細節的表單 ---- */
-    const FORMS = {
-      feed: [
-        { key: 'type', label: '方式', opts: ['親餵母乳', '瓶餵母乳', '配方奶'] },
-        { key: 'amt', label: '份量', opts: ['60 ml', '90 ml', '120 ml', '150 ml', '10 分鐘', '15 分鐘', '20 分鐘'] }
-      ],
-      diaper: [
-        { key: 'type', label: '狀態', opts: ['濕', '便便', '濕＋便便'] },
-        { key: 'color', label: '便便顏色（有便便時選）', opts: ['黃色', '綠色', '褐色', '淡黃色', '灰白色'], hint: '請對照兒童健康手冊裡的嬰兒大便辨識卡。' }
-      ],
-      sleep: [ { key: 'pos', label: '睡姿', opts: ['仰睡', '側睡', '趴睡'] } ],
-      temp: [ { key: 'deg', label: '體溫（耳溫或肛溫）', opts: ['36.5', '37.0', '37.5', '38.0', '38.5'] } ],
-      grow: [
-        { key: 'h', label: '身高', opts: ['57 cm', '58 cm', '59 cm', '60 cm', '61 cm'] },
-        { key: 'w', label: '體重', opts: ['5.6 kg', '5.8 kg', '6.0 kg', '6.2 kg', '6.4 kg'] }
-      ],
-      note: [ { key: 'tag', label: '記什麼', opts: ['吐奶', '紅疹', '用藥', '其他'] } ]
-    };
     const editing = s.edit ? findEntry(s.edit.day, s.edit.id) : null;
     const formKind = editing ? editing.k : s.form;
-    const SW = { '黃色': '#E2B53E', '綠色': '#7E9A3E', '褐色': '#8A5A2B', '淡黃色': '#EFE3A6', '灰白色': '#DCDAD2' };
+    const SW = { '黃色': '#E2B53E', '綠色': '#7E9A3E', '淡黃色': '#EFE3A6', '灰白色': '#DCDAD2' };
     const sel = s.sel || {};
+    const put = (patch) => this.setState({ sel: Object.assign({}, this.state.sel, patch) });
+    const baseT = editing ? (editing.k === 'sleep' ? (editing.open ? editing.s0 : editing.t0) : editing.t0) : nowMin();
+    const at = { key: 'at', label: formKind === 'sleep' ? (editing && editing.open ? '幾點睡著的' : '幾點醒的') : '時間', opts: [0, 5, 10, 15, 30, 60].map((m) => [m, m ? hm(baseT - m) : hm(baseT) + '（' + (editing ? '原本' : '現在') + '）']) };
+    const FORMS = {
+      feed: () => [
+        { key: 'type', label: '方式', opts: ['親餵母乳', '瓶餵母乳', '配方奶'], onPick: (o) => put(Object.assign({ side: '', amt: '' }, habitFeed(o), { type: o })) },
+        sel.type === '親餵母乳' ? { key: 'side', label: '哪一邊', opts: ['左邊', '右邊', '兩邊'] } : null,
+        sel.type === '親餵母乳' ? { key: 'amt', label: '多久', opts: ['5 分鐘', '10 分鐘', '15 分鐘', '20 分鐘', '30 分鐘'] } : { key: 'amt', label: '份量', opts: ['60 ml', '90 ml', '120 ml', '150 ml', '180 ml'] },
+        at],
+      diaper: () => [
+        { key: 'type', label: '種類', opts: ['濕', '便便', '濕＋便便'] },
+        isPoo(sel) ? { key: 'color', label: '便便顏色', opts: ['黃色', '綠色', '淡黃色', '灰白色'], hint: '對照兒童健康手冊的嬰兒黃金九色卡：黃色、綠色是正常的；淡黃色或灰白色要儘快就醫。' } : null,
+        at],
+      sleep: () => [Object.assign({}, at, { hint: '睡覺時請讓寶寶仰睡，比較不容易發生嬰兒猝死。' })],
+      temp: () => [
+        { key: 'how', label: '怎麼量的', opts: ['耳溫', '額溫', '腋溫', '肛溫'], hint: '量法不同，數字會有一點差異，看醫生時一起告訴醫師。' },
+        { key: 'deg', label: '體溫', step: 0.1, min: 34, max: 42, unit: '度' }, at],
+      grow: () => [
+        { key: 'h', label: '身高', step: 0.5, min: 40, max: 90, unit: 'cm' },
+        { key: 'w', label: '體重', step: 0.1, min: 2, max: 15, unit: 'kg' },
+        { key: 'hc', label: '頭圍', step: 0.5, min: 30, max: 50, unit: 'cm', hint: '從上次的數字開始，按 + 或 − 微調。' }, at],
+      note: () => [
+        { key: 'tag', label: '記什麼', opts: ['吐奶', '紅疹', '哭鬧', '用藥', '其他'] },
+        { key: 'text', label: '想多寫一點（可以不寫）', text: true }, at]
+    };
     let formWarn = '';
-    if (formKind === 'diaper' && sel.type !== '濕' && (sel.color === '淡黃色' || sel.color === '灰白色')) formWarn = '淡黃或灰白色的便便可能和膽道閉鎖有關。請儘快帶寶寶就醫，並把這筆紀錄給醫師看。';
+    if (formKind === 'diaper' && isPoo(sel) && BAD.indexOf(sel.color) >= 0) formWarn = '淡黃或灰白色的便便可能和膽道閉鎖有關。請儘快帶寶寶就醫，並把這筆紀錄給醫師看。';
     if (formKind === 'temp' && parseFloat(sel.deg) >= 38) formWarn = '寶寶未滿 3 個月，體溫 38 度以上請儘快就醫。呼吸困難或叫不醒請直接撥 119。';
-    if (formKind === 'sleep' && (sel.pos === '趴睡' || sel.pos === '側睡')) formWarn = '睡覺時請讓寶寶仰睡，比較不容易發生嬰兒猝死。';
     const optBase = 'min-height: 44px; padding: 0 14px; border-radius: 999px; font-family: inherit; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; ';
-    const fields = formKind ? FORMS[formKind].map((f) => ({
-      label: f.label, hint: f.hint || '',
-      options: f.opts.map((o) => {
-        const on = sel[f.key] === o;
-        return { label: o, pressed: on ? 'true' : 'false',
+    const fields = formKind ? FORMS[formKind]().filter(Boolean).map((f) => {
+      const base = { label: f.label, hint: f.hint || '', options: [], isStep: false, isText: false, val: '', dec: null, inc: null, input: null };
+      if (f.step) {
+        const v = parseFloat(sel[f.key]) || f.min;
+        const set = (n) => put({ [f.key]: fmt1(Math.min(f.max, Math.max(f.min, n))) });
+        return Object.assign(base, { isStep: true, val: fmt1(v) + ' ' + f.unit, dec: () => set(v - f.step), inc: () => set(v + f.step), decAria: '減少' + f.label, incAria: '增加' + f.label });
+      }
+      if (f.text) return Object.assign(base, { isText: true, val: sel.text || '', input: (ev) => { this.state.sel = Object.assign({}, this.state.sel, { text: ev.target.value }); } });
+      return Object.assign(base, { options: f.opts.map((o) => {
+        const v = Array.isArray(o) ? o[0] : o, label = Array.isArray(o) ? o[1] : o;
+        const on = f.key === 'at' ? (sel.at || 0) === v : sel[f.key] === v;
+        return { label, pressed: on ? 'true' : 'false',
           style: optBase + (on ? 'background: #2E5E4E; color: #FFFFFF; border: 1px solid #2E5E4E; font-weight: 600' : 'background: #FFFFFF; color: #1F2A24; border: 1px solid #E4DED2'),
-          swatch: SW[o] ? 'width: 14px; height: 14px; border-radius: 999px; border: 1px solid rgba(0,0,0,0.15); background: ' + SW[o] : 'display: none',
-          pick: () => this.setState({ sel: Object.assign({}, sel, { [f.key]: o }) }) };
-      })
-    })) : [];
+          swatch: SW[v] ? 'width: 14px; height: 14px; border-radius: 999px; border: 1px solid rgba(0,0,0,0.15); background: ' + SW[v] : 'display: none',
+          pick: () => (f.onPick ? f.onPick(v) : put({ [f.key]: v })) };
+      }) });
+    }) : [];
     const save = () => {
+      const cur = Object.assign({}, this.state.sel || {});
+      const m = cur.at || 0; delete cur.at;
       if (editing) {
-        const list = patchEntry(s.edit.day, editing.id, { sel: sel });
-        const e = list.find((x) => x.id === editing.id);
-        setAdded(s.edit.day, list, { edit: null, sel: {}, toast: showToast({ title: '已補充', sub: K[e.k][0] + '・' + describe(e), chips: [], undo: null }, 2200) });
+        const e0 = Object.assign({}, editing, { sel: cur });
+        const list = patchEntry(s.edit.day, editing.id, Object.assign({ sel: cur }, timed(e0, m)));
+        done(s.edit.day, list, editing.id, '已補充');
+        this.setState({ edit: null, sel: {} });
         return;
       }
       if (!s.form) return;
-      const i = s.day, before = addedOf(i);
-      const e = { id: 'n' + (++this._seq), t: hm(nowMin()), k: s.form, sel: Object.assign({}, sel) };
+      const i = s.day, before = addedOf(i), t0 = nowMin();
+      const e = { id: 'n' + (++this._seq), t: hm(t0 - m), t0, at: m, k: s.form, sel: cur };
       setAdded(i, before.concat([e]), { form: null, sel: {}, toast: showToast({ title: '已記錄 ' + K[e.k][0] + '・' + e.t, sub: describe(e), chips: [], undo: { day: i, list: before } }, 5000) });
     };
 
@@ -529,7 +590,6 @@ class Component extends DCLogic {
       const d = nowMin() - toMin(t);
       return d < 0 ? '上次 ' + t : d < 1 ? '剛剛記過' : '上次 ' + ago(d);
     };
-    const openForm = (k) => { clearToastTimer(); this.setState({ form: k, edit: null, sel: {}, toast: null }); };
     const REC = [
       { key: 'feed', label: '餵奶', last: lastOf('feed'), pick: () => tap('feed') },
       { key: 'diaper', label: '尿布', last: lastOf('diaper'), pick: () => tap('diaper') },
@@ -548,13 +608,13 @@ class Component extends DCLogic {
     const diapers = entries.filter((e) => e.k === 'diaper');
     const wet = diapers.filter((e) => e.d.indexOf('濕') >= 0).length;
     const pooList = diapers.filter((e) => e.d.indexOf('便') >= 0).sort((a, b) => a.t.localeCompare(b.t));
-    const lastPoo = pooList.length ? (/(淡黃色|灰白色|黃色|綠色|褐色)/.exec(pooList[pooList.length - 1].d) || [''])[0] : '';
+    const lastPoo = pooList.length ? (/(淡黃色|灰白色|黃色|綠色)/.exec(pooList[pooList.length - 1].d) || [''])[0] : '';
     const sleeps = entries.filter((e) => e.k === 'sleep');
     const sleepMin = sleeps.reduce((a, e) => a + (e.min || 0), 0);
     const longest = sleeps.reduce((a, e) => Math.max(a, e.min || 0), 0);
     const temps = entries.filter((e) => e.k === 'temp' && e.d).sort((a, b) => a.t.localeCompare(b.t));
     const summary = [
-      { label: '喝奶', color: '#2E5E4E', value: feeds.length + ' 次', detail: '配方奶共 ' + ml + ' ml・親餵 ' + feeds.filter((e) => e.d.indexOf('親餵') >= 0).length + ' 次', ref: '2 個月寶寶一天常見 6 到 8 次，依寶寶需求餵。' },
+      { label: '喝奶', color: '#2E5E4E', value: feeds.length + ' 次', detail: '瓶餵共 ' + ml + ' ml・親餵 ' + feeds.filter((e) => e.d.indexOf('親餵') >= 0).length + ' 次', ref: '2 個月寶寶一天常見 6 到 8 次，依寶寶需求餵。' },
       { label: '尿布', color: '#7A4F0B', value: wet + ' 片濕', detail: '便便 ' + pooList.length + ' 次' + (lastPoo ? '・最近一次' + lastPoo : ''), ref: '一天 6 片以上濕尿布，通常表示奶喝得夠。' },
       { label: '睡眠', color: '#2F5470', value: Math.floor(sleepMin / 60) + ' 小時 ' + (sleepMin % 60) + ' 分', detail: longest ? '最長一段 ' + dur(longest) : '還沒有睡眠紀錄', ref: '0 到 3 個月一天大約睡 14 到 17 小時' + (isToday ? '，晚上還沒記的會再加上去。' : '。') },
       { label: '體溫', color: '#8E3A33', value: temps.length ? temps[temps.length - 1].d : (isToday ? '今天沒量' : '沒有量'), detail: '身體不舒服時再量就好', ref: '未滿 3 個月，38 度以上請儘快就醫。' }
@@ -598,8 +658,9 @@ class Component extends DCLogic {
     const metricTabs = Object.keys(SERIES).map((k) => ({ label: SERIES[k].label, pressed: s.metric === k ? 'true' : 'false', style: tabStyle(s.metric === k), pick: () => this.setState({ metric: k }) }));
     let lastGrow = null;
     [0, 1, 2, 3, 4, 5, 6].forEach((i) => addedOf(i).forEach((e) => { if (e.k === 'grow' && (e.sel.h || e.sel.w)) lastGrow = { e, i }; }));
-    const growH = (lastGrow && lastGrow.e.sel.h) || '58 cm';
-    const growW = (lastGrow && lastGrow.e.sel.w) || '5.6 kg';
+    const growH = ((lastGrow && lastGrow.e.sel.h) || '58.0') + ' cm';
+    const growW = ((lastGrow && lastGrow.e.sel.w) || '5.6') + ' kg';
+    const growHC = ((lastGrow && lastGrow.e.sel.hc) || '39.0') + ' cm';
     const growNote = lastGrow ? '剛剛記錄' : '約第 50 百分位';
     const growDate = lastGrow ? DATES[lastGrow.i].md + ' ' + lastGrow.e.t + ' 記錄' : '11/10 兒童健檢時量測';
 
@@ -635,12 +696,12 @@ class Component extends DCLogic {
         else e.target.value = dayIso;
       },
       recItems,
-      formOpen: !!formKind, formTitle: editing ? '補充' + K[editing.k][0] + '・' + editing.t : (formKind ? '記錄' + K[formKind][0] + '・' + hm(nowMin()) : ''),
+      formOpen: !!formKind, formTitle: editing ? '補充' + K[editing.k][0] + '・' + editing.t : (formKind ? '記錄' + K[formKind][0] : ''),
       fields, formWarn, save, closeForm: () => this.setState({ form: null, edit: null, sel: {} }),
       alerts: alertsOut, summary, log, logEmpty: log.length === 0, bars, metricTabs,
       sumTitle: isToday ? '今天到目前' : dayShort + ' 一整天', logTitle: isToday ? '今天的紀錄' : dayShort + ' 的紀錄',
       chartLabel: '最近 7 天' + ser.label + '（' + ser.unit + '）', chartNote: ser.label + '（' + ser.unit + '）・' + ser.note + '點長條可以看那一天。',
-      growth: [ { label: '身高', value: growH, pct: growNote }, { label: '體重', value: growW, pct: growNote } ], growDate,
+      growth: [ { label: '身高', value: growH, pct: growNote }, { label: '體重', value: growW, pct: growNote }, { label: '頭圍', value: growHC, pct: lastGrow ? '剛剛記錄' : '健檢時量測' } ], growDate,
       toastOn: !!toast, toastMs: toast ? toast.ms : 0, toastKey: toast ? 't' + toast.key : '', toastTitle: toast ? toast.title : '', toastSub: toast ? toast.sub : '',
       toastChips: toast ? toast.chips : [], toastHasChips: !!(toast && toast.chips.length), undo, undoLabel: toast && toast.undo ? '復原' : '關閉'
     };
