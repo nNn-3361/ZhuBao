@@ -114,11 +114,30 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-rec button.zb-tile[aria-pressed="true"]{background:#2E5E4E !important}
 .zb-tile[aria-pressed="true"] .zb-tile-name{color:#FFFFFF}
 .zb-tile[aria-pressed="true"] .zb-tile-last{color:#D9E5DC;font-weight:600}
-.zb-step{display:inline-flex;align-items:center;gap:6px}
-.zb-step button{width:48px;height:48px;border-radius:999px;border:1px solid #E4DED2;background:#FFFFFF;font-family:inherit;font-size:22px;line-height:1;color:#2E5E4E;cursor:pointer}
-.zb-step button:hover{border-color:#2E5E4E;background:#E4EEE7}
-.zb-step output{min-width:104px;text-align:center;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.zb-field{display:flex;flex-direction:column;gap:10px}
+.zb-fl{font-size:14px;font-weight:600}
 .zb-text{min-height:48px;padding:0 14px;border-radius:12px;border:1px solid #E4DED2;background:#FFFFFF;font-family:inherit;font-size:16px;color:#1F2A24;width:100%;box-sizing:border-box}
+.zb-text:focus{border-color:#2E5E4E;outline:none;box-shadow:0 0 0 3px rgba(46,94,78,.15)}
+.zb-qopts{display:flex;flex-wrap:wrap;gap:8px}
+.zb-qopt{touch-action:manipulation;min-height:40px;padding:0 14px;border-radius:999px;border:0;background:#E4EEE7;color:#2E5E4E;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.zb-qopt.zb-pressing{background:#F5E4E0;color:#8E3A33;transform:scale(.95)}
+.zb-qadd{min-height:40px;padding:0 12px;border-radius:999px;border:1px dashed #9FBDAA;background:transparent;color:#2E5E4E;font-family:inherit;font-size:14px;cursor:pointer}
+.zb-addrow{display:flex;gap:8px;align-items:center}
+.zb-addrow .zb-text{flex:1;min-width:0}
+.zb-add-ok,.zb-add-no{min-height:48px;padding:0 14px;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;flex-shrink:0}
+.zb-add-ok{border:0;background:#2E5E4E;color:#fff}.zb-add-no{border:1px solid #E4DED2;background:transparent;color:#1F2A24}
+.zb-hint{font-size:12px;color:#5F6B64}
+.zb-times{display:flex;flex-wrap:wrap;gap:12px}
+.zb-time{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600}
+.zb-time input{min-height:44px;padding:0 10px;border-radius:12px;border:1px solid #E4DED2;background:#fff;font-family:inherit;font-size:16px;color:#1F2A24}
+.zb-tips{background:#F1F6F2;border-radius:12px}
+.zb-tips-head{width:100%;min-height:48px;padding:0 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;border:0;background:transparent;font-family:inherit;font-size:14px;font-weight:600;color:#2E5E4E;cursor:pointer;text-align:left}
+.zb-tips-head[aria-expanded="true"] .zb-chev{transform:rotate(180deg)}
+.zb-tips-body{padding:0 14px 14px;display:flex;flex-direction:column;gap:8px}
+.zb-tips-body p{margin:0;font-size:14px;line-height:1.7;color:#3D4842}
+.zb-tips-body strong{display:block;font-size:13px;color:#1F2A24}
+.zb-tips-links{display:flex;flex-wrap:wrap;gap:8px 16px}
+.zb-tips-links a{font-size:13px;color:#2E5E4E;font-weight:600;min-height:32px;display:inline-flex;align-items:center}
 .zb-edit{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid #B9CDBF;background:transparent;color:#2E5E4E;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
 .zb-bar{height:100%;padding:0;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;font-family:inherit;cursor:pointer;border-radius:8px 8px 0 0}
 .zb-bar:hover{background:rgba(46,94,78,.06)}
@@ -210,20 +229,39 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <h2 style="margin: 0; font-size: 17px; font-weight: 600">{{formTitle}}</h2>
 <button type="button" onClick="{{closeForm}}" style="min-height: 40px; padding: 0 12px; border-radius: 10px; border: 1px solid #E4DED2; background: transparent; font-family: inherit; font-size: 14px; cursor: pointer">取消</button>
 </div>
-<sc-for list="{{fields}}" as="f" hint-placeholder-count="2">
-<fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
-<legend style="font-size: 14px; font-weight: 600; padding: 0; margin-bottom: 8px">{{f.label}}</legend>
-<div style="display: flex; flex-wrap: wrap; gap: 8px">
-<sc-for list="{{f.options}}" as="o" hint-placeholder-count="4">
-<button type="button" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="{{o.style}}"><span style="{{o.swatch}}"></span>{{o.label}}</button>
+<div class="zb-field">
+<label for="zb-detail" class="zb-fl">{{fLabel}}</label>
+<input type="text" id="zb-detail" class="zb-text" data-k="{{formKey}}" maxlength="80" autocomplete="off" placeholder="{{fPh}}" value="{{fText}}" onInput="{{fInput}}">
+<div class="zb-qopts" role="group" aria-label="快捷選項">
+<sc-for list="{{qopts}}" as="q" hint-placeholder-count="2">
+<button type="button" class="zb-qopt" data-k="{{q.v}}" data-qk="{{q.k}}" data-qv="{{q.v}}" onClick="{{q.pick}}">{{q.v}}</button>
+</sc-for>
+<sc-if value="{{addClosed}}" hint-placeholder-val="{{true}}"><button type="button" class="zb-qadd" onClick="{{openAdd}}">＋新增快捷選項</button></sc-if>
+</div>
+<sc-if value="{{addOpen}}" hint-placeholder-val="{{false}}">
+<div class="zb-addrow zb-anim">
+<input type="text" id="zb-newopt" class="zb-text" data-k="{{formKey}}n" maxlength="20" autocomplete="off" placeholder="輸入要存的選項，例如：配方奶 120 ml" value="{{optDraft}}" onInput="{{optInput}}">
+<button type="button" class="zb-add-ok" onClick="{{addOpt}}">加入</button>
+<button type="button" class="zb-add-no" onClick="{{closeAdd}}">取消</button>
+</div>
+</sc-if>
+<sc-if value="{{hasQ}}" hint-placeholder-val="{{false}}"><span class="zb-hint">點快捷選項會填進上面的框；長按可以刪除。</span></sc-if>
+</div>
+<div class="zb-times">
+<sc-for list="{{times}}" as="tm" hint-placeholder-count="1">
+<label class="zb-time"><span>{{tm.label}}</span><input type="time" value="{{tm.val}}" onChange="{{tm.change}}"></label>
 </sc-for>
 </div>
-<sc-if value="{{f.isStep}}" hint-placeholder-val="{{false}}"><div class="zb-step"><button type="button" aria-label="{{f.decAria}}" onClick="{{f.dec}}">−</button><output aria-live="polite">{{f.val}}</output><button type="button" aria-label="{{f.incAria}}" onClick="{{f.inc}}">＋</button></div></sc-if>
-<sc-if value="{{f.isText}}" hint-placeholder-val="{{false}}"><input type="text" class="zb-text" maxlength="60" placeholder="例如：餵完吐了一小口，精神很好" value="{{f.val}}" onInput="{{f.input}}"></sc-if>
-<sc-if value="{{f.hint}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; line-height: 1.6; color: #5F6B64">{{f.hint}}</span></sc-if>
-</fieldset>
-</sc-for>
 <sc-if value="{{formWarn}}" hint-placeholder-val="{{false}}"><div role="alert" style="background: #F5E4E0; color: #8E3A33; border-radius: 12px; padding: 12px 14px; font-size: 14px; line-height: 1.6; font-weight: 600">{{formWarn}}</div></sc-if>
+<div class="zb-tips">
+<button type="button" class="zb-tips-head" aria-expanded="{{tipsExpanded}}" onClick="{{toggleTips}}">{{tipTitle}}<svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E5E4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button>
+<sc-if value="{{tipsOpen}}" hint-placeholder-val="{{false}}">
+<div class="zb-tips-body zb-anim">
+<sc-for list="{{tipRows}}" as="tr" hint-placeholder-count="3"><p><strong>{{tr.h}}</strong>{{tr.p}}</p></sc-for>
+<div class="zb-tips-links"><sc-for list="{{tipLinks}}" as="tl" hint-placeholder-count="1"><a href="{{tl.url}}" target="_blank" rel="noopener">{{tl.label}} ↗</a></sc-for></div>
+</div>
+</sc-if>
+</div>
 <button type="button" onClick="{{save}}" style="align-self: flex-start; min-height: 48px; padding: 0 24px; border-radius: 12px; border: 0; background: #2E5E4E; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">儲存</button>
 </section>
 </sc-if>
@@ -346,6 +384,8 @@ class Component extends DCLogic {
     super(props);
     this.state = { menuOpen: false, day: 6, edit: null, form: null, sel: {}, added: {}, toast: null, metric: 'sleep' };
     this._seq = 0;
+    this._q = {}; try { this._q = JSON.parse(localStorage.getItem('zb-diary-quick') || '{}') || {}; } catch (e) { this._q = {}; }
+    window.__zbDiary = this;
     this._t0 = Date.now();
   }
   renderVals() {
@@ -399,55 +439,38 @@ class Component extends DCLogic {
         const n = t === '09:35' ? 0 : t === '17:05' ? 1 : -1;
         out.push({ t, k: 'diaper', d: n >= 0 && p.poo[n] ? '濕＋便便・' + p.poo[n] : '濕' });
       });
-      if (p.grow) out.push({ t: '10:30', k: 'grow', d: '58.0 cm・5.6 kg・頭圍 39.0 cm（兒童健檢）' });
+      if (p.grow) out.push({ t: '10:30', k: 'grow', d: '身高 58 cm・體重 5.6 kg・頭圍 39 cm（兒童健檢）' });
       if (p.note) out.push({ t: '13:20', k: 'note', d: '吐奶・餵完吐了一小口，精神很好' });
       return out;
     };
-    /* ---- 一鍵記錄：沿用上次的方式與份量，提示列可以改，也能補記時間 ---- */
-    const isPoo = (x) => !!x.type && x.type !== '濕';
-    const BAD = ['淡黃色', '灰白色'];
-    const fmt1 = (n) => (Math.round(n * 10) / 10).toFixed(1);
+    /* ---- 一鍵記錄：細節一律自己打字；快捷選項由使用者自己新增（存在這台裝置） ---- */
+    const textOf = (e) => ((e.sel && e.sel.text) || '').trim();
     const describe = (e) => {
-      const x = e.sel || {};
-      if (e.k === 'feed') return x.type === '親餵母乳' ? ['親餵母乳', x.side, x.amt].filter(Boolean).join(' ') : [x.type, x.amt].filter(Boolean).join(' ');
-      if (e.k === 'diaper') return x.type ? x.type + (isPoo(x) && x.color ? '・' + x.color : '') : '';
-      if (e.k === 'sleep') return e.open ? '睡覺中・' + hm(e.start) + ' 入睡' : hm(e.start) + '–' + hm(e.end) + '・' + dur(e.min);
-      if (e.k === 'temp') return x.deg ? [x.how, x.deg + ' 度'].filter(Boolean).join(' ') : '';
-      if (e.k === 'grow') return [x.h && x.h + ' cm', x.w && x.w + ' kg', x.hc && '頭圍 ' + x.hc + ' cm'].filter(Boolean).join('・');
-      if (e.k === 'note') return [x.tag, x.text].filter(Boolean).join('・');
+      if (e.k === 'sleep') return (e.open ? '睡覺中・' + hm(e.start) + ' 入睡' : hm(e.start) + '–' + hm(e.end) + '・' + dur(e.min)) + (textOf(e) ? '・' + textOf(e) : '');
+      return textOf(e);
+    };
+    /* 從文字判斷異常：便便顏色、體溫數字、睡姿 */
+    const alertText = (k, txt) => {
+      if (!txt) return null;
+      if (k === 'diaper' && /灰白|淡黃|白色|陶土|偏白/.test(txt)) return 'stool';
+      if (k === 'temp') { const m = /(\d{2}(?:\.\d+)?)/.exec(txt); if (m && +m[1] >= 38 && +m[1] < 45) return 'fever'; }
+      if (k === 'sleep' && /趴睡|側睡/.test(txt)) return 'pos';
+      return null;
+    };
+    const alertOf = (e) => alertText(e.k, textOf(e));
+    const addedOf = (i) => (s.added[i] || []);
+    const entriesFor = (i) => (i === TODAY ? BASE : gen(i)).concat(addedOf(i).map((e) => ({ id: e.id, t: e.t, k: e.k, d: describe(e), min: e.open ? 0 : (e.min || 0), alert: alertOf(e), mine: true })));
+    const entries = entriesFor(s.day);
+    /* 上次寫的內容：一鍵記錄餵奶時沿用 */
+    const lastText = (k) => {
+      for (let i = s.day; i >= 0; i--) {
+        const es = entriesFor(i).filter((e) => e.k === k && e.d).sort((a, b) => b.t.localeCompare(a.t));
+        if (es.length) return es[0].d;
+      }
       return '';
     };
-    const alertOf = (e) => {
-      const x = e.sel || {};
-      if (e.k === 'diaper' && isPoo(x) && BAD.indexOf(x.color) >= 0) return 'stool';
-      if (e.k === 'temp' && parseFloat(x.deg) >= 38) return 'fever';
-      return null;
-    };
-    const addedOf = (i) => (s.added[i] || []);
-    const entriesFor = (i) => (i === TODAY ? BASE : gen(i)).concat(addedOf(i).map((e) => ({ id: e.id, t: e.t, k: e.k, d: describe(e), sel: e.sel, min: e.open ? 0 : (e.min || 0), alert: alertOf(e), mine: true })));
-    const entries = entriesFor(s.day);
-    /* 習慣：找最近一筆同類紀錄（看到選的那一天為止） */
-    const latest = (k, ok) => {
-      for (let i = s.day; i >= 0; i--) {
-        const es = entriesFor(i).filter((e) => e.k === k).sort((a, b) => b.t.localeCompare(a.t));
-        for (const e of es) { const v = ok(e); if (v) return v; }
-      }
-      return null;
-    };
-    const feedOf = (e) => {
-      if (e.sel && e.sel.type) return e.sel;
-      let m;
-      if (/親餵/.test(e.d)) return { type: '親餵母乳', side: /左右|兩邊/.test(e.d) ? '兩邊' : /左/.test(e.d) ? '左邊' : /右/.test(e.d) ? '右邊' : '兩邊', amt: (m = /(\d+) 分鐘/.exec(e.d)) ? m[1] + ' 分鐘' : '15 分鐘' };
-      if ((m = /(配方奶|瓶餵母乳) (\d+) ml/.exec(e.d))) return { type: m[1], amt: m[2] + ' ml' };
-      return null;
-    };
-    const habitFeed = (type) => latest('feed', (e) => { const f = feedOf(e); return f && (!type || f.type === type) ? f : null; })
-      || (type === '親餵母乳' ? { type, side: '兩邊', amt: '15 分鐘' } : { type: type || '配方奶', amt: '120 ml' });
-    const DEF = {
-      temp: () => latest('temp', (e) => (e.sel && e.sel.deg ? { how: e.sel.how, deg: e.sel.deg } : null)) || { how: '', deg: '36.8' },
-      grow: () => latest('grow', (e) => (e.sel && e.sel.h ? { h: e.sel.h, w: e.sel.w, hc: e.sel.hc } : null)) || { h: '58.0', w: '5.6', hc: '39.0' },
-      note: () => ({ tag: '', text: '' })
-    };
+    const Q = this._q;
+    const quickOf = (k) => Q[k] || [];
 
     /* ---- 狀態更新 ---- */
     const setAdded = (i, list, extra) => this.setState(Object.assign({ added: Object.assign({}, s.added, { [i]: list }) }, extra || {}));
@@ -459,124 +482,130 @@ class Component extends DCLogic {
       return Object.assign({ key, ms }, t);
     };
     const findEntry = (i, id) => addedOf(i).find((e) => e.id === id);
-    const patchEntry = (i, id, patch) => addedOf(i).map((e) => (e.id === id ? Object.assign({}, e, patch, patch.sel ? { sel: Object.assign({}, e.sel, patch.sel) } : {}) : e));
-    const openEdit = (i, id) => { clearToastTimer(); const e = findEntry(i, id); this.setState({ edit: { day: i, id }, form: null, sel: Object.assign({ at: 0 }, e ? e.sel : {}), toast: null }); };
-    const openForm = (k) => { clearToastTimer(); this.setState({ form: k, edit: null, sel: Object.assign({ at: 0 }, DEF[k]()), toast: null }); };
-    /* 把時間往前調 m 分鐘（從第一次記的時間算） */
-    const timed = (e, m) => {
-      if (e.k === 'sleep' && e.open) { const st = e.s0 - m; return { start: st, t: hm(st), at: m }; }
-      if (e.k === 'sleep') { const en = e.t0 - m; let mm = en - e.start; if (mm < 0) mm += 1440; return { end: en, min: Math.max(mm, 1), t: hm(en), at: m }; }
-      return { t: hm(e.t0 - m), at: m };
-    };
+    const patchEntry = (i, id, patch) => addedOf(i).map((e) => (e.id === id ? Object.assign({}, e, patch) : e));
+    const firstTips = () => { let seen = true; try { seen = localStorage.getItem('zb-diary-tips') === '1'; localStorage.setItem('zb-diary-tips', '1'); } catch (err) { seen = true; } return !seen; };
+    const openWith = (patch) => { clearToastTimer(); this._fk = (this._fk || 0) + 1; this.setState(Object.assign({ toast: null, addOpt: false, tips: firstTips() }, patch)); };
+    const timesOf = (e) => (e.k === 'sleep' ? (e.open ? { st: e.start } : { st: e.start, en: e.end }) : { at: toMin(e.t) });
+    const openEdit = (i, id) => { const e = findEntry(i, id); if (!e) return; openWith({ edit: { day: i, id }, form: null, sel: Object.assign({ text: textOf(e) }, timesOf(e)) }); };
+    const openForm = (k) => openWith({ form: k, edit: null, sel: { text: '', at: nowMin() } });
     const done = (i, list, id, title) => {
       const e = list.find((x) => x.id === id);
-      setAdded(i, list, { toast: showToast({ title: title || '已記錄 ' + K[e.k][0] + '・' + e.t, sub: describe(e), chips: [], undo: null }, 2400) });
+      setAdded(i, list, { toast: showToast({ title: title || '已記錄 ' + K[e.k][0] + '・' + e.t, sub: describe(e) || '還沒寫細節', chips: [], undo: null }, 2400) });
     };
-    const toastFor = (i, id, list, before, title, sub, chips) => setAdded(i, list, { edit: null, form: null,
+    const toastFor = (i, list, before, title, sub, chips) => setAdded(i, list, { edit: null, form: null,
       toast: showToast({ title, sub, chips: chips.map((c) => ({ label: c[0], pick: c[1] })), undo: before ? { day: i, list: before } : null }, 8000) });
-    const shiftChip = (i, id, m, label) => [label, () => { const e = findEntry(i, id); const list = patchEntry(i, id, timed(e, m)); done(i, list, id, '已改成 ' + list.find((x) => x.id === id).t); }];
-    const editChip = (i, id) => ['改細節', () => openEdit(i, id)];
-    const diaperColorChips = (i, id) => ['黃色', '綠色', '淡黃色', '灰白色'].map((c) => [c, () => done(i, patchEntry(i, id, { sel: { color: c } }), id)]);
+    /* 把時間往前調 m 分鐘 */
+    const shifted = (e, m) => {
+      if (e.k === 'sleep' && e.open) { const st = e.s0 - m; return { start: st, t: hm(st) }; }
+      if (e.k === 'sleep') { const en = e.t0 - m; let mm = en - e.start; if (mm < 0) mm += 1440; return { end: en, min: Math.max(mm, 1), t: hm(en) }; }
+      return { t: hm(e.t0 - m) };
+    };
+    const shiftChip = (i, id, m, label) => [label, () => { const list = patchEntry(i, id, shifted(findEntry(i, id), m)); done(i, list, id, '已改成 ' + list.find((x) => x.id === id).t); }];
+    const writeChip = (i, id) => ['寫細節', () => openEdit(i, id)];
+    const optChips = (i, id, k, skip) => quickOf(k).filter((v) => v !== skip).slice(0, 3).map((v) => [v, () => done(i, patchEntry(i, id, { sel: { text: v } }), id)]);
     const tap = (k) => {
       const i = s.day, before = addedOf(i), t = nowMin(), tag = isToday ? '' : '（補記到 ' + dayShort + '）';
       const open = k === 'sleep' && before.find((e) => e.k === 'sleep' && e.open);
       if (open) {
         let m = t - open.start; if (m < 0) m += 1440;
-        const list = patchEntry(i, open.id, { open: false, end: t, t0: t, min: Math.max(m, 1), t: hm(t), at: 0 });
-        toastFor(i, open.id, list, before, '醒來了・' + hm(t), '這次睡了 ' + dur(Math.max(m, 1)), [shiftChip(i, open.id, 10, '10 分鐘前醒的'), shiftChip(i, open.id, 30, '30 分鐘前醒的')]);
+        const list = patchEntry(i, open.id, { open: false, end: t, t0: t, min: Math.max(m, 1), t: hm(t) });
+        toastFor(i, list, before, '醒來了・' + hm(t), '這次睡了 ' + dur(Math.max(m, 1)), [shiftChip(i, open.id, 10, '10 分鐘前醒的'), writeChip(i, open.id)]);
         return;
       }
       const id = 'n' + (++this._seq);
-      const e = { id, t: hm(t), t0: t, k, sel: {} };
-      if (k === 'feed') {
-        e.sel = Object.assign({}, habitFeed());
-        const alt = habitFeed(e.sel.type === '親餵母乳' ? '配方奶' : '親餵母乳');
-        const list = before.concat([e]);
-        toastFor(i, id, list, before, '已記錄 喝奶・' + hm(t) + tag, describe(e) + '（跟上次一樣）', [
-          [describe({ k: 'feed', sel: alt }), () => done(i, patchEntry(i, id, { sel: { type: alt.type, side: alt.side || '', amt: alt.amt } }), id, '已改好')],
-          shiftChip(i, id, 10, '10 分鐘前'), editChip(i, id)]);
+      const e = { id, t: hm(t), t0: t, k, sel: { text: '' } };
+      if (k === 'sleep') {
+        e.open = true; e.start = t; e.s0 = t;
+        toastFor(i, before.concat([e]), before, '開始睡覺・' + hm(t) + tag, '睡覺時請讓寶寶仰睡。醒來時再按「醒來了」', [shiftChip(i, id, 10, '10 分鐘前睡著'), shiftChip(i, id, 30, '30 分鐘前睡著')]);
         return;
       }
-      if (k === 'diaper') {
-        const list = before.concat([e]);
-        const poo = (type) => () => {
-          const l2 = patchEntry(i, id, { sel: { type } });
-          setAdded(i, l2, { toast: showToast({ title: '便便是什麼顏色？', sub: '對照兒童健康手冊的嬰兒黃金九色卡', chips: diaperColorChips(i, id).concat([['先不選', () => done(i, l2, id)]]).map((c) => ({ label: c[0], pick: c[1] })), undo: { day: i, list: before } }, 12000) });
-        };
-        toastFor(i, id, list, before, '換尿布・' + hm(t) + tag, '是哪一種？', [
-          ['只有濕', () => done(i, patchEntry(i, id, { sel: { type: '濕' } }), id)], ['有便便', poo('便便')], ['濕＋便便', poo('濕＋便便')]]);
-        return;
-      }
-      /* 睡覺 */
-      e.open = true; e.start = t; e.s0 = t;
-      toastFor(i, id, before.concat([e]), before, '開始睡覺・' + hm(t) + tag, '睡覺時請讓寶寶仰睡。醒來時再按「醒來了」', [shiftChip(i, id, 10, '10 分鐘前睡著'), shiftChip(i, id, 30, '30 分鐘前睡著')]);
+      if (k === 'feed') e.sel.text = lastText('feed');
+      const sub = e.sel.text ? e.sel.text + '（跟上次一樣）' : '要寫細節嗎？不寫也可以';
+      toastFor(i, before.concat([e]), before, '已記錄 ' + K[k][0] + '・' + hm(t) + tag, sub,
+        optChips(i, id, k, e.sel.text).concat([shiftChip(i, id, 10, '10 分鐘前'), writeChip(i, id)]));
     };
 
-    /* ---- 補充細節的表單 ---- */
+    /* ---- 補充細節：一個輸入框＋自己的快捷選項 ---- */
     const editing = s.edit ? findEntry(s.edit.day, s.edit.id) : null;
     const formKind = editing ? editing.k : s.form;
-    const SW = { '黃色': '#E2B53E', '綠色': '#7E9A3E', '淡黃色': '#EFE3A6', '灰白色': '#DCDAD2' };
     const sel = s.sel || {};
     const put = (patch) => this.setState({ sel: Object.assign({}, this.state.sel, patch) });
-    const baseT = editing ? (editing.k === 'sleep' ? (editing.open ? editing.s0 : editing.t0) : editing.t0) : nowMin();
-    const at = { key: 'at', label: formKind === 'sleep' ? (editing && editing.open ? '幾點睡著的' : '幾點醒的') : '時間', opts: [0, 5, 10, 15, 30, 60].map((m) => [m, m ? hm(baseT - m) : hm(baseT) + '（' + (editing ? '原本' : '現在') + '）']) };
-    const FORMS = {
-      feed: () => [
-        { key: 'type', label: '方式', opts: ['親餵母乳', '瓶餵母乳', '配方奶'], onPick: (o) => put(Object.assign({ side: '', amt: '' }, habitFeed(o), { type: o })) },
-        sel.type === '親餵母乳' ? { key: 'side', label: '哪一邊', opts: ['左邊', '右邊', '兩邊'] } : null,
-        sel.type === '親餵母乳' ? { key: 'amt', label: '多久', opts: ['5 分鐘', '10 分鐘', '15 分鐘', '20 分鐘', '30 分鐘'] } : { key: 'amt', label: '份量', opts: ['60 ml', '90 ml', '120 ml', '150 ml', '180 ml'] },
-        at],
-      diaper: () => [
-        { key: 'type', label: '種類', opts: ['濕', '便便', '濕＋便便'] },
-        isPoo(sel) ? { key: 'color', label: '便便顏色', opts: ['黃色', '綠色', '淡黃色', '灰白色'], hint: '對照兒童健康手冊的嬰兒黃金九色卡：黃色、綠色是正常的；淡黃色或灰白色要儘快就醫。' } : null,
-        at],
-      sleep: () => [Object.assign({}, at, { hint: '睡覺時請讓寶寶仰睡，比較不容易發生嬰兒猝死。' })],
-      temp: () => [
-        { key: 'how', label: '怎麼量的', opts: ['耳溫', '額溫', '腋溫', '肛溫'], hint: '量法不同，數字會有一點差異，看醫生時一起告訴醫師。' },
-        { key: 'deg', label: '體溫', step: 0.1, min: 34, max: 42, unit: '度' }, at],
-      grow: () => [
-        { key: 'h', label: '身高', step: 0.5, min: 40, max: 90, unit: 'cm' },
-        { key: 'w', label: '體重', step: 0.1, min: 2, max: 15, unit: 'kg' },
-        { key: 'hc', label: '頭圍', step: 0.5, min: 30, max: 50, unit: 'cm', hint: '從上次的數字開始，按 + 或 − 微調。' }, at],
-      note: () => [
-        { key: 'tag', label: '記什麼', opts: ['吐奶', '紅疹', '哭鬧', '用藥', '其他'] },
-        { key: 'text', label: '想多寫一點（可以不寫）', text: true }, at]
+    const saveQ = () => { try { localStorage.setItem('zb-diary-quick', JSON.stringify(this._q)); } catch (err) { /* 無法儲存時只在這次有效 */ } };
+    this.delOpt = (k, v) => {
+      const list = (this._q[k] || []).slice(), n = list.indexOf(v);
+      if (n < 0) return;
+      list.splice(n, 1); this._q = Object.assign({}, this._q, { [k]: list }); saveQ();
+      const back = () => { const l = (this._q[k] || []).slice(); l.splice(n, 0, v); this._q = Object.assign({}, this._q, { [k]: l }); saveQ(); this.setState({ toast: null }); };
+      this.setState({ toast: showToast({ title: '已刪除快捷選項', sub: '「' + v + '」', chips: [{ label: '復原', pick: back }], undo: null }, 5000) });
     };
-    let formWarn = '';
-    if (formKind === 'diaper' && isPoo(sel) && BAD.indexOf(sel.color) >= 0) formWarn = '淡黃或灰白色的便便可能和膽道閉鎖有關。請儘快帶寶寶就醫，並把這筆紀錄給醫師看。';
-    if (formKind === 'temp' && parseFloat(sel.deg) >= 38) formWarn = '寶寶未滿 3 個月，體溫 38 度以上請儘快就醫。呼吸困難或叫不醒請直接撥 119。';
-    const optBase = 'min-height: 44px; padding: 0 14px; border-radius: 999px; font-family: inherit; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; ';
-    const fields = formKind ? FORMS[formKind]().filter(Boolean).map((f) => {
-      const base = { label: f.label, hint: f.hint || '', options: [], isStep: false, isText: false, val: '', dec: null, inc: null, input: null };
-      if (f.step) {
-        const v = parseFloat(sel[f.key]) || f.min;
-        const set = (n) => put({ [f.key]: fmt1(Math.min(f.max, Math.max(f.min, n))) });
-        return Object.assign(base, { isStep: true, val: fmt1(v) + ' ' + f.unit, dec: () => set(v - f.step), inc: () => set(v + f.step), decAria: '減少' + f.label, incAria: '增加' + f.label });
-      }
-      if (f.text) return Object.assign(base, { isText: true, val: sel.text || '', input: (ev) => { this.state.sel = Object.assign({}, this.state.sel, { text: ev.target.value }); } });
-      return Object.assign(base, { options: f.opts.map((o) => {
-        const v = Array.isArray(o) ? o[0] : o, label = Array.isArray(o) ? o[1] : o;
-        const on = f.key === 'at' ? (sel.at || 0) === v : sel[f.key] === v;
-        return { label, pressed: on ? 'true' : 'false',
-          style: optBase + (on ? 'background: #2E5E4E; color: #FFFFFF; border: 1px solid #2E5E4E; font-weight: 600' : 'background: #FFFFFF; color: #1F2A24; border: 1px solid #E4DED2'),
-          swatch: SW[v] ? 'width: 14px; height: 14px; border-radius: 999px; border: 1px solid rgba(0,0,0,0.15); background: ' + SW[v] : 'display: none',
-          pick: () => (f.onPick ? f.onPick(v) : put({ [f.key]: v })) };
-      }) });
-    }) : [];
+    const addOpt = () => {
+      const v = String(this.state.optDraft || '').trim().slice(0, 20);
+      if (!v) { const el = document.getElementById('zb-newopt'); if (el) el.focus(); return; }
+      const list = quickOf(formKind).filter((x) => x !== v).concat([v]).slice(-8);
+      this._q = Object.assign({}, this._q, { [formKind]: list }); saveQ();
+      const el = document.getElementById('zb-detail'); if (el) el.value = v;
+      this.setState({ addOpt: false, optDraft: '', sel: Object.assign({}, this.state.sel, { text: v }) });
+    };
+    const PH = { feed: '例如：配方奶 120 ml、親餵 左右各 10 分鐘', diaper: '例如：濕、便便 黃色', sleep: '例如：在嬰兒床仰睡', temp: '例如：耳溫 37.8', grow: '例如：身高 58 cm、體重 5.6 kg、頭圍 39 cm', note: '例如：餵完吐了一小口，精神很好' };
+    const LBL = { feed: '喝了什麼、多少', diaper: '濕或便便、便便顏色', sleep: '睡姿、睡在哪裡（可以不寫）', temp: '量法和溫度', grow: '身高、體重、頭圍', note: '發生了什麼' };
+    const timeIn = (key, label) => ({ label, val: hm(sel[key] || 0), change: (ev) => { const v = ev.target.value; if (/^\d{2}:\d{2}$/.test(v)) put({ [key]: toMin(v) }); } });
+    const times = !formKind ? [] : formKind === 'sleep'
+      ? (editing && editing.open ? [timeIn('st', '幾點睡著的')] : [timeIn('st', '幾點睡著的'), timeIn('en', '幾點醒的')])
+      : [timeIn('at', '時間')];
+    const W = {
+      stool: '淡黃或灰白色的便便可能和膽道閉鎖有關。請儘快帶寶寶就醫，並把這筆紀錄給醫師看。',
+      fever: '寶寶未滿 3 個月，體溫 38 度以上請儘快就醫。呼吸困難或叫不醒請直接撥 119。',
+      pos: '睡覺時請讓寶寶仰睡，比較不容易發生嬰兒猝死。'
+    };
+    const wk = formKind ? alertText(formKind, String(sel.text || '')) : null;
+    const formWarn = wk ? W[wk] : '';
+    const L = {
+      hand: ['國健署・兒童健康手冊', 'https://www.hpa.gov.tw/Pages/List.aspx?nodeid=1139'],
+      card: ['衛福部・善用嬰兒黃金九色卡', 'https://www.mohw.gov.tw/cp-6566-74129-1.html'],
+      stool: ['國健署・我的小孩大便顏色正常嗎？', 'https://www.hpa.gov.tw/Pages/Detail.aspx?nodeid=1139&pid=6575'],
+      check: ['國健署・兒童預防保健', 'https://www.hpa.gov.tw/Pages/List.aspx?nodeid=202']
+    };
+    const TIPS = {
+      feed: [['為什麼要記', '喝奶的次數和份量突然變少，可能是身體不舒服的早期訊號。看醫生時也能說得清楚。'], ['怎麼記', '寫方式和份量就好，例如「配方奶 120 ml」「親餵 左右各 10 分鐘」。常用的可以存成快捷選項。'], ['什麼時候要就醫', '喝得比平常少很多、一直吐奶，或精神變差、叫不太醒，請儘快就醫。'], [L.hand]],
+      diaper: [['為什麼要記', '濕尿布變少可能是喝不夠；便便顏色可以及早發現膽道閉鎖。'], ['怎麼記', '寫濕或便便，有便便就寫顏色，例如「便便 黃色」，對照兒童健康手冊裡的嬰兒黃金九色卡。'], ['什麼時候要就醫', '便便是淡黃色或灰白色（九色卡編號 1 到 6）要儘快就醫。黃色、綠色（編號 7 到 9）是正常的。'], [L.card, L.stool]],
+      sleep: [['為什麼要記', '可以看出作息穩不穩定，也提醒全家讓寶寶仰睡。'], ['怎麼記', '睡著時按「睡覺」，醒來按「醒來了」，竹寶會自己算時間。時間不對可以在這裡改。'], ['什麼時候要就醫', '呼吸不順、臉色發紫或叫不醒，請直接撥 119。'], [L.hand]],
+      temp: [['為什麼要記', '未滿 3 個月的寶寶發燒要儘快就醫。記下時間和溫度，醫師判斷更快。'], ['怎麼記', '寫量法和溫度，例如「耳溫 37.8」。不同量法的數字會有一點差異，看醫生時一起告訴醫師。'], ['什麼時候要就醫', '未滿 3 個月、38 度以上請儘快就醫。呼吸困難、叫不醒或抽搐請撥 119。'], [L.hand]],
+      grow: [['為什麼要記', '身高、體重和頭圍畫成生長曲線，連續偏離時才需要擔心，比單次數字更有意義。'], ['怎麼記', '寫數字和單位，例如「身高 58 cm 體重 5.6 kg 頭圍 39 cm」。兒童預防保健時量的最準。'], ['什麼時候要就醫', '健檢時醫師會看曲線。如果連續兩次掉很多或跳很多，可以問醫師。'], [L.check, L.hand]],
+      note: [['為什麼要記', '吐奶、紅疹、用藥這些小事，看醫生時最容易忘。'], ['怎麼記', '寫發生的時間、狀況和你怎麼處理。'], ['什麼時候要就醫', '不確定要不要就醫時，可以打免付費孕產婦關懷諮詢專線 0800-870-870。'], [L.hand]]
+    };
+    const tipRows = formKind ? TIPS[formKind].slice(0, 3).map((r) => ({ h: r[0], p: r[1] })) : [];
+    const tipLinks = formKind ? TIPS[formKind][3].map((l) => ({ label: l[0], url: l[1] })) : [];
     const save = () => {
-      const cur = Object.assign({}, this.state.sel || {});
-      const m = cur.at || 0; delete cur.at;
+      const cur = this.state.sel || {}, text = String(cur.text || '').trim();
       if (editing) {
-        const e0 = Object.assign({}, editing, { sel: cur });
-        const list = patchEntry(s.edit.day, editing.id, Object.assign({ sel: cur }, timed(e0, m)));
-        done(s.edit.day, list, editing.id, '已補充');
+        const e = editing, patch = { sel: { text } };
+        if (e.k === 'sleep') {
+          const st = cur.st != null ? cur.st : e.start;
+          Object.assign(patch, { start: st, s0: st });
+          if (!e.open) { const en = cur.en != null ? cur.en : e.end; let mm = en - st; if (mm < 0) mm += 1440; Object.assign(patch, { end: en, t0: en, min: Math.max(mm, 1), t: hm(en) }); }
+          else patch.t = hm(st);
+        } else if (cur.at != null) Object.assign(patch, { t: hm(cur.at), t0: cur.at });
+        const list = patchEntry(s.edit.day, e.id, patch);
+        done(s.edit.day, list, e.id, '已補充');
         this.setState({ edit: null, sel: {} });
         return;
       }
       if (!s.form) return;
-      const i = s.day, before = addedOf(i), t0 = nowMin();
-      const e = { id: 'n' + (++this._seq), t: hm(t0 - m), t0, at: m, k: s.form, sel: cur };
-      setAdded(i, before.concat([e]), { form: null, sel: {}, toast: showToast({ title: '已記錄 ' + K[e.k][0] + '・' + e.t, sub: describe(e), chips: [], undo: { day: i, list: before } }, 5000) });
+      const i = s.day, before = addedOf(i), t0 = cur.at != null ? cur.at : nowMin();
+      const e = { id: 'n' + (++this._seq), t: hm(t0), t0, k: s.form, sel: { text } };
+      setAdded(i, before.concat([e]), { form: null, sel: {}, toast: showToast({ title: '已記錄 ' + K[e.k][0] + '・' + e.t, sub: text || '還沒寫細節', chips: [], undo: { day: i, list: before } }, 5000) });
+    };
+    const formVals = {
+      formKey: 'f' + (this._fk || 0), fLabel: formKind ? LBL[formKind] : '', fPh: formKind ? PH[formKind] : '', fText: String(sel.text || ''),
+      fInput: (ev) => put({ text: ev.target.value }),
+      qopts: formKind ? quickOf(formKind).map((v) => ({ v, k: formKind, pick: () => { const el = document.getElementById('zb-detail'); if (el) el.value = v; put({ text: v }); } })) : [],
+      hasQ: formKind ? quickOf(formKind).length > 0 : false,
+      addOpen: !!s.addOpt, addClosed: !s.addOpt,
+      openAdd: () => this.setState({ addOpt: true, optDraft: String((this.state.sel || {}).text || '').trim() }),
+      closeAdd: () => this.setState({ addOpt: false, optDraft: '' }),
+      optDraft: String(s.optDraft || ''), optInput: (ev) => { this.state.optDraft = ev.target.value; }, addOpt,
+      times, tipsOpen: !!s.tips, tipsExpanded: s.tips ? 'true' : 'false', toggleTips: () => this.setState({ tips: !s.tips }),
+      tipTitle: formKind ? '小提醒：為什麼要記' + K[formKind][0] + '、怎麼記' : '', tipRows, tipLinks
     };
 
     /* ---- 記一筆：六個常駐大格子，點一下就記，每格顯示距離上次多久 ---- */
@@ -604,11 +633,12 @@ class Component extends DCLogic {
 
     /* ---- 摘要 ---- */
     const feeds = entries.filter((e) => e.k === 'feed');
-    const ml = feeds.reduce((a, e) => { const m = /(\d+) ml/.exec(e.d); return a + (m ? +m[1] : 0); }, 0);
+    const ml = feeds.reduce((a, e) => { const m = /(\d+)\s*(ml|cc|毫升)/i.exec(e.d); return a + (m ? +m[1] : 0); }, 0);
     const diapers = entries.filter((e) => e.k === 'diaper');
-    const wet = diapers.filter((e) => e.d.indexOf('濕') >= 0).length;
+    const isWet = (d) => /濕|尿/.test(d) || !/便/.test(d);
+    const wet = diapers.filter((e) => isWet(e.d)).length;
     const pooList = diapers.filter((e) => e.d.indexOf('便') >= 0).sort((a, b) => a.t.localeCompare(b.t));
-    const lastPoo = pooList.length ? (/(淡黃色|灰白色|黃色|綠色)/.exec(pooList[pooList.length - 1].d) || [''])[0] : '';
+    const lastPoo = pooList.length ? (/(淡黃|灰白|黃|綠|褐|白)色?/.exec(pooList[pooList.length - 1].d) || [''])[0].replace(/色?$/, '色') : '';
     const sleeps = entries.filter((e) => e.k === 'sleep');
     const sleepMin = sleeps.reduce((a, e) => a + (e.min || 0), 0);
     const longest = sleeps.reduce((a, e) => Math.max(a, e.min || 0), 0);
@@ -639,7 +669,7 @@ class Component extends DCLogic {
     /* ---- 最近 7 天 ---- */
     const stats = [0, 1, 2, 3, 4, 5, 6].map((i) => {
       const es = entriesFor(i);
-      return { sleep: +(es.filter((e) => e.k === 'sleep').reduce((a, e) => a + (e.min || 0), 0) / 60).toFixed(1), feed: es.filter((e) => e.k === 'feed').length, wet: es.filter((e) => e.k === 'diaper' && e.d.indexOf('濕') >= 0).length };
+      return { sleep: +(es.filter((e) => e.k === 'sleep').reduce((a, e) => a + (e.min || 0), 0) / 60).toFixed(1), feed: es.filter((e) => e.k === 'feed').length, wet: es.filter((e) => e.k === 'diaper' && isWet(e.d)).length };
     });
     const SERIES = {
       sleep: { label: '睡眠', unit: '小時', max: 18, color: '#2E5E4E', note: '今天還沒過完，晚上的睡眠會再加上去。' },
@@ -657,10 +687,15 @@ class Component extends DCLogic {
     const tabStyle = (on) => 'min-height: 36px; padding: 0 12px; border-radius: 999px; font-family: inherit; font-size: 13px; cursor: pointer; ' + (on ? 'background: #2E5E4E; color: #FFFFFF; border: 1px solid #2E5E4E; font-weight: 600' : 'background: #FFFFFF; color: #1F2A24; border: 1px solid #E4DED2');
     const metricTabs = Object.keys(SERIES).map((k) => ({ label: SERIES[k].label, pressed: s.metric === k ? 'true' : 'false', style: tabStyle(s.metric === k), pick: () => this.setState({ metric: k }) }));
     let lastGrow = null;
-    [0, 1, 2, 3, 4, 5, 6].forEach((i) => addedOf(i).forEach((e) => { if (e.k === 'grow' && (e.sel.h || e.sel.w)) lastGrow = { e, i }; }));
-    const growH = ((lastGrow && lastGrow.e.sel.h) || '58.0') + ' cm';
-    const growW = ((lastGrow && lastGrow.e.sel.w) || '5.6') + ' kg';
-    const growHC = ((lastGrow && lastGrow.e.sel.hc) || '39.0') + ' cm';
+    const num = (re, d) => { const m = re.exec(d); return m ? m[1] : ''; };
+    [0, 1, 2, 3, 4, 5, 6].forEach((i) => addedOf(i).forEach((e) => {
+      if (e.k !== 'grow') return; const d = textOf(e), rest = d.replace(/頭圍\s*\d+(?:\.\d+)?\s*(cm|公分)?/, '');
+      const g = { h: num(/(\d+(?:\.\d+)?)\s*(?:cm|公分)/, rest), w: num(/(\d+(?:\.\d+)?)\s*(?:kg|公斤)/i, d), hc: num(/頭圍\s*(\d+(?:\.\d+)?)/, d) };
+      if (g.h || g.w || g.hc) lastGrow = { e, i, g: Object.assign({}, lastGrow ? lastGrow.g : {}, Object.fromEntries(Object.entries(g).filter((kv) => kv[1]))) };
+    }));
+    const growH = ((lastGrow && lastGrow.g.h) || '58') + ' cm';
+    const growW = ((lastGrow && lastGrow.g.w) || '5.6') + ' kg';
+    const growHC = ((lastGrow && lastGrow.g.hc) || '39') + ' cm';
     const growNote = lastGrow ? '剛剛記錄' : '約第 50 百分位';
     const growDate = lastGrow ? DATES[lastGrow.i].md + ' ' + lastGrow.e.t + ' 記錄' : '11/10 兒童健檢時量測';
 
@@ -696,8 +731,9 @@ class Component extends DCLogic {
         else e.target.value = dayIso;
       },
       recItems,
+      ...formVals,
       formOpen: !!formKind, formTitle: editing ? '補充' + K[editing.k][0] + '・' + editing.t : (formKind ? '記錄' + K[formKind][0] : ''),
-      fields, formWarn, save, closeForm: () => this.setState({ form: null, edit: null, sel: {} }),
+      formWarn, save, closeForm: () => this.setState({ form: null, edit: null, sel: {}, addOpt: false }),
       alerts: alertsOut, summary, log, logEmpty: log.length === 0, bars, metricTabs,
       sumTitle: isToday ? '今天到目前' : dayShort + ' 一整天', logTitle: isToday ? '今天的紀錄' : dayShort + ' 的紀錄',
       chartLabel: '最近 7 天' + ser.label + '（' + ser.unit + '）', chartNote: ser.label + '（' + ser.unit + '）・' + ser.note + '點長條可以看那一天。',
@@ -718,6 +754,21 @@ Component.prototype.renderVals = function () {
   return v;
 };
 window.Component = Component;
+/* 快捷選項長按刪除 */
+(function () {
+  let timer = null, fired = false, btn = null;
+  const stop = () => { if (timer) clearTimeout(timer); timer = null; if (btn) btn.classList.remove('zb-pressing'); btn = null; };
+  document.addEventListener('pointerdown', (e) => {
+    const b = e.target.closest && e.target.closest('.zb-qopt'); if (!b) return;
+    stop(); fired = false; btn = b;
+    timer = setTimeout(() => { fired = true; const c = window.__zbDiary; const k = b.getAttribute('data-qk'), v = b.getAttribute('data-qv'); stop(); if (navigator.vibrate) navigator.vibrate(20); if (c && c.delOpt) c.delOpt(k, v); }, 550);
+    setTimeout(() => { if (btn === b) b.classList.add('zb-pressing'); }, 200);
+  });
+  ['pointerup', 'pointercancel'].forEach((t) => document.addEventListener(t, stop, true));
+  document.addEventListener('pointerleave', (e) => { if (btn && e.target === btn) stop(); }, true);
+  document.addEventListener('click', (e) => { if (fired && e.target.closest && e.target.closest('.zb-qopt')) { e.stopImmediatePropagation(); e.preventDefault(); fired = false; } }, true);
+  document.addEventListener('contextmenu', (e) => { if (e.target.closest && e.target.closest('.zb-qopt')) e.preventDefault(); });
+})();
 </script>
 </body>
 </html>
