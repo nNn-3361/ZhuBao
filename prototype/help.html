@@ -67,6 +67,31 @@ header svg:first-child:hover{animation:zbWiggle .6s ease-in-out}
 button:hover,button:active,a:hover,a:active{transform:none !important}
 }
 /*zb-ui-end*/
+/*zb-col-start*/
+.zb-col{max-width:768px !important;margin-left:auto !important;margin-right:auto !important}
+@media (max-width:760px){.zb-col{padding:20px 16px 36px !important}}
+.zb-bam-panel{display:flex;gap:8px;align-items:stretch}
+.zb-bam-spine{cursor:default}
+.zb-bam-spine .zb-culm-b{min-height:24px}
+.zb-bam-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;padding:4px 0 16px}
+.zb-bam-body,.zb-acc-body{animation:zbOpen .28s ease-out both}
+@keyframes zbOpen{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.zb-acc{background:#FCFAF6;border:1px solid #E4DED2;border-radius:16px;overflow:hidden;transition:border-color .2s ease,box-shadow .2s ease}
+.zb-acc[data-open="true"]{border-color:#B9CDBF;box-shadow:0 4px 14px rgba(46,94,78,.08)}
+.zb-acc-head{width:100%;min-height:60px;display:flex;align-items:center;gap:12px;padding:12px 16px;background:transparent;border:0;font-family:inherit;color:#1F2A24;text-align:left;cursor:pointer}
+.zb-acc-title{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.zb-acc-body{padding:0 16px 16px;display:flex;flex-direction:column;gap:12px}
+.zb-chev{flex-shrink:0;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+[aria-expanded="true"]>.zb-chev{transform:rotate(180deg)}
+.zb-sec{display:flex;flex-direction:column;gap:12px}
+.zb-sec-head{display:flex;flex-direction:column;gap:4px}
+.zb-sec-head h2{margin:0;font-size:20px;font-weight:600}
+.zb-sec-head p{margin:0;font-size:14px;color:#5F6B64;line-height:1.6}
+.zb-list{display:flex;flex-direction:column;gap:10px}
+@media (max-width:480px){.zb-acc-head{padding:12px 14px;gap:10px}.zb-acc-body{padding:0 14px 14px}}
+.zb-list .zb-acc-body{border-top:1px solid #EFEAE0;padding-top:14px}
+.zb-list ul.zb-acc-body>li:first-child{border-top:0 !important}
+/*zb-col-end*/
 </style>
 <style>#dc-root>div{margin-left:auto;margin-right:auto}</style>
 </head>
@@ -104,7 +129,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </sc-if>
 </header>
 
-<main style="max-width: 1200px; margin: 0 auto; padding: 24px 24px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px">
+<main class="zb-col" style="max-width: 1200px; margin: 0 auto; padding: 24px 24px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px">
 <div style="display: flex; flex-direction: column; gap: 6px">
 <h1 style="margin: 0; font-size: 26px; font-weight: 600">需要協助</h1>
 <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">遇到困難時可以找的專線與窗口，以及竹寶的使用說明。</p>
@@ -112,7 +137,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 <section aria-labelledby="h-sos" style="background: #FCFAF6; border: 2px solid #A2413A; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
 <h2 id="h-sos" style="margin: 0; font-size: 17px; font-weight: 600; color: #8E3A33; display: flex; align-items: center; gap: 8px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path></svg>緊急與關懷專線</h2>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
 <sc-for list="{{hotlines}}" as="h" hint-placeholder-count="4">
 <a href="{{h.tel}}" style="min-height: 72px; display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 12px 14px; border-radius: 12px; background: {{h.bg}}; color: #1F2A24; text-decoration: none">
 <span style="font-size: 22px; font-weight: 600; color: {{h.color}}; font-variant-numeric: tabular-nums">{{h.num}}</span>
@@ -124,29 +149,35 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 <section aria-labelledby="h-desk" style="display: flex; flex-direction: column; gap: 12px">
 <h2 id="h-desk" style="margin: 0; font-size: 20px; font-weight: 600">依需求找窗口</h2>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px">
+<div class="zb-list">
 <sc-for list="{{desks}}" as="d" hint-placeholder-count="4">
-<article style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
-<div style="display: flex; align-items: center; gap: 10px">
+<article class="zb-acc" data-open="{{d.expanded}}">
+<button type="button" class="zb-acc-head" aria-expanded="{{d.expanded}}" onClick="{{d.toggle}}">
 <span style="{{d.iconWrap}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{d.icon}}"></path></svg></span>
-<h3 style="margin: 0; font-size: 16px; font-weight: 600">{{d.need}}</h3>
-</div>
-<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px">
+<span class="zb-acc-title">
+<span style="font-size: 16px; font-weight: 600">{{d.need}}</span>
+<span style="font-size: 13px; color: #5F6B64">{{d.count}} 個窗口</span>
+</span>
+<svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+</button>
+<sc-if value="{{d.open}}" hint-placeholder-val="{{false}}">
+<ul class="zb-acc-body" style="margin: 0; list-style: none; gap: 0">
 <sc-for list="{{d.items}}" as="it" hint-placeholder-count="2">
-<li style="display: flex; flex-direction: column; gap: 2px; font-size: 14px; line-height: 1.5; padding-bottom: 8px; border-bottom: 1px solid #EFEAE0">
+<li style="display: flex; flex-direction: column; gap: 2px; font-size: 15px; line-height: 1.6; padding: 10px 0; border-top: 1px solid #EFEAE0">
 <a href="{{it.url}}" style="font-weight: 600">{{it.name}}</a>
-<span style="font-size: 13px; color: #5F6B64">{{it.what}}</span>
+<span style="font-size: 14px; color: #5F6B64">{{it.what}}</span>
 </li>
 </sc-for>
 </ul>
+</sc-if>
 </article>
 </sc-for>
 </div>
 </section>
 
-<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="display: flex; flex-direction: column; gap: 28px">
 
-<section aria-labelledby="h-faq" style="flex: 999 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<section aria-labelledby="h-faq" style="min-width: 0; display: flex; flex-direction: column; gap: 10px">
 <h2 id="h-faq" style="margin: 0 0 4px; font-size: 20px; font-weight: 600">常見問題</h2>
 <sc-for list="{{faqs}}" as="f" hint-placeholder-count="6">
 <div style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 14px; overflow: hidden">
@@ -156,7 +187,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </sc-for>
 </section>
 
-<aside style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<aside style="min-width: 0; display: flex; flex-direction: column; gap: 14px">
 <section aria-labelledby="h-how" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
 <h2 id="h-how" style="margin: 0; font-size: 17px; font-weight: 600">竹寶怎麼用</h2>
 <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px">
@@ -195,7 +226,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { menuOpen: false, faq: 0, confirmClear: false };
+    this.state = { menuOpen: false, faq: null, confirmClear: false };
   }
   renderVals() {
     const s = this.state;
@@ -249,6 +280,12 @@ class Component extends DCLogic {
   }
 }
 
+const __rv = Component.prototype.renderVals;
+Component.prototype.renderVals = function () {
+  const v = __rv.call(this); const s = this.state;
+  v.desks = v.desks.map((d) => ({ ...d, count: d.items.length, open: s.desk === d.need, expanded: s.desk === d.need ? 'true' : 'false', toggle: () => this.setState({ desk: s.desk === d.need ? null : d.need }) }));
+  return v;
+};
 window.Component = Component;
 </script>
 </body>
