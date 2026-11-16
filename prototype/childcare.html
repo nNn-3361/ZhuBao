@@ -135,13 +135,11 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 
 <div style="display: flex; gap: 12px; align-items: flex-start; background: #F6E9CC; border-radius: 14px; padding: 14px 16px">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A4F0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px"><path d="M12 9v4M12 17h.01M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path></svg>
 <div style="font-size: 14px; line-height: 1.6; color: #5A3A08">送托會影響補助：自己帶和送托能領的補助不同。送托前，請先看<a href="https://society.hccg.gov.tw/ch/home.jsp?id=10330&amp;parentpath=0%2C3%2C20" style="color: #5A3A08">社會處準公共化專區</a>的請領規定，或回到<a href="benefits.html" style="color: #5A3A08">補助及其他福利</a>看你目前的狀態。</div>
 </div>
 
 <section aria-label="篩選" class="zb-acc" data-open="{{filterExpanded}}">
 <button type="button" class="zb-acc-head" aria-expanded="{{filterExpanded}}" onClick="{{toggleFilter}}">
-<span style="width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: #E4EEE7; color: #2E5E4E"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"></path></svg></span>
 <span class="zb-acc-title">
 <span style="font-size: 16px; font-weight: 600">篩選條件</span>
 <span style="font-size: 13px; color: #5F6B64">{{filterSummary}}</span>
@@ -190,7 +188,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <span class="zb-acc-title" style="gap: 6px">
 <span style="display: flex; gap: 6px; flex-wrap: wrap">
 <span style="{{r.typeStyle}}">{{r.type}}</span>
-<sc-if value="{{r.quasi}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #E4EEE7; color: #2E5E4E"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>可領托育補助</span></sc-if>
+<sc-if value="{{r.quasi}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #E4EEE7; color: #2E5E4E">可領托育補助</span></sc-if>
 <sc-if value="{{r.planned}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #F6E9CC; color: #7A4F0B">籌備中</span></sc-if>
 </span>
 <span style="font-size: 16px; font-weight: 600; line-height: 1.4">{{r.name}}</span>

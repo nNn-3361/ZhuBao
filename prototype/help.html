@@ -134,7 +134,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 
 <section aria-labelledby="h-sos" style="background: #FCFAF6; border: 2px solid #A2413A; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
-<h2 id="h-sos" style="margin: 0; font-size: 17px; font-weight: 600; color: #8E3A33; display: flex; align-items: center; gap: 8px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path></svg>緊急與關懷專線</h2>
+<h2 id="h-sos" style="margin: 0; font-size: 17px; font-weight: 600; color: #8E3A33; display: flex; align-items: center; gap: 8px">緊急與關懷專線</h2>
 <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
 <sc-for list="{{hotlines}}" as="h" hint-placeholder-count="4">
 <a href="{{h.tel}}" style="min-height: 72px; display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 12px 14px; border-radius: 12px; background: {{h.bg}}; color: #1F2A24; text-decoration: none">
@@ -151,7 +151,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <sc-for list="{{desks}}" as="d" hint-placeholder-count="4">
 <article class="zb-acc" data-k="{{d.need}}" data-open="{{d.expanded}}">
 <button type="button" class="zb-acc-head" aria-expanded="{{d.expanded}}" onClick="{{d.toggle}}">
-<span style="{{d.iconWrap}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{d.icon}}"></path></svg></span>
 <span class="zb-acc-title">
 <span style="font-size: 16px; font-weight: 600">{{d.need}}</span>
 <span style="font-size: 13px; color: #5F6B64">{{d.count}} 個窗口</span>
