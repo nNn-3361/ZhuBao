@@ -74,14 +74,12 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-bam-spine{cursor:default}
 .zb-bam-spine .zb-culm-b{min-height:24px}
 .zb-bam-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;padding:4px 0 16px}
-.zb-bam-body,.zb-acc-body{animation:zbOpen .28s ease-out both}
-@keyframes zbOpen{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .zb-acc{background:#FCFAF6;border:1px solid #E4DED2;border-radius:16px;overflow:hidden;transition:border-color .2s ease,box-shadow .2s ease}
 .zb-acc[data-open="true"]{border-color:#B9CDBF;box-shadow:0 4px 14px rgba(46,94,78,.08)}
 .zb-acc-head{width:100%;min-height:60px;display:flex;align-items:center;gap:12px;padding:12px 16px;background:transparent;border:0;font-family:inherit;color:#1F2A24;text-align:left;cursor:pointer}
 .zb-acc-title{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .zb-acc-body{padding:0 16px 16px;display:flex;flex-direction:column;gap:12px}
-.zb-chev{flex-shrink:0;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.zb-chev{flex-shrink:0;transition:transform .32s cubic-bezier(.2,.8,.2,1)}
 [aria-expanded="true"]>.zb-chev{transform:rotate(180deg)}
 .zb-sec{display:flex;flex-direction:column;gap:12px}
 .zb-sec-head{display:flex;flex-direction:column;gap:4px}
@@ -154,7 +152,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 <nav aria-label="年齡階段" style="display: flex; flex-direction: column">
 <sc-for list="{{stages}}" as="st" hint-placeholder-count="6">
-<div class="zb-bam-row" data-on="{{st.pressed}}">
+<div class="zb-bam-row" data-k="r{{st.title}}" data-on="{{st.pressed}}">
 <div class="{{st.bamCls}}" aria-hidden="true" onClick="{{st.pick}}"><span class="zb-culm zb-culm-a"></span><span class="zb-node"></span><svg class="zb-leaf zb-leaf-r" viewBox="0 0 30 14"><path d="M1 7C8 0 22 0 29 7C22 14 8 14 1 7Z"></path></svg><svg class="zb-leaf zb-leaf-l" viewBox="0 0 30 14"><path d="M29 7C22 0 8 0 1 7C8 14 22 14 29 7Z"></path></svg><span class="zb-culm zb-culm-b"></span></div>
 <button type="button" aria-expanded="{{st.pressed}}" onClick="{{st.pick}}" style="{{st.btn}}">
 <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
@@ -165,12 +163,12 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </button>
 </div>
 <sc-if value="{{st.open}}" hint-placeholder-val="{{false}}">
-<div class="zb-bam-panel">
+<div class="zb-bam-panel" data-k="p{{st.title}}">
 <div class="{{st.spineCls}}" aria-hidden="true"><span class="zb-culm zb-culm-b"></span></div>
 <div class="zb-bam-body">
 <span style="font-size: 13px; font-weight: 600; color: #2E5E4E">{{stageTitle}}</span>
 <sc-for list="{{topics}}" as="t" hint-placeholder-count="5">
-<article class="zb-acc" data-open="{{t.expanded}}">
+<article class="zb-acc" data-k="{{t.title}}" data-open="{{t.expanded}}">
 <button type="button" class="zb-acc-head" aria-expanded="{{t.expanded}}" onClick="{{t.toggle}}">
 <span style="{{t.iconWrap}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg></span>
 <span class="zb-acc-title">
@@ -207,7 +205,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 <div class="zb-list">
 <sc-for list="{{feed}}" as="f" hint-placeholder-count="6">
-<article class="zb-acc" data-open="{{f.expanded}}" style="{{f.card}}">
+<article class="zb-acc" data-k="{{f.title}}" data-open="{{f.expanded}}" style="{{f.card}}">
 <button type="button" class="zb-acc-head" aria-expanded="{{f.expanded}}" onClick="{{f.toggle}}">
 <span class="zb-acc-title" style="gap: 6px">
 <span style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><span style="{{f.tagStyle}}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{f.icon}}"></path></svg>{{f.tag}}</span><span style="font-size: 12px; color: #5F6B64">{{f.when}}</span></span>

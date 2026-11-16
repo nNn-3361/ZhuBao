@@ -41,7 +41,7 @@
       if (/^on/i.test(name)) {
         el.removeAttribute(name);
         const fn = whole ? evalExpr(whole[1], scope) : null;
-        if (typeof fn === 'function') el.addEventListener(name.slice(2).toLowerCase(), fn);
+        if (typeof fn === 'function') (el.__zb || (el.__zb = {}))[name.slice(2).toLowerCase()] = fn;
         continue;
       }
       el.setAttribute(name, interp(val, scope));
@@ -103,12 +103,117 @@
     setTimeout(close, LOADER_MS);
   }
   let comp = null, tpl = null, root = null;
+  /* 更新畫面時只改有變的地方，不整頁重建：已開的卡片不會重播動畫，竹葉、發光也不會被打斷。 */
+  const ANIM_SEL = '.zb-acc-body, .zb-bam-panel, .zb-anim';
+  const reduced = () => { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
+  const keyOf = (n) => (n.nodeType === 1 ? n.getAttribute('data-k') : null);
+  const same = (a, b) => a.nodeType === b.nodeType && (a.nodeType !== 1 || (a.localName === b.localName && keyOf(a) === keyOf(b)));
+  const EASE = 'cubic-bezier(.2,.8,.2,1)';
+  function frames(el) {
+    const cs = getComputedStyle(el);
+    return { height: cs.height, paddingTop: cs.paddingTop, paddingBottom: cs.paddingBottom };
+  }
+  function bringIntoView(el) {
+    const box = el.getBoundingClientRect();
+    const head = el.classList.contains('zb-bam-panel') && el.previousElementSibling ? el.previousElementSibling.getBoundingClientRect() : (el.closest('.zb-acc') || el).getBoundingClientRect();
+    const over = box.bottom - window.innerHeight + 16;
+    if (over <= 0) return;
+    const by = Math.min(over, head.top - 72);
+    if (by > 0) window.scrollBy({ top: by, behavior: reduced() ? 'auto' : 'smooth' });
+  }
+  function enter(el) {
+    if (el.nodeType !== 1 || !el.matches(ANIM_SEL) || reduced()) return;
+    const f = frames(el);
+    el.style.overflow = 'hidden';
+    const a = el.animate([
+      { height: '0px', paddingTop: '0px', paddingBottom: '0px', opacity: 0 },
+      { height: f.height, paddingTop: f.paddingTop, paddingBottom: f.paddingBottom, opacity: 1 }
+    ], { duration: 320, easing: EASE });
+    a.onfinish = () => { el.style.overflow = ''; if (anchoring) pendingView = el; else bringIntoView(el); };
+  }
+  function leave(el) {
+    if (el.nodeType !== 1 || !el.matches(ANIM_SEL) || reduced() || el.__leaving) { el.remove(); return; }
+    el.__leaving = true;
+    const f = frames(el);
+    el.style.overflow = 'hidden';
+    el.style.pointerEvents = 'none';
+    const a = el.animate([
+      { height: f.height, paddingTop: f.paddingTop, paddingBottom: f.paddingBottom, opacity: 1 },
+      { height: '0px', paddingTop: '0px', paddingBottom: '0px', opacity: 0 }
+    ], { duration: 240, easing: EASE, fill: 'forwards' });
+    a.onfinish = () => el.remove();
+  }
+  function morph(o, n) {
+    if (o.nodeType === 3) { if (o.nodeValue !== n.nodeValue) o.nodeValue = n.nodeValue; return; }
+    for (const at of Array.from(o.attributes)) if (!n.hasAttribute(at.name)) o.removeAttribute(at.name);
+    for (const at of Array.from(n.attributes)) if (o.getAttribute(at.name) !== at.value) o.setAttribute(at.name, at.value);
+    o.__zb = n.__zb;
+    morphChildren(o, n);
+  }
+  function morphChildren(op, np) {
+    const olds = Array.from(op.childNodes).filter((x) => !x.__leaving);
+    const news = Array.from(np.childNodes);
+    const newKeys = new Set(news.map(keyOf).filter(Boolean));
+    let oi = 0, last = null;
+    for (const n of news) {
+      let o = olds[oi];
+      while (o && !same(o, n)) {
+        const k = keyOf(n);
+        if (k) {
+          let j = -1;
+          for (let x = oi + 1; x < olds.length; x++) if (same(olds[x], n)) { j = x; break; }
+          if (j > 0) { for (let x = oi; x < j; x++) leave(olds[x]); oi = j; o = olds[oi]; }
+          else o = null;
+          break;
+        }
+        if (keyOf(o) && newKeys.has(keyOf(o))) { o = null; break; }
+        leave(o); oi += 1; o = olds[oi];
+      }
+      if (o) { morph(o, n); last = o; oi += 1; }
+      else {
+        op.insertBefore(n, olds[oi] || (last ? last.nextSibling : op.firstChild));
+        enter(n); last = n;
+      }
+    }
+    for (let x = oi; x < olds.length; x++) leave(olds[x]);
+  }
+  /* 點擊時把被點的按鈕固定在畫面上同一個位置，上方內容收合時頁面不會跳。 */
+  let anchor = null, anchoring = false, pendingView = null;
+  function holdAnchor() {
+    if (!anchor || !anchor.el.isConnected) { anchor = null; return; }
+    const a = anchor; anchor = null; anchoring = true;
+    const until = performance.now() + 380;
+    const step = () => {
+      if (a.el.isConnected) {
+        const d = a.el.getBoundingClientRect().top - a.top;
+        if (Math.abs(d) > 0.5) window.scrollBy(0, d);
+      }
+      if (performance.now() < until) requestAnimationFrame(step);
+      else { anchoring = false; if (pendingView) { const v = pendingView; pendingView = null; bringIntoView(v); } }
+    };
+    requestAnimationFrame(step);
+  }
+  function delegate(type) {
+    document.addEventListener(type, (e) => {
+      for (let el = e.target; el && el !== document; el = el.parentNode) {
+        if (el.__zb && el.__zb[type]) {
+          if (type === 'click') anchor = { el, top: el.getBoundingClientRect().top };
+          el.__zb[type](e); anchor = null; return;
+        }
+      }
+    });
+  }
+  let first = true;
   function render() {
     const vals = comp.renderVals();
     const frag = document.createDocumentFragment();
     tpl.content.childNodes.forEach((c) => renderNode(c, vals).forEach((n) => frag.appendChild(n)));
-    root.replaceChildren(frag);
+    if (first) { root.replaceChildren(frag); first = false; return; }
+    morphChildren(root, frag);
+    holdAnchor();
   }
+  ['click', 'submit', 'input', 'change'].forEach(delegate);
+  try { document.documentElement.style.overflowAnchor = 'none'; } catch (e) {}
   window.addEventListener('DOMContentLoaded', () => {
     tpl = document.getElementById('dc-tpl');
     root = document.getElementById('dc-root');
