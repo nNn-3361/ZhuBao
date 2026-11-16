@@ -139,7 +139,8 @@
   function mount(host) {
     document.head.appendChild(h('style', { text: CSS }));
     const N = NEWS.length;
-    let idx = 0, timer = null, userPaused = reduced();
+    let idx = 0, timer = null;
+    const manual = reduced(); /* 減少動態效果：不自動輪播，只能手動切換 */
     const hold = { hover: false, focus: false, press: false, modal: false };
 
     const cards = NEWS.map((n, i) => h('button', {
@@ -149,10 +150,9 @@
     const track = h('div', { class: 'zbn-track' }, cards);
     const vp = h('div', { class: 'zbn-vp' }, [track]);
     const dots = NEWS.map((n, i) => h('button', { type: 'button', class: 'zbn-dot', 'aria-label': '第 ' + (i + 1) + ' 則：' + n.title, html: '<i></i>' }));
-    const pauseBtn = h('button', { type: 'button', class: 'zbn-btn' });
     const live = h('div', { class: 'zbn-sr', 'aria-live': 'polite' });
     const root = h('div', { class: 'zbn', role: 'region', 'aria-roledescription': '輪播', 'aria-label': '最新消息' }, [
-      vp, h('div', { class: 'zbn-bar' }, [h('div', { class: 'zbn-dots' }, dots), pauseBtn]), live
+      vp, h('div', { class: 'zbn-bar' }, [h('div', { class: 'zbn-dots' }, dots)]), live
     ]);
     host.replaceChildren(root);
 
@@ -164,12 +164,10 @@
       cards.forEach((c, i) => { c.setAttribute('data-active', i === idx ? 'true' : 'false'); c.tabIndex = i === idx ? 0 : -1; c.setAttribute('aria-hidden', i === idx ? 'false' : 'true'); });
       dots.forEach((d, i) => d.setAttribute('aria-current', i === idx ? 'true' : 'false'));
     }
-    const running = () => !userPaused && !hold.hover && !hold.focus && !hold.press && !hold.modal && !document.hidden;
+    const running = () => !manual && !hold.hover && !hold.focus && !hold.press && !hold.modal && !document.hidden;
     function schedule() {
       clearTimeout(timer); timer = null;
       root.classList.remove('zbn-run');
-      pauseBtn.textContent = userPaused ? '播放' : '暫停';
-      pauseBtn.setAttribute('aria-label', userPaused ? '開始自動輪播' : '暫停自動輪播');
       if (!running()) return;
       void root.offsetWidth;
       root.classList.add('zbn-run');
@@ -183,7 +181,6 @@
     }
 
     dots.forEach((d, i) => d.addEventListener('click', () => go(i, true)));
-    pauseBtn.addEventListener('click', () => { userPaused = !userPaused; schedule(); });
     root.addEventListener('mouseenter', () => { hold.hover = true; schedule(); });
     root.addEventListener('mouseleave', () => { hold.hover = false; schedule(); });
     root.addEventListener('focusin', (e) => { if (e.target.matches(':focus-visible')) { hold.focus = true; schedule(); } });
