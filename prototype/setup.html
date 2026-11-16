@@ -7,9 +7,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&amp;display=swap">
 <style>
-body{margin:0}
+body{margin:0;background:#F6F2EA}
 a{color:#2E5E4E}a:hover{color:#1F4337}
 input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2px}
+.zb-nav-toggle{display:none}
+@media (max-width: 760px){.zb-nav-links{display:none !important}.zb-nav-toggle{display:inline-flex !important}}
+@media (min-width: 761px){.zb-nav-menu{display:none !important}}
 /*zb-ui-start*/
 .zb-bam-row{display:flex;gap:8px;align-items:stretch}
 .zb-bam-row>button{flex:1;min-width:0}
@@ -62,20 +65,48 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 }
 /*zb-ui-end*/
 </style>
-<style>#dc-root>div{margin-left:auto;margin-right:auto}</style>
+<style>#dc-root>div{margin-left:auto;margin-right:auto}
+.zb-setup{max-width:768px;margin:0 auto;padding:32px 24px 56px;box-sizing:border-box}
+.zb-setup-card{background:#FCFAF6;border:1px solid #E4DED2;border-radius:20px;padding:32px 36px;display:flex;flex-direction:column;gap:24px}
+.zb-setup-q{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 36px}
+.zb-setup-card a[href="index.html"]{max-width:360px;width:100%;margin:0 auto}
+@media (max-width:760px){.zb-setup{padding:20px 16px 36px}.zb-setup-card{background:transparent;border:0;border-radius:0;padding:0;gap:20px}.zb-setup-q{grid-template-columns:1fr;gap:20px}.zb-setup-card a[href="index.html"]{max-width:none}}
+</style>
 </head>
 <body>
 <template id="dc-tpl">
-<div style="width: 390px; min-height: 1180px; box-sizing: border-box; background: #F6F2EA; font-family: 'Noto Sans TC', system-ui, sans-serif; color: #1F2A24; padding: 24px 20px 32px; display: flex; flex-direction: column; gap: 20px">
-
-<div style="display: flex; align-items: center; justify-content: space-between">
-<div style="display: flex; align-items: center; gap: 8px">
-<svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"></circle><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
-<span style="font-size: 18px; font-weight: 600; letter-spacing: 0.04em">竹寶</span>
+<div style="width: 100%; min-height: 100vh; box-sizing: border-box; background: #F6F2EA; font-family: 'Noto Sans TC', system-ui, sans-serif; color: #1F2A24">
+<header style="border-bottom: 1px solid #E4DED2; background: #FCFAF6">
+<div style="max-width: 1200px; margin: 0 auto; padding: 14px 24px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px">
+<svg width="26" height="26" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"></circle><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+<span style="font-size: 17px; font-weight: 600; letter-spacing: 0.04em">竹寶</span>
 </div>
-<span style="font-size: 12px; color: #5F6B64">新竹市生養時程</span>
+<nav class="zb-nav-links" aria-label="主選單" style="display: flex; gap: 4px; flex-wrap: wrap">
+<a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
+<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
+<a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
+<a href="childcare.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">托育</a>
+<a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
+<a href="ask.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">AI 問答</a>
+<a href="help.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">協助</a>
+</nav>
+<button type="button" class="zb-nav-toggle" aria-expanded="{{menuExpanded}}" aria-controls="zb-menu" onClick="{{toggleMenu}}" style="min-height: 44px; align-items: center; gap: 8px; padding: 0 14px; border-radius: 12px; border: 1px solid #E4DED2; background: #FCFAF6; font-family: inherit; font-size: 14px; color: #1F2A24; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="{{menuIcon}}"></path></svg>{{menuLabel}}</button>
 </div>
-
+<sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
+<nav id="zb-menu" class="zb-nav-menu" aria-label="主選單" style="border-top: 1px solid #E4DED2; background: #FCFAF6; padding: 8px 16px 16px; display: flex; flex-direction: column">
+<a href="index.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">主頁</a>
+<a href="diary.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">寶寶日記</a>
+<a href="benefits.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">補助及其他福利</a>
+<a href="childcare.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">托育</a>
+<a href="activities.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">親子活動</a>
+<a href="ask.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">AI 問答</a>
+<a href="help.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">協助</a>
+</nav>
+</sc-if>
+</header>
+<main class="zb-setup">
+<div class="zb-setup-card">
 <div style="display: flex; flex-direction: column; gap: 8px">
 <div style="height: 4px; background: #E4DED2; border-radius: 999px; overflow: hidden"><div style="width: 100%; height: 4px; background: #2E5E4E"></div></div>
 <h1 style="margin: 8px 0 0; font-size: 24px; line-height: 1.4; font-weight: 600">先認識你的寶寶</h1>
@@ -83,7 +114,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 
 <div style="display: flex; gap: 12px; align-items: flex-start; background: #E4EEE7; border-radius: 12px; padding: 12px 14px">
-<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #2E5E4E">不收姓名與身分證字號。資料只存在這支手機，隨時可以在設定中清除。</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #2E5E4E">不收姓名與身分證字號。資料只存在這台裝置，隨時可以在設定中清除。</p>
 </div>
 
 <div style="display: flex; flex-direction: column; gap: 8px">
@@ -92,6 +123,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <span style="font-size: 12px; color: #5F6B64">還沒出生？<a href="#">改填預產期</a></span>
 </div>
 
+<div class="zb-setup-q">
 <sc-for list="{{questions}}" as="q" hint-placeholder-count="4">
 <fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
 <legend style="font-size: 15px; font-weight: 600; padding: 0; margin-bottom: 8px; display: flex; gap: 8px; align-items: center">{{q.label}}<sc-if value="{{q.optional}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; font-weight: 400; color: #5F6B64; border: 1px solid #E4DED2; border-radius: 999px; padding: 1px 8px">選填・可略過</span></sc-if></legend>
@@ -103,12 +135,15 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 </fieldset>
 </sc-for>
+</div>
 
 <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px">
 <a href="index.html" style="height: 52px; display: flex; align-items: center; justify-content: center; background: #2E5E4E; color: #FFFFFF; border-radius: 12px; font-size: 16px; font-weight: 600; text-decoration: none">開始使用竹寶</a>
 <p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64; text-align: center">結果僅供參考，最終資格以主管機關審核為準。</p>
 </div>
 
+</div>
+</main>
 </div>
 </template>
 <div id="dc-root"></div>
@@ -118,7 +153,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { district: '北區', residency: '不確定', order: '第 1 胎', care: '自己或家人', lowIncome: '不想回答' };
+    this.state = { menuOpen: false, district: '北區', residency: '不確定', order: '第 1 胎', care: '自己或家人', lowIncome: '不想回答' };
   }
   renderVals() {
     const s = this.state;
@@ -135,6 +170,9 @@ class Component extends DCLogic {
       }))
     }, extra || {});
     return {
+      menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
+      menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
+      toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
       questions: [
         mk('district', '戶籍行政區', ['東區', '北區', '香山區']),
         mk('residency', '父或母是否設籍新竹市？', ['是', '否', '不確定'], { hint: '用來判斷新竹市的補助' }),
