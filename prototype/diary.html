@@ -92,28 +92,54 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-list ul.zb-acc-body>li:first-child{border-top:0 !important}
 /*zb-col-end*/
 /*zb-diary-start*/
-.zb-date{display:flex;align-items:center;gap:6px;font-size:14px}
-.zb-date-arrow{width:44px;height:44px;border-radius:12px;border:1px solid #E4DED2;background:#FCFAF6;cursor:pointer;font-size:18px;color:#1F2A24;font-family:inherit}
-.zb-date-arrow[aria-disabled="true"]{color:#C9C2B4;cursor:default}
-.zb-date-label{min-width:132px;min-height:44px;padding:0 12px;border-radius:12px;border:1px dashed #B9CDBF;background:transparent;font-family:inherit;font-size:15px;font-weight:600;color:#1F2A24;cursor:pointer}
-.zb-date-label[aria-expanded="true"]{border-style:solid;border-color:#2E5E4E;background:#E4EEE7;color:#2E5E4E}
-.zb-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
-.zb-day{min-height:56px;border-radius:12px;border:1px solid #E4DED2;background:#FCFAF6;font-family:inherit;color:#1F2A24;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer}
-.zb-day-w{font-size:12px;color:#5F6B64}.zb-day-d{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
-.zb-day[aria-pressed="true"]{background:#2E5E4E;border-color:#2E5E4E;color:#fff}.zb-day[aria-pressed="true"] .zb-day-w{color:#D9E5DC}
+.zb-date{display:flex;align-items:center;gap:2px;font-size:14px}
+.zb-date button{background:transparent !important;border:0 !important;box-shadow:none !important;font-family:inherit;color:#1F2A24;cursor:pointer;padding:0}
+.zb-date button:hover{transform:none !important}
+.zb-date-arrow{width:40px;height:44px;border-radius:999px;font-size:24px;line-height:1}
+.zb-date-arrow:hover{color:#2E5E4E}
+.zb-date-arrow[aria-disabled="true"]{color:#D3CCBF;cursor:default}
+.zb-date-pick{position:relative;display:inline-flex}
+.zb-date-label{position:relative;min-height:44px;padding:0 4px !important;font-size:16px;font-weight:600;letter-spacing:.02em;transition:color .2s ease}
+.zb-date-label::after{content:"";position:absolute;left:4px;right:4px;bottom:8px;height:2px;border-radius:2px;background:#2E5E4E;transform:scaleX(0);transform-origin:center;transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+.zb-date-label:hover,.zb-date-label:focus-visible{color:#2E5E4E}
+.zb-date-label:hover::after,.zb-date-label:focus-visible::after{transform:scaleX(1)}
+.zb-date-label:active{transform:scale(.96) !important}
+.zb-date-in{position:absolute;left:0;bottom:0;width:100%;height:100%;opacity:0;pointer-events:none;border:0;padding:0;margin:0}
 .zb-past{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#F6E9CC;color:#5A3A08;border-radius:12px;padding:10px 14px;font-size:14px;line-height:1.6}
 .zb-past button{min-height:40px;padding:0 14px;border-radius:10px;border:1px solid #7A4F0B;background:transparent;color:#5A3A08;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
-.zb-quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-@media (max-width:560px){.zb-quick{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.zb-qbtn{position:relative;min-height:104px;padding:16px 16px 14px 20px;border-radius:18px;border:1px solid #E4DED2;background:#FCFAF6;box-shadow:inset 5px 0 0 var(--c);font-family:inherit;color:#1F2A24;text-align:left;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:8px;cursor:pointer;overflow:hidden}
-.zb-qbtn::after{content:"";position:absolute;inset:0;background:var(--bg);opacity:0;transition:opacity .25s ease;pointer-events:none}
-.zb-qbtn>*{position:relative;z-index:1}
-.zb-qbtn[aria-pressed="true"]{border-color:var(--c)}
-.zb-qbtn[aria-pressed="true"]::after{opacity:.6}
-.zb-qlabel{font-size:20px;font-weight:600;color:var(--c)}
-.zb-qlast{font-size:13px;color:#5F6B64;font-variant-numeric:tabular-nums}
-.zb-other{display:flex;gap:8px;flex-wrap:wrap}
-.zb-other button{min-height:44px;padding:0 18px;border-radius:999px;border:1px solid #E4DED2;background:#FCFAF6;box-shadow:inset 3px 0 0 var(--c);font-family:inherit;font-size:15px;font-weight:600;color:var(--c);cursor:pointer}
+.zb-rec{display:flex;flex-direction:column;align-items:stretch}
+.zb-rec button{background:transparent !important;border:0 !important;box-shadow:none !important;font-family:inherit;color:#1F2A24;cursor:pointer;padding:0}
+.zb-rec button:hover,.zb-rec button[aria-expanded]:hover,.zb-rec button:active{transform:none !important;background:transparent !important;box-shadow:none !important}
+.zb-rec-row{display:grid;grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr);align-items:center;column-gap:16px;width:100%;text-align:left}
+.zb-rec-txt{display:flex;flex-direction:column;gap:1px;min-width:0;transition:color .2s ease,transform .25s cubic-bezier(.34,1.56,.64,1)}
+.zb-rec-txt.l{grid-column:1;text-align:right;align-items:flex-end}
+.zb-rec-txt.r{grid-column:3}
+.zb-rec-name{font-size:17px;font-weight:600}
+.zb-rec-sub{font-size:12px;color:#5F6B64;font-variant-numeric:tabular-nums}
+.zb-seg{grid-column:2;grid-row:1;justify-self:center;position:relative;width:30px;height:56px;border-radius:9px;background:linear-gradient(90deg,#3E7563 0%,#5E9A72 45%,#4C8565 70%,#2E5E4E 100%);box-shadow:inset 0 -5px 0 #24493D;transition:filter .2s ease,transform .25s cubic-bezier(.34,1.56,.64,1)}
+.zb-seg::before{content:"";position:absolute;left:-3px;right:-3px;bottom:-1px;height:5px;border-radius:3px;background:#24493D}
+.zb-rec-menu{display:grid;grid-template-rows:0fr;transition:grid-template-rows .42s cubic-bezier(.2,.8,.2,1)}
+.zb-rec-menu>div{min-height:0;overflow:hidden;display:flex;flex-direction:column-reverse}
+.zb-rec[data-open="true"] .zb-rec-menu{grid-template-rows:1fr}
+.zb-rec-item{min-height:56px}
+.zb-rec-item .zb-seg{transform:scaleY(0);transform-origin:bottom;transition:transform .26s cubic-bezier(.2,.8,.2,1) calc((5 - var(--i)) * 30ms),filter .2s ease}
+.zb-rec-item .zb-rec-txt{opacity:0;transition:opacity .2s ease calc((5 - var(--i)) * 30ms),color .2s ease,transform .25s cubic-bezier(.34,1.56,.64,1)}
+.zb-rec[data-open="true"] .zb-rec-item .zb-seg{transform:scaleY(1);transition-delay:calc(var(--i) * 55ms + 60ms),0s}
+.zb-rec[data-open="true"] .zb-rec-item .zb-rec-txt{opacity:1;transition-delay:calc(var(--i) * 55ms + 140ms),0s,0s}
+.zb-rec-item:hover .zb-rec-txt,.zb-rec-item:focus-visible .zb-rec-txt{color:#2E5E4E}
+.zb-rec-item:hover .zb-rec-txt.r{transform:translateX(4px)}.zb-rec-item:hover .zb-rec-txt.l{transform:translateX(-4px)}
+.zb-rec-item:hover .zb-seg,.zb-rec-main:hover .zb-seg{filter:brightness(1.12) saturate(1.1)}
+.zb-rec-item:active .zb-seg{transform:scaleY(1) scaleX(1.12)}
+.zb-rec-item .zb-rec-sub.on{color:#2F5470;font-weight:600}
+.zb-rec-main{min-height:72px}
+.zb-rec-main .zb-seg{height:64px;width:34px;background:linear-gradient(90deg,#2E5E4E 0%,#4C8565 45%,#3E7563 70%,#24493D 100%)}
+.zb-rec-main .zb-seg::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;background:linear-gradient(#F6F2EA,#F6F2EA) center/14px 2px no-repeat,linear-gradient(#F6F2EA,#F6F2EA) center/2px 14px no-repeat;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.zb-rec[data-open="true"] .zb-rec-main .zb-seg::after{transform:rotate(45deg)}
+.zb-rec-main:active .zb-seg{transform:scale(.94)}
+.zb-rec-main .zb-rec-name{font-size:19px}
+.zb-rec-main:hover .zb-rec-txt{color:#2E5E4E}
+.zb-rec-main:hover .zb-rec-txt.r{transform:translateX(4px)}
+.zb-rec-ground{height:2px;margin:0 auto;width:120px;border-radius:2px;background:#E4DED2}
 .zb-edit{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid #B9CDBF;background:transparent;color:#2E5E4E;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
 .zb-bar{height:100%;padding:0;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;font-family:inherit;cursor:pointer;border-radius:8px 8px 0 0}
 .zb-bar:hover{background:rgba(46,94,78,.06)}
@@ -131,7 +157,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 @keyframes zbToastIn{from{opacity:0;transform:translate(-50%,16px) scale(.96)}to{opacity:1;transform:translate(-50%,0)}}
 @keyframes zbToastInM{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
 @keyframes zbToastBar{from{transform:scaleX(1)}to{transform:scaleX(0)}}
-@media (prefers-reduced-motion:reduce){.zb-toast{animation:none}.zb-toast-bar{display:none}.zb-qbtn::after{transition:none}}
+@media (prefers-reduced-motion:reduce){.zb-toast{animation:none}.zb-toast-bar{display:none}.zb-rec *,.zb-rec-menu{transition:none !important}.zb-date-label::after{transition:none}}
 /*zb-diary-end*/
 </style>
 <style>#dc-root>div{margin-left:auto;margin-right:auto}</style>
@@ -179,36 +205,34 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 <div class="zb-date" role="group" aria-label="選擇日期">
 <button type="button" class="zb-date-arrow" aria-label="前一天" onClick="{{prevDay}}" aria-disabled="{{prevDisabled}}">‹</button>
-<button type="button" class="zb-date-label" aria-expanded="{{pickerExpanded}}" aria-controls="zb-days" onClick="{{togglePicker}}">{{dayLabel}}</button>
+<span class="zb-date-pick">
+<button type="button" class="zb-date-label" aria-label="{{dayAria}}" onClick="{{openPicker}}">{{dayLabel}}</button>
+<input type="date" id="zb-date-in" class="zb-date-in" tabindex="-1" aria-hidden="true" min="2026-11-08" max="2026-11-14" value="{{dayIso}}" onChange="{{pickDate}}">
+</span>
 <button type="button" class="zb-date-arrow" aria-label="後一天" onClick="{{nextDay}}" aria-disabled="{{nextDisabled}}">›</button>
 </div>
 </div>
 
-<sc-if value="{{pickerOpen}}" hint-placeholder-val="{{false}}">
-<div id="zb-days" class="zb-days zb-anim" role="group" aria-label="最近 7 天">
-<sc-for list="{{dayChips}}" as="dc" hint-placeholder-count="7">
-<button type="button" class="zb-day" aria-pressed="{{dc.pressed}}" onClick="{{dc.pick}}"><span class="zb-day-w">{{dc.w}}</span><span class="zb-day-d">{{dc.d}}</span></button>
-</sc-for>
-</div>
-</sc-if>
 <sc-if value="{{isPast}}" hint-placeholder-val="{{false}}">
-<div class="zb-past" role="status"><span>你正在看 {{dayShort}} 的紀錄，按下面的按鈕會補記到這一天。</span><button type="button" onClick="{{goToday}}">回到今天</button></div>
+<div class="zb-past" role="status"><span>你正在看 {{dayShort}} 的紀錄，用「記一筆」會補記到這一天。</span><button type="button" onClick="{{goToday}}">回到今天</button></div>
 </sc-if>
-<section aria-label="快速記錄" class="zb-quick">
-<sc-for list="{{quick}}" as="q" hint-placeholder-count="4">
-<button type="button" class="zb-qbtn" data-k="{{q.key}}" aria-pressed="{{q.pressed}}" onClick="{{q.pick}}" style="--c: {{q.color}}; --bg: {{q.bg}}">
-<span class="zb-qlabel">{{q.label}}</span>
-<span class="zb-qlast">{{q.last}}</span>
+<section class="zb-rec" aria-label="記錄" data-open="{{recOpenStr}}">
+<div class="zb-rec-menu" id="zb-rec-menu">
+<div role="group" aria-label="要記什麼">
+<sc-for list="{{recItems}}" as="r" hint-placeholder-count="6">
+<button type="button" class="zb-rec-row zb-rec-item" data-k="{{r.key}}" style="--i: {{r.i}}" tabindex="{{r.tab}}" aria-hidden="{{recHidden}}" onClick="{{r.pick}}">
+<span class="zb-seg"></span>
+<span class="{{r.side}}"><span class="zb-rec-name">{{r.label}}</span><span class="{{r.subCls}}">{{r.last}}</span></span>
 </button>
 </sc-for>
-</section>
-<sc-if value="{{otherOpen}}" hint-placeholder-val="{{false}}">
-<div class="zb-other zb-anim" role="group" aria-label="其他紀錄">
-<sc-for list="{{others}}" as="ot" hint-placeholder-count="3">
-<button type="button" onClick="{{ot.pick}}" style="--c: {{ot.color}}">{{ot.label}}</button>
-</sc-for>
 </div>
-</sc-if>
+</div>
+<button type="button" class="zb-rec-row zb-rec-main" aria-expanded="{{recOpenStr}}" aria-controls="zb-rec-menu" onClick="{{toggleRec}}">
+<span class="zb-seg"></span>
+<span class="zb-rec-txt r"><span class="zb-rec-name">{{recTitle}}</span><span class="zb-rec-sub">{{recSub}}</span></span>
+</button>
+<div class="zb-rec-ground" aria-hidden="true"></div>
+</section>
 
 <sc-if value="{{formOpen}}" hint-placeholder-val="{{true}}">
 <section aria-label="補充細節" class="zb-anim" style="background: #FCFAF6; border: 1px solid #2E5E4E; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
@@ -311,35 +335,10 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <span style="font-size: 12px; line-height: 1.6; color: #5F6B64">對照兒童健康手冊的生長曲線。連續兩次掉到很低或跳得很高，竹寶會提醒你問醫師。</span>
 </section>
 
-<section aria-labelledby="h-mile" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 8px">
-<h2 id="h-mile" style="margin: 0; font-size: 17px; font-weight: 600">2–4 個月的發展</h2>
-<sc-for list="{{miles}}" as="ml" hint-placeholder-count="4">
-<button type="button" role="checkbox" aria-checked="{{ml.checked}}" onClick="{{ml.flip}}" style="min-height: 44px; display: flex; align-items: center; gap: 10px; padding: 0; background: transparent; border: 0; font-family: inherit; font-size: 14px; color: #1F2A24; text-align: left; cursor: pointer">
-<span style="{{ml.box}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>{{ml.label}}<span style="margin-left: auto; font-size: 12px; color: #5F6B64">{{ml.date}}</span>
-</button>
-</sc-for>
-<span style="font-size: 12px; line-height: 1.6; color: #5F6B64">每個寶寶速度不同。到 4 個月還沒出現的項目，下次健檢時可以問醫師。</span>
-</section>
 
 </div>
 </div>
 
-<section aria-labelledby="h-why" style="display: flex; flex-direction: column; gap: 12px">
-<h2 id="h-why" style="margin: 0; font-size: 20px; font-weight: 600">為什麼要記這些？</h2>
-<div class="zb-list">
-<sc-for list="{{why}}" as="w" hint-placeholder-count="6">
-<article class="zb-acc" data-k="{{w.t}}" data-open="{{w.expanded}}">
-<button type="button" class="zb-acc-head" aria-expanded="{{w.expanded}}" onClick="{{w.toggle}}" style="min-height: 52px">
-<span class="zb-acc-title"><span style="font-size: 16px; font-weight: 600">{{w.t}}</span></span>
-<svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-</button>
-<sc-if value="{{w.open}}" hint-placeholder-val="{{false}}">
-<div class="zb-acc-body"><p style="margin: 0; font-size: 15px; line-height: 1.7; color: #3D4842">{{w.d}}</p></div>
-</sc-if>
-</article>
-</sc-for>
-</div>
-</section>
 
 <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between; background: #E4EEE7; border-radius: 16px; padding: 16px 18px">
 <span style="font-size: 14px; line-height: 1.6">看醫生或健檢時，把最近 7 天的摘要給醫師看，比口頭回想更準確。</span>
@@ -373,7 +372,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { menuOpen: false, day: 6, picker: false, other: false, edit: null, form: null, sel: {}, added: {}, toast: null, metric: 'sleep', miles: { smile: true, track: true, head: false, coo: true } };
+    this.state = { menuOpen: false, day: 6, rec: false, edit: null, form: null, sel: {}, added: {}, toast: null, metric: 'sleep' };
     this._seq = 0;
     this._t0 = Date.now();
   }
@@ -465,7 +464,7 @@ class Component extends DCLogic {
     };
     const findEntry = (i, id) => addedOf(i).find((e) => e.id === id);
     const patchEntry = (i, id, patch) => addedOf(i).map((e) => (e.id === id ? Object.assign({}, e, patch, patch.sel ? { sel: Object.assign({}, e.sel, patch.sel) } : {}) : e));
-    const openEdit = (i, id) => { clearToastTimer(); const e = findEntry(i, id); this.setState({ edit: { day: i, id }, form: null, sel: Object.assign({}, e ? e.sel : {}), toast: null, other: false }); };
+    const openEdit = (i, id) => { clearToastTimer(); const e = findEntry(i, id); this.setState({ edit: { day: i, id }, form: null, sel: Object.assign({}, e ? e.sel : {}), toast: null, rec: false }); };
     const CHIPS = {
       feed: [['配方奶 120 ml', { type: '配方奶', amt: '120 ml' }], ['親餵 15 分鐘', { type: '親餵母乳', amt: '15 分鐘' }], ['更多細節', null]],
       diaper: [['有便便', 'poo'], ['更多細節', null]],
@@ -478,7 +477,7 @@ class Component extends DCLogic {
         const list = patchEntry(i, id, { sel: { type: '濕＋便便' } });
         clearToastTimer();
         const e = list.find((x) => x.id === id);
-        this.setState({ added: Object.assign({}, s.added, { [i]: list }), edit: { day: i, id }, form: null, sel: Object.assign({}, e.sel), toast: null, other: false });
+        this.setState({ added: Object.assign({}, s.added, { [i]: list }), edit: { day: i, id }, form: null, sel: Object.assign({}, e.sel), toast: null, rec: false });
         return;
       }
       const list = patchEntry(i, id, { sel: def });
@@ -487,12 +486,11 @@ class Component extends DCLogic {
     };
     const tap = (k) => {
       const i = s.day, before = addedOf(i), t = nowMin();
-      if (k === 'other') { this.setState({ other: !s.other, edit: null, form: null }); return; }
       const open = k === 'sleep' && before.find((e) => e.k === 'sleep' && e.open);
       if (open) {
         let m = t - open.start; if (m < 0) m += 1440;
         const list = patchEntry(i, open.id, { open: false, end: t, min: m, t: hm(t) });
-        setAdded(i, list, { other: false, edit: null, form: null,
+        setAdded(i, list, { rec: false, edit: null, form: null,
           toast: showToast({ title: '醒來了・' + hm(t), sub: '這次睡了 ' + dur(m), chips: CHIPS.sleepEnd.map((c) => ({ label: c[0], pick: chipFn(i, open.id, c[1]) })), undo: { day: i, list: before } }, 7000) });
         return;
       }
@@ -501,8 +499,8 @@ class Component extends DCLogic {
       if (k === 'sleep') { e.open = true; e.start = t; }
       const title = (k === 'sleep' ? '開始睡覺・' : '已記錄 ' + K[k][0] + '・') + hm(t) + (isToday ? '' : '（補記到 ' + dayShort + '）');
       const chips = CHIPS[k === 'sleep' ? 'sleepStart' : k].map((c) => ({ label: c[0], pick: chipFn(i, id, c[1]) }));
-      setAdded(i, before.concat([e]), { other: false, edit: null, form: null,
-        toast: showToast({ title, sub: k === 'sleep' ? '醒來時再按一次「睡覺」' : '要補充嗎？不用也可以', chips, undo: { day: i, list: before } }, 7000) });
+      setAdded(i, before.concat([e]), { rec: false, edit: null, form: null,
+        toast: showToast({ title, sub: k === 'sleep' ? '醒來時打開「記一筆」按「醒來了」' : '要補充嗎？不用也可以', chips, undo: { day: i, list: before } }, 7000) });
     };
 
     /* ---- 補充細節的表單 ---- */
@@ -555,20 +553,22 @@ class Component extends DCLogic {
       setAdded(i, before.concat([e]), { form: null, sel: {}, toast: showToast({ title: '已記錄 ' + K[e.k][0] + '・' + e.t, sub: describe(e), chips: [], undo: { day: i, list: before } }, 5000) });
     };
 
-    /* ---- 四顆大按鈕 ---- */
+    /* ---- 記一筆：一根竹子，點了往上長出竹節，一節一個項目 ---- */
     const openSleep = addedOf(s.day).find((e) => e.k === 'sleep' && e.open);
     const lastOf = (k) => { const e = entries.filter((x) => x.k === k).sort((a, b) => a.t.localeCompare(b.t)); return e.length ? '上次 ' + e[e.length - 1].t : (isToday ? '今天還沒記' : '這天沒有紀錄'); };
-    const QB = [
-      { key: 'feed', label: '餵奶', color: '#2E5E4E', bg: '#E4EEE7', last: lastOf('feed') },
-      { key: 'diaper', label: '尿布', color: '#7A4F0B', bg: '#F6E9CC', last: lastOf('diaper') },
-      { key: 'sleep', label: openSleep ? '醒來了' : '睡覺', color: '#2F5470', bg: '#E3ECF2', last: openSleep ? hm(openSleep.start) + ' 入睡，睡覺中' : lastOf('sleep') },
-      { key: 'other', label: '其他', color: '#56625B', bg: '#ECE8E0', last: '體溫・身高體重・筆記' }
+    const openForm = (k) => { clearToastTimer(); this.setState({ form: k, edit: null, sel: {}, rec: false, toast: null }); };
+    const REC = [
+      { key: 'feed', label: '餵奶', last: lastOf('feed'), pick: () => tap('feed') },
+      { key: 'diaper', label: '尿布', last: lastOf('diaper'), pick: () => tap('diaper') },
+      { key: 'sleep', label: openSleep ? '醒來了' : '睡覺', last: openSleep ? hm(openSleep.start) + ' 入睡，睡覺中' : lastOf('sleep'), on: !!openSleep, pick: () => tap('sleep') },
+      { key: 'temp', label: '體溫', last: lastOf('temp'), pick: () => openForm('temp') },
+      { key: 'grow', label: '身高體重', last: lastOf('grow'), pick: () => openForm('grow') },
+      { key: 'note', label: '筆記', last: lastOf('note'), pick: () => openForm('note') }
     ];
-    const quick = QB.map((q) => Object.assign({}, q, {
-      pressed: (q.key === 'other' && s.other) || (q.key === 'sleep' && openSleep) || (formKind === q.key) ? 'true' : 'false',
-      pick: () => tap(q.key)
+    const recItems = REC.map((r, i) => Object.assign({}, r, {
+      i: String(i), tab: s.rec ? '0' : '-1', side: 'zb-rec-txt ' + (i % 2 ? 'l' : 'r'),
+      subCls: 'zb-rec-sub' + (r.on ? ' on' : '')
     }));
-    const others = ['temp', 'grow', 'note'].map((k) => ({ label: K[k][0], color: K[k][1], pick: () => { clearToastTimer(); this.setState({ form: k, edit: null, sel: {}, other: false, toast: null }); } }));
 
     /* ---- 摘要 ---- */
     const feeds = entries.filter((e) => e.k === 'feed');
@@ -610,32 +610,20 @@ class Component extends DCLogic {
       return { sleep: +(es.filter((e) => e.k === 'sleep').reduce((a, e) => a + (e.min || 0), 0) / 60).toFixed(1), feed: es.filter((e) => e.k === 'feed').length, wet: es.filter((e) => e.k === 'diaper' && e.d.indexOf('濕') >= 0).length };
     });
     const SERIES = {
-      sleep: { label: '睡眠', unit: '小時', max: 18, color: '#2F5470', note: '今天還沒過完，晚上的睡眠會再加上去。' },
+      sleep: { label: '睡眠', unit: '小時', max: 18, color: '#2E5E4E', note: '今天還沒過完，晚上的睡眠會再加上去。' },
       feed: { label: '喝奶', unit: '次', max: 10, color: '#2E5E4E', note: '次數穩定就好，不需要每天一樣。' },
-      wet: { label: '濕尿布', unit: '片', max: 10, color: '#7A4F0B', note: '每天 6 片以上通常表示奶喝得夠。' }
+      wet: { label: '濕尿布', unit: '片', max: 10, color: '#2E5E4E', note: '每天 6 片以上通常表示奶喝得夠。' }
     };
     const ser = SERIES[s.metric];
     const bars = stats.map((st, i) => {
       const v = st[s.metric], on = i === s.day;
       return { v: String(v), day: i === TODAY ? '今天' : DATES[i].md, pressed: on ? 'true' : 'false',
         aria: (i === TODAY ? '今天' : DATES[i].md) + ' ' + ser.label + ' ' + v + ' ' + ser.unit,
-        pick: () => this.setState({ day: i, picker: false, edit: null, form: null, other: false }),
-        style: 'display: block; width: 70%; max-width: 40px; border-radius: 6px 6px 0 0; height: ' + Math.round(Math.min(v, ser.max) / ser.max * 120) + 'px; background: ' + (on ? ser.color : ser.color + '66') };
+        pick: () => this.setState({ day: i, edit: null, form: null, rec: false }),
+        style: 'display: block; width: 70%; max-width: 40px; border-radius: 6px 6px 0 0; height: ' + Math.round(Math.min(v, ser.max) / ser.max * 120) + 'px; background: ' + (on ? ser.color : '#8FB89A') };
     });
     const tabStyle = (on) => 'min-height: 36px; padding: 0 12px; border-radius: 999px; font-family: inherit; font-size: 13px; cursor: pointer; ' + (on ? 'background: #2E5E4E; color: #FFFFFF; border: 1px solid #2E5E4E; font-weight: 600' : 'background: #FFFFFF; color: #1F2A24; border: 1px solid #E4DED2');
     const metricTabs = Object.keys(SERIES).map((k) => ({ label: SERIES[k].label, pressed: s.metric === k ? 'true' : 'false', style: tabStyle(s.metric === k), pick: () => this.setState({ metric: k }) }));
-    const MILES = [['smile', '看到人會笑', '10/20'], ['track', '眼睛會跟著東西移動', '10/28'], ['head', '趴著時能抬頭', ''], ['coo', '會發出咿咿啊啊的聲音', '11/6']];
-    const miles = MILES.map((m) => { const on = !!s.miles[m[0]]; return { label: m[1], date: on ? m[2] || '今天' : '還沒', checked: on ? 'true' : 'false',
-      box: 'width: 22px; height: 22px; flex-shrink: 0; border-radius: 6px; display: flex; align-items: center; justify-content: center; ' + (on ? 'background: #2E5E4E; border: 1px solid #2E5E4E' : 'background: #FFFFFF; border: 1px solid #C9C2B4'),
-      flip: () => this.setState({ miles: Object.assign({}, s.miles, { [m[0]]: !on }) }) }; });
-    const why = [
-      { t: '喝奶：知道奶量夠不夠', d: '次數和份量突然變少，可能是身體不舒服的早期訊號。看醫生時也能說得清楚。' },
-      { t: '尿布：最簡單的脫水指標', d: '濕尿布變少可能是喝不夠或脫水，比看奶量更直接。' },
-      { t: '便便顏色：及早發現膽道閉鎖', d: '淡黃或灰白色的便便要儘快就醫。對照兒童健康手冊裡的嬰兒大便辨識卡，早發現早治療。' },
-      { t: '睡眠與睡姿：預防嬰兒猝死', d: '記錄睡姿可以提醒全家一起讓寶寶仰睡，也能看出作息是否穩定。' },
-      { t: '體溫：小寶寶發燒要早點處理', d: '未滿 3 個月發燒要儘快就醫，記下時間和溫度，醫師判斷更快。' },
-      { t: '身高體重與發展：看長得好不好', d: '身高、體重畫成曲線，連續偏離時才需要擔心，比單次數字更有意義。' }
-    ];
     let lastGrow = null;
     [0, 1, 2, 3, 4, 5, 6].forEach((i) => addedOf(i).forEach((e) => { if (e.k === 'grow' && (e.sel.h || e.sel.w)) lastGrow = { e, i }; }));
     const growH = (lastGrow && lastGrow.e.sel.h) || '58 cm';
@@ -652,24 +640,38 @@ class Component extends DCLogic {
       else this.setState({ toast: null });
     };
     const dayLabel = (isToday ? '今天 ' : '') + dayShort + '（' + DATES[s.day].w + '）';
+    const dayIso = '2026-11-' + pad(8 + s.day);
     return {
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
-      dayLabel, dayShort, isPast: !isToday, goToday: () => this.setState({ day: TODAY, picker: false, edit: null, form: null }),
+      dayLabel, dayShort, isPast: !isToday, goToday: () => this.setState({ day: TODAY, edit: null, form: null, rec: false }),
       prevDisabled: s.day === 0 ? 'true' : 'false', nextDisabled: isToday ? 'true' : 'false',
-      prevDay: () => { if (s.day > 0) this.setState({ day: s.day - 1, edit: null, form: null, other: false }); },
-      nextDay: () => { if (s.day < TODAY) this.setState({ day: s.day + 1, edit: null, form: null, other: false }); },
-      pickerOpen: !!s.picker, pickerExpanded: s.picker ? 'true' : 'false', togglePicker: () => this.setState({ picker: !s.picker }),
-      dayChips: DATES.map((d, i) => ({ w: i === TODAY ? '今天' : d.w, d: d.md, pressed: i === s.day ? 'true' : 'false', pick: () => this.setState({ day: i, picker: false, edit: null, form: null, other: false }) })),
-      quick, otherOpen: !!s.other, others,
+      prevDay: () => { if (s.day > 0) this.setState({ day: s.day - 1, edit: null, form: null, rec: false }); },
+      nextDay: () => { if (s.day < TODAY) this.setState({ day: s.day + 1, edit: null, form: null, rec: false }); },
+      dayIso: dayIso, dayAria: '選擇日期，目前是' + dayLabel,
+      openPicker: () => {
+        const el = document.getElementById('zb-date-in'); if (!el) return;
+        el.value = dayIso;
+        try { if (el.showPicker) { el.showPicker(); return; } } catch (err) { /* 不支援時改用 focus */ }
+        el.focus(); el.click();
+      },
+      pickDate: (e) => {
+        const v = e.target.value; const m = /^2026-11-(\d{2})$/.exec(v || '');
+        const i = m ? +m[1] - 8 : -1;
+        if (i >= 0 && i <= TODAY) this.setState({ day: i, edit: null, form: null, rec: false });
+        else e.target.value = dayIso;
+      },
+      recItems, recOpenStr: s.rec ? 'true' : 'false', recHidden: s.rec ? 'false' : 'true',
+      toggleRec: () => this.setState({ rec: !s.rec, edit: null, form: null }),
+      recTitle: s.rec ? '收起來' : '記一筆',
+      recSub: s.rec ? '選一個項目' : (openSleep ? '寶寶睡覺中・' + hm(openSleep.start) + ' 入睡' : (isToday ? '餵奶・尿布・睡覺・體溫…' : '補記到 ' + dayShort)),
       formOpen: !!formKind, formTitle: editing ? '補充' + K[editing.k][0] + '・' + editing.t : (formKind ? '記錄' + K[formKind][0] + '・' + hm(nowMin()) : ''),
       fields, formWarn, save, closeForm: () => this.setState({ form: null, edit: null, sel: {} }),
       alerts: alertsOut, summary, log, logEmpty: log.length === 0, bars, metricTabs,
       sumTitle: isToday ? '今天到目前' : dayShort + ' 一整天', logTitle: isToday ? '今天的紀錄' : dayShort + ' 的紀錄',
       chartLabel: '最近 7 天' + ser.label + '（' + ser.unit + '）', chartNote: ser.label + '（' + ser.unit + '）・' + ser.note + '點長條可以看那一天。',
       growth: [ { label: '身高', value: growH, pct: growNote }, { label: '體重', value: growW, pct: growNote } ], growDate,
-      miles, why,
       toastOn: !!toast, toastMs: toast ? toast.ms : 0, toastKey: toast ? 't' + toast.key : '', toastTitle: toast ? toast.title : '', toastSub: toast ? toast.sub : '',
       toastChips: toast ? toast.chips : [], toastHasChips: !!(toast && toast.chips.length), undo, undoLabel: toast && toast.undo ? '復原' : '關閉'
     };
@@ -683,7 +685,6 @@ Component.prototype.renderVals = function () {
   v.logMore = v.log.length > LIMIT; v.logExpanded = s.logAll ? 'true' : 'false';
   v.logLabel = s.logAll ? '收合' : '看全部 ' + v.log.length + ' 筆';
   v.toggleLog = () => this.setState({ logAll: !s.logAll });
-  v.why = v.why.map((w) => ({ ...w, open: s.why === w.t, expanded: s.why === w.t ? 'true' : 'false', toggle: () => this.setState({ why: s.why === w.t ? null : w.t }) }));
   return v;
 };
 window.Component = Component;
