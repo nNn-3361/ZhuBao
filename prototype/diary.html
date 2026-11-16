@@ -121,11 +121,17 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-qopts{display:flex;flex-wrap:wrap;gap:8px}
 .zb-qopt{touch-action:manipulation;min-height:40px;padding:0 14px;border-radius:999px;border:0;background:#E4EEE7;color:#2E5E4E;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .zb-qopt.zb-pressing{background:#F5E4E0;color:#8E3A33;transform:scale(.95)}
-.zb-qadd{min-height:40px;padding:0 12px;border-radius:999px;border:1px dashed #9FBDAA;background:transparent;color:#2E5E4E;font-family:inherit;font-size:14px;cursor:pointer}
 .zb-addrow{display:flex;gap:8px;align-items:center}
 .zb-addrow .zb-text{flex:1;min-width:0}
-.zb-add-ok,.zb-add-no{min-height:48px;padding:0 14px;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;flex-shrink:0}
-.zb-add-ok{border:0;background:#2E5E4E;color:#fff}.zb-add-no{border:1px solid #E4DED2;background:transparent;color:#1F2A24}
+.zb-add-ok{min-height:48px;padding:0 14px;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;flex-shrink:0}
+.zb-add-ok{border:0;background:#2E5E4E;color:#fff}
+button.zb-link{position:relative;min-height:44px;padding:0 4px;border:0 !important;background:transparent !important;box-shadow:none !important;font-family:inherit;font-size:14px;font-weight:600;color:#5F6B64;cursor:pointer;flex-shrink:0;transition:color .2s ease,transform .2s cubic-bezier(.34,1.56,.64,1)}
+button.zb-link.zb-qadd{color:#2E5E4E;align-self:flex-start}
+button.zb-link::after{content:"";position:absolute;left:4px;right:4px;bottom:9px;height:2px;border-radius:2px;background:#2E5E4E;transform:scaleX(0);transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+button.zb-link:hover,button.zb-link:focus-visible{color:#2E5E4E;transform:none !important}
+button.zb-link:hover::after,button.zb-link:focus-visible::after{transform:scaleX(1)}
+button.zb-link:active{transform:scale(.92) !important;transition-duration:.06s}
+@media (prefers-reduced-motion:reduce){button.zb-link,button.zb-link::after{transition:none}button.zb-link:active{transform:none !important}}
 .zb-hint{font-size:12px;color:#5F6B64}
 .zb-times{display:flex;flex-wrap:wrap;gap:8px 28px}
 .zb-tp{position:relative;display:flex;align-items:baseline;gap:10px}
@@ -246,7 +252,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <section aria-label="補充細節" class="zb-anim" style="background: #FCFAF6; border: 1px solid #2E5E4E; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
 <h2 style="margin: 0; font-size: 17px; font-weight: 600">{{formTitle}}</h2>
-<button type="button" onClick="{{closeForm}}" style="min-height: 40px; padding: 0 12px; border-radius: 10px; border: 1px solid #E4DED2; background: transparent; font-family: inherit; font-size: 14px; cursor: pointer">取消</button>
+<button type="button" class="zb-link" onClick="{{closeForm}}">取消</button>
 </div>
 <div class="zb-field">
 <label for="zb-detail" class="zb-fl">{{fLabel}}</label>
@@ -255,13 +261,13 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <sc-for list="{{qopts}}" as="q" hint-placeholder-count="2">
 <button type="button" class="zb-qopt" data-k="{{q.v}}" data-qk="{{q.k}}" data-qv="{{q.v}}" onClick="{{q.pick}}">{{q.v}}</button>
 </sc-for>
-<sc-if value="{{addClosed}}" hint-placeholder-val="{{true}}"><button type="button" class="zb-qadd" onClick="{{openAdd}}">＋新增快捷選項</button></sc-if>
+<sc-if value="{{addClosed}}" hint-placeholder-val="{{true}}"><button type="button" class="zb-link zb-qadd" onClick="{{openAdd}}">＋新增快捷選項</button></sc-if>
 </div>
 <sc-if value="{{addOpen}}" hint-placeholder-val="{{false}}">
 <div class="zb-addrow zb-anim">
 <input type="text" id="zb-newopt" class="zb-text" data-k="{{formKey}}n" maxlength="20" autocomplete="off" placeholder="輸入要存的選項，例如：配方奶 120 ml" value="{{optDraft}}" onInput="{{optInput}}">
 <button type="button" class="zb-add-ok" onClick="{{addOpt}}">加入</button>
-<button type="button" class="zb-add-no" onClick="{{closeAdd}}">取消</button>
+<button type="button" class="zb-link zb-add-no" onClick="{{closeAdd}}">取消</button>
 </div>
 </sc-if>
 <sc-if value="{{hasQ}}" hint-placeholder-val="{{false}}"><span class="zb-hint">點快捷選項會填進上面的框；長按可以刪除。</span></sc-if>
