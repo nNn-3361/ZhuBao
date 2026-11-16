@@ -70,6 +70,59 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-setup-card{background:#FCFAF6;border:1px solid #E4DED2;border-radius:20px;padding:32px 36px;display:flex;flex-direction:column;gap:24px}
 .zb-setup-q{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 36px}
 .zb-setup-card a[href="index.html"]{max-width:360px;width:100%;margin:0 auto}
+.zb-date{display:flex;align-items:center;gap:2px;font-size:14px}
+.zb-date button{background:transparent !important;border:0 !important;box-shadow:none !important;font-family:inherit;color:#1F2A24;cursor:pointer;padding:0}
+.zb-date button:hover{transform:none !important}
+.zb-date-arrow{width:40px;height:44px;border-radius:999px;font-size:24px;line-height:1}
+.zb-date-arrow:hover{color:#2E5E4E}
+.zb-date-arrow[aria-disabled="true"]{color:#D3CCBF;cursor:default}
+.zb-date-pick{position:relative;display:inline-flex}
+.zb-date-label{position:relative;min-height:44px;padding:0 4px !important;font-size:16px;font-weight:600;letter-spacing:.02em;transition:color .2s ease}
+.zb-date-label::after{content:"";position:absolute;left:4px;right:4px;bottom:8px;height:2px;border-radius:2px;background:#2E5E4E;transform:scaleX(0);transform-origin:center;transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+.zb-date-label:hover,.zb-date-label:focus-visible{color:#2E5E4E}
+.zb-date-label:hover::after,.zb-date-label:focus-visible::after{transform:scaleX(1)}
+.zb-date-label:active{transform:scale(.96) !important}
+.zb-dp-pop{position:absolute;left:-8px;top:100%;z-index:40;margin-top:6px;width:296px;box-sizing:border-box;background:#FCFAF6;border-radius:18px;box-shadow:0 14px 36px rgba(31,42,36,.16);padding:14px 14px 10px;display:flex;flex-direction:column;gap:10px;transform-origin:top left;animation:zbDpIn .22s cubic-bezier(.2,.8,.2,1)}
+.zb-dp-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:0 4px;font-size:15px;font-weight:600;color:#1F2A24}
+.zb-dp-sub{font-size:12px;font-weight:400;color:#5F6B64}
+.zb-dp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;justify-items:center}
+.zb-dp-w{font-size:12px;color:#5F6B64;height:24px;display:flex;align-items:center}
+.zb-date-pick button.zb-dp-d{position:relative;width:36px;height:36px;padding:0;border:0 !important;border-radius:999px;background:transparent !important;box-shadow:none !important;font-family:inherit;font-size:14px;color:#1F2A24;font-variant-numeric:tabular-nums;cursor:pointer;transition:background-color .18s ease,color .18s ease}
+.zb-date-pick button.zb-dp-d:hover{background:#E4EEE7 !important;color:#2E5E4E;transform:none !important}
+.zb-date-pick button.zb-dp-d:active{transform:scale(.9) !important}
+.zb-date-pick button.zb-dp-d[aria-pressed="true"]{background:#2E5E4E !important;color:#FFFFFF;font-weight:600}
+.zb-dp-today::after{content:"";position:absolute;left:50%;bottom:4px;width:4px;height:4px;margin-left:-2px;border-radius:999px;background:#8FC16F}
+.zb-date-pick button.zb-dp-off{color:#C9C2B4;cursor:default}
+.zb-date-pick button.zb-dp-off:hover{background:transparent !important;color:#C9C2B4}
+.zb-date-pick button.zb-dp-off:active{transform:none !important}
+.zb-date-pick button.zb-dp-blank{visibility:hidden}
+.zb-dp-act{display:flex;justify-content:flex-end;gap:4px;border-top:1px solid #EFEAE0;padding-top:8px}
+.zb-dp-act button{min-height:40px;padding:0 14px;border:0 !important;border-radius:10px;background:transparent !important;box-shadow:none !important;font-family:inherit;font-size:14px;font-weight:600;color:#2E5E4E;cursor:pointer}
+.zb-dp-act button:hover{background:#E4EEE7 !important;transform:none !important}
+.zb-dp-act button.zb-dp-ok{background:#2E5E4E !important;color:#FFFFFF}
+.zb-date-label[aria-expanded="true"]{color:#2E5E4E}.zb-date-label[aria-expanded="true"]::after{transform:scaleX(1)}
+@keyframes zbDpIn{from{opacity:0;transform:translateY(-6px) scale(.97)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.zb-dp-pop{animation:none}.zb-date-label::after{transition:none}}
+.zb-dp-head{align-items:center}
+.zb-date-pick button.zb-dp-nav{width:36px;height:36px;padding:0;border:0 !important;border-radius:999px;background:transparent !important;box-shadow:none !important;font-family:inherit;font-size:20px;line-height:1;color:#2E5E4E;cursor:pointer}
+.zb-date-pick button.zb-dp-nav:hover{background:#E4EEE7 !important;transform:none !important}
+.zb-date-pick button.zb-dp-nav:active{transform:scale(.9) !important}
+.zb-dp-title{flex:1;text-align:center}
+.zb-setup-card{gap:28px}
+.zb-su-head{display:flex;flex-direction:column;gap:6px}
+.zb-su-kicker{font-size:13px;font-weight:600;color:#2E5E4E;letter-spacing:.06em}
+.zb-su-head h1{margin:0;font-size:26px;line-height:1.35;font-weight:600}
+.zb-su-head p{margin:0;font-size:15px;line-height:1.7;color:#5F6B64}
+.zb-su-note{margin:0;background:#E4EEE7;border-radius:12px;padding:12px 16px;font-size:13px;line-height:1.6;color:#2E5E4E}
+.zb-su-sec{display:flex;flex-direction:column;gap:4px;border-top:1px solid #EFEAE0;padding-top:24px}
+.zb-su-label{font-size:15px;font-weight:600}
+.zb-su-hint{font-size:13px;color:#5F6B64}
+.zb-su-sec .zb-date-label{font-size:20px;padding:0 2px !important}
+.zb-setup-q{border-top:1px solid #EFEAE0;padding-top:24px}
+.zb-setup-q fieldset{min-width:0}
+.zb-su-foot{display:flex;flex-direction:column;align-items:center;gap:10px;border-top:1px solid #EFEAE0;padding-top:24px}
+@media (max-width:760px){.zb-su-head h1{font-size:24px}.zb-su-sec,.zb-setup-q,.zb-su-foot{padding-top:20px}}
+
 @media (max-width:760px){.zb-setup{padding:20px 16px 36px}.zb-setup-card{background:transparent;border:0;border-radius:0;padding:0;gap:20px}.zb-setup-q{grid-template-columns:1fr;gap:20px}.zb-setup-card a[href="index.html"]{max-width:none}}
 </style>
 </head>
@@ -107,21 +160,32 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </header>
 <main class="zb-setup">
 <div class="zb-setup-card">
-<div style="display: flex; flex-direction: column; gap: 8px">
-<div style="height: 4px; background: #E4DED2; border-radius: 999px; overflow: hidden"><div style="width: 100%; height: 4px; background: #2E5E4E"></div></div>
-<h1 style="margin: 8px 0 0; font-size: 24px; line-height: 1.4; font-weight: 600">先認識你的寶寶</h1>
-<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">回答 5 個問題，我們會依新竹市與中央的規定，整理出寶寶可以用的補助和每個年紀要注意的事。</p>
+<div class="zb-su-head">
+<span class="zb-su-kicker">寶寶資料</span>
+<h1>先認識你的寶寶</h1>
+<p>回答 5 個問題，我們會依新竹市與中央的規定，整理出寶寶可以用的補助和每個年紀要注意的事。</p>
 </div>
+<p class="zb-su-note">不收姓名與身分證字號。資料只存在這台裝置，隨時可以在設定中清除。</p>
 
-<div style="display: flex; gap: 12px; align-items: flex-start; background: #E4EEE7; border-radius: 12px; padding: 12px 14px">
-<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #2E5E4E">不收姓名與身分證字號。資料只存在這台裝置，隨時可以在設定中清除。</p>
+<section class="zb-su-sec" aria-labelledby="bd-l">
+<span id="bd-l" class="zb-su-label">寶寶出生日期</span>
+<div class="zb-date">
+<span class="zb-date-pick">
+<button type="button" class="zb-date-label" aria-labelledby="bd-l bd-v" aria-expanded="{{dpExp}}" onClick="{{openPicker}}"><span id="bd-v">{{bdLabel}}</span></button>
+<sc-if value="{{dpOpen}}" hint-placeholder-val="{{false}}">
+<div class="zb-dp-pop" role="group" aria-label="選擇出生日期">
+<div class="zb-dp-head"><button type="button" class="zb-dp-nav" aria-label="上個月" onClick="{{prevMonth}}">‹</button><span class="zb-dp-title">{{dpTitle}}</span><button type="button" class="zb-dp-nav" aria-label="下個月" onClick="{{nextMonth}}">›</button></div>
+<div class="zb-dp-grid">
+<sc-for list="{{dpWeek}}" as="w" hint-placeholder-count="7"><span class="zb-dp-w">{{w}}</span></sc-for>
+<sc-for list="{{dpCells}}" as="c" hint-placeholder-count="35"><button type="button" class="{{c.cls}}" aria-label="{{c.aria}}" aria-pressed="{{c.on}}" tabindex="{{c.tab}}" onClick="{{c.pick}}">{{c.label}}</button></sc-for>
 </div>
-
-<div style="display: flex; flex-direction: column; gap: 8px">
-<label for="birth" style="font-size: 15px; font-weight: 600">寶寶出生日期</label>
-<input id="birth" type="date" value="2026-09-10" style="height: 48px; box-sizing: border-box; border: 1px solid #E4DED2; border-radius: 12px; background: #FCFAF6; padding: 0 14px; font-family: inherit; font-size: 16px; color: #1F2A24">
-<span style="font-size: 12px; color: #5F6B64">還沒出生？<a href="#">改填預產期</a></span>
+<div class="zb-dp-act"><button type="button" onClick="{{goToday}}">今天</button><button type="button" class="zb-dp-ok" onClick="{{closeDp}}">完成</button></div>
 </div>
+</sc-if>
+</span>
+</div>
+<span class="zb-su-hint">還沒出生？填預產期就可以。</span>
+</section>
 
 <div class="zb-setup-q">
 <sc-for list="{{questions}}" as="q" hint-placeholder-count="4">
@@ -137,7 +201,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </sc-for>
 </div>
 
-<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px">
+<div class="zb-su-foot">
 <a href="index.html" style="height: 52px; display: flex; align-items: center; justify-content: center; background: #2E5E4E; color: #FFFFFF; border-radius: 12px; font-size: 16px; font-weight: 600; text-decoration: none">開始使用竹寶</a>
 <p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64; text-align: center">結果僅供參考，最終資格以主管機關審核為準。</p>
 </div>
@@ -153,7 +217,9 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { menuOpen: false, district: '北區', residency: '不確定', order: '第 1 胎', care: '自己或家人', lowIncome: '不想回答' };
+    document.addEventListener('click', (e) => { const t = e.target; if (t && t.isConnected && this.state.dp && !t.closest('.zb-date-pick')) this.setState({ dp: false }); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && this.state.dp) this.setState({ dp: false }); });
+    this.state = { menuOpen: false, bd: { y: 2026, m: 8, d: 10 }, dp: false, vy: 2026, vm: 8, district: '北區', residency: '不確定', order: '第 1 胎', care: '自己或家人', lowIncome: '不想回答' };
   }
   renderVals() {
     const s = this.state;
@@ -169,7 +235,27 @@ class Component extends DCLogic {
         pick: () => this.setState({ [key]: o })
       }))
     }, extra || {});
+    /* 出生日期：和寶寶日記同一種月曆，可以切換月份，也可以選未來日期（預產期） */
+    const WK = ['日', '一', '二', '三', '四', '五', '六'];
+    const now = new Date(), T = { y: now.getFullYear(), m: now.getMonth(), d: now.getDate() };
+    const bd = s.bd, bdDate = new Date(bd.y, bd.m, bd.d);
+    const shift = (n) => { const dt = new Date(s.vy, s.vm + n, 1); this.setState({ vy: dt.getFullYear(), vm: dt.getMonth() }); };
+    const cells = [];
+    const first = new Date(s.vy, s.vm, 1).getDay(), days = new Date(s.vy, s.vm + 1, 0).getDate();
+    for (let n = 0; n < first; n++) cells.push({ label: '', cls: 'zb-dp-d zb-dp-blank', aria: '', on: 'false', tab: '-1', pick: null });
+    for (let d = 1; d <= days; d++) {
+      const on = bd.y === s.vy && bd.m === s.vm && bd.d === d, today = T.y === s.vy && T.m === s.vm && T.d === d;
+      cells.push({ label: String(d), cls: 'zb-dp-d' + (today ? ' zb-dp-today' : ''), aria: s.vy + ' 年 ' + (s.vm + 1) + ' 月 ' + d + ' 日' + (today ? '（今天）' : ''),
+        on: on ? 'true' : 'false', tab: '0', pick: () => this.setState({ bd: { y: s.vy, m: s.vm, d }, dp: false }) });
+    }
     return {
+      bdLabel: bd.y + ' 年 ' + (bd.m + 1) + ' 月 ' + bd.d + ' 日（' + WK[bdDate.getDay()] + '）',
+      dpOpen: !!s.dp, dpExp: s.dp ? 'true' : 'false',
+      openPicker: () => this.setState({ dp: !s.dp, vy: bd.y, vm: bd.m }),
+      closeDp: () => this.setState({ dp: false }),
+      goToday: () => this.setState({ bd: T, vy: T.y, vm: T.m, dp: false }),
+      prevMonth: () => shift(-1), nextMonth: () => shift(1),
+      dpTitle: s.vy + ' 年 ' + (s.vm + 1) + ' 月', dpWeek: WK, dpCells: cells,
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
