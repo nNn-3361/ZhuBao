@@ -222,5 +222,17 @@
     render();
     showLoader();
     document.addEventListener('touchstart', function () {}, { passive: true });
+    /* 大區塊（展開卡片、整列連結、大按鈕）按下時不縮放，只淡淡變色；小按鈕保留彈一下 */
+    const big = document.createElement('style');
+    big.textContent = '.zb-big:active,.zb-acc-head:active{transform:none !important;box-shadow:none !important;opacity:.78}'
+      + '.zb-big,.zb-acc-head{transition:opacity .15s ease,background-color .2s ease,color .2s ease !important}'
+      + 'button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}';
+    document.head.appendChild(big);
+    document.addEventListener('pointerdown', (e) => {
+      const el = e.target.closest && e.target.closest('button, a');
+      if (!el || el.classList.contains('zb-big')) return;
+      const r = el.getBoundingClientRect();
+      if (r.width >= 200 || r.height >= 72) el.classList.add('zb-big');
+    }, true);
   });
 })();

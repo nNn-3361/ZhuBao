@@ -66,7 +66,7 @@
     + '.zbn-card{flex:0 0 calc(100% - 44px);box-sizing:border-box;min-height:176px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:16px 18px;border-radius:16px;border:1px solid #E4DED2;background:#FCFAF6;font-family:inherit;color:#1F2A24;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease,border-color .2s ease,opacity .35s ease}'
     + '.zbn-card[data-active="false"]{opacity:.55}'
     + '.zbn-card[data-active="true"]:hover{transform:translateY(-3px);border-color:#B9CDBF;box-shadow:0 8px 20px rgba(46,94,78,.12)}'
-    + '.zbn-card:active{transform:scale(.98)}'
+    + '.zbn-card:active{transform:none;opacity:.88}'
     + '.zbn-card:focus-visible{outline:2px solid #2E5E4E;outline-offset:2px}'
     + '.zbn-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:#5F6B64}'
     + '.zbn-tag{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px}'

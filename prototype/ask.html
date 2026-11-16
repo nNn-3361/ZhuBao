@@ -43,13 +43,13 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #2E5E
 @keyframes zbSwayR{0%,100%{transform:rotate(-30deg)}30%{transform:rotate(0deg)}65%{transform:rotate(-44deg)}}
 @keyframes zbSwayL{0%,100%{transform:rotate(30deg)}30%{transform:rotate(0deg)}65%{transform:rotate(44deg)}}
 @keyframes zbWiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}60%{transform:rotate(8deg)}}
-button,a{-webkit-tap-highlight-color:transparent}
+*{-webkit-tap-highlight-color:transparent}
 button,a[style*="min-height"]{transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease,background-color .2s ease,border-color .2s ease,color .2s ease}
 button:active,a[style*="min-height"]:active{transform:scale(.94);box-shadow:none;transition-duration:.06s}
-.zb-bam-row button:active{transform:scale(.98)}
+.zb-bam-row button:active{transform:none}
 @media (hover:hover){
 button:not([aria-expanded]):not([role="switch"]):not([role="checkbox"]):hover,a[style*="min-height"]:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(46,94,78,.18)}
-button[aria-expanded]:hover{background-color:rgba(46,94,78,.05) !important}
+button[aria-expanded]:hover .zb-chev{stroke:#2E5E4E}
 button[role="switch"]:hover,button[role="checkbox"]:hover{color:#2E5E4E !important}
 .zb-nav-links a:not([aria-current]):hover{background:#E4EEE7 !important;color:#2E5E4E !important}
 .zb-bam-row button:hover{transform:none;box-shadow:none}
@@ -100,7 +100,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-hist-item{position:relative;min-height:52px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 10px 8px 16px;border-radius:12px;border:0;background:transparent;font-family:inherit;text-align:left;cursor:pointer;color:#1F2A24;transition:background .15s ease,transform .22s cubic-bezier(.34,1.56,.64,1)}
 .zb-hist-item::before{content:"";position:absolute;left:6px;top:12px;bottom:12px;width:3px;border-radius:2px;background:#D9E5DC;transition:background .15s ease}
 .zb-hist-item:hover{background:#F1ECE2;transform:translateX(3px)}
-.zb-hist-item:active{transform:scale(.97)}
+.zb-hist-item:active{transform:none;opacity:.8}
 .zb-hist-item[aria-current="true"]{background:#E4EEE7}
 .zb-hist-item[aria-current="true"]::before{background:#2E5E4E}
 .zb-hist-q{font-size:14px;line-height:1.5}
