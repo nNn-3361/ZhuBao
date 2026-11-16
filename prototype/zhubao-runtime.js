@@ -148,6 +148,7 @@
     for (const at of Array.from(o.attributes)) if (!n.hasAttribute(at.name)) o.removeAttribute(at.name);
     for (const at of Array.from(n.attributes)) if (o.getAttribute(at.name) !== at.value) o.setAttribute(at.name, at.value);
     o.__zb = n.__zb;
+    if (o.hasAttribute('data-zb-static')) return; /* 這個區塊由其他程式自己管理內容（例如主頁的最新消息輪播），不要覆蓋 */
     morphChildren(o, n);
   }
   function morphChildren(op, np) {
