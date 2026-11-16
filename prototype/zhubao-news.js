@@ -74,22 +74,23 @@
     + '.zbn-sum{font-size:14px;line-height:1.7;color:#3D4842;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}'
     + '.zbn-more{margin-top:auto;font-size:13px;font-weight:600;color:#2E5E4E}'
     + '.zbn-bar{display:flex;align-items:center;gap:8px}'
-    + '.zbn-dots{display:flex;align-items:center;gap:2px;flex:1;min-width:0}'
-    + '.zbn-dot{width:24px;height:28px;padding:0;border:0;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer}'
-    + '.zbn-dot i{display:block;width:8px;height:8px;border-radius:999px;background:#D8D1C4;overflow:hidden;position:relative;transition:width .3s ease,background .2s ease}'
-    + '.zbn-dot:hover i{background:#B9CDBF}'
-    + '.zbn-dot[aria-current="true"]{width:36px}'
-    + '.zbn-dot[aria-current="true"] i{width:28px;background:#D9E5DC}'
+    + '.zbn-dots{display:flex;align-items:center;gap:0;flex:1;min-width:0;margin-left:-8px}'
+    + '.zbn-dot{width:22px;height:32px;padding:0;border:0;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none;transition:width .35s cubic-bezier(.22,.9,.24,1)}'
+    + 'button.zbn-dot,button.zbn-dot:hover,button.zbn-dot:active,button.zbn-dot:focus,button.zbn-dot:focus-visible{outline:none !important;box-shadow:none !important;transform:none !important;background:transparent !important}' /* 只讓圓點本身有反應，外面的點擊範圍不顯示方框 */
+    + '.zbn-dot i{display:block;width:7px;height:7px;border-radius:999px;background:#D3CCBF;overflow:hidden;position:relative;transition:width .35s cubic-bezier(.22,.9,.24,1),background .2s ease,transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease}'
+    + '.zbn-dot:hover i{background:#9FBBA8;transform:scale(1.35)}'
+    + '.zbn-dot:active i{transform:scale(.8)}'
+    + '.zbn-dot:focus-visible i{box-shadow:0 0 0 2px #FCFAF6,0 0 0 4px #2E5E4E}'
+    + '.zbn-dot[aria-current="true"]{width:40px}'
+    + '.zbn-dot[aria-current="true"] i{width:26px;background:#DCE7DF}'
+    + '.zbn-dot[aria-current="true"]:hover i{transform:scale(1.08)}'
+    + '.zbn-dot[aria-current="true"]:active i{transform:scale(.94)}'
     + '.zbn-dot[aria-current="true"] i::after{content:"";position:absolute;inset:0;background:#2E5E4E;border-radius:999px;transform-origin:left;transform:scaleX(1)}'
     + '.zbn-run .zbn-dot[aria-current="true"] i::after{animation:zbnFill ' + MS + 'ms linear forwards}'
-    + '.zbn-dot:focus-visible{outline:2px solid #2E5E4E;outline-offset:0;border-radius:8px}'
-    + '.zbn-count{font-size:12px;color:#5F6B64;font-variant-numeric:tabular-nums;white-space:nowrap}'
     + '.zbn-btn{min-height:36px;min-width:36px;padding:0 12px;border-radius:10px;border:1px solid #E4DED2;background:#FCFAF6;color:#2E5E4E;font:600 13px "Noto Sans TC",system-ui,sans-serif;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .22s cubic-bezier(.34,1.56,.64,1),background .15s ease,border-color .15s ease}'
     + '.zbn-btn:hover{background:#E4EEE7;border-color:#2E5E4E;transform:translateY(-2px)}'
     + '.zbn-btn:active{transform:scale(.9)}'
     + '.zbn-btn:focus-visible{outline:2px solid #2E5E4E;outline-offset:2px}'
-    + '.zbn-arrow{padding:0;width:36px}'
-    + '@media (max-width:760px),(hover:none){.zbn-arrow{display:none}}'
     + '.zbn-modal{position:fixed;inset:0;z-index:950;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}'
     + '.zbn-modal[hidden]{display:none}'
     + '.zbn-back{position:absolute;inset:0;background:rgba(31,42,36,.42)}'
@@ -113,7 +114,7 @@
     + '.zbn-note{font-size:12px;color:#5F6B64}'
     + '.zbn-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}'
     + '@keyframes zbnFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}'
-    + '@media (prefers-reduced-motion:reduce){.zbn-track,.zbn-card,.zbn-btn,.zbn-x,.zbn-acts a,.zbn-dot i{transition:none !important}.zbn-card:hover,.zbn-btn:hover,.zbn-x:hover{transform:none !important}.zbn-dot i::after{animation:none !important}}';
+    + '@media (prefers-reduced-motion:reduce){.zbn-track,.zbn-card,.zbn-btn,.zbn-x,.zbn-acts a,.zbn-dot,.zbn-dot i{transition:none !important}.zbn-dot:hover i,.zbn-dot:active i{transform:none !important}.zbn-card:hover,.zbn-btn:hover,.zbn-x:hover{transform:none !important}.zbn-dot i::after{animation:none !important}}';
 
   const reduced = () => { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
   function h(tag, attrs, kids) {
@@ -148,14 +149,10 @@
     const track = h('div', { class: 'zbn-track' }, cards);
     const vp = h('div', { class: 'zbn-vp' }, [track]);
     const dots = NEWS.map((n, i) => h('button', { type: 'button', class: 'zbn-dot', 'aria-label': '第 ' + (i + 1) + ' 則：' + n.title, html: '<i></i>' }));
-    const count = h('span', { class: 'zbn-count', 'aria-hidden': 'true' });
     const pauseBtn = h('button', { type: 'button', class: 'zbn-btn' });
-    const arrow = (label, d) => h('button', { type: 'button', class: 'zbn-btn zbn-arrow', 'aria-label': label, html: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + d + '"/></svg>' });
-    const prevBtn = arrow('上一則', 'm15 18-6-6 6-6');
-    const nextBtn = arrow('下一則', 'm9 18 6-6-6-6');
     const live = h('div', { class: 'zbn-sr', 'aria-live': 'polite' });
     const root = h('div', { class: 'zbn', role: 'region', 'aria-roledescription': '輪播', 'aria-label': '最新消息' }, [
-      vp, h('div', { class: 'zbn-bar' }, [h('div', { class: 'zbn-dots' }, dots), count, prevBtn, nextBtn, pauseBtn]), live
+      vp, h('div', { class: 'zbn-bar' }, [h('div', { class: 'zbn-dots' }, dots), pauseBtn]), live
     ]);
     host.replaceChildren(root);
 
@@ -166,7 +163,6 @@
       if (!anim) { void track.offsetWidth; track.classList.remove('zbn-drag'); }
       cards.forEach((c, i) => { c.setAttribute('data-active', i === idx ? 'true' : 'false'); c.tabIndex = i === idx ? 0 : -1; c.setAttribute('aria-hidden', i === idx ? 'false' : 'true'); });
       dots.forEach((d, i) => d.setAttribute('aria-current', i === idx ? 'true' : 'false'));
-      count.textContent = (idx + 1) + ' / ' + N;
     }
     const running = () => !userPaused && !hold.hover && !hold.focus && !hold.press && !hold.modal && !document.hidden;
     function schedule() {
@@ -187,8 +183,6 @@
     }
 
     dots.forEach((d, i) => d.addEventListener('click', () => go(i, true)));
-    prevBtn.addEventListener('click', () => go(idx - 1, true));
-    nextBtn.addEventListener('click', () => go(idx + 1, true));
     pauseBtn.addEventListener('click', () => { userPaused = !userPaused; schedule(); });
     root.addEventListener('mouseenter', () => { hold.hover = true; schedule(); });
     root.addEventListener('mouseleave', () => { hold.hover = false; schedule(); });
