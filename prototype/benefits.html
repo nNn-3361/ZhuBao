@@ -44,13 +44,11 @@ button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2p
 @keyframes zbIdleL{0%,100%{transform:rotate(30deg)}50%{transform:rotate(20deg)}}
 @keyframes zbSwayR{0%,100%{transform:rotate(-30deg)}30%{transform:rotate(0deg)}65%{transform:rotate(-44deg)}}
 @keyframes zbSwayL{0%,100%{transform:rotate(30deg)}30%{transform:rotate(0deg)}65%{transform:rotate(44deg)}}
-@keyframes zbLeafTitle{0%,100%{transform:rotate(-18deg)}35%{transform:rotate(8deg)}70%{transform:rotate(-30deg)}}
 @keyframes zbWiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}60%{transform:rotate(8deg)}}
 button,a{-webkit-tap-highlight-color:transparent}
 button,a[style*="min-height"]{transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease,background-color .2s ease,border-color .2s ease,color .2s ease}
 button:active,a[style*="min-height"]:active{transform:scale(.94);box-shadow:none;transition-duration:.06s}
 .zb-bam-row button:active{transform:scale(.98)}
-h1::after{content:"";display:inline-block;width:26px;height:13px;margin-left:10px;vertical-align:middle;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 14'%3E%3Cpath d='M1 7C8 0 22 0 29 7C22 14 8 14 1 7Z' fill='%238FC16F'/%3E%3Cpath d='M3 7H25' stroke='%236F9A82' stroke-width='1'/%3E%3C/svg%3E") no-repeat center/contain;transform:rotate(-18deg);transform-origin:left center}
 @media (hover:hover){
 button:not([aria-expanded]):not([role="switch"]):not([role="checkbox"]):hover,a[style*="min-height"]:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(46,94,78,.18)}
 button[aria-expanded]:hover{background-color:rgba(46,94,78,.05) !important}
@@ -61,11 +59,10 @@ button[role="switch"]:hover,button[role="checkbox"]:hover{color:#2E5E4E !importa
 .zb-bam-row:hover .zb-leaf-r{animation:zbSwayR .8s ease-in-out infinite}
 .zb-bam-row:hover .zb-leaf-l{animation:zbSwayL .8s ease-in-out infinite}
 .zb-bam-row:hover .zb-node{transform:scaleX(1.18)}
-h1:hover::after{animation:zbLeafTitle .9s ease-in-out}
 header svg:first-child:hover{animation:zbWiggle .6s ease-in-out}
 }
 @media (prefers-reduced-motion:reduce){
-#dc-root *,x-dc *,h1::after{animation:none !important;transition:none !important}
+#dc-root *,x-dc *{animation:none !important;transition:none !important}
 button:hover,button:active,a:hover,a:active{transform:none !important}
 }
 /*zb-ui-end*/
@@ -247,16 +244,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </sc-if>
 </article>
 </sc-for>
-</div>
-</section>
-
-<section aria-labelledby="h-ask" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
-<h2 id="h-ask" style="margin: 0; font-size: 18px; font-weight: 600">問問竹寶</h2>
-<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">只引用衛福部、國健署與新竹市政府資料，回答會附出處。</p>
-<div style="display: flex; flex-direction: column; gap: 8px">
-<a href="ask.html" style="min-height: 48px; display: flex; align-items: center; padding: 0 14px; border: 1px solid #E4DED2; border-radius: 12px; font-size: 15px; color: #1F2A24; text-decoration: none">生育津貼要帶哪些文件？</a>
-<a href="ask.html" style="min-height: 48px; display: flex; align-items: center; padding: 0 14px; border: 1px solid #E4DED2; border-radius: 12px; font-size: 15px; color: #1F2A24; text-decoration: none">送托之後育兒津貼會停嗎？</a>
-<a href="ask.html" style="min-height: 48px; display: flex; align-items: center; padding: 0 14px; border: 1px solid #E4DED2; border-radius: 12px; font-size: 15px; color: #1F2A24; text-decoration: none">寶寶發燒半夜可以去哪裡？</a>
 </div>
 </section>
 
