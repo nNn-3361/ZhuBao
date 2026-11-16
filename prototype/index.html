@@ -67,6 +67,34 @@ header svg:first-child:hover{animation:zbWiggle .6s ease-in-out}
 button:hover,button:active,a:hover,a:active{transform:none !important}
 }
 /*zb-ui-end*/
+/*zb-col-start*/
+.zb-col{max-width:768px !important;margin-left:auto !important;margin-right:auto !important}
+@media (max-width:760px){.zb-col{padding:20px 16px 36px !important}}
+.zb-bam-panel{display:flex;gap:8px;align-items:stretch}
+.zb-bam-spine{cursor:default}
+.zb-bam-spine .zb-culm-b{min-height:24px}
+.zb-bam-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;padding:4px 0 16px}
+.zb-bam-body,.zb-acc-body{animation:zbOpen .28s ease-out both}
+@keyframes zbOpen{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.zb-acc{background:#FCFAF6;border:1px solid #E4DED2;border-radius:16px;overflow:hidden;transition:border-color .2s ease,box-shadow .2s ease}
+.zb-acc[data-open="true"]{border-color:#B9CDBF;box-shadow:0 4px 14px rgba(46,94,78,.08)}
+.zb-acc-head{width:100%;min-height:60px;display:flex;align-items:center;gap:12px;padding:12px 16px;background:transparent;border:0;font-family:inherit;color:#1F2A24;text-align:left;cursor:pointer}
+.zb-acc-title{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.zb-acc-body{padding:0 16px 16px;display:flex;flex-direction:column;gap:12px}
+.zb-chev{flex-shrink:0;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+[aria-expanded="true"]>.zb-chev{transform:rotate(180deg)}
+.zb-sec{display:flex;flex-direction:column;gap:12px}
+.zb-sec-head{display:flex;flex-direction:column;gap:4px}
+.zb-sec-head h2{margin:0;font-size:20px;font-weight:600}
+.zb-sec-head p{margin:0;font-size:14px;color:#5F6B64;line-height:1.6}
+.zb-list{display:flex;flex-direction:column;gap:10px}
+@media (max-width:480px){.zb-acc-head{padding:12px 14px;gap:10px}.zb-acc-body{padding:0 14px 14px}}
+.zb-topic-body{padding:0 16px 16px 66px}
+@media (max-width:480px){.zb-topic-body{padding:0 14px 14px}}
+@media (hover:hover){.zb-bam-row:hover button[aria-expanded="false"]{background:#F1EDE4 !important}}
+.zb-list .zb-acc-body{border-top:1px solid #EFEAE0;padding-top:14px}
+.zb-list ul.zb-acc-body>li:first-child{border-top:0 !important}
+/*zb-col-end*/
 </style>
 <style>#dc-root>div{margin-left:auto;margin-right:auto}</style>
 </head>
@@ -104,7 +132,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </sc-if>
 </header>
 
-<main style="max-width: 1200px; margin: 0 auto; padding: 24px 24px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px">
+<main class="zb-col" style="max-width: 1200px; margin: 0 auto; padding: 24px 24px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px">
 
 <section aria-label="寶寶" style="background: #2E5E4E; color: #FFFFFF; border-radius: 20px; padding: 24px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between">
 <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
@@ -119,42 +147,41 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 </section>
 
-<section aria-labelledby="h-stage" style="display: flex; flex-direction: column; gap: 14px">
-<div style="display: flex; flex-direction: column; gap: 4px">
-<h2 id="h-stage" style="margin: 0; font-size: 20px; font-weight: 600">這個年紀要注意的事</h2>
-<p style="margin: 0; font-size: 14px; color: #5F6B64">生命線由下往上長大，點左邊的年齡可以看其他階段，點每張卡片看完整說明。</p>
+<section aria-labelledby="h-stage" class="zb-sec">
+<div class="zb-sec-head">
+<h2 id="h-stage">這個年紀要注意的事</h2>
+<p>生命線由下往上長大。點一個竹節就會在下面展開，一次只開一節。</p>
 </div>
-<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
-
-<nav aria-label="年齡階段" style="flex: 1 1 220px; max-width: 280px; min-width: 0; display: flex; flex-direction: column">
+<nav aria-label="年齡階段" style="display: flex; flex-direction: column">
 <sc-for list="{{stages}}" as="st" hint-placeholder-count="6">
 <div class="zb-bam-row" data-on="{{st.pressed}}">
 <div class="{{st.bamCls}}" aria-hidden="true" onClick="{{st.pick}}"><span class="zb-culm zb-culm-a"></span><span class="zb-node"></span><svg class="zb-leaf zb-leaf-r" viewBox="0 0 30 14"><path d="M1 7C8 0 22 0 29 7C22 14 8 14 1 7Z"></path></svg><svg class="zb-leaf zb-leaf-l" viewBox="0 0 30 14"><path d="M29 7C22 0 8 0 1 7C8 14 22 14 29 7Z"></path></svg><span class="zb-culm zb-culm-b"></span></div>
-<button type="button" aria-pressed="{{st.pressed}}" onClick="{{st.pick}}" style="{{st.btn}}">
-<span style="font-size: 15px">{{st.title}}</span>
-<span style="font-size: 12px; color: #5F6B64; font-weight: 400">{{st.note}}</span>
+<button type="button" aria-expanded="{{st.pressed}}" onClick="{{st.pick}}" style="{{st.btn}}">
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 16px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap">{{st.title}}<sc-if value="{{st.isNow}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: #2E5E4E; color: #FFFFFF">現在</span></sc-if></span>
+<span style="font-size: 13px; color: #5F6B64; font-weight: 400">{{st.note}}・{{st.count}} 件事</span>
+</span>
+<svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
 </button>
 </div>
-</sc-for>
-</nav>
-
-<div style="flex: 999 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
-<div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap">
-<h3 style="margin: 0; font-size: 17px; font-weight: 600">{{stageTitle}}</h3>
-</div>
+<sc-if value="{{st.open}}" hint-placeholder-val="{{false}}">
+<div class="zb-bam-panel">
+<div class="{{st.spineCls}}" aria-hidden="true"><span class="zb-culm zb-culm-b"></span></div>
+<div class="zb-bam-body">
+<span style="font-size: 13px; font-weight: 600; color: #2E5E4E">{{stageTitle}}</span>
 <sc-for list="{{topics}}" as="t" hint-placeholder-count="5">
-<article style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; overflow: hidden">
-<button type="button" aria-expanded="{{t.expanded}}" onClick="{{t.toggle}}" style="width: 100%; min-height: 64px; display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: transparent; border: 0; font-family: inherit; color: #1F2A24; text-align: left; cursor: pointer">
+<article class="zb-acc" data-open="{{t.expanded}}">
+<button type="button" class="zb-acc-head" aria-expanded="{{t.expanded}}" onClick="{{t.toggle}}">
 <span style="{{t.iconWrap}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg></span>
-<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+<span class="zb-acc-title">
 <span style="font-size: 12px; font-weight: 600; color: {{t.color}}">{{t.cat}}</span>
-<span style="font-size: 15px; font-weight: 600; line-height: 1.45">{{t.title}}</span>
+<span style="font-size: 16px; font-weight: 600; line-height: 1.45">{{t.title}}</span>
 </span>
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="{{t.chev}}"></path></svg>
+<svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
 </button>
 <sc-if value="{{t.open}}" hint-placeholder-val="{{false}}">
-<div style="padding: 0 16px 16px 66px; display: flex; flex-direction: column; gap: 12px">
-<ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 1.7">
+<div class="zb-topic-body zb-acc-body">
+<ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.7">
 <sc-for list="{{t.points}}" as="p" hint-placeholder-count="3"><li>{{p}}</li></sc-for>
 </ul>
 <a href="{{t.url}}" style="align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">{{t.cta}}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
@@ -165,6 +192,9 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </sc-for>
 </div>
 </div>
+</sc-if>
+</sc-for>
+</nav>
 </section>
 
 <section aria-labelledby="h-feed" style="display: flex; flex-direction: column; gap: 14px">
@@ -175,16 +205,22 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 <span style="font-size: 13px; color: #5F6B64">{{unreadText}}</span>
 </div>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px">
+<div class="zb-list">
 <sc-for list="{{feed}}" as="f" hint-placeholder-count="6">
-<article style="{{f.card}}">
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
-<span style="{{f.tagStyle}}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{f.icon}}"></path></svg>{{f.tag}}</span>
-<span style="font-size: 12px; color: #5F6B64">{{f.when}}</span>
+<article class="zb-acc" data-open="{{f.expanded}}" style="{{f.card}}">
+<button type="button" class="zb-acc-head" aria-expanded="{{f.expanded}}" onClick="{{f.toggle}}">
+<span class="zb-acc-title" style="gap: 6px">
+<span style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><span style="{{f.tagStyle}}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{f.icon}}"></path></svg>{{f.tag}}</span><span style="font-size: 12px; color: #5F6B64">{{f.when}}</span></span>
+<span style="font-size: 16px; font-weight: 600; line-height: 1.5">{{f.title}}</span>
+</span>
+<svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+</button>
+<sc-if value="{{f.open}}" hint-placeholder-val="{{false}}">
+<div class="zb-acc-body">
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #3D4842">{{f.body}}</p>
+<a href="{{f.url}}" style="align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; border: 1px solid #2E5E4E; color: #2E5E4E; font-size: 14px; font-weight: 600; text-decoration: none">{{f.cta}}</a>
 </div>
-<h3 style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5">{{f.title}}</h3>
-<p style="margin: 0; font-size: 13px; line-height: 1.7; color: #3D4842">{{f.body}}</p>
-<a href="{{f.url}}" style="margin-top: auto; align-self: flex-start; min-height: 40px; display: inline-flex; align-items: center; padding: 0 14px; border-radius: 10px; border: 1px solid #2E5E4E; color: #2E5E4E; font-size: 13px; font-weight: 600; text-decoration: none">{{f.cta}}</a>
+</sc-if>
 </article>
 </sc-for>
 </div>
@@ -201,7 +237,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { menuOpen: false, stage: 'm2', open: 'vax' };
+    this.state = { menuOpen: false, stage: 'm2', open: null, feedOpen: null };
   }
   renderVals() {
     const s = this.state;
@@ -223,7 +259,7 @@ class Component extends DCLogic {
         { id: 'vax', cat: 'vax', title: 'B 型肝炎疫苗第 1、2 劑', points: ['出生後 24 小時內儘速接種第 1 劑，滿 1 個月接種第 2 劑。', '公費免費，接種紀錄會寫在兒童健康手冊。'], url: CDC, cta: '看疾管署接種時程', src: '疾病管制署' },
         { id: 'check', cat: 'check', title: '第 1 次兒童預防保健', points: ['出生到 2 個月內做第 1 次免費健檢。', '未滿 7 歲共有 7 次免費健檢。'], url: HPA, cta: '看國健署說明', src: '國民健康署' }
       ] },
-      { id: 'm2', title: '2–4 個月', note: '現在', phase: 'now', topics: [
+      { id: 'm2', title: '2–4 個月', note: '再 57 天滿 4 個月', phase: 'now', topics: [
         { id: 'vax', cat: 'vax', title: '滿 2 個月打五合一和肺炎鏈球菌疫苗', points: ['滿 2 個月：五合一疫苗第 1 劑、13 價結合型肺炎鏈球菌疫苗第 1 劑。', '滿 4 個月（2027/1/10 起）打這兩種的第 2 劑。', '都是公費免費，帶兒童健康手冊和健保卡到合約院所。'], url: CDC, cta: '看疾管署接種時程', src: '疾病管制署' },
         { id: 'check', cat: 'check', title: '第 2 次兒童預防保健（免費）', points: ['2 到 4 個月之間做，醫師會量身高體重、看發展並做衛教。', '可以和打疫苗排在同一天。'], url: HPA, cta: '看國健署說明', src: '國民健康署' },
         { id: 'food', cat: 'food', title: '只喝奶，先不用急著吃副食品', points: ['繼續母乳或配方奶，不需要喝水或果汁。', '國健署建議純母乳哺育到 6 個月，之後再加副食品。', '想提早開始的話，先問兒科醫師。'], url: MAMMY, cta: '看哺餵說明', src: '國民健康署' },
@@ -256,10 +292,11 @@ class Component extends DCLogic {
     const ORDER = STAGES.slice().reverse();
     const stages = ORDER.map((st, i) => ({
       title: st.title, note: st.note,
-      pressed: st.id === s.stage ? 'true' : 'false',
-      pick: () => this.setState({ stage: st.id, open: null }),
-      bamCls: 'zb-bam zb-bam-' + (st.phase === 'now' ? 'now' : st.phase === 'past' ? 'past' : 'future') + (i % 2 ? ' zb-alt' : '') + (i === 0 ? ' zb-bam-top' : '') + (i === ORDER.length - 1 ? ' zb-bam-bottom' : ''),
-      btn: 'min-height: 56px; margin: 4px 0; padding: 8px 12px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; border-radius: 12px; font-family: inherit; text-align: left; cursor: pointer; font-weight: 600; color: #1F2A24; ' + (st.id === s.stage ? 'background: #FCFAF6; border: 1px solid #2E5E4E' : 'background: transparent; border: 1px solid transparent')
+      pressed: st.id === s.stage ? 'true' : 'false', open: st.id === s.stage, count: st.topics.length, isNow: st.phase === 'now',
+      pick: () => this.setState({ stage: st.id === s.stage ? null : st.id, open: null }),
+      bamCls: 'zb-bam zb-bam-' + (st.phase === 'now' ? 'now' : st.phase === 'past' ? 'past' : 'future') + (i % 2 ? ' zb-alt' : '') + (i === 0 ? ' zb-bam-top' : '') + (i === ORDER.length - 1 && st.id !== s.stage ? ' zb-bam-bottom' : ''),
+      spineCls: 'zb-bam zb-bam-spine zb-bam-' + (st.phase === 'now' ? 'now' : st.phase === 'past' ? 'past' : 'future') + (i === ORDER.length - 1 ? ' zb-bam-bottom' : ''),
+      btn: 'min-height: 60px; margin: 4px 0; padding: 8px 12px; display: flex; align-items: center; gap: 10px; border-radius: 12px; font-family: inherit; text-align: left; cursor: pointer; font-weight: 600; color: #1F2A24; ' + (st.id === s.stage ? 'background: #FCFAF6; border: 1px solid #2E5E4E' : 'background: transparent; border: 1px solid transparent')
     }));
     const topics = cur.topics.map((t) => {
       const c = CAT[t.cat]; const open = s.open === t.id;
@@ -289,16 +326,18 @@ class Component extends DCLogic {
     const feed = FEED.map((f) => {
       const t = TAG[f.tag];
       return {
+        open: s.feedOpen === f.title, expanded: s.feedOpen === f.title ? 'true' : 'false',
+        toggle: () => this.setState({ feedOpen: s.feedOpen === f.title ? null : f.title }),
         tag: t[0], icon: t[3], when: f.when, title: f.title, body: f.body, cta: f.cta, url: f.url,
         tagStyle: 'display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: ' + t[2] + '; color: ' + t[1],
-        card: 'background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 8px' + (f.hot ? '; border-left: 4px solid #8E3A33' : '')
+        card: f.hot ? 'border-left: 4px solid #8E3A33' : ''
       };
     });
     return {
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
-      stages, topics, stageTitle: cur.title + '：' + (cur.phase === 'past' ? '回顧' : cur.phase === 'now' ? '現在要注意' : '先做準備'), isNow: cur.phase === 'now',
+      stages, topics, stageTitle: (cur.phase === 'past' ? '回顧' : cur.phase === 'now' ? '現在要注意' : '先做準備'), isNow: cur.phase === 'now',
       feed, unreadText: '2 則急件'
     };
   }
