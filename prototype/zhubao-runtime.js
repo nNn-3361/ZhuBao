@@ -116,7 +116,9 @@
   function bringIntoView(el) {
     const box = el.getBoundingClientRect();
     const head = el.classList.contains('zb-bam-panel') && el.previousElementSibling ? el.previousElementSibling.getBoundingClientRect() : (el.closest('.zb-acc') || el).getBoundingClientRect();
-    const over = box.bottom - window.innerHeight + 16;
+    const tabs = document.querySelector('.zb-tabs');
+    const inset = tabs && getComputedStyle(tabs).display !== 'none' ? tabs.offsetHeight : 0; /* 手機底部分頁列會蓋住的高度 */
+    const over = box.bottom - (window.innerHeight - inset) + 16;
     if (over <= 0) return;
     const by = Math.min(over, head.top - 72);
     if (by > 0) window.scrollBy({ top: by, behavior: reduced() ? 'auto' : 'smooth' });

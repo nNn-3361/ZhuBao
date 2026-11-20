@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>竹寶・手機展示</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&amp;display=swap">
+<style>
+:root{--bg:#EDE8DE;--surface:#FCFAF6;--line:#E4DED2;--ink:#1F2A24;--sub:#5F6B64;--accent:#2E5E4E;--soft:#E4EEE7;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);font-family:"Noto Sans TC",system-ui,sans-serif;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:56px;padding:24px;overflow:hidden}
+.stage{flex-shrink:0;width:414px;height:868px;transform-origin:center center}
+.device{position:relative;width:414px;height:868px;border-radius:64px;background:#1F2A24;padding:12px;box-shadow:0 40px 80px rgba(31,42,36,.28),inset 0 0 0 2px #3D4842}
+.screen{position:relative;width:390px;height:844px;border-radius:52px;overflow:hidden;background:#FCFAF6}
+.status{position:absolute;left:0;right:0;top:0;height:50px;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:6px 34px 0 44px;font-size:16px;font-weight:600;background:#FCFAF6;pointer-events:none;font-variant-numeric:tabular-nums}
+.island{position:absolute;top:11px;left:50%;width:122px;height:35px;margin-left:-61px;border-radius:999px;background:#000;z-index:4}
+.sys{display:flex;align-items:center;gap:6px;font-size:14px}
+.batt{width:26px;height:13px;border:1.5px solid var(--ink);border-radius:4px;padding:1.5px;position:relative}
+.batt::after{content:"";position:absolute;right:-4px;top:3px;width:2px;height:4px;border-radius:0 2px 2px 0;background:var(--ink)}
+.batt i{display:block;height:100%;width:78%;background:var(--ink);border-radius:1.5px}
+iframe{position:absolute;left:0;top:50px;width:390px;height:794px;border:0;background:#F6F2EA;border-radius:0 0 52px 52px}
+.home{position:absolute;left:50%;bottom:8px;width:134px;height:5px;margin-left:-67px;border-radius:999px;background:var(--ink);z-index:5;pointer-events:none;opacity:.85}
+.panel{width:340px;flex-shrink:0;display:flex;flex-direction:column;gap:22px;max-height:100%;overflow-y:auto;padding:4px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand b{font-size:22px;letter-spacing:.04em}
+.lead{margin:0;font-size:14px;line-height:1.7;color:var(--sub)}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.box h2{margin:0;font-size:15px}
+.box p{margin:0;font-size:13px;line-height:1.6;color:var(--sub)}
+.btn{min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:#fff;font-family:inherit;font-size:14px;color:var(--ink);text-align:left;cursor:pointer;text-decoration:none;transition:background-color .15s ease,transform .12s ease}
+.btn:hover{background:var(--soft);border-color:#B9CDBF}
+.btn:active{transform:scale(.97)}
+.btn small{color:var(--sub);font-size:12px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary small{color:#DCE8E0}
+.btn[aria-current="true"]{background:var(--soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+.pages{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pages .btn{justify-content:center}
+.foot{font-size:12px;color:var(--sub);line-height:1.6}
+.foot a{color:var(--accent)}
+@media (max-width:999px){.panel{display:none}}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+<div class="device">
+<div class="screen">
+<div class="status" aria-hidden="true"><span id="clock">9:41</span><span class="sys">5G<span class="batt"><i></i></span></span></div>
+<div class="island" aria-hidden="true"></div>
+<iframe id="app" title="竹寶 App 畫面" src="about:blank"></iframe>
+<div class="home" aria-hidden="true"></div>
+</div>
+</div>
+</div>
+
+<aside class="panel" aria-label="展示控制">
+<div class="brand"><svg width="30" height="30" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"/><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg><b>竹寶</b></div>
+<p class="lead">新竹市新手爸媽的育兒管家。左邊是手機畫面，可以直接用滑鼠點、捲動。</p>
+
+<div class="box">
+<h2>送出推播通知</h2>
+<p>模擬手機收到竹寶的提醒，點一下通知會打開對應的頁面。</p>
+<button type="button" class="btn primary" data-push="vax">疫苗提醒<small>1/10 滿 4 個月</small></button>
+<button type="button" class="btn" data-push="care">補助期限<small>12/10 前</small></button>
+<button type="button" class="btn" data-push="diary">日記提醒<small>還沒記體溫</small></button>
+</div>
+
+<div class="box">
+<h2>切換頁面</h2>
+<div class="pages" id="pages"></div>
+</div>
+
+<div class="box">
+<h2>重新開始</h2>
+<button type="button" class="btn" id="replay">從載入畫面重新播放<small>回到主頁</small></button>
+<a class="btn" href="setup.html" id="onboard">從填寫寶寶資料開始<small>初次使用</small></a>
+</div>
+
+<p class="foot">示範情境：寶寶 2026/9/10 出生、新竹市北區、第 1 胎。<br><a href="index.html?web=1">改看電腦版網頁</a></p>
+</aside>
+
+<script>
+(function () {
+  const PAGES = [['index.html', '主頁'], ['diary.html', '寶寶日記'], ['benefits.html', '補助'], ['ask.html', '問竹寶'], ['childcare.html', '托育'], ['activities.html', '親子活動'], ['help.html', '協助'], ['setup.html', '寶寶資料']];
+  const frame = document.getElementById('app');
+  const start = new URLSearchParams(location.search).get('p') || 'index.html';
+  const safe = /^[a-z]+\.html(#[\w-]*)?$/.test(start) ? start : 'index.html';
+  frame.src = safe;
+  const box = document.getElementById('pages');
+  box.innerHTML = PAGES.map((p) => '<button type="button" class="btn" data-go="' + p[0] + '">' + p[1] + '</button>').join('');
+  box.addEventListener('click', (e) => { const b = e.target.closest('[data-go]'); if (b) frame.src = b.getAttribute('data-go'); });
+  document.querySelectorAll('[data-push]').forEach((b) => b.addEventListener('click', () => frame.contentWindow.postMessage({ zb: 'push', id: b.getAttribute('data-push') }, '*')));
+  document.getElementById('replay').addEventListener('click', () => frame.contentWindow.postMessage({ zb: 'replay' }, '*'));
+  document.getElementById('onboard').addEventListener('click', (e) => { e.preventDefault(); frame.src = 'setup.html'; });
+  window.addEventListener('message', (e) => {
+    const d = e.data || {};
+    if (d.zb !== 'page') return;
+    document.title = '竹寶・' + (d.title || '手機展示');
+    box.querySelectorAll('[data-go]').forEach((b) => b.setAttribute('aria-current', b.getAttribute('data-go') === d.page ? 'true' : 'false'));
+    try { history.replaceState(null, '', 'phone.html?p=' + encodeURIComponent(d.page)); } catch (x) {}
+  });
+  const stage = document.getElementById('stage');
+  const fit = () => { const s = Math.min(1, (window.innerHeight - 40) / 868); stage.style.transform = 'scale(' + s + ')'; stage.style.margin = (-(868 * (1 - s)) / 2) + 'px ' + (-(414 * (1 - s)) / 2) + 'px'; };
+  fit(); window.addEventListener('resize', fit);
+  const clock = document.getElementById('clock');
+  const tick = () => { const d = new Date(); clock.textContent = d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0'); };
+  tick(); setInterval(tick, 15000);
+  /* 視窗太窄（例如手機直接打開這頁）就直接進 App */
+  if (window.innerWidth < 600) location.replace(safe);
+})();
+</script>
+</body>
+</html>
