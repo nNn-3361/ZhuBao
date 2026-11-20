@@ -2,7 +2,9 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FCFAF6">
+<script src="zhubao-app.js"></script>
 <title>竹寶・協助</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&amp;display=swap">
@@ -132,7 +134,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 <section aria-labelledby="h-sos" style="background: #FCFAF6; border: 2px solid #A2413A; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
 <h2 id="h-sos" style="margin: 0; font-size: 17px; font-weight: 600; color: #8E3A33; display: flex; align-items: center; gap: 8px">緊急與關懷專線</h2>
-<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<div class="zb-sos-grid" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
 <sc-for list="{{hotlines}}" as="h" hint-placeholder-count="4">
 <a href="{{h.tel}}" style="min-height: 72px; display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 12px 14px; border-radius: 12px; background: {{h.bg}}; color: #1F2A24; text-decoration: none">
 <span style="font-size: 22px; font-weight: 600; color: {{h.color}}; font-variant-numeric: tabular-nums">{{h.num}}</span>

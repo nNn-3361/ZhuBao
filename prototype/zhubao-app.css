@@ -1,0 +1,168 @@
+/* 竹寶 App 外殼：手機版底部分頁列、通知、更多選單、推播橫幅。
+   規則：一個主色（#2E5E4E）、一組暖灰；圓角只用 12（按鈕、列）、16（卡片）、20（底部面板）、999（膠囊）。
+   不用分類／狀態圖示，只用顏色＋文字。大區塊按下只淡淡變暗，小按鈕才縮一下。 */
+:root{
+  --zb-bg:#F6F2EA;--zb-surface:#FCFAF6;--zb-line:#E4DED2;--zb-line-soft:#EFEAE0;
+  --zb-ink:#1F2A24;--zb-sub:#5F6B64;--zb-accent:#2E5E4E;--zb-accent-ink:#1F4337;--zb-accent-soft:#E4EEE7;
+  --zb-tab-h:58px;--zb-safe-b:env(safe-area-inset-bottom,0px);--zb-safe-t:env(safe-area-inset-top,0px);
+  --zb-ease:cubic-bezier(.23,1,.32,1);
+  color-scheme:light;
+}
+/* 在展示用手機外框裡：底部留出 Home 指示條的位置 */
+.zb-in-frame{--zb-safe-b:22px}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-variant-numeric:tabular-nums}
+
+/* ---------- 手機版（760px 以下） ---------- */
+@media (max-width:760px){
+  html{scroll-padding-top:64px}
+  body{overscroll-behavior-y:none}
+  /* 上方列：精簡、固定在頂端，跟著頁面捲動時保持可見 */
+  #dc-root header{position:sticky !important;top:0;z-index:60;padding-top:var(--zb-safe-t);background:var(--zb-surface) !important}
+  #dc-root header>div{padding:6px 16px !important;min-height:52px}
+  #dc-root header>div>div:first-child svg{width:28px;height:28px}
+  #dc-root header>div>div:first-child span:not(:first-of-type){display:none}
+  .zb-has-tabs #dc-root .zb-nav-toggle,.zb-has-tabs #dc-root .zb-nav-menu{display:none !important}
+  /* 頁面底部留出分頁列的空間 */
+  .zb-has-tabs #dc-root{padding-bottom:calc(var(--zb-tab-h) + var(--zb-safe-b))}
+  .zb-has-tabs body{padding-bottom:0 !important}
+  /* 浮動小助手移到分頁列上方 */
+  .zb-has-tabs .zbf-fab{bottom:calc(var(--zb-tab-h) + var(--zb-safe-b) + 14px) !important;right:14px !important;width:52px !important;height:52px !important}
+  /* 標題層級：一頁一個大標 */
+  #dc-root main h1,#dc-root .zb-col h1{font-size:26px !important;line-height:1.35 !important;letter-spacing:.01em}
+  #dc-root h2{font-size:19px !important}
+  /* 輸入框至少 16px，iOS 才不會自動放大 */
+  #dc-root input,#dc-root textarea,#dc-root select{font-size:16px !important}
+  /* 消息全文：改成從下方滑上來的面板 */
+  .zbn-modal{align-items:flex-end !important;padding:0 !important}
+  .zbn-pop{max-width:none !important;border-radius:20px 20px 0 0 !important;max-height:88vh !important;max-height:88dvh !important;padding:10px 20px calc(20px + var(--zb-safe-b)) !important;animation:zbSheetIn .32s var(--zb-ease) both !important}
+  .zbn-pop::before{content:"";align-self:center;width:36px;height:5px;border-radius:999px;background:#D8D1C3;flex-shrink:0}
+  /* AI 問答：輸入框黏在分頁列上方，像聊天 App */
+  .zb-has-tabs .zb-ask form{position:sticky;bottom:calc(var(--zb-tab-h) + var(--zb-safe-b) + 8px);z-index:20;box-shadow:0 -10px 24px 6px var(--zb-bg)}
+}
+
+/* ---------- 底部分頁列 ---------- */
+.zb-tabs{display:none}
+@media (max-width:760px){
+  .zb-has-tabs .zb-tabs{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:800;height:calc(var(--zb-tab-h) + var(--zb-safe-b));padding:0 6px var(--zb-safe-b);box-sizing:border-box;background:var(--zb-surface);border-top:1px solid var(--zb-line);font-family:"Noto Sans TC",system-ui,sans-serif}
+}
+.zb-tab{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;border:0;background:transparent;font-family:inherit;font-size:13px;font-weight:600;color:var(--zb-sub);text-decoration:none;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;transition:opacity .12s ease !important}
+.zb-tab span{display:inline-flex;align-items:center;justify-content:center;min-height:36px;min-width:52px;padding:0 10px;border-radius:999px;box-sizing:border-box;transition:background-color .2s ease,color .2s ease}
+.zb-tab[aria-current="page"] span,.zb-tab[aria-expanded="true"] span{background:var(--zb-accent-soft);color:var(--zb-accent)}
+.zb-tab:active{opacity:.55;transform:none !important;box-shadow:none !important}
+.zb-tab:hover{transform:none !important;box-shadow:none !important}
+.zb-tab:focus-visible{outline:2px solid var(--zb-accent);outline-offset:-4px;border-radius:12px}
+
+/* ---------- 上方「通知」按鈕 ---------- */
+.zb-bell{display:none}
+@media (max-width:760px){
+  .zb-has-tabs .zb-bell{display:inline-flex;position:fixed;top:calc(var(--zb-safe-t) + 8px);right:12px;z-index:70;align-items:center;gap:6px;min-height:40px;padding:0 12px;border-radius:999px;border:1px solid var(--zb-line);background:var(--zb-surface);font-family:"Noto Sans TC",system-ui,sans-serif;font-size:14px;font-weight:600;color:var(--zb-ink);cursor:pointer}
+}
+.zb-bell b{min-width:20px;height:20px;padding:0 6px;box-sizing:border-box;border-radius:999px;background:var(--zb-accent);color:#fff;font-size:12px;line-height:20px;text-align:center}
+.zb-bell b[hidden]{display:none}
+.zb-bell:active{transform:scale(.95) !important;box-shadow:none !important}
+
+/* ---------- 底部面板（更多、通知） ---------- */
+.zb-sheet{position:fixed;inset:0;z-index:960;display:flex;align-items:flex-end;justify-content:center;font-family:"Noto Sans TC",system-ui,sans-serif;color:var(--zb-ink)}
+.zb-sheet[hidden]{display:none}
+.zb-sheet-back{position:absolute;inset:0;background:rgba(31,42,36,.4);animation:zbFadeIn .24s ease both}
+.zb-sheet-panel{position:relative;width:100%;max-width:560px;max-height:86vh;max-height:86dvh;overflow-y:auto;overscroll-behavior:contain;background:var(--zb-bg);border-radius:20px 20px 0 0;padding:8px 16px calc(20px + var(--zb-safe-b));box-sizing:border-box;display:flex;flex-direction:column;gap:14px;animation:zbSheetIn .32s var(--zb-ease) both;touch-action:pan-y}
+.zb-sheet.zb-closing .zb-sheet-panel{animation:zbSheetOut .2s ease-in both}
+.zb-sheet.zb-closing .zb-sheet-back{animation:zbFadeOut .2s ease-in both}
+.zb-grab{align-self:center;width:36px;height:5px;border-radius:999px;background:#D8D1C3;flex-shrink:0;margin-bottom:2px}
+.zb-sheet-panel>*{flex-shrink:0}
+.zb-sheet-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.zb-sheet-head h2{margin:0;font-size:19px;font-weight:600}
+.zb-sheet-x{min-height:40px;padding:0 14px;border-radius:999px;border:0;background:var(--zb-accent-soft);color:var(--zb-accent);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.zb-sheet-x:active{transform:scale(.95) !important}
+.zb-group{background:var(--zb-surface);border:1px solid var(--zb-line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.zb-group-label{font-size:13px;font-weight:600;color:var(--zb-sub);padding:0 4px;margin-bottom:-6px}
+.zb-row{display:flex;align-items:center;gap:12px;min-height:56px;padding:10px 16px;box-sizing:border-box;border:0;border-top:1px solid var(--zb-line-soft);background:transparent;font-family:inherit;font-size:16px;color:var(--zb-ink);text-decoration:none;text-align:left;width:100%;cursor:pointer;transition:background-color .15s ease !important}
+.zb-row:first-child{border-top:0}
+a.zb-row:active,button.zb-row:active{background:#EFEAE0;transform:none !important;box-shadow:none !important}
+a.zb-row:hover,button.zb-row:hover{transform:none !important;box-shadow:none !important}
+.zb-row-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.zb-row-sub{font-size:13px;color:var(--zb-sub);line-height:1.5}
+.zb-row-end{font-size:13px;color:var(--zb-sub);flex-shrink:0}
+.zb-row-end.zb-ok{color:var(--zb-accent);font-weight:600}
+.zb-chevr{flex-shrink:0;color:#B9B2A4}
+.zb-me{display:flex;flex-direction:column;gap:4px;padding:16px;background:var(--zb-accent);color:#fff;border-radius:16px}
+.zb-me b{font-size:18px}
+.zb-me span{font-size:13px;opacity:.9}
+.zb-me a{color:#fff;font-size:14px;font-weight:600;align-self:flex-start;min-height:36px;display:inline-flex;align-items:center}
+/* 開關：仿手機系統開關 */
+.zb-switch{position:relative;width:51px;height:31px;flex-shrink:0;border-radius:999px;border:0;padding:0;background:#D8D1C3;cursor:pointer;transition:background-color .2s ease !important}
+.zb-switch::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:999px;background:#fff;box-shadow:0 2px 4px rgba(31,42,36,.2);transition:transform .25s var(--zb-ease)}
+.zb-switch[aria-checked="true"]{background:var(--zb-accent)}
+.zb-switch[aria-checked="true"]::after{transform:translateX(20px)}
+.zb-switch:active,.zb-switch:hover{transform:none !important;box-shadow:none !important}
+/* 通知列表 */
+.zb-noti{display:flex;flex-direction:column;gap:4px;align-items:stretch}
+.zb-noti-top{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--zb-sub)}
+.zb-noti-top b{color:var(--zb-accent);font-weight:600}
+.zb-noti-title{font-size:15px;font-weight:600;line-height:1.5}
+.zb-noti-body{font-size:14px;line-height:1.6;color:#3D4842}
+.zb-noti[data-unread="true"] .zb-noti-title::before{content:"";display:inline-block;width:8px;height:8px;border-radius:999px;background:var(--zb-accent);margin-right:8px;vertical-align:2px}
+
+/* ---------- 推播橫幅（模擬手機系統通知） ---------- */
+.zb-push{position:fixed;left:8px;right:8px;top:calc(var(--zb-safe-t) + 8px);z-index:990;max-width:420px;margin:0 auto;display:flex;flex-direction:column;gap:2px;padding:12px 14px;border-radius:20px;border:0;text-align:left;background:rgba(252,250,246,.98);box-shadow:0 12px 32px rgba(31,42,36,.22);font-family:"Noto Sans TC",system-ui,sans-serif;color:var(--zb-ink);cursor:pointer;animation:zbPushIn .42s var(--zb-ease) both;touch-action:none}
+.zb-push.zb-closing{animation:zbPushOut .24s ease-in both}
+.zb-push:hover,.zb-push:active{transform:none;box-shadow:0 12px 32px rgba(31,42,36,.22)}
+.zb-push-top{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--zb-sub)}
+.zb-push-top svg{flex-shrink:0}
+.zb-push-top b{color:var(--zb-ink);font-weight:600;flex:1}
+.zb-push-title{font-size:15px;font-weight:600;line-height:1.45}
+.zb-push-body{font-size:14px;line-height:1.55;color:#3D4842}
+
+/* ---------- 小提示（同步完成等） ---------- */
+.zb-toast{position:fixed;left:50%;bottom:calc(var(--zb-tab-h) + var(--zb-safe-b) + 18px);z-index:995;transform:translateX(-50%);padding:10px 18px;border-radius:999px;background:var(--zb-ink);color:#fff;font-family:"Noto Sans TC",system-ui,sans-serif;font-size:14px;white-space:nowrap;animation:zbToast 2.4s var(--zb-ease) both;pointer-events:none}
+@media (min-width:761px){.zb-toast{bottom:24px}}
+
+/* ---------- 電腦版網頁：回到手機展示 ---------- */
+.zb-back-phone{position:fixed;left:16px;bottom:16px;z-index:880;min-height:40px;padding:0 16px;display:inline-flex;align-items:center;border-radius:999px;background:var(--zb-ink);color:#fff !important;font-family:"Noto Sans TC",system-ui,sans-serif;font-size:13px;font-weight:600;text-decoration:none}
+@media (max-width:760px){.zb-back-phone{display:none}}
+
+@keyframes zbSheetIn{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes zbSheetOut{from{transform:translateY(0)}to{transform:translateY(100%)}}
+@keyframes zbFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes zbFadeOut{from{opacity:1}to{opacity:0}}
+@keyframes zbPushIn{from{transform:translateY(-130%);opacity:.4}to{transform:translateY(0);opacity:1}}
+@keyframes zbPushOut{to{transform:translateY(-130%);opacity:0}}
+@keyframes zbToast{0%{opacity:0;transform:translate(-50%,8px)}10%,85%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,0)}}
+@media (prefers-reduced-motion:reduce){
+  .zb-sheet-panel,.zb-sheet-back,.zb-push,.zbn-pop{animation:zbFadeIn .15s ease both !important}
+  .zb-sheet.zb-closing .zb-sheet-panel,.zb-push.zb-closing{animation:zbFadeOut .12s ease both !important}
+  .zb-toast{animation:none}
+  .zb-switch::after{transition:none}
+}
+
+/* ---------- 各頁手機版細節 ---------- */
+@media (max-width:760px){
+  /* 初次設定：像 App 的引導流程，沒有選單，按鈕固定在下方 */
+  html:not(.zb-has-tabs) #dc-root .zb-nav-toggle,html:not(.zb-has-tabs) #dc-root .zb-nav-menu{display:none !important}
+  .zb-su-foot{position:sticky;bottom:0;z-index:20;margin:0 -16px -1px;padding:12px 16px calc(12px + var(--zb-safe-b)) !important;background:var(--zb-bg);border-top:1px solid var(--zb-line)}
+  /* AI 問答：示範題改成可以左右滑的一排 */
+  .zb-hints{flex-wrap:nowrap !important;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px !important;scroll-snap-type:x proximity}
+  .zb-hints::-webkit-scrollbar{display:none}
+  .zb-hint{flex-shrink:0;white-space:nowrap;scroll-snap-align:start}
+  .zb-hints-label{flex-shrink:0}
+}
+@media (max-width:760px){
+  /* 協助：專線改成一行一支，號碼不會斷行，點了直接撥 */
+  .zb-sos-grid{grid-template-columns:minmax(0,1fr) !important;gap:8px !important}
+  .zb-sos-grid>a{flex-direction:row !important;align-items:center;justify-content:flex-start !important;gap:14px !important;min-height:60px !important}
+  .zb-sos-grid>a>span:first-child{flex:0 0 136px;font-size:20px !important;white-space:nowrap}
+}
+/* 捲動後，大標題縮到上方列中間（像手機 App） */
+.zb-navtitle{display:none}
+@media (max-width:760px){
+  .zb-has-tabs .zb-navtitle{display:block;position:fixed;top:calc(var(--zb-safe-t) + 8px);left:50%;z-index:65;max-width:46vw;height:40px;line-height:40px;transform:translate(-50%,4px);font-family:"Noto Sans TC",system-ui,sans-serif;font-size:16px;font-weight:600;color:var(--zb-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;pointer-events:none;transition:opacity .2s ease,transform .25s var(--zb-ease)}
+  .zb-navtitle.zb-on{opacity:1;transform:translate(-50%,0)}
+}
+@media (max-width:760px) and (pointer:coarse){
+  .zb-typing .zb-tabs,.zb-typing .zbf-fab{display:none !important}
+  .zb-typing.zb-has-tabs #dc-root{padding-bottom:var(--zb-safe-b)}
+  .zb-typing.zb-has-tabs .zb-ask form{bottom:8px}
+}
+/* 手機外框裡沒有滑鼠游標的概念：滑過不浮起，只保留按下的回饋 */
+.zb-in-frame button:hover:not(:active),.zb-in-frame a:hover:not(:active){transform:none !important;box-shadow:none !important}
