@@ -191,7 +191,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <sc-if value="{{r.planned}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #F6E9CC; color: #7A4F0B">籌備中</span></sc-if>
 </span>
 <span style="font-size: 16px; font-weight: 600; line-height: 1.4">{{r.name}}</span>
-<span style="font-size: 13px; color: #5F6B64">{{r.district}}・{{r.age}}・費用{{r.fee}}</span>
+<span style="font-size: 13px; color: #5F6B64">{{r.meta}}</span>
 </span>
 <svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform: none"><path d="m9 6 6 6-6 6"></path></svg>
 </button>
@@ -212,20 +212,20 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <span class="zb-grab" aria-hidden="true"></span>
 <div class="zb-sheet-head"><div class="zb-csheet-title"><span style="display: flex; gap: 6px; flex-wrap: wrap"><span style="{{sheet.typeStyle}}">{{sheet.type}}</span><sc-if value="{{sheet.quasi}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #E4EEE7; color: #2E5E4E">可能適用托育補助</span></sc-if></span><h2>{{sheet.name}}</h2></div><button type="button" class="zb-sheet-x" data-sheet-close="1" onClick="{{sheet.close}}">完成</button></div>
 <div class="zb-csheet-body">
+<sc-if value="{{sheet.hasTags}}" hint-placeholder-val="{{false}}">
 <div style="display: flex; gap: 6px; flex-wrap: wrap">
 <sc-for list="{{sheet.tags}}" as="tg" hint-placeholder-count="2">
 <span style="font-size: 12px; padding: 2px 8px; border-radius: 999px; border: 1px solid #E4DED2; color: #5F6B64">{{tg}}</span>
 </sc-for>
 </div>
-<dl style="margin: 0; display: grid; grid-template-columns: 56px minmax(0, 1fr); row-gap: 6px; font-size: 15px; line-height: 1.6">
-<sc-if value="{{sheet.hasOrg}}" hint-placeholder-val="{{false}}"><dt style="color: #5F6B64">所屬中心</dt><dd style="margin: 0">{{sheet.org}}</dd></sc-if>
-<dt style="color: #5F6B64">空位</dt><dd style="margin: 0">{{sheet.vacancy}}</dd>
-<dt style="color: #5F6B64">費用</dt><dd style="margin: 0">{{sheet.fee}}</dd>
+</sc-if>
+<dl style="margin: 0; display: grid; grid-template-columns: 72px minmax(0, 1fr); row-gap: 6px; font-size: 15px; line-height: 1.6">
+<sc-for list="{{sheet.rows}}" as="rw" hint-placeholder-count="3"><dt style="color: #5F6B64">{{rw.0}}</dt><dd style="margin: 0; overflow-wrap: anywhere">{{rw.1}}</dd></sc-for>
 </dl>
 <p style="margin: 0; font-size: 15px; line-height: 1.7">{{sheet.note}}</p>
 <div style="padding-top: 10px; border-top: 1px solid #E4DED2; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; color: #5F6B64">
-<span style="min-width: 0; overflow-wrap: anywhere">來源 <a href="{{sheet.srcUrl}}">{{sheet.srcTitle}}</a></span>
-<sc-if value="{{sheet.canContact}}" hint-placeholder-val="{{true}}"><a href="{{sheet.srcUrl}}" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">{{sheet.cta}}</a></sc-if>
+<span style="min-width: 0; overflow-wrap: anywhere; display: flex; flex-direction: column; gap: 2px"><sc-for list="{{sheet.srcs}}" as="sr" hint-placeholder-count="1"><span>來源 <a href="{{sr.url}}">{{sr.title}}</a></span></sc-for></span>
+<sc-if value="{{sheet.canContact}}" hint-placeholder-val="{{true}}"><a href="{{sheet.ctaUrl}}" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">{{sheet.cta}}</a></sc-if>
 </div>
 </div>
 </div>
@@ -243,27 +243,108 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state;
     const SRC = {
-      roster: ['新竹市社會處・115 年準公共化托嬰中心名冊（115.03.11）', 'https://society.hccg.gov.tw/uploaddowndoc?file=Daycare%2F202603201414590.pdf&filedisplay=%E6%96%B0%E7%AB%B9%E5%B8%82115%E5%B9%B4%E6%BA%96%E5%85%AC%E6%89%98%E5%AC%B0%E4%B8%AD%E5%BF%83%E6%B8%85%E5%86%8A.pdf&flag=doc', ''],
-      eastPub: ['新竹市政府・東區公托完工公告', 'https://www.hccg.gov.tw/ch/home.jsp?id=48&parentpath=0,16&mcustomize=municipalnews_view.jsp&dataserno=202111100004&ou=message,ou=ap_root,o=hccg,c=tw&toolsflag=Y&mserno=201601300313', ''],
+      roster: ['新竹市社會處・115 年準公共化托嬰中心名冊（115.06.02 更新）', 'https://society.hccg.gov.tw/ch/home.jsp?id=10374&parentpath=0,4&mcustomize=onemessages_view.jsp&toolsflag=Y&dataserno=202301190001&t=SocietyOnes&mserno=201808020001', ''],
+      registry: ['政府資料開放平臺・新竹市公私立托嬰中心名冊', 'https://data.gov.tw/dataset/67734', ''],
       homeE: ['新竹市東區居家托育服務中心（03）5753677', 'https://www.3677east.tw/OnePage.aspx?mid=80', ''],
       homeN: ['新竹市北區居家托育服務中心（03）5355006', 'http://www.mommybaby.org.tw/', ''],
       homeS: ['新竹市南/香山區居家托育服務中心（03）5301632', 'http://www.mammy.org.tw/', ''],
       kd: ['新竹市社會處・關東公托開工公告', 'https://society.hccg.gov.tw/ch/home.jsp?id=13&parentpath=0,2&mcustomize=municipalnews_view.jsp&toolsflag=Y&dataserno=92e5e4a3-b53f-4b04-9e5f-d5fed34ba88d&t=MunicipalNews&mserno=201601300041', ''],
     };
-    const DATA = [
-      { name: '新竹市私立茱蒂園托嬰中心', type: '準公共托嬰中心', district: '北區', age: '未滿 2 歲', quasi: true, tags: ['準公共化'], vacancy: '請洽中心', fee: '請洽中心', note: '列在新竹市社會處 115 年準公共化托嬰中心名冊。', src: 'roster' },
-      { name: '東區公共托嬰中心', type: '公共托嬰', district: '東區', age: '未滿 2 歲', quasi: false, tags: ['市府公共托嬰'], vacancy: '依招生公告', fee: '依招生公告', note: '新竹市政府設立的公共托嬰中心。', src: 'eastPub', contact: false },
-      { name: '關東公共托嬰中心', type: '公共托嬰', district: '東區', age: '未滿 2 歲', quasi: false, planned: true, tags: ['已開工'], vacancy: '依招生公告', fee: '依招生公告', note: '市府公告已開工，招生時間請看社會處公告。', src: 'kd', contact: false },
+    /* 托嬰中心：新竹市社會處「新竹市公私立托嬰中心名冊」（政府資料開放平臺 data.gov.tw/dataset/67734），地址沒寫行政區的依路名補上。
+       q＝列在社會處 115 年準公共化托嬰中心名冊（115.06.02 更新），c＝該名冊上的核定收托人數。 */
+    const CENTERS = [{"n":"新竹市私立國際音樂托嬰中心北區民富校","d":"北區","p":"游麗珠","a":"新竹市北區民富街256號1樓","t":"(03)5221672","q":true,"c":21,"pub":false},
+      {"n":"新竹市私立卡爾威特托嬰中心","d":"東區","p":"黃瑞發","a":"新竹市東區建功一路59巷12號1樓","t":"(03)5749777","q":true,"c":32,"pub":false},
+      {"n":"新竹市私立傑尼爾托嬰中心","d":"香山區","p":"王勝樑","a":"新竹市香山區香北路252號","t":"(03)5382223","q":false,"c":null,"pub":false},
+      {"n":"新竹市私立微笑天空托嬰中心","d":"東區","p":"王靜儀","a":"新竹市金山北一街100號1-2樓","t":"(03)5788099","q":true,"c":24,"pub":false},
+      {"n":"新竹市私立快樂寶貝托嬰中心","d":"北區","p":"陳清洲","a":"新竹市東大路2段230號1-3樓","t":"(03)5357779","q":true,"c":25,"pub":false},
+      {"n":"新竹市私立小天使托嬰中心","d":"東區","p":"黃郁雯","a":"新竹市東區東南街188巷13號1樓","t":"(03)5624358","q":true,"c":20,"pub":false},
+      {"n":"新竹市私立茱蒂園托嬰中心","d":"北區","p":"曾月卿","a":"新竹市光華街78巷1號1樓","t":"(03)5350491","q":true,"c":15,"pub":false},
+      {"n":"新竹市私立孟格爾托嬰中心國泰分園","d":"北區","p":"彭斯廉","a":"新竹市武陵路179巷10號1樓","t":"(03)5455599","q":true,"c":18,"pub":false},
+      {"n":"新竹市私立貝果托嬰中心","d":"東區","p":"張雅萍","a":"新竹市埔頂路245號1樓","t":"(03)5678636","q":true,"c":18,"pub":false},
+      {"n":"新竹市私立園田嘉托嬰中心","d":"香山區","p":"李嘉芬","a":"新竹市香山區牛埔東路33巷50號3樓","t":"(03)5389131","q":true,"c":15,"pub":false},
+      {"n":"新竹市私立湯姆熊托嬰中心","d":"東區","p":"湯智能","a":"新竹市東區科學園路107巷26號1-2樓","t":"(03)5785880","q":true,"c":30,"pub":false},
+      {"n":"新竹市私立金安福托嬰中心","d":"東區","p":"洪蓁翎","a":"新竹市食品路134巷55號","t":"(03)5622611","q":true,"c":50,"pub":false},
+      {"n":"新竹市私立雙子園托嬰中心","d":"北區","p":"駱美珠","a":"新竹市北區民生路211巷11號1樓","t":"(03)5353698","q":true,"c":20,"pub":false},
+      {"n":"新竹市私立娃娃國托嬰中心","d":"東區","p":"林慧玲","a":"新竹市東區光復路一段343號","t":"(03)5643563","q":true,"c":30,"pub":false},
+      {"n":"新竹市私立小天使托嬰中心經國分園","d":"東區","p":"黃郁雯","a":"新竹市經國路一段379巷15號1-2樓","t":"(03)5456713","q":true,"c":50,"pub":false},
+      {"n":"新竹市私立寶貝天使托嬰中心","d":"東區","p":"林美玉","a":"新竹市東區關東路23巷21號","t":"(03)5790929","q":true,"c":24,"pub":false},
+      {"n":"新竹市私立貝比象托嬰中心","d":"北區","p":"酆雨紓","a":"新竹市北區武陵路179巷6-1號","t":"(03)5455336","q":true,"c":17,"pub":false},
+      {"n":"新竹市私立小太陽托嬰中心","d":"東區","p":"胡斯瑋","a":"新竹市東區西大路102巷2號及2號2樓之1","t":"(03)5622390","q":true,"c":17,"pub":false},
+      {"n":"新竹市私立巴掌仙子托嬰中心","d":"東區","p":"楊志偉","a":"新竹市東區東光路35號1-2樓","t":"(03)5712115","q":false,"c":null,"pub":false},
+      {"n":"新竹市私立育慈托嬰中心育芯分園","d":"東區","p":"張芯汝","a":"新竹市東區龍山東路202號1-2樓","t":"(03)6686268","q":true,"c":34,"pub":false},
+      {"n":"台灣基督長老教會馬偕醫療財團法人附設新竹市私立馬偕托嬰中心","d":"東區","p":"李奇龍","a":"新竹市建中路40號1樓","t":"(03)6119595","q":true,"c":45,"pub":false},
+      {"n":"新竹市私立恩潔托嬰中心少年分園","d":"北區","p":"程馨儀","a":"新竹市北區少年街43-1號1-2樓及45號1-2樓","t":"(03)5250405","q":true,"c":41,"pub":false},
+      {"n":"新竹市私立小豆芽托嬰中心","d":"東區","p":"劉廣緯","a":"新竹市東區建美路27號1-2樓","t":"(03)5749471","q":true,"c":19,"pub":false},
+      {"n":"新竹市私立育慈托嬰中心","d":"東區","p":"張芯汝","a":"新竹市東區埔頂三路77號","t":"(03)5795136","q":true,"c":65,"pub":false},
+      {"n":"新竹市私立艾貝比托嬰中心","d":"東區","p":"林胎新","a":"新竹市東區光復路二段928號1-2樓","t":"(03)5621164","q":true,"c":30,"pub":false},
+      {"n":"新竹市私立婕之寶托嬰中心","d":"東區","p":"周瑜婕","a":"新竹市錦華街18巷23號2樓","t":"(03)5327961","q":true,"c":45,"pub":false},
+      {"n":"新竹市私立鴨鴨托嬰中心","d":"東區","p":"潘生生","a":"新竹市埔頂路586號2樓","t":"(03)5770083","q":true,"c":70,"pub":false},
+      {"n":"新竹市私立長春藤托嬰中心","d":"東區","p":"易宛靜","a":"新竹市東光路29號1-2樓","t":"(03)5728439","q":true,"c":37,"pub":false},
+      {"n":"新竹市私立小丸子托嬰中心","d":"北區","p":"陳瑞雲","a":"新竹市育英路27號1-2樓","t":"(03)5281019","q":true,"c":29,"pub":false},
+      {"n":"新竹市私立堡貝嘉托嬰中心","d":"香山區","p":"曾采慧","a":"新竹市中華路四段178巷69、71號1-2樓","t":"(03)5380329","q":true,"c":40,"pub":false},
+      {"n":"新竹市私立心搖籃托嬰中心","d":"北區","p":"邱芃錡","a":"新竹市四維路63號2樓","t":"(03)5280512","q":true,"c":60,"pub":false},
+      {"n":"新竹市私立奧樂森音樂藝術托嬰中心","d":"東區","p":"張君名","a":"新竹市立鵬路126號","t":"(03)5790683","q":true,"c":60,"pub":false},
+      {"n":"新竹市私立禾田托嬰中心","d":"北區","p":"彭鈺梅","a":"新竹市金竹路146-148號1-2樓","t":"(03)5358101","q":true,"c":54,"pub":false},
+      {"n":"新竹市私立熊寶貝托嬰中心","d":"北區","p":"黃子堯","a":"新竹市北區延平路一段214巷62號1-3樓","t":"(03)5635625","q":true,"c":48,"pub":false},
+      {"n":"新竹市私立愛兒堡七星級國際音樂托嬰中心","d":"東區","p":"邱瑞凌","a":"新竹市東區關東路56號1-2樓","t":"(03)5790008","q":true,"c":109,"pub":false},
+      {"n":"新竹市私立同心園托嬰中心","d":"香山區","p":"黃麗敏","a":"新竹市香山區遊樂街29巷50號1樓","t":"(03)5303307","q":true,"c":17,"pub":false},
+      {"n":"新竹市私立朵多托嬰中心一館","d":"東區","p":"黃美華","a":"新竹市東區慈雲路66號1-2樓（含夾層）","t":"(03)5798276","q":true,"c":40,"pub":false},
+      {"n":"新竹市私立樂芙托嬰中心","d":"東區","p":"凃羿安","a":"新竹市東區埔頂路528、530號1-2樓","t":"(03)6687220","q":true,"c":58,"pub":false},
+      {"n":"新竹市私立羿柔托嬰中心關埔一館","d":"東區","p":"王瑞賢","a":"新竹市東區慈雲路62號1-2樓","t":"(03)6662631","q":true,"c":35,"pub":false},
+      {"n":"新竹市私立羿柔托嬰中心關埔二館","d":"東區","p":"王瑞賢","a":"新竹市東區慈雲路68號1-2樓","t":"(03)6662631","q":true,"c":78,"pub":false},
+      {"n":"新竹市私立吉寶托嬰中心","d":"東區","p":"程怡秦","a":"新竹市東區新莊街100號、102號、106號","t":"(03)6661592","q":false,"c":null,"pub":false},
+      {"n":"新竹市私立寶貝魚托嬰中心","d":"東區","p":"連佩瑜","a":"新竹市東區關東路137號1-2樓","t":"(03)5770666","q":true,"c":26,"pub":false},
+      {"n":"新竹市私立愛空間托嬰中心","d":"東區","p":"李詩媛","a":"新竹市東區埔頂一路280號、282號及286號","t":"(03)5788111","q":true,"c":54,"pub":false},
+      {"n":"新竹市私立愛兒堡國際音樂托嬰中心東大校","d":"北區","p":"卓石榴","a":"新竹市北區東大路二段184號","t":"(03)5332222","q":true,"c":35,"pub":false},
+      {"n":"新竹市北區公共托育家園","d":"北區","p":"江尚明","a":"新竹市南勢六街11號3樓","t":"(03)5232033","q":true,"c":12,"pub":true},
+      {"n":"新竹市私立園田嘉托嬰中心北門分園","d":"北區","p":"李嘉芬","a":"新竹市北區北門街48號1-3樓","t":"(03)5221319","q":true,"c":61,"pub":false},
+      {"n":"新竹市私立茱蒂園托嬰中心寶貝分園","d":"北區","p":"唐悅耘","a":"新竹市北區光華一街34之3號","t":"(03)5330234","q":true,"c":17,"pub":false},
+      {"n":"新竹市私立彤宇托嬰中心","d":"東區","p":"吳欣怡","a":"新竹市東區埔頂里12鄰埔頂二路188號","t":"(03)5780800","q":true,"c":18,"pub":false},
+      {"n":"新竹市私立朵多托嬰中心二館","d":"東區","p":"王欣","a":"新竹市東區慈雲路60號","t":"(03)5798276","q":true,"c":31,"pub":false},
+      {"n":"新竹市私立璦苗人文藝術托嬰中心","d":"東區","p":"林麗珠","a":"新竹市東區慈雲路109號","t":"(03)5798007","q":true,"c":71,"pub":false},
+      {"n":"新竹市私立田果托嬰中心","d":"東區","p":"張宜庭","a":"新竹市東區關新東路262號1-2樓","t":"(03)5797262","q":true,"c":40,"pub":false},
+      {"n":"新竹市私立童話故事托嬰中心","d":"東區","p":"王靜儀","a":"新竹市關東路149號1-2樓","t":"(03)6686221","q":true,"c":37,"pub":false},
+      {"n":"新竹市私立小星星托嬰中心","d":"北區","p":"胡澤湘","a":"新竹市中清路一段368號","t":"(03)5360896","q":true,"c":55,"pub":false},
+      {"n":"新竹市私立嘉德琳世傑托嬰中心","d":"東區","p":"萬瑞琴","a":"新竹市東區龍山里世傑路230號","t":"(03)5795598","q":true,"c":45,"pub":false},
+      {"n":"新竹市私立金安福托嬰中心林森分園","d":"東區","p":"董君儀","a":"新竹市東區林森路203號2樓","t":"(03)5220706","q":true,"c":40,"pub":false},
+      {"n":"新竹市香山區公共托育家園","d":"香山區","p":"陳宗仁","a":"新竹市內湖路109號","t":"(03)5181865","q":true,"c":12,"pub":true},
+      {"n":"新竹市私立芳慈托嬰中心慈雲館","d":"東區","p":"劉柏均","a":"新竹市東區慈雲路75號1-2樓","t":"(03)5790575","q":true,"c":40,"pub":false},
+      {"n":"新竹市私立東區公共托嬰中心","d":"東區","p":"林正俠","a":"新竹市東區金城一路50-8號","t":"(03)5713219","q":true,"c":25,"pub":true},
+      {"n":"新竹市私立心搖籃國際托嬰中心武陵園","d":"北區","p":"邱芃錡","a":"新竹市北區武陵路66號","t":"(03)5408606","q":true,"c":49,"pub":false},
+      {"n":"新竹市私立東新托嬰中心","d":"東區","p":"呂明修","a":"新竹市東區東新路186號1、2樓","t":"(03)5751137","q":true,"c":32,"pub":false},
+      {"n":"新竹市私立奧蘿拉托嬰中心","d":"東區","p":"吳侑霖","a":"新竹市東區水源街69號2樓","t":"(03)6211200","q":true,"c":44,"pub":false},
+      {"n":"新竹市私立愛空間托嬰中心悅揚分園","d":"東區","p":"李詩媛","a":"新竹市東區占梅路26號","t":"(03)5778822","q":true,"c":60,"pub":false},
+      {"n":"新竹市私立開蒙國際音樂托嬰中心愛娣恩藝術校","d":"東區","p":"卓石榴","a":"新竹市科學園路113.111.109號1-2樓","t":"(03)6669111","q":true,"c":99,"pub":false},
+      {"n":"新竹市私立樂芙托嬰中心埔頂二館","d":"東區","p":"凃羿安","a":"新竹市埔頂路522號1-2樓","t":"(03)6687220","q":true,"c":19,"pub":false},
+      {"n":"新竹市私立方舟托嬰中心","d":"東區","p":"葉宜文","a":"新竹市東區建功一路59巷22號1樓","t":"(03)5165000","q":true,"c":42,"pub":false},
+      {"n":"新竹市私立禾宸托嬰中心","d":"東區","p":"林世真","a":"新竹市東區埔頂里22鄰慈雲路101號1、2樓","t":"(03)5781177","q":true,"c":52,"pub":false},
+      {"n":"新竹市私立甜心熊托嬰中心","d":"東區","p":"王武楠","a":"新竹市東區關新里關東路143號","t":"(03)6661771","q":true,"c":23,"pub":false},
+      {"n":"新竹市私立護寶托嬰中心","d":"北區","p":"戴玉珍","a":"新竹市北區金農路168號1樓","t":"(03)5353315","q":false,"c":null,"pub":false},
+      {"n":"新竹市私立心搖籃國際托嬰中心武陵二園","d":"北區","p":"邱芃錡","a":"新竹市北區武陵路67號","t":"(03)5350996","q":true,"c":55,"pub":false},
+      {"n":"新竹市私立開蒙國際音樂托嬰中心諾貝兒校","d":"北區","p":"郭子琳","a":"新竹市北區東大路二段165號3樓","t":"(03)5351074","q":true,"c":54,"pub":false},
+      {"n":"新竹市私立小豆芽托嬰中心水源分校","d":"東區","p":"劉采葳","a":"新竹市東區水源街73-1號、73-2號1樓及1樓夾層","t":"(03)5751277","q":true,"c":31,"pub":false},
+      {"n":"新竹市私立慈心園托嬰中心","d":"東區","p":"蘇玲慧","a":"新竹市東區占梅路12號","t":"(03)6667599","q":true,"c":36,"pub":false},
+      {"n":"新竹市私立小栗子托嬰中心","d":"東區","p":"張簡建隆","a":"新竹市東區東新路5號1樓","t":"(03)5724371","q":true,"c":27,"pub":false},
+      {"n":"新竹市私立寶貝魚托嬰中心成長館","d":"東區","p":"連佩瑜","a":"新竹市東區關新里2鄰關新東路313號1樓-2樓","t":"(03)5770666","q":true,"c":22,"pub":false},
+      {"n":"新竹市私立萌萌窩國際托嬰中心","d":"北區","p":"武孟勳","a":"新竹市北區金雅里4鄰金雅西街149號2樓","t":"(03)5332508","q":true,"c":45,"pub":false},
+      {"n":"新竹市私立樂橙托嬰中心","d":"北區","p":"蔡姿羽","a":"新竹市北區水田里15鄰水田街1號2樓","t":"(03)5255718","q":true,"c":56,"pub":false},
+      {"n":"新竹市私立奧樂嘉音樂藝術托嬰中心","d":"東區","p":"張君名","a":"新竹市東區慈雲路69號1樓、1樓夾層及2樓","t":"(03)5630155","q":true,"c":74,"pub":false},
+      {"n":"新竹市私立沐芽托嬰中心","d":"東區","p":"朱旻謙","a":"新竹市東區埔頂里埔頂三路12號1樓至2樓","t":"(03)5777212","q":false,"c":null,"pub":false},
+      {"n":"新竹市私立小麥子宥增托嬰中心","d":"東區","p":"林威余","a":"新竹市東區明湖路1010號1樓","t":"(03)5191652","q":true,"c":38,"pub":false},
+      {"n":"新竹市私立星安托嬰中心","d":"北區","p":"張瑞庭","a":"新竹市北區育英里23鄰四維路21巷25號1樓-3樓","t":"(03)5261597","q":false,"c":null,"pub":false},
+      {"n":"新竹市私立智邦科技附設托嬰中心","d":"東區","p":"李景明","a":"新竹市東區研新三路1號1樓","t":"(03)6043632","q":true,"c":17,"pub":false}];
+    const DATA = CENTERS.map((c) => ({ name: c.n, type: c.pub ? '公共托育' : '托嬰中心', district: c.d, age: '未滿 2 歲', quasi: c.q, cap: c.c, person: c.p, addr: c.a, tel: c.t, src: 'registry' })).concat([
+      { name: '關東公共托嬰中心', type: '公共托育', district: '東區', age: '未滿 2 歲', quasi: false, planned: true, tags: ['已開工'], vacancy: '依招生公告', fee: '依招生公告', note: '市府公告已開工，招生時間請看社會處公告。', src: 'kd', contact: false },
       { name: '居家托育人員・南勢里', type: '居家保母', district: '北區', age: '0–2 歲', quasi: true, tags: ['準公共化'], vacancy: '收托 1 位，可再收 1 位', fee: '每月 17,000 元起（依契約）', org: '北區居家托育服務中心', note: '保母人員技術士證，托育年資 12 年。服務地點在北區南勢里一帶。請由北區居家托育服務中心協助媒合。', src: 'homeN', cta: '請中心協助媒合' },
       { name: '居家托育人員・西雅里', type: '居家保母', district: '北區', age: '0–2 歲', quasi: true, tags: ['準公共化'], vacancy: '目前額滿，可請中心登記候補', fee: '每月 16,500 元起（依契約）', org: '北區居家托育服務中心', note: '保母人員技術士證，托育年資 8 年。服務地點在北區西雅里一帶。請由北區居家托育服務中心協助媒合。', src: 'homeN', cta: '請中心協助媒合' },
       { name: '居家托育人員・光復里', type: '居家保母', district: '東區', age: '0–3 歲', quasi: true, tags: ['準公共化'], vacancy: '收托 2 位，可再收 1 位', fee: '每月 18,000 元起（依契約）', org: '東區居家托育服務中心', note: '幼保相關科系畢業，托育年資 6 年。服務地點在東區光復里一帶。請由東區居家托育服務中心協助媒合。', src: 'homeE', cta: '請中心協助媒合' },
       { name: '居家托育人員・建功里', type: '居家保母', district: '東區', age: '0–2 歲', quasi: false, tags: ['一般'], vacancy: '可再收 2 位', fee: '每月 19,000 元起（依契約）', org: '東區居家托育服務中心', note: '保母人員技術士證，托育年資 10 年。服務地點在東區建功里一帶。請由東區居家托育服務中心協助媒合。', src: 'homeE', cta: '請中心協助媒合' },
       { name: '居家托育人員・牛埔里', type: '居家保母', district: '香山區', age: '0–2 歲', quasi: true, tags: ['準公共化'], vacancy: '收托 1 位，可再收 2 位', fee: '每月 15,500 元起（依契約）', org: '南/香山區居家托育服務中心', note: '保母人員技術士證，托育年資 5 年。服務地點在香山區牛埔里一帶。請由南/香山區居家托育服務中心協助媒合。', src: 'homeS', cta: '請中心協助媒合' },
       { name: '居家托育人員・香山里', type: '居家保母', district: '香山區', age: '0–3 歲', quasi: true, tags: ['準公共化'], vacancy: '收托 3 位，可再收 1 位', fee: '每月 16,000 元起（依契約）', org: '南/香山區居家托育服務中心', note: '保母人員技術士證，托育年資 15 年。服務地點在香山區香山里一帶。請由南/香山區居家托育服務中心協助媒合。', src: 'homeS', cta: '請中心協助媒合' }
-    ];
+    ]);
     const TYPE_STYLE = {
-      '準公共托嬰中心': 'font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #ECE8E0; color: #3D4842',
-      '公共托嬰': 'font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #EFEAE0; color: #5F6B64',
+      '托嬰中心': 'font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #ECE8E0; color: #3D4842',
+      '公共托育': 'font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #EFEAE0; color: #5F6B64',
       '居家保母': 'font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #EFEAE0; color: #5F6B64'
     };
     const base = 'min-height: 40px; padding: 0 14px; border-radius: 999px; font-family: inherit; font-size: 14px; cursor: pointer; ';
@@ -280,17 +361,31 @@ class Component extends DCLogic {
       knob: 'position: absolute; top: 3px; left: ' + (s[key] ? '21px' : '3px') + '; width: 20px; height: 20px; border-radius: 999px; background: #FFFFFF'
     });
     const F = window.ZBF, K = F.current(), HOME = K ? K.district : '北區', KA = K ? F.age(K) : null;
-    const typeMap = { '托嬰中心': '準公共托嬰中心', '公共托嬰': '公共托嬰', '居家保母': '居家保母' };
+    const ORDER = { '公共托育': 0, '托嬰中心': 1, '居家保母': 2 };
     const filtered = DATA.filter((d) =>
-      (s.type === '全部' || d.type === typeMap[s.type]) &&
+      (s.type === '全部' || d.type === s.type) &&
       (s.district === '全部' || d.district === s.district) &&
       (!s.quasiOnly || d.quasi)
-    ).sort((a, b) => (a.district === HOME ? 0 : 1) - (b.district === HOME ? 0 : 1));
-    const results = filtered.map((d) => ({
-      name: d.name, type: d.type, typeStyle: TYPE_STYLE[d.type], district: d.district, age: d.age,
-      quasi: d.quasi && !d.planned, planned: !!d.planned, tags: d.tags, vacancy: d.vacancy, fee: d.fee, note: d.note,
-      srcTitle: SRC[d.src][0], srcUrl: SRC[d.src][1], conf: SRC[d.src][2], canContact: d.contact !== false, org: d.org || '', hasOrg: !!d.org, cta: d.cta || '看官方說明'
-    }));
+    ).sort((a, b) => ((a.district === HOME ? 0 : 1) - (b.district === HOME ? 0 : 1)) || (ORDER[a.type] - ORDER[b.type]));
+    const telHref = (t) => 'tel:' + String(t).replace(/[^0-9]/g, '');
+    const results = filtered.map((d) => {
+      const center = d.src === 'registry';
+      const rows = center
+        ? [['負責人', d.person], ['地址', d.addr], ['電話', d.tel]].concat(d.cap ? [['核定收托', d.cap + ' 人']] : [])
+        : (d.org ? [['所屬中心', d.org]] : []).concat([['空位', d.vacancy], ['費用', d.fee]]);
+      const note = center
+        ? (d.type === '公共托育' ? '新竹市政府設立的公共托育單位，招生、收費與候補依社會處公告。' : '') + (d.quasi ? '列在新竹市 115 年準公共化托嬰中心名冊，送托後可能適用托育補助，實際以社會處審核為準。' : '目前不在新竹市 115 年準公共化托嬰中心名冊上，送托補助可能不同。收費、空位請直接問中心。')
+        : d.note;
+      const srcs = [SRC[d.src]].concat(center && d.quasi ? [SRC.roster] : []).map((x) => ({ title: x[0], url: x[1] }));
+      return {
+        name: d.name, type: d.type, typeStyle: TYPE_STYLE[d.type], district: d.district, age: d.age,
+        meta: center ? d.district + (d.cap ? '・核定收托 ' + d.cap + ' 人' : '') + '・' + d.tel : d.district + '・' + d.age + '・費用' + d.fee,
+        quasi: d.quasi && !d.planned, planned: !!d.planned, tags: d.tags || [], hasTags: !!(d.tags && d.tags.length), note, rows, srcs,
+        canContact: center || d.contact !== false,
+        ctaUrl: center ? telHref(d.tel) : SRC[d.src][1],
+        cta: center ? '打電話給中心' : (d.cta || '看官方說明')
+      };
+    });
     return {
       homeDistrict: HOME,
       over2: !!(KA && KA.born && KA.months >= 24),
@@ -299,7 +394,7 @@ class Component extends DCLogic {
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
       filters: [
-        mk('type', '類型', ['全部', '托嬰中心', '公共托嬰', '居家保母']),
+        mk('type', '類型', ['全部', '托嬰中心', '公共托育', '居家保母']),
         mk('district', '行政區', ['全部', '東區', '北區', '香山區'])
       ],
       toggles: [tg('quasiOnly', '只看準公共化')],
