@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FCFAF6">
+<script src="zhubao-family.js"></script>
 <script src="zhubao-app.js"></script>
 <title>竹寶・主頁</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -131,28 +132,23 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 <section aria-label="寶寶" style="background: #2E5E4E; color: #FFFFFF; border-radius: 20px; padding: 24px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between">
 <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
-<div style="font-size: 13px; letter-spacing: 0.08em; opacity: 0.85">今天 2026/11/14</div>
-<h1 style="margin: 0; font-size: 30px; font-weight: 600; line-height: 1.3">寶寶 2 個月 4 天</h1>
-<div style="font-size: 14px; opacity: 0.9">2026/9/10 出生・北區・第 1 胎・自己或家人照顧</div>
+<div style="font-size: 13px; letter-spacing: 0.08em; opacity: 0.85">今天 {{todayText}}</div>
+<h1 style="margin: 0; font-size: 30px; font-weight: 600; line-height: 1.3; display: flex; align-items: center; gap: 10px"><i aria-hidden="true" style="width: 14px; height: 14px; border-radius: 999px; background: {{kidHex}}; box-shadow: 0 0 0 2px #FFFFFF; flex-shrink: 0"></i>{{kidTitle}}</h1>
+<div style="font-size: 14px; opacity: 0.9">{{kidLine}}</div>
 </div>
 <div style="display: flex; flex-direction: column; gap: 8px; flex: 0 1 360px; min-width: 0">
-<div style="display: flex; justify-content: space-between; font-size: 13px; opacity: 0.9"><span>2 到 4 個月</span><span>再 57 天滿 4 個月</span></div>
-<div role="img" aria-label="這個階段已過 7%" style="height: 8px; background: rgba(255,255,255,0.25); border-radius: 999px; overflow: hidden"><div style="width: 7%; height: 8px; background: #FFFFFF; border-radius: 999px"></div></div>
-<a href="setup.html" style="align-self: flex-start; color: #FFFFFF; font-size: 13px">修改寶寶資料</a>
+<div style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; opacity: 0.9"><span>{{stageTitle}}</span><span>{{stageLeft}}</span></div>
+<div role="img" aria-label="這個階段已過 {{stagePct}}%" style="height: 8px; background: rgba(255,255,255,0.25); border-radius: 999px; overflow: hidden"><div style="width: {{stagePct}}%; height: 8px; background: #FFFFFF; border-radius: 999px"></div></div>
+<a href="setup.html" style="align-self: flex-start; color: #FFFFFF; font-size: 13px; min-height: 32px; display: inline-flex; align-items: center">修改寶寶資料</a>
 </div>
 </section>
 
-<section aria-labelledby="h-soon" class="zb-sec">
+<section aria-labelledby="h-cal" class="zb-sec">
 <div class="zb-sec-head">
-<h2 id="h-soon">接下來可以注意的補助</h2>
-<p>依你填的資料初步整理，點一項看要確認的資料與官方說明。</p>
+<h2 id="h-cal">行事曆</h2>
+<p>已關注的補助、活動和你自己記的事。不同顏色代表不同孩子，點日期看當天有哪些事。</p>
 </div>
-<div class="zb-list" style="display: flex; flex-direction: column; gap: 10px">
-<a href="benefits.html" style="display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 16px; background: #FCFAF6; border: 1px solid #E4DED2; text-decoration: none; color: #1F2A24; min-height: 44px"><span style="display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0"><span style="font-size: 16px; font-weight: 600">育兒津貼</span><span style="font-size: 13px; color: #5F6B64">未滿 2 歲・需申辦・詳見市府公告</span></span><span style="flex-shrink: 0; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: #E4EEE7; color: #2E5E4E; white-space: nowrap">可能適用</span></a>
-<a href="benefits.html" style="display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 16px; background: #FCFAF6; border: 1px solid #E4DED2; text-decoration: none; color: #1F2A24; min-height: 44px"><span style="display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0"><span style="font-size: 16px; font-weight: 600">產後健康照護（第 2 次）</span><span style="font-size: 13px; color: #5F6B64">公費・產後 1 到 3 個月內（12/10 前）</span></span><span style="flex-shrink: 0; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: #E4EEE7; color: #2E5E4E; white-space: nowrap">可能適用</span></a>
-<a href="benefits.html" style="display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 16px; background: #FCFAF6; border: 1px solid #E4DED2; text-decoration: none; color: #1F2A24; min-height: 44px"><span style="display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0"><span style="font-size: 16px; font-weight: 600">低收入戶產婦及嬰兒營養費</span><span style="font-size: 13px; color: #5F6B64">每案 2 萬元・出生後 3 個月內（12/10 前）申請</span></span><span style="flex-shrink: 0; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: #E4EEE7; color: #2E5E4E; white-space: nowrap">可能適用</span></a>
-<a href="benefits.html" style="align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; color: #2E5E4E; font-weight: 600; font-size: 15px; text-decoration: none">看全部補助</a>
-</div>
+<div id="zb-cal" data-k="cal" data-zb-static="true" style="display: flex; flex-direction: column; gap: 14px"></div>
 </section>
 
 <section aria-labelledby="h-news" style="display: flex; flex-direction: column; gap: 14px">
@@ -165,7 +161,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <div id="zb-news" data-k="news" data-zb-static="true"></div>
 </section>
 
-<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #5F6B64">「可能適用」只是依你填的資料初步整理，實際資格以主管機關審核為準。</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #5F6B64">行事曆上的補助日期依寶寶生日初步推算，實際資格與期限以主管機關公告為準。</p>
 
 </main>
 </div>
@@ -174,6 +170,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <script src="zhubao-ai.js"></script>
 <script src="zhubao-runtime.js"></script>
 <script src="zhubao-news.js"></script>
+<script src="zhubao-cal.js"></script>
 <script>
 class Component extends DCLogic {
   constructor(props) {
@@ -182,7 +179,16 @@ class Component extends DCLogic {
   }
   renderVals() {
     const s = this.state;
+    const F = window.ZBF, k = F.current(), T = F.today(), a = F.age(k);
+    const st = F.stages(k).find((x) => x.phase === 'now') || {};
+    let pct = 0, left = '';
+    if (st.from && st.to) { pct = Math.max(0, Math.min(100, Math.round(F.days(st.from, T) / Math.max(1, F.days(st.from, st.to)) * 100))); const n = F.days(T, st.to); left = '再 ' + n + ' 天進入下一階段'; }
+    else if (!st.from && st.to) { left = '預產期 ' + F.fmt(st.to); pct = 0; }
+    else left = '';
     return {
+      todayText: F.fmt(T) + '（' + F.WK[T.getDay()] + '）', kidHex: F.color(k.color).hex,
+      kidTitle: k.name + (a.born ? ' ' + a.text : '・' + a.text), kidLine: F.line(k),
+      stageTitle: st.title || '', stageLeft: left, stagePct: pct,
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),

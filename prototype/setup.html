@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FCFAF6">
+<script src="zhubao-family.js"></script>
 <script src="zhubao-app.js"></script>
 <title>竹寶・初次設定</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -125,7 +126,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-su-foot{display:flex;flex-direction:column;align-items:center;gap:10px;border-top:1px solid #EFEAE0;padding-top:24px}
 @media (max-width:760px){.zb-su-head h1{font-size:24px}.zb-su-sec,.zb-setup-q,.zb-su-foot{padding-top:20px}}
 
-@media (max-width:760px){.zb-setup{padding:20px 16px 36px}.zb-setup-card{background:transparent;border:0;border-radius:0;padding:0;gap:20px}.zb-setup-q{gap:20px}.zb-setup-card a[href="index.html"]{max-width:none}}
+@media (max-width:760px){.zb-setup{padding:20px 16px 36px}.zb-setup-card{background:transparent;border:0;border-radius:0;padding:0;gap:20px}.zb-setup-q{gap:20px}.zb-su-save{max-width:none !important}}
 </style>
 </head>
 <body>
@@ -162,10 +163,32 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <div class="zb-setup-card">
 <div class="zb-su-head">
 <span class="zb-su-kicker">寶寶資料</span>
-<h1>先認識你的寶寶</h1>
+<h1>{{headTitle}}</h1>
 <p>回答 5 個問題，我們會依新竹市與中央的規定，整理出寶寶可以用的補助和每個年紀要注意的事。</p>
 </div>
-<p class="zb-su-note">不收姓名與身分證字號。資料只存在這台裝置，隨時可以在設定中清除。</p>
+<p class="zb-su-note">只要一個暱稱（例如哥哥、妹妹），不收真實姓名與身分證字號。資料只存在這台裝置，隨時可以在設定中清除。</p>
+
+<section class="zb-su-sec" aria-labelledby="pf-l">
+<span id="pf-l" class="zb-su-label">寶寶檔案</span>
+<span class="zb-su-hint">家裡有不只一個孩子，就幫每個孩子各建一個檔案。點一個檔案可以修改。</span>
+<div class="zb-pick" style="margin-top: 8px">
+<sc-for list="{{profiles}}" as="p" hint-placeholder-count="2"><button type="button" aria-pressed="{{p.on}}" onClick="{{p.pick}}"><i class="zb-kdot" style="background: {{p.hex}}"></i>{{p.name}}</button></sc-for>
+<button type="button" aria-pressed="{{newOn}}" onClick="{{startNew}}">＋ 建立新檔案</button>
+</div>
+</section>
+
+<section class="zb-su-sec" aria-labelledby="nm-l">
+<label id="nm-l" class="zb-su-label" for="kid-name">暱稱</label>
+<input id="kid-name" class="zb-input" style="margin-top: 6px" maxlength="10" placeholder="例如：哥哥、妹妹、小竹" value="{{nameVal}}" onInput="{{setName}}">
+</section>
+
+<section class="zb-su-sec" aria-labelledby="cl-l">
+<span id="cl-l" class="zb-su-label">檔案顏色</span>
+<span class="zb-su-hint">主頁行事曆會用這個顏色的點標出這個孩子的事。</span>
+<div class="zb-pick" role="group" aria-labelledby="cl-l" style="margin-top: 8px">
+<sc-for list="{{colors}}" as="c" hint-placeholder-count="7"><button type="button" aria-pressed="{{c.on}}" aria-label="{{c.name}}色" onClick="{{c.pick}}" style="min-width: 64px; justify-content: center"><i class="zb-kdot" style="background: {{c.hex}}; width: 14px; height: 14px"></i>{{c.name}}</button></sc-for>
+</div>
+</section>
 
 <section class="zb-su-sec" aria-labelledby="bd-l">
 <span id="bd-l" class="zb-su-label">寶寶出生日期</span>
@@ -202,7 +225,8 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 
 <div class="zb-su-foot">
-<a href="index.html" style="height: 52px; display: flex; align-items: center; justify-content: center; background: #2E5E4E; color: #FFFFFF; border-radius: 12px; font-size: 16px; font-weight: 600; text-decoration: none">開始使用竹寶</a>
+<button type="button" class="zb-su-save" onClick="{{save}}" style="height: 52px; max-width: 360px; width: 100%; display: flex; align-items: center; justify-content: center; background: #2E5E4E; color: #FFFFFF; border: 0; border-radius: 12px; font-family: inherit; font-size: 16px; font-weight: 600; cursor: pointer">{{saveText}}</button>
+<sc-if value="{{canDelete}}" hint-placeholder-val="{{false}}"><button type="button" onClick="{{remove}}" style="min-height: 44px; padding: 0 16px; border: 0; background: transparent; font-family: inherit; font-size: 14px; color: #8E3A33; cursor: pointer">{{deleteText}}</button></sc-if>
 <p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64; text-align: center">結果僅供參考，最終資格以主管機關審核為準。</p>
 </div>
 
@@ -219,7 +243,20 @@ class Component extends DCLogic {
     super(props);
     document.addEventListener('click', (e) => { const t = e.target; if (t && t.isConnected && this.state.dp && !t.closest('.zb-date-pick')) this.setState({ dp: false }); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && this.state.dp) this.setState({ dp: false }); });
-    this.state = { menuOpen: false, bd: { y: 2026, m: 8, d: 10 }, dp: false, vy: 2026, vm: 8, district: '北區', residency: '不確定', order: '第 1 胎', care: '自己或家人', lowIncome: '不想回答' };
+    const F = window.ZBF;
+    this.state = Object.assign({ menuOpen: false, dp: false, confirmDel: false }, new URLSearchParams(location.search).get('new') === '1' ? this.blank() : this.load(F.current()));
+  }
+  load(k) {
+    const b = window.ZBF.parse(k.bd);
+    return { id: k.id, name: k.name, color: k.color, bd: { y: b.getFullYear(), m: b.getMonth(), d: b.getDate() }, vy: b.getFullYear(), vm: b.getMonth(),
+      district: k.district, residency: k.residency, order: k.order, care: k.care, lowIncome: k.lowIncome, confirmDel: false };
+  }
+  blank() {
+    const F = window.ZBF, used = F.kids().map((k) => k.color), T = F.today();
+    const free = F.COLORS.find((c) => used.indexOf(c.id) < 0) || F.COLORS[0];
+    const n = F.kids().length + 1;
+    return { id: '', name: '', color: free.id, bd: { y: T.getFullYear(), m: T.getMonth(), d: T.getDate() }, vy: T.getFullYear(), vm: T.getMonth(),
+      district: F.current().district, residency: F.current().residency, order: n >= 3 ? '第 3 胎以上' : '第 ' + n + ' 胎', care: '自己或家人', lowIncome: F.current().lowIncome, confirmDel: false };
   }
   renderVals() {
     const s = this.state;
@@ -248,7 +285,25 @@ class Component extends DCLogic {
       cells.push({ label: String(d), cls: 'zb-dp-d' + (today ? ' zb-dp-today' : ''), aria: s.vy + ' 年 ' + (s.vm + 1) + ' 月 ' + d + ' 日' + (today ? '（今天）' : ''),
         on: on ? 'true' : 'false', tab: '0', pick: () => this.setState({ bd: { y: s.vy, m: s.vm, d }, dp: false }) });
     }
+    const F = window.ZBF, kids = F.kids();
+    const toast = (t) => window.ZB && window.ZB.toast(t);
+    const save = () => {
+      const name = (s.name || '').trim();
+      if (!name) { const el = document.getElementById('kid-name'); if (el) el.focus(); toast('請先幫寶寶取個暱稱'); return; }
+      const bdStr = bd.y + '-' + String(bd.m + 1).padStart(2, '0') + '-' + String(bd.d).padStart(2, '0');
+      const k = F.saveKid({ id: s.id, name, color: s.color, bd: bdStr, district: s.district, residency: s.residency, order: s.order, care: s.care, lowIncome: s.lowIncome });
+      F.setCurrent(k.id);
+      location.replace('index.html');
+    };
     return {
+      headTitle: s.id ? '修改' + (s.name || '寶寶') + '的資料' : kids.length ? '建立新的寶寶檔案' : '先認識你的寶寶',
+      profiles: kids.map((k) => ({ name: k.name, hex: F.color(k.color).hex, on: k.id === s.id ? 'true' : 'false', pick: () => this.setState(this.load(k)) })),
+      newOn: s.id ? 'false' : 'true', startNew: () => this.setState(this.blank()),
+      nameVal: s.name || '', setName: (e) => { this.state.name = e.target.value; },
+      colors: F.COLORS.map((c) => ({ name: c.name, hex: c.hex, on: s.color === c.id ? 'true' : 'false', pick: () => this.setState({ color: c.id, name: (document.getElementById('kid-name') || {}).value || s.name }) })),
+      saveText: s.id ? '儲存並回到主頁' : '建立檔案並開始使用', save,
+      canDelete: !!s.id && kids.length > 1, deleteText: s.confirmDel ? '再按一次刪除「' + s.name + '」的檔案' : '刪除這個檔案',
+      remove: () => { if (!s.confirmDel) { this.setState({ confirmDel: true }); return; } F.removeKid(s.id); toast('已刪除'); this.setState(this.load(F.current())); },
       bdLabel: bd.y + ' 年 ' + (bd.m + 1) + ' 月 ' + bd.d + ' 日（' + WK[bdDate.getDay()] + '）',
       dpOpen: !!s.dp, dpExp: s.dp ? 'true' : 'false',
       openPicker: () => this.setState({ dp: !s.dp, vy: bd.y, vm: bd.m }),

@@ -62,10 +62,8 @@ iframe{position:absolute;left:0;top:50px;width:390px;height:794px;border:0;backg
 
 <div class="box">
 <h2>送出推播通知</h2>
-<p>模擬手機收到竹寶的提醒，點一下通知會打開對應的頁面。</p>
-<button type="button" class="btn primary" data-push="allow">補助提醒<small>育兒津貼記得申辦</small></button>
-<button type="button" class="btn" data-push="care">補助期限<small>12/10 前</small></button>
-<button type="button" class="btn" data-push="news">最新消息<small>關東公共托嬰開工</small></button>
+<p>只通知已關注的補助、活動和自己建立的事件（前 7 天、前 1 天）。點一下通知會打開對應的頁面並對準那一項。</p>
+<button type="button" class="btn primary" data-push="">關注提醒<small>送出最近一則已關注的提醒</small></button>
 </div>
 
 <div class="box">
@@ -77,9 +75,10 @@ iframe{position:absolute;left:0;top:50px;width:390px;height:794px;border:0;backg
 <h2>重新開始</h2>
 <button type="button" class="btn" id="replay">從載入畫面重新播放<small>回到主頁</small></button>
 <a class="btn" href="setup.html" id="onboard">從填寫寶寶資料開始<small>初次使用</small></a>
+<button type="button" class="btn" id="reset">重設示範資料<small>兩個孩子與幾個已關注的事</small></button>
 </div>
 
-<p class="foot">本 Demo 為純前端模擬，推播、同步與問竹寶回答都是示範。<br>示範情境：寶寶 2026/9/10 出生、新竹市北區、第 1 胎。<br><a href="index.html?web=1">改看電腦版網頁</a></p>
+<p class="foot">本 Demo 為純前端模擬，推播、同步與問竹寶回答都是示範。<br>示範情境：新竹市北區，哥哥 2024/2/20 出生（藍）、妹妹 2026/9/10 出生（綠）。<br><a href="index.html?web=1">改看電腦版網頁</a></p>
 </aside>
 
 <script>
@@ -94,6 +93,7 @@ iframe{position:absolute;left:0;top:50px;width:390px;height:794px;border:0;backg
   box.addEventListener('click', (e) => { const b = e.target.closest('[data-go]'); if (b) frame.src = b.getAttribute('data-go'); });
   document.querySelectorAll('[data-push]').forEach((b) => b.addEventListener('click', () => frame.contentWindow.postMessage({ zb: 'push', id: b.getAttribute('data-push') }, '*')));
   document.getElementById('replay').addEventListener('click', () => frame.contentWindow.postMessage({ zb: 'replay' }, '*'));
+  document.getElementById('reset').addEventListener('click', () => frame.contentWindow.postMessage({ zb: 'reset' }, '*'));
   document.getElementById('onboard').addEventListener('click', (e) => { e.preventDefault(); frame.src = 'setup.html'; });
   window.addEventListener('message', (e) => {
     const d = e.data || {};

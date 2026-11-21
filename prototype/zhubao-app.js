@@ -35,15 +35,11 @@
     { href: 'help.html', label: '協助', sub: '緊急專線、常見問題、資料隱私' }
   ];
   const TITLES = { 'index.html': '主頁', 'benefits.html': '補助及其他福利', 'childcare.html': '托育', 'activities.html': '親子活動', 'ask.html': '問竹寶', 'help.html': '協助', 'setup.html': '寶寶資料' };
-  /* 通知內容都來自網站上已經有的官方資訊（新竹市政府公告、國健署產後健康照護） */
-  const NOTI = [
-    { id: 'allow', kind: '補助提醒', when: '今天 08:00', title: '育兒津貼記得申辦', body: '未滿 2 歲、由自己或家人照顧的寶寶可能適用。資格與申辦方式請看市府公告。', href: 'benefits.html', set: 'due' },
-    { id: 'care', kind: '補助期限', when: '昨天 20:00', title: '第 2 次產後健康照護', body: '公費服務，產後 1 到 3 個月內（12/10 前）。要去之前先向院所預約。', href: 'benefits.html', set: 'due' },
-    { id: 'news', kind: '最新消息', when: '11/3', title: '關東公共托嬰中心開工', body: '東區新增一處公共托嬰中心。招生時間請看社會處公告。', href: 'childcare.html', set: 'news' }
-  ];
+  /* 通知只來自已關注的項目（補助日期、活動、自己建立的事件），前 7 天和前 1 天各提醒一次 */
+  const F = window.ZBF;
+  let NOTI = F ? F.reminders() : [];
   const SETTINGS = [
-    { id: 'due', label: '補助提醒', sub: '可能適用的補助與申請期限' },
-    { id: 'news', label: '最新消息', sub: '新竹市政府的育兒公告' }
+    { id: 'due', label: '關注提醒', sub: '已關注的補助、活動與自己建立的事件，前 7 天和前 1 天提醒' }
   ];
   const hasTabs = PAGE !== 'setup.html' && PAGE !== 'phone.html';
   if (hasTabs) document.documentElement.classList.add('zb-has-tabs');
@@ -61,7 +57,7 @@
   const logo = '<svg width="18" height="18" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"/><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>';
 
   const readIds = () => store.get('zb-noti-read', []);
-  const settings = () => Object.assign({ due: true, news: true }, store.get('zb-noti-set', {}));
+  const settings = () => Object.assign({ due: true }, store.get('zb-noti-set', {}));
   const unread = () => { const r = readIds(); const s = settings(); return NOTI.filter((n) => s[n.set] && r.indexOf(n.id) < 0); };
   const markRead = (id) => { const r = readIds(); if (r.indexOf(id) < 0) { r.push(id); store.set('zb-noti-read', r); } updateBell(); };
 
@@ -128,11 +124,14 @@
     const st = settings(); const r = readIds();
     const list = NOTI.filter((n) => st[n.set]);
     const noti = list.length
-      ? '<div class="zb-group">' + list.map((n) => '<a class="zb-row zb-noti" href="' + n.href + '" data-id="' + n.id + '" data-unread="' + (r.indexOf(n.id) < 0) + '"><span class="zb-noti-top"><b>' + n.kind + '</b><span>' + n.when + '</span></span><span class="zb-noti-title">' + n.title + '</span><span class="zb-noti-body">' + n.body + '</span></a>').join('') + '</div>'
+      ? '<div class="zb-group">' + list.map((n) => '<a class="zb-row zb-noti" href="' + n.href + '" data-id="' + n.id + '" data-unread="' + (r.indexOf(n.id) < 0) + '"><span class="zb-noti-top"><b>' + esc(n.kind) + '</b><span>' + esc(n.when) + '</span></span><span class="zb-noti-title"><i class="zb-kdot" style="background:' + F.kidHex(n.kid) + '"></i>' + esc(n.title) + '</span><span class="zb-noti-body">' + esc(n.body) + '</span></a>').join('') + '</div>'
         + (unread().length ? '<button type="button" class="zb-sheet-x" data-act="all" style="align-self:center">全部標為已讀</button>' : '')
-      : '<div class="zb-group"><div class="zb-row"><span class="zb-row-main"><span>目前沒有通知</span><span class="zb-row-sub">通知都關掉了，可以在下方通知設定打開。</span></span></div></div>';
+      : '<div class="zb-group"><div class="zb-row"><span class="zb-row-main"><span>目前沒有通知</span><span class="zb-row-sub">' + (st.due ? '在補助或活動按「關注」，日期前 7 天和前 1 天會提醒你。' : '關注提醒關掉了，可以在下方通知設定打開。') + '</span></span></div></div>';
     const html = '<span class="zb-group-label">通知</span>' + noti
-      + '<div class="zb-me"><b>寶寶 2 個月 4 天</b><span>2026/9/10 出生・北區・第 1 胎・自己或家人照顧</span><a href="setup.html">修改寶寶資料</a></div>'
+      + '<span class="zb-group-label">寶寶檔案</span>'
+      + '<div class="zb-group">' + F.kids().map((k) => { const on = k.id === F.current().id; return '<button type="button" class="zb-row zb-kid" data-kid="' + k.id + '" aria-pressed="' + on + '"><i class="zb-kdot zb-kdot-lg" style="background:' + F.color(k.color).hex + '"></i><span class="zb-row-main"><span>' + esc(k.name) + '・' + esc(F.age(k).short) + '</span><span class="zb-row-sub">' + esc(F.line(k)) + '</span></span>' + (on ? '<span class="zb-row-end zb-ok">目前</span>' : '<span class="zb-row-end">切換</span>') + '</button>'; }).join('')
+      + '<a class="zb-row" href="setup.html"><span class="zb-row-main"><span>修改寶寶資料</span><span class="zb-row-sub">目前是' + esc(F.current().name) + '的檔案</span></span>' + chev + '</a>'
+      + '<a class="zb-row" href="setup.html?new=1"><span class="zb-row-main"><span>建立新檔案</span><span class="zb-row-sub">家裡有不只一個孩子時，各自建一個檔案</span></span>' + chev + '</a></div>'
       + '<div class="zb-group">' + MORE.map((m) => '<a class="zb-row" href="' + m.href + '"' + (m.href === PAGE ? ' aria-current="page"' : '') + '><span class="zb-row-main"><span>' + m.label + '</span><span class="zb-row-sub">' + m.sub + '</span></span>' + (m.href === PAGE ? '<span class="zb-row-end zb-ok">目前位置</span>' : chev) + '</a>').join('') + '</div>'
       + '<span class="zb-group-label">帳號與同步</span>'
       + '<div class="zb-group"><div class="zb-row"><span class="zb-row-main"><span>新竹通帳號</span><span class="zb-row-sub">用新竹通登入，換手機也能找回寶寶資料</span></span><span class="zb-row-end zb-ok">已連結</span></div>'
@@ -142,6 +141,11 @@
       + '<p style="margin:0;font-size:12px;line-height:1.6;color:#5F6B64">竹寶的資料只用來整理可能適用的補助與提醒。實際資格以主管機關審核為準。</p>';
     sheet('zb-more', '選單', html, (el) => {
       el.querySelectorAll('[data-id]').forEach((a) => a.addEventListener('click', () => markRead(a.getAttribute('data-id'))));
+      el.querySelectorAll('[data-kid]').forEach((b) => b.addEventListener('click', () => {
+        const id = b.getAttribute('data-kid'); buzz();
+        if (id === F.current().id) { closeSheet(); return; }
+        F.setCurrent(id); closeSheet(true); location.reload();
+      }));
       const all = el.querySelector('[data-act="all"]');
       if (all) all.addEventListener('click', () => { store.set('zb-noti-read', NOTI.map((n) => n.id)); el.querySelectorAll('[data-unread]').forEach((x) => x.setAttribute('data-unread', 'false')); all.remove(); updateBell(); buzz(); });
       el.querySelectorAll('[data-set]').forEach((b) => b.addEventListener('click', () => {
@@ -167,7 +171,8 @@
   /* ---------- 推播橫幅 ---------- */
   let pushEl = null, pushTimer = 0;
   function push(id) {
-    const n = NOTI.find((x) => x.id === id) || NOTI[0];
+    const n = NOTI.find((x) => x.id === id) || unread()[0] || NOTI[0];
+    if (!n) { toast('目前沒有已關注項目的提醒'); return; }
     if (pushEl) pushEl.remove();
     clearTimeout(pushTimer);
     const el = document.createElement('button');
@@ -286,16 +291,20 @@
     /* 第一次打開主頁時，載入畫面結束後收到一則推播 */
     if (PAGE === 'index.html' && hasTabs && !ss.get('zb-pushed') && settings().due) {
       ss.set('zb-pushed', '1');
-      setTimeout(() => push('allow'), document.getElementById('zb-loader') ? 6400 : 1600);
+      if (unread().length) setTimeout(() => push(), document.getElementById('zb-loader') ? 6400 : 1600);
     }
     if (inFrame) { try { window.parent.postMessage({ zb: 'page', page: PAGE, title: TITLES[PAGE] || '' }, '*'); } catch (e) {} }
   }
+  /* 在同一頁點到跳轉連結（例如補助頁的通知指向補助頁的某一項）：重新載入才會展開並對準 */
+  window.addEventListener('hashchange', () => { if (/^#(a|b|d)-/.test(location.hash)) location.reload(); });
   window.addEventListener('message', (e) => {
     const d = e.data || {};
     if (d.zb === 'push') push(d.id);
+    if (d.zb === 'reset') { try { ['zb-kids', 'zb-kid', 'zb-follow', 'zb-events', 'zb-noti-read'].forEach((k) => localStorage.removeItem(k)); sessionStorage.removeItem('zb-pushed'); } catch (x) {} location.href = 'index.html'; }
     if (d.zb === 'replay') { try { sessionStorage.removeItem('zb-loaded'); sessionStorage.removeItem('zb-pushed'); } catch (x) {} location.href = 'index.html'; }
   });
-  window.ZB = { push, toast, showNoti, showMore };
+  const refresh = () => { NOTI = F ? F.reminders() : []; updateBell(); };
+  window.ZB = { push, toast, showNoti, showMore, sheet, closeSheet, buzz, refresh };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
   else mount();
 })();
