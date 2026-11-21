@@ -280,3 +280,11 @@ textarea.zb-input{padding:12px 14px;min-height:80px;resize:vertical;line-height:
 .zb-detail{display:grid;grid-template-columns:56px minmax(0,1fr);row-gap:6px;margin:0;font-size:15px;line-height:1.6}
 .zb-detail dt{color:var(--zb-sub)}
 .zb-detail dd{margin:0}
+/* 篩選條件打開時小助手按鈕收起來，避免擋住篩選按鈕（收起篩選就回來） */
+.zb-filter-open .zbf-fab:not([aria-expanded="true"]){opacity:0 !important;pointer-events:none !important;transform:translateY(24px) scale(.9) !important}
+@media (prefers-reduced-motion:reduce){.zb-filter-open .zbf-fab:not([aria-expanded="true"]){transform:none !important}}
+/* 篩選選項（可切換的膠囊按鈕）滑過時不浮起，改成邊框變綠：按鈕位置不動，點哪裡都準 */
+@media (hover:hover){
+#dc-root button[aria-pressed]:hover:not(:active){transform:none !important;box-shadow:none !important}
+#dc-root fieldset button[aria-pressed="false"]:hover{border-color:#8FB39E !important;color:#2E5E4E !important}
+}
