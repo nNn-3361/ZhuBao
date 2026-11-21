@@ -123,7 +123,82 @@
     const by = Math.min(over, head.top - 72);
     if (by > 0) window.scrollBy({ top: by, behavior: reduced() ? 'auto' : 'smooth' });
   }
+  /* 竹節展開／收起：不再逐格改高度（高的竹節裡有很多卡片，每一格都要重排整頁，手機上會卡一下）。
+     版面一次到位，再用 transform 把下面的內容從舊位置滑到新位置，竹節內容用 clip-path 露出或收進去。
+     這兩種動畫都交給 GPU，不用重排版面。 */
+  const BAM_MS = 300;
+  function around(el, dir) {
+    const out = [];
+    const key = dir > 0 ? 'nextElementSibling' : 'previousElementSibling';
+    for (let n = el; n && n !== root; n = n.parentElement) {
+      for (let s = n[key]; s; s = s[key]) {
+        if (s.__leaving) continue;
+        const p = getComputedStyle(s).position;
+        if (p !== 'fixed' && p !== 'sticky' && p !== 'absolute') out.push(s);
+      }
+    }
+    return out;
+  }
+  const followers = (el) => around(el, 1);
+  function slide(list, from) {
+    list.forEach((s) => s.animate([{ transform: 'translateY(' + from + 'px)' }, { transform: 'translateY(0)' }], { duration: BAM_MS, easing: EASE, composite: 'add' }));
+  }
+  /* 竹節實際佔掉的高度：本身高度加上排版的間距（gap） */
+  function span(el) {
+    const cs = el.parentElement ? getComputedStyle(el.parentElement) : null;
+    const g = cs && /flex|grid/.test(cs.display) ? parseFloat(cs.rowGap) || 0 : 0;
+    const m = getComputedStyle(el);
+    return el.offsetHeight + g + (parseFloat(m.marginTop) || 0) + (parseFloat(m.marginBottom) || 0);
+  }
+  function bamEnter(el) {
+    const H = span(el);
+    if (!H) return;
+    slide(followers(el), -H);
+    const a = el.animate([{ clipPath: 'inset(0 0 100% 0)', opacity: 0.4 }, { clipPath: 'inset(0 0 0% 0)', opacity: 1 }], { duration: BAM_MS, easing: EASE });
+    a.onfinish = () => { if (anchoring) pendingView = el; else bringIntoView(el); };
+  }
+  function bamLeave(el) {
+    el.__leaving = true;
+    const H = span(el);
+    const par = el.parentElement;
+    if (!H || !par) { el.remove(); return; }
+    if (getComputedStyle(par).position === 'static') { par.style.position = 'relative'; par.__zbRel = (par.__zbRel || 0) + 1; }
+    const top = el.offsetTop, left = el.offsetLeft, w = el.offsetWidth;
+    const after = followers(el);
+    /* 點的是下面另一個竹節：被點的按鈕要留在手指底下。先把捲動位置往上補回竹節的高度，
+       讓上面的內容往下滑、竹節從上往下收，按鈕不動 */
+    const hold = anchor && after.some((f) => f.contains(anchor.el)) ? anchor : null;
+    const before = hold ? around(el, -1) : [];
+    /* 竹節拿出版面時頁面會一下子變短，瀏覽器會把捲動位置往上拉、畫面跳一下。
+       先在頁尾補一段一樣高的空白，再依需要跟著動畫慢慢收掉 */
+    const y0 = window.scrollY;
+    const pad = document.createElement('div');
+    pad.style.height = H + 'px';
+    document.body.appendChild(pad);
+    Object.assign(el.style, { position: 'absolute', top: top + 'px', left: left + 'px', width: w + 'px', pointerEvents: 'none', margin: '0' });
+    window.scrollTo(0, hold ? Math.max(0, y0 - H) : y0);
+    const dS = hold ? y0 - window.scrollY : 0;
+    if (hold) anchor = null;
+    const lack = Math.ceil(window.scrollY - (document.documentElement.scrollHeight - H - window.innerHeight));
+    let padLive = lack > 0;
+    if (padLive) {
+      pad.style.height = lack + 'px';
+      pad.animate([{ height: lack + 'px' }, { height: '0px' }], { duration: BAM_MS, easing: EASE, fill: 'forwards' });
+    } else pad.remove();
+    if (dS) slide(before, -dS);
+    slide(after, H - dS);
+    const a = el.animate([
+      { transform: 'translateY(' + -dS + 'px)', clipPath: 'inset(0px 0 0px 0)', opacity: 1 },
+      { transform: 'translateY(' + -dS + 'px)', clipPath: 'inset(' + dS + 'px 0 ' + (H - dS) + 'px 0)', opacity: 0.4 }
+    ], { duration: BAM_MS, easing: EASE, fill: 'forwards' });
+    a.onfinish = () => {
+      el.remove();
+      if (padLive) pad.remove();
+      if (par.__zbRel && --par.__zbRel === 0) par.style.position = '';
+    };
+  }
   function enter(el) {
+    if (el.nodeType === 1 && el.classList.contains('zb-bam-panel') && !reduced()) { bamEnter(el); return; }
     if (el.nodeType !== 1 || !el.matches(ANIM_SEL) || reduced()) return;
     const f = frames(el);
     el.style.overflow = 'hidden';
@@ -146,6 +221,7 @@
       setTimeout(() => el.remove(), 200);
       return;
     }
+    if (el.nodeType === 1 && el.classList.contains('zb-bam-panel') && !reduced() && !el.__leaving) { bamLeave(el); return; }
     if (el.nodeType !== 1 || !el.matches(ANIM_SEL) || reduced() || el.__leaving) { el.remove(); return; }
     el.__leaving = true;
     const f = frames(el);
