@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FCFAF6">
-<script src="zhubao-family.js?v=20261121"></script>
-<script src="zhubao-app.js?v=20261121"></script>
+<script src="zhubao-family.js?v=20261121b"></script>
+<script src="zhubao-app.js?v=20261121b"></script>
 <title>竹寶・問竹寶</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&amp;display=swap">
@@ -164,7 +164,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <main class="zb-ask" style="max-width: 1080px; margin: 0 auto; padding: 24px 24px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
 <div style="display: flex; flex-direction: column; gap: 6px">
 <h1 style="margin: 0; font-size: 26px; font-weight: 600">問竹寶</h1>
-<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">依寶寶的資料，用白話回答補助、托育和親子活動的問題。每個回答都附官方來源，實際資格以主管機關為準。</p>
+<p class="zb-guide" style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">依寶寶的資料，用白話回答補助、托育和親子活動的問題。每個回答都附官方來源，實際資格以主管機關為準。</p>
 </div>
 
 <div class="zb-ask-grid">
@@ -183,7 +183,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 <div id="zb-hist-list" class="zb-hist-list">
 <sc-if value="{{noHist}}" hint-placeholder-val="{{false}}">
-<p style="margin: 0; padding: 4px 6px 8px; font-size: 13px; line-height: 1.7; color: #5F6B64">問過的問題會留在這裡，最多 5 筆。在任何一頁右下角的竹寶問的也會記下來。</p>
+<p class="zb-guide" style="margin: 0; padding: 4px 6px 8px; font-size: 13px; line-height: 1.7; color: #5F6B64">問過的問題會留在這裡，最多 5 筆。在任何一頁右下角的竹寶問的也會記下來。</p>
 </sc-if>
 <sc-for list="{{hist}}" as="hi" hint-placeholder-count="3">
 <button type="button" class="zb-hist-item" data-k="{{hi.id}}" aria-current="{{hi.current}}" onClick="{{hi.pick}}"><span class="zb-hist-q">{{hi.q}}</span><span class="zb-hist-t">{{hi.when}}</span></button>
@@ -299,8 +299,8 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 </template>
 <div id="dc-root"></div>
-<script src="zhubao-ai.js?v=20261121"></script>
-<script src="zhubao-runtime.js?v=20261121"></script>
+<script src="zhubao-ai.js?v=20261121b"></script>
+<script src="zhubao-runtime.js?v=20261121b"></script>
 <script>
 class Component extends DCLogic {
   constructor(props) {

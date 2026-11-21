@@ -1,6 +1,6 @@
 /* 主頁行事曆：像手機行事曆的月曆。
    點日期看當天已關注的補助、活動和自己建立的事件；點補助或活動會跳到那一頁並對準那張卡片。
-   左右滑或按箭頭換月。「新增事件」讓家長自己記其他事（托嬰中心報名、看醫生等）。 */
+   左右滑或按箭頭換月。「新增」讓家長自己記其他事（托嬰中心報名、看醫生等）。 */
 (function () {
   const F = window.ZBF;
   if (!F || F.leaving) return;
@@ -39,7 +39,7 @@
       return e.href
         ? '<a class="zb-ev" href="' + esc(e.href) + '">' + inner + '</a>'
         : '<button type="button" class="zb-ev" data-ev="' + esc(e.id) + '">' + inner + '</button>';
-    }).join('') : '<p class="zb-empty">這天沒有關注的事。在補助或活動按「關注」，日期就會出現在這裡；也可以按「新增事件」自己記。</p>';
+    }).join('') : '<p class="zb-empty">這天沒有關注的事。在補助或活動按「關注」，日期就會出現在這裡；也可以按「新增」自己記。</p>';
     const upcoming = all.filter((e) => e.date > tKey);
     const nextTxt = !list.length && upcoming.length ? '<p class="zb-upnext">下一件：' + F.md(F.parse(upcoming[0].date)) + ' ' + esc(upcoming[0].title) + '</p>' : '';
     root.innerHTML = '<div class="zb-cal" aria-label="行事曆">'
@@ -48,7 +48,7 @@
       + '<button type="button" class="zb-cal-nav" data-act="prev" aria-label="上個月">‹</button><button type="button" class="zb-cal-nav" data-act="next" aria-label="下個月">›</button></div>'
       + '<div class="zb-cal-grid">' + F.WK.map((w) => '<span class="zb-cal-w">' + w + '</span>').join('') + cells + '</div>'
       + '<div class="zb-cal-legend">' + legend + '</div></div>'
-      + '<div class="zb-agenda"><div class="zb-agenda-head"><h3>' + longDate(selD) + (sel === tKey ? '・今天' : '') + '</h3><button type="button" class="zb-add" data-act="add">新增事件</button></div>' + items + nextTxt + '</div>';
+      + '<div class="zb-agenda"><div class="zb-agenda-head"><h3>' + longDate(selD) + (sel === tKey ? '・今天' : '') + '</h3><button type="button" class="zb-add" data-act="add">新增</button></div>' + items + nextTxt + '</div>';
   }
 
   function go(n) { const d = new Date(view.y, view.m + n, 1); view = { y: d.getFullYear(), m: d.getMonth() }; buzz(); render(); }

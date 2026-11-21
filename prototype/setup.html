@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FCFAF6">
-<script src="zhubao-family.js?v=20261121"></script>
-<script src="zhubao-app.js?v=20261121"></script>
+<script src="zhubao-family.js?v=20261121b"></script>
+<script src="zhubao-app.js?v=20261121b"></script>
 <title>竹寶・初次設定</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&amp;display=swap">
@@ -174,7 +174,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <sc-if value="{{hasKids}}" hint-placeholder-val="{{false}}">
 <section class="zb-su-sec" aria-labelledby="pf-l">
 <span id="pf-l" class="zb-su-label">寶寶檔案</span>
-<span class="zb-su-hint">家裡有不只一個孩子，就幫每個孩子各建一個檔案。點一個檔案可以修改。</span>
+<span class="zb-su-hint zb-guide">家裡有不只一個孩子，就幫每個孩子各建一個檔案。點一個檔案可以修改。</span>
 <div class="zb-pick" style="margin-top: 8px">
 <sc-for list="{{profiles}}" as="p" hint-placeholder-count="2"><button type="button" aria-pressed="{{p.on}}" onClick="{{p.pick}}"><i class="zb-kdot" style="background: {{p.hex}}"></i>{{p.name}}</button></sc-for>
 <button type="button" aria-pressed="{{newOn}}" onClick="{{startNew}}">＋ 建立新檔案</button>
@@ -189,7 +189,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 <section class="zb-su-sec" aria-labelledby="cl-l">
 <span id="cl-l" class="zb-su-label">檔案顏色</span>
-<span class="zb-su-hint">主頁行事曆會用這個顏色的點標出這個孩子的事。</span>
+<span class="zb-su-hint zb-guide">主頁行事曆會用這個顏色的點標出這個孩子的事。</span>
 <div class="zb-pick" role="group" aria-labelledby="cl-l" style="margin-top: 8px">
 <sc-for list="{{colors}}" as="c" hint-placeholder-count="7"><button type="button" aria-pressed="{{c.on}}" aria-label="{{c.name}}色" onClick="{{c.pick}}" style="min-width: 64px; justify-content: center"><i class="zb-kdot" style="background: {{c.hex}}; width: 14px; height: 14px"></i>{{c.name}}</button></sc-for>
 </div>
@@ -241,8 +241,8 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 </template>
 <div id="dc-root"></div>
-<script src="zhubao-ai.js?v=20261121"></script>
-<script src="zhubao-runtime.js?v=20261121"></script>
+<script src="zhubao-ai.js?v=20261121b"></script>
+<script src="zhubao-runtime.js?v=20261121b"></script>
 <script>
 class Component extends DCLogic {
   constructor(props) {
