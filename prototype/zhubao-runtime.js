@@ -272,6 +272,8 @@
   let anchor = null, anchoring = false, pendingView = null;
   function holdAnchor() {
     if (!anchor || !anchor.el.isConnected) { anchor = null; return; }
+    /* 在底部面板裡點的按鈕（例如縣市選擇）：面板是固定在畫面上的，正在滑出去，不用捲頁面去追它 */
+    if (anchor.el.closest('.zb-sheet')) { anchor = null; return; }
     const a = anchor; anchor = null; anchoring = true;
     const until = performance.now() + 380;
     const step = () => {

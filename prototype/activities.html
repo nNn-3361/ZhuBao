@@ -147,11 +147,8 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <sc-if value="{{filterOpen}}" hint-placeholder-val="{{false}}">
 <div class="zb-acc-body" style="gap: 18px; border-top: 1px solid #E4DED2; padding-top: 16px">
 <div style="display: flex; flex-direction: column; gap: 8px">
-<label for="zb-city" style="font-size: 14px; font-weight: 600">縣市</label>
-<div style="position: relative">
-<select id="zb-city" class="zb-city" onChange="{{pickCity}}" style="{{cityStyle}}"><option value="全部">全部縣市</option><optgroup label="北部"><option value="基隆市">基隆市</option><option value="臺北市">臺北市</option><option value="新北市">新北市</option><option value="桃園市">桃園市</option><option value="新竹市">新竹市</option><option value="新竹縣">新竹縣</option><option value="宜蘭縣">宜蘭縣</option></optgroup><optgroup label="中部"><option value="苗栗縣">苗栗縣</option><option value="臺中市">臺中市</option><option value="彰化縣">彰化縣</option><option value="南投縣">南投縣</option><option value="雲林縣">雲林縣</option></optgroup><optgroup label="南部"><option value="嘉義縣">嘉義縣</option><option value="嘉義市">嘉義市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="屏東縣">屏東縣</option></optgroup><optgroup label="東部"><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option></optgroup><optgroup label="離島"><option value="澎湖縣">澎湖縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></optgroup></select>
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position: absolute; right: 14px; top: 50%; margin-top: -9px; pointer-events: none"><path d="m6 9 6 6 6-6"></path></svg>
-</div>
+<span id="zb-city-label" style="font-size: 14px; font-weight: 600">縣市</span>
+<button type="button" class="zb-city-btn" aria-haspopup="dialog" aria-labelledby="zb-city-label zb-city-val" aria-pressed="{{cityPicked}}" onClick="{{openCity}}"><span id="zb-city-val">{{cityText}}</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button>
 </div>
 <sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
 <fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
@@ -227,6 +224,29 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 </sc-if>
 <a href="{{sheet.ctaUrl}}" style="align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">{{sheet.cta}}</a>
+</div>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{citySheet}}" hint-placeholder-val="{{false}}">
+<div class="zb-sheet zb-csheet zb-city-sheet" data-k="cs-city">
+<div class="zb-sheet-back" onClick="{{closeCity}}"></div>
+<div class="zb-sheet-panel" role="dialog" aria-modal="true" aria-label="選擇縣市" tabindex="-1">
+<span class="zb-grab" aria-hidden="true"></span>
+<div class="zb-sheet-head"><div class="zb-csheet-title"><h2>選擇縣市</h2></div><button type="button" class="zb-sheet-x" data-sheet-close="1" onClick="{{closeCity}}">完成</button></div>
+<div class="zb-csheet-body">
+<button type="button" class="zb-city-opt zb-city-all" aria-pressed="{{cityAll.pressed}}" onClick="{{cityAll.pick}}">全部縣市</button>
+<sc-for list="{{cityGroups}}" as="g" hint-placeholder-count="5">
+<div class="zb-city-group" role="group" aria-label="{{g.label}}">
+<span class="zb-city-glabel">{{g.label}}</span>
+<div class="zb-city-grid">
+<sc-for list="{{g.cities}}" as="c" hint-placeholder-count="5">
+<button type="button" class="zb-city-opt" aria-pressed="{{c.pressed}}" onClick="{{c.pick}}"><span>{{c.label}}</span><span class="zb-city-n" data-empty="{{c.empty}}">{{c.count}}</span></button>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
 </div>
 </div>
 </sc-if>
@@ -418,7 +438,6 @@ class Component extends DCLogic {
         cta: isEvent ? '看活動頁' : '看官方票價與說明', ctaUrl: d.url
       };
     });
-    /* 縣市用手機原生的下拉選單：選項不會在畫面上增減、換行或被底部分頁列蓋住，點哪個就是哪個 */
     const filters = [];
     filters.push(mk('deal', '優惠', ['全部', '有優惠', '孕婦優惠', '兒童優惠', '免費參加', '沒有標示優惠']));
     filters.push(mk('kind', '類型', ['全部', '常設場館', '期間活動']));
@@ -428,9 +447,9 @@ class Component extends DCLogic {
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
       filters,
       toggles: [],
-      pickCity: (e) => this.setState({ city: e.target.value, card: null }),
-      cityStyle: 'width: 100%; min-height: 48px; padding: 0 44px 0 14px; border-radius: 12px; border: 1px solid ' + (s.city === '全部' ? '#E4DED2' : '#2E5E4E') + '; background: ' + (s.city === '全部' ? '#FCFAF6' : '#E4EEE7') + '; color: #1F2A24; font-family: inherit; font-size: 16px; -webkit-appearance: none; appearance: none; cursor: pointer',
-      reset: () => { this.setState({ city: '全部', deal: '全部', kind: '全部', card: null }); const c = document.getElementById('zb-city'); if (c) c.value = '全部'; },
+      reset: () => this.setState({ city: '全部', deal: '全部', kind: '全部', card: null }),
+      regions: REGIONS,
+      cityCount: ALL.filter((d) => dealOk(d) && (s.kind === '全部' || d.kind === s.kind)).reduce((m, d) => { m[d.city] = (m[d.city] || 0) + 1; return m; }, {}),
       results, noResult: results.length === 0, emptyText: '沒有符合條件的場館或活動。可以放寬條件，或清除篩選。',
       resultText: '共 ' + results.length + ' 筆'
     };
@@ -444,7 +463,17 @@ Component.prototype.renderVals = function () {
     .concat(v.toggles.filter((t) => t.checked === 'true').map((t) => t.label));
   v.filterSummary = picked.length ? '已選：' + picked.join('・') : '目前顯示全部，點開可以篩選';
   v.filterOpen = !!s.filterOpen; v.filterExpanded = s.filterOpen ? 'true' : 'false';
-  v.toggleFilter = () => { this.setState({ filterOpen: !s.filterOpen }); const c = document.getElementById('zb-city'); if (c) c.value = this.state.city; };
+  v.toggleFilter = () => this.setState({ filterOpen: !s.filterOpen });
+  /* 縣市：點了從下方滑出面板，依地區分組、位置固定；選好就關閉。面板蓋住小助手與分頁列，不會點錯 */
+  const pickC = (c) => () => this.setState({ city: c, citySheet: false, card: null });
+  const cnt = (c) => v.cityCount[c] || 0;
+  v.cityText = s.city === '全部' ? '全部縣市' : s.city;
+  v.cityPicked = s.city === '全部' ? 'false' : 'true';
+  v.openCity = () => this.setState({ citySheet: true, card: null });
+  v.closeCity = () => this.setState({ citySheet: false });
+  v.cityAll = { pressed: s.city === '全部' ? 'true' : 'false', pick: pickC('全部') };
+  v.cityGroups = Object.keys(v.regions).map((g) => ({ label: g, cities: v.regions[g].map((c) => ({ label: c, count: cnt(c) + ' 筆', empty: cnt(c) ? 'false' : 'true', pressed: s.city === c ? 'true' : 'false', pick: pickC(c) })) }));
+  v.citySheet = !!s.citySheet && !s.card;
   v.results = v.results.map((r) => ({ ...r, open: s.card === r.name, expanded: s.card === r.name ? 'true' : 'false', toggle: () => this.setState({ card: s.card === r.name ? null : r.name }) }));
   /* 點開的卡片：細節從下方滑出面板顯示，列表本身不動 */
   const o = v.results.find((r) => r.open);
