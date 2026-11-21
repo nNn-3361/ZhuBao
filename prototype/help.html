@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FCFAF6">
-<script src="zhubao-family.js"></script>
-<script src="zhubao-app.js"></script>
+<script src="zhubao-family.js?v=20261121"></script>
+<script src="zhubao-app.js?v=20261121"></script>
 <title>竹寶・協助</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&amp;display=swap">
@@ -90,6 +90,8 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-list .zb-acc-body{border-top:1px solid #EFEAE0;padding-top:14px}
 .zb-list ul.zb-acc-body>li:first-child{border-top:0 !important}
 /*zb-col-end*/
+/* 手機上右下角小助手按鈕會蓋住最下面的意見回饋按鈕右半邊，留一段空間讓按鈕能捲到它上方 */
+@media (max-width: 760px){.zb-fab-room{height:64px}}
 </style>
 <style>#dc-root>div{margin-left:auto;margin-right:auto}</style>
 </head>
@@ -209,6 +211,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </sc-if>
 </section>
 <button type="button" onClick="{{openFeedback}}" style="min-height: 52px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 16px; border: 1px solid #2E5E4E; background: transparent; color: #2E5E4E; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">給竹寶意見回饋</button>
+<div class="zb-fab-room" aria-hidden="true"></div>
 </aside>
 
 </div>
@@ -216,8 +219,8 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 </template>
 <div id="dc-root"></div>
-<script src="zhubao-ai.js"></script>
-<script src="zhubao-runtime.js"></script>
+<script src="zhubao-ai.js?v=20261121"></script>
+<script src="zhubao-runtime.js?v=20261121"></script>
 <script>
 class Component extends DCLogic {
   constructor(props) {
@@ -265,7 +268,7 @@ class Component extends DCLogic {
       { n: '3', t: '按按鈕去辦', d: '每一項都連到官方頁面。按「關注」加到行事曆，前 7 天和前 1 天會提醒你。' }
     ];
     return {
-      openFeedback: () => { if (window.ZB && window.ZB.feedback) window.ZB.feedback(); },
+      openFeedback: () => { if (window.ZB && window.ZB.feedback) window.ZB.feedback(); else location.reload(); },
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),

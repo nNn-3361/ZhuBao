@@ -49,7 +49,7 @@
 
   const css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = 'zhubao-app.css';
+  css.href = 'zhubao-app.css?v=20261121';
   document.head.appendChild(css);
 
   const buzz = () => { try { if (navigator.vibrate) navigator.vibrate(8); } catch (e) {} };
