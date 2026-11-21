@@ -228,7 +228,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <section aria-labelledby="h-other" class="zb-sec">
 <div class="zb-sec-head">
 <h2 id="h-other">其他福利與親子空間</h2>
-<p>不分寶寶年齡、隨時可以使用的新竹市服務。</p>
+<p>不分寶寶年齡、隨時可以使用的服務。</p>
 </div>
 <div class="zb-list">
 <sc-for list="{{others}}" as="o" hint-placeholder-count="6">
@@ -294,7 +294,11 @@ class Component extends DCLogic {
       cdc: ['疾管署・兒童預防接種時程 115/7', 'https://www.cdc.gov.tw/Category/Page/TxRW-x3WzvPhvEtxM628GA', ''],
       allow: ['新竹市政府・育兒津貼申辦公告', 'https://www.hccg.gov.tw/hccg/app/data/view?module=news&id=30122&serno=168fff14-5734-45d5-9823-44254b02e80c', ''],
       temp: ['新竹市社會處・臨托服務', 'https://society.hccg.gov.tw/ch/home.jsp?id=10376&parentpath=&mcustomize=onemessages_view.jsp&toolsflag=Y&dataserno=202503110001&t=SocietyOnes&mserno=201907010005', ''],
-      quasi: ['新竹市社會處・準公共化專區', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20', '']
+      quasi: ['新竹市社會處・準公共化專區', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20', ''],
+      hpaNine: ['衛福部・兒童預防保健增至 9 次 115/4', 'https://mohw.gov.tw/cp-2704-85990-1.html', ''],
+      bliLeave: ['勞保局・育嬰留職停薪津貼給付標準', 'https://www.bli.gov.tw/0109300.html', ''],
+      eyCare: ['行政院・0–6 歲國家一起養 2.0', 'https://www.ey.gov.tw/Page/5A8A0CB5B41DA11E/1edab400-96b1-479d-919d-8ee14340fd26', ''],
+      moeAllow: ['教育部・2 歲以上幼兒育兒津貼及就學補助作業要點', 'https://edu.law.moe.gov.tw/LawContent.aspx?id=GL001909', '']
     };
     const yn = (v) => v === true ? 'ok' : v === false ? 'no' : 'check';
     const ITEMS = {
@@ -308,8 +312,8 @@ class Component extends DCLogic {
         questions: s.lowIncome === null ? [{ text: '是否為新竹市列冊的低收入戶？', yes: () => this.setState({ lowIncome: true }), no: () => this.setState({ lowIncome: false }) }] : [] },
       post1: { name: '產後健康照護（第 1 次）', meta: '公費・產後 1 個月內', status: 'expired', src: 'hpaPost', cta: '',
         desc: '第 1 次要在產後 1 個月內（2026/10/10 前），已經過了。第 2 次在產後 1 到 3 個月內，仍可預約。' },
-      check2: { name: '兒童預防保健', meta: '公費・1 歲半前共 4 次', status: 'ok', src: 'hpaChild', cta: '看官方說明',
-        desc: '未滿 7 歲共 7 次免費健檢，其中 4 次在 1 歲 6 個月前。每次的建議月齡請看兒童健康手冊。' },
+      check2: { name: '兒童預防保健', meta: '公費・未滿 7 歲共 9 次', status: 'ok', src: 'hpaNine', cta: '看官方說明',
+        desc: '2026/7/1 起，未滿 7 歲的免費健檢從 7 次增為 9 次。每次的建議月齡請看兒童健康手冊。' },
       vax2: { name: '公費疫苗', meta: '依疾管署接種時程', status: 'ok', src: 'cdc', cta: '看接種時程',
         desc: '依疾管署兒童預防接種時程，帶兒童健康手冊到合約院所接種。' },
       post2: { name: '產後健康照護（第 2 次）', meta: '公費・12/10 前', status: 'ok', src: 'hpaPost', cta: '看官方說明',
@@ -318,13 +322,21 @@ class Component extends DCLogic {
         desc: '未滿 2 歲的寶寶可以申辦育兒津貼。申辦方式請看市府公告。若之後改送托育，可能改適用托育補助，請看官方規定。' },
       tempcare: { name: '臨時托育', meta: '新竹市社會處臨托服務', status: 'ok', src: 'temp', cta: '看官方說明',
         desc: '臨時有事時，可以把寶寶短時間托給合格的托育單位。據點與預約方式請看社會處臨托服務頁面。' },
-      check3: { name: '兒童預防保健（續）', meta: '公費・1 歲半前共 4 次', status: 'ok', src: 'hpaChild', cta: '看官方說明',
+      check3: { name: '兒童預防保健（續）', meta: '公費・未滿 7 歲共 9 次', status: 'ok', src: 'hpaNine', cta: '看官方說明',
         desc: '建議月齡請看兒童健康手冊。' },
       vax4: { name: '公費疫苗（續）', meta: '依疾管署接種時程', status: 'ok', src: 'cdc', cta: '看接種時程',
         desc: '接種項目以疾管署最新時程表和兒童健康手冊為準。' },
       nursery: { name: '托育補助', meta: '送托準公共機構', status: 'no', src: 'quasi', cta: '',
         desc: '目前填的是自己或家人照顧，依目前資料可能不適用。之後如果送準公共托嬰中心或保母，請領規定請看社會處準公共化專區。' },
-      check4: { name: '兒童預防保健（續）', meta: '公費・1 歲半前共 4 次', status: 'ok', src: 'hpaChild', cta: '看官方說明',
+      leave: { name: '育嬰留職停薪津貼', meta: '投保薪資 8 成・父母各最多 6 個月', status: 'check', src: 'bliLeave', cta: '看請領方式',
+        desc: '爸爸或媽媽在寶寶 3 歲前請育嬰留停，可向勞保局請領津貼。' },
+      careExtra: { name: '托育補助加額', meta: '中低收、低收、第 2 胎起再加', status: 'no', src: 'eyCare', cta: '',
+        desc: '送準公共或公共托育時，部分家庭的托育補助會再提高。目前填的是自己或家人照顧，依目前資料可能不適用。' },
+      after2: { name: '育兒津貼（2 歲以後）', meta: '每月 5,000 元起・沒讀平價幼兒園', status: 'ok', src: 'moeAllow', cta: '看作業要點',
+        desc: '滿 2 歲後如果在家帶，或讀沒有加入準公共的私立幼兒園，可以繼續領育兒津貼；5 歲起改叫就學補助。' },
+      kinder: { name: '平價幼兒園繳費上限', meta: '第 1 胎每月 1,000 至 3,000 元', status: 'ok', src: 'eyCare', cta: '看官方說明',
+        desc: '2 歲以上讀公立、非營利或準公共幼兒園，家長每月最多只要繳固定金額。' },
+      check4: { name: '兒童預防保健（續）', meta: '公費・未滿 7 歲共 9 次', status: 'ok', src: 'hpaNine', cta: '看官方說明',
         desc: '建議月齡請看兒童健康手冊。' }
     };
     const RES = {
@@ -349,22 +361,29 @@ class Component extends DCLogic {
       { name: '香山區親子館', tag: '親子空間', who: '0–6 歲幼兒與家長', what: '免費遊戲空間與親子課程，需預約場次', where: '育德街 188 號 1 樓（香山區行政大樓）', note: '電話 03-5301268。', cta: '預約場次', url: WPCC + 'enrollment/' },
       { name: '到宅坐月子服務', tag: '產後照顧', who: '設籍並居住新竹市的產婦', what: '每小時 300 元；弱勢家庭最高 120 小時免費', where: '月嫂到你家', note: '預產期前 3 個月起可申請。也可洽新竹市月子照顧服務人員職業工會 03-5265126。', cta: '到平台申請', url: 'https://hsinchu-nanny.hccg.gov.tw/home' },
       { name: '育兒指導服務', tag: '育兒支持', who: '新竹市家長', what: '照顧、發展和教養問題可申請專人指導，免費', where: '新竹市', note: '社會處提供申請表。', cta: '看申請表', url: 'https://society.hccg.gov.tw/ch/home.jsp?id=10375&parentpath=&mcustomize=onemessages_view.jsp&toolsflag=Y&dataserno=201603280009&t=SocietyOnes&mserno=201603090002' },
-      { name: '好孕專車', tag: '懷孕期間', who: '孕產婦', what: '產檢交通車資補助', where: '新竹市', note: '準備下一胎時可以用，搭車去產檢的車資可向市府申請補助。', cta: '看市府公告', url: 'https://society.hccg.gov.tw/ch/home.jsp?id=13&parentpath=0,2&mcustomize=municipalnews_view.jsp&dataserno=056cfd89-4747-4689-8936-b5db75043300&aplistdn=ou%3Dmunicipalnews,ou%3Dmessage,ou%3Dap_root,o%3Dhccg,c%3Dtw&toolsflag=Y&mserno=201601300108' }
+      { name: '好孕專車', tag: '懷孕期間', who: '孕產婦', what: '產檢交通車資補助', where: '新竹市', note: '準備下一胎時可以用，搭車去產檢的車資可向市府申請補助。', cta: '看市府公告', url: 'https://society.hccg.gov.tw/ch/home.jsp?id=13&parentpath=0,2&mcustomize=municipalnews_view.jsp&dataserno=056cfd89-4747-4689-8936-b5db75043300&aplistdn=ou%3Dmunicipalnews,ou%3Dmessage,ou%3Dap_root,o%3Dhccg,c%3Dtw&toolsflag=Y&mserno=201601300108' },
+      { name: '試管嬰兒補助', tag: '準備下一胎', who: '妻未滿 45 歲、至少一方有我國國籍的不孕夫妻', what: '每胎第 1 次療程最高 15 萬元（未滿 39 歲）', where: '人工生殖機構', note: '每胎最多補助 6 次療程；2026/9/1 起第 2、3 次療程最高也提高到 15 萬元。要在療程開始前，由人工生殖機構協助線上申請。補助諮詢專線 02-2558-0900。', cta: '看衛福部說明', url: 'https://mohw.gov.tw/cp-2704-87663-1.html' },
+      { name: '兒少醫療費用補助', tag: '醫療', who: '設籍並居住新竹市、未滿 18 歲的早產兒、發展遲緩兒童、低收或中低收入戶兒少等', what: '住院和看護費每年最高 30 萬元', where: '戶籍所在地區公所', note: '低收入戶等全額補助，其他對象依家庭收入補助 75%、50% 或 25%。', cta: '看法規', url: 'https://law.hccg.gov.tw/LawContent.aspx?id=FL084083' },
+      { name: '弱勢家庭兒少緊急生活扶助', tag: '家庭遇到困難', who: '家中有失業、離婚、父母一方過世或失蹤、單親扶養等情形的新竹市兒少', what: '每人每月 3,000 元', where: '戶籍所在地區公所', note: '原則補助 6 個月，必要時最多再延長 6 個月。家庭收入、財產要在規定標準以下，區公所受理後由市府審核。', cta: '看法規', url: 'https://law.hccg.gov.tw/LawContent.aspx?id=FL084081' }
     ];
     const INFO = {
-      birthHC: ['寶寶出生後，新竹市政府發給家長的一次性現金，幫忙支應生產和新生兒的開銷。', ['每胎 30,000 元。', '父或母須設籍新竹市。', '寶寶出生後向戶政事務所申請。', '父或母是否設籍新竹市，請在申請前確認。']],
+      birthHC: ['寶寶出生後，新竹市政府發給家長的一次性現金，幫忙支應生產和新生兒的開銷。', ['每胎 30,000 元。', '2027/1/1 起出生的寶寶改為每名 60,000 元（新竹市生育津貼發放作業要點 115/11/6 修正）。', '父或母須設籍新竹市。', '寶寶出生後向戶政事務所申請。', '父或母是否設籍新竹市，請在申請前確認。']],
       centralTop: ['中央政府對 115 年 1 月 1 日起出生的寶寶發的生育補助，補貼生產後的家庭開銷。', ['每胎 10 萬元。', '有參加勞保等社會保險的人，依規定由保險人辦理給付，實際方式請看官方說明。', '參加國民年金或沒有社會保險的媽媽，可在辦出生登記時一併申請，也可以線上或向勞保局申請。']],
       lowInc: ['給新竹市低收入戶產婦和新生兒的營養費，補貼產後調養和寶寶營養的開銷。', ['每案 20,000 元。', '對象是新竹市列冊的低收入戶婦女。', '要在寶寶出生後 3 個月內（2026/12/10 前）向戶籍所在地的區公所申請。', '是否為新竹市列冊低收入戶，請在申請前確認。']],
       post1: ['國健署提供的公費產後檢查，由醫師關心媽媽產後的身體恢復。', ['第 1 次要在產後 1 個月內（2026/10/10 前），已經過了。', '第 2 次在產後 1 到 3 個月內，仍可預約。']],
       post2: ['國健署提供的第 2 次公費產後檢查，由醫師關心媽媽產後的身體恢復，免付費。', ['產後 1 到 3 個月內（2026/12/10 前）。', '到有提供產檢的健保特約院所。', '內容包含運動、營養、避孕與下一胎諮詢。', '記得帶健保卡和孕媽咪健康手冊。']],
-      check2: ['國健署提供的公費兒童健康檢查，看寶寶的生長和發展，免付費。', ['未滿 7 歲共 7 次，其中 4 次在 1 歲 6 個月前。', '每次的建議月齡請看兒童健康手冊。', '記得帶健保卡和兒童健康手冊。']],
+      check2: ['國健署提供的公費兒童健康檢查，看寶寶的生長和發展，免付費。', ['2026/7/1 起，未滿 7 歲共 9 次，比以前多 2 次。', '原本 4 到 10 個月的一次，改成 4 到 6 個月、6 到 12 個月各一次。', '每次的建議月齡請看兒童健康手冊。', '記得帶健保卡和兒童健康手冊。']],
       vax2: ['政府免費提供的幼兒常規疫苗，預防嚴重的傳染病。', ['依疾管署兒童預防接種時程接種。', '帶兒童健康手冊到合約院所。', '接種項目以疾管署最新時程表為準。']],
       allowance: ['給未滿 2 歲寶寶家長的每月育兒津貼，補貼自己或家人在家照顧的開銷。', ['對象是未滿 2 歲的寶寶。', '金額與申辦方式請看市府公告。', '之後如果改送托育，可能改適用托育補助，請看官方規定。']],
       tempcare: ['臨時有事時，可以把寶寶短時間托給合格托育單位照顧的服務。', ['據點、時段和預約方式請看社會處臨托服務頁面。', '費用請見官方頁面。']],
-      check3: ['國健署提供的公費兒童健康檢查，看寶寶的生長和發展，免付費。', ['1 歲 6 個月前共 4 次。', '建議月齡請看兒童健康手冊。']],
+      check3: ['國健署提供的公費兒童健康檢查，看寶寶的生長和發展，免付費。', ['4 到 6 個月、6 到 12 個月各有一次。', '建議月齡請看兒童健康手冊。']],
       vax4: ['政府免費提供的幼兒常規疫苗，預防嚴重的傳染病。', ['接種項目以疾管署最新時程表和兒童健康手冊為準。']],
       nursery: ['送托到準公共托嬰中心或保母時，政府補助一部分托育費用。', ['目前填的是自己或家人照顧，依目前資料可能不適用。', '之後如果送托，請領規定請看社會處準公共化專區。']],
-      check4: ['國健署提供的公費兒童健康檢查，看寶寶的生長和發展，免付費。', ['建議月齡請看兒童健康手冊。']]
+      check4: ['國健署提供的公費兒童健康檢查，看寶寶的生長和發展，免付費。', ['建議月齡請看兒童健康手冊。']],
+      leave: ['爸爸或媽媽為了照顧寶寶請育嬰留職停薪時，政府補貼的薪水。', ['就業保險年資合計滿 1 年、寶寶滿 3 歲前請育嬰留停。', '按留停前 6 個月平均月投保薪資 60% 發給，政府再加發 20%，合併入帳，不用另外申請加發。', '每名子女爸爸、媽媽各最多領 6 個月，可以同時請。', '2026 年起，未滿 1 個月的部分按日計算。', '可在勞保局 e 化服務系統線上申辦，或請公司代辦。']],
+      careExtra: ['送托時，中低收入戶、低收入戶和多胎家庭的托育補助會再提高。', ['準公共托嬰中心或保母每月補助 13,000 元起；公共托育每月 7,000 元起。', '中低收入戶再加 2,000 元；低收入戶及弱勢家庭再加 4,000 元。', '第 2 名子女加 1,000 元；第 3 名（含）以上加 2,000 元。', '由托育單位協助申請；問題可打 1957 福利諮詢專線。']],
+      after2: ['寶寶滿 2 歲後，沒有讀平價幼兒園的家庭每月可以領的津貼。', ['第 1 名子女每月 5,000 元，第 2 名 6,000 元，第 3 名起 7,000 元。', '對象是在家照顧，或讀沒有加入準公共的私立幼兒園。', '滿 2 歲前有領育兒津貼的，會自動接續，不用重新申請。', '其他人向戶籍地區公所申請，可郵寄、親送或線上申辦。', '5 歲到上小學前改叫就學補助，金額相同。']],
+      kinder: ['讀平價幼兒園時，家長每月繳費有上限，其餘由政府補助。', ['第 1 胎每月最多繳：公立 1,000 元、非營利 2,000 元、準公共 3,000 元。', '第 2 胎起繳得更少。', '低收入戶、中低收入戶的孩子免費。', '讀平價幼兒園時就不能再領 2 歲以後的育兒津貼，兩者擇一。']]
     };
     /* 點開時列出「還要確認的資料」：竹寶不知道、但會影響資格的條件 */
     const NEED = {
@@ -379,14 +398,19 @@ class Component extends DCLogic {
       check3: ['這次健檢的建議月齡（看兒童健康手冊）'],
       vax4: ['這次要打的疫苗與月齡（看疾管署時程與兒童健康手冊）'],
       nursery: ['之後是否會送準公共托嬰中心或保母'],
-      check4: ['這次健檢的建議月齡（看兒童健康手冊）']
+      check4: ['這次健檢的建議月齡（看兒童健康手冊）'],
+      leave: ['爸爸或媽媽是否有就業保險，年資是否滿 1 年', '是否已向公司申請育嬰留職停薪'],
+      careExtra: ['之後是否會送托', '是否為中低收入戶或低收入戶，這是第幾胎'],
+      after2: ['滿 2 歲後是否在家照顧，或讀哪一種幼兒園'],
+      kinder: ['之後要讀哪一種幼兒園，這是第幾胎']
     };
     const STAGES = [
       { id: 'preg', title: '孕期', range: '懷孕期間', phase: 'past', items: [] },
       { id: 's0', title: '出生到 2 個月', range: '9/10 – 11/9', phase: 'past', items: ['birthHC', 'centralTop', 'lowInc', 'post1'] },
-      { id: 's1', title: '2 到 4 個月', range: '11/10 – 2027/1/9', phase: 'now', items: ['post2', 'check2', 'vax2', 'allowance', 'tempcare'] },
-      { id: 's2', title: '4 到 12 個月', range: '2027/1/10 – 9/9', phase: 'next', items: ['check3', 'vax4', 'nursery'] },
-      { id: 's3', title: '1 到 2 歲', range: '2027/9/10 起', phase: 'later', items: ['check4'] }
+      { id: 's1', title: '2 到 4 個月', range: '11/10 – 2027/1/9', phase: 'now', items: ['post2', 'check2', 'vax2', 'allowance', 'leave', 'tempcare'] },
+      { id: 's2', title: '4 到 12 個月', range: '2027/1/10 – 9/9', phase: 'next', items: ['check3', 'vax4', 'nursery', 'careExtra'] },
+      { id: 's3', title: '1 到 2 歲', range: '2027/9/10 – 2028/9/9', phase: 'later', items: ['check4'] },
+      { id: 's4', title: '2 歲以後', range: '2028/9/10 起', phase: 'later', items: ['after2', 'kinder'] }
     ];
     const tally = { ok: 0, check: 0, expired: 0, no: 0 };
     const dot = {
@@ -430,7 +454,7 @@ class Component extends DCLogic {
         items: built, resources: RES[st.id] || []
       };
     });
-    const sel = stages.find((x) => x.id === s.stage) || stages[2];
+    const sel = stages.find((x) => x.id === s.stage) || stages.find((x) => x.isNow);
     const counts = [
       { k: 'ok', text: '可能適用 ' + (tally.ok + tally.check) }
     ].filter(() => tally.ok + tally.check > 0).map((c) => ({ text: c.text, icon: ICON[c.k], style: pill(c.k) }));
