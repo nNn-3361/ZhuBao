@@ -123,79 +123,38 @@
     const by = Math.min(over, head.top - 72);
     if (by > 0) window.scrollBy({ top: by, behavior: reduced() ? 'auto' : 'smooth' });
   }
-  /* 竹節展開／收起：不再逐格改高度（高的竹節裡有很多卡片，每一格都要重排整頁，手機上會卡一下）。
-     版面一次到位，再用 transform 把下面的內容從舊位置滑到新位置，竹節內容用 clip-path 露出或收進去。
-     這兩種動畫都交給 GPU，不用重排版面。 */
-  const BAM_MS = 300;
-  function around(el, dir) {
-    const out = [];
-    const key = dir > 0 ? 'nextElementSibling' : 'previousElementSibling';
-    for (let n = el; n && n !== root; n = n.parentElement) {
-      for (let s = n[key]; s; s = s[key]) {
-        if (s.__leaving) continue;
-        const p = getComputedStyle(s).position;
-        if (p !== 'fixed' && p !== 'sticky' && p !== 'absolute') out.push(s);
-      }
-    }
-    return out;
-  }
-  const followers = (el) => around(el, 1);
-  function slide(list, from) {
-    list.forEach((s) => s.animate([{ transform: 'translateY(' + from + 'px)' }, { transform: 'translateY(0)' }], { duration: BAM_MS, easing: EASE, composite: 'add' }));
-  }
-  /* 竹節實際佔掉的高度：本身高度加上排版的間距（gap） */
-  function span(el) {
-    const cs = el.parentElement ? getComputedStyle(el.parentElement) : null;
-    const g = cs && /flex|grid/.test(cs.display) ? parseFloat(cs.rowGap) || 0 : 0;
-    const m = getComputedStyle(el);
-    return el.offsetHeight + g + (parseFloat(m.marginTop) || 0) + (parseFloat(m.marginBottom) || 0);
+  /* 竹節展開／收起：畫面不自己捲動、內容也不滑來滑去（家長反映畫面一直快速移動會不舒服）。
+     - 展開：版面一次到位，竹節內容只淡淡浮現；不再自動捲動去露出內容，要看多少由家長自己滑。
+     - 收起：內容直接拿掉。點的是下面另一個竹節時，holdAnchor 會在畫面畫出來之前把捲動位置補回去，
+       被點的竹節留在手指底下，看起來完全沒動。
+     - 收起後頁面變短、原本已經捲到底的話，瀏覽器會把畫面往上拉。先在頁尾留一段空白補回去，
+       之後家長往上滑時再慢慢收掉，畫面不會被拉動。 */
+  const BAM_MS = 200;
+  let tail = null;
+  function fitTail() {
+    if (!tail) return;
+    const cur = tail.offsetHeight;
+    const rest = document.documentElement.scrollHeight - cur;
+    const need = Math.ceil(window.scrollY + window.innerHeight - rest);
+    if (need <= 0) { tail.remove(); tail = null; window.removeEventListener('scroll', fitTail); return; }
+    if (need < cur) tail.style.height = need + 'px';
   }
   function bamEnter(el) {
-    const H = span(el);
-    if (!H) return;
-    slide(followers(el), -H);
-    const a = el.animate([{ clipPath: 'inset(0 0 100% 0)', opacity: 0.4 }, { clipPath: 'inset(0 0 0% 0)', opacity: 1 }], { duration: BAM_MS, easing: EASE });
-    a.onfinish = () => { if (anchoring) pendingView = el; else bringIntoView(el); };
+    el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: BAM_MS, easing: 'ease-out' });
   }
   function bamLeave(el) {
     el.__leaving = true;
-    const H = span(el);
-    const par = el.parentElement;
-    if (!H || !par) { el.remove(); return; }
-    if (getComputedStyle(par).position === 'static') { par.style.position = 'relative'; par.__zbRel = (par.__zbRel || 0) + 1; }
-    const top = el.offsetTop, left = el.offsetLeft, w = el.offsetWidth;
-    const after = followers(el);
-    /* 點的是下面另一個竹節：被點的按鈕要留在手指底下。先把捲動位置往上補回竹節的高度，
-       讓上面的內容往下滑、竹節從上往下收，按鈕不動 */
-    const hold = anchor && after.some((f) => f.contains(anchor.el)) ? anchor : null;
-    const before = hold ? around(el, -1) : [];
-    /* 竹節拿出版面時頁面會一下子變短，瀏覽器會把捲動位置往上拉、畫面跳一下。
-       先在頁尾補一段一樣高的空白，再依需要跟著動畫慢慢收掉 */
     const y0 = window.scrollY;
-    const pad = document.createElement('div');
-    pad.style.height = H + 'px';
-    document.body.appendChild(pad);
-    Object.assign(el.style, { position: 'absolute', top: top + 'px', left: left + 'px', width: w + 'px', pointerEvents: 'none', margin: '0' });
-    window.scrollTo(0, hold ? Math.max(0, y0 - H) : y0);
-    const dS = hold ? y0 - window.scrollY : 0;
-    if (hold) anchor = null;
-    const lack = Math.ceil(window.scrollY - (document.documentElement.scrollHeight - H - window.innerHeight));
-    let padLive = lack > 0;
-    if (padLive) {
-      pad.style.height = lack + 'px';
-      pad.animate([{ height: lack + 'px' }, { height: '0px' }], { duration: BAM_MS, easing: EASE, fill: 'forwards' });
-    } else pad.remove();
-    if (dS) slide(before, -dS);
-    slide(after, H - dS);
-    const a = el.animate([
-      { transform: 'translateY(' + -dS + 'px)', clipPath: 'inset(0px 0 0px 0)', opacity: 1 },
-      { transform: 'translateY(' + -dS + 'px)', clipPath: 'inset(' + dS + 'px 0 ' + (H - dS) + 'px 0)', opacity: 0.4 }
-    ], { duration: BAM_MS, easing: EASE, fill: 'forwards' });
-    a.onfinish = () => {
-      el.remove();
-      if (padLive) pad.remove();
-      if (par.__zbRel && --par.__zbRel === 0) par.style.position = '';
-    };
+    const H = el.offsetHeight;
+    el.remove();
+    if (!H) return;
+    const rest = document.documentElement.scrollHeight - (tail ? tail.offsetHeight : 0);
+    const need = Math.ceil(y0 + window.innerHeight - rest);
+    if (need > 0) {
+      if (!tail) { tail = document.createElement('div'); tail.setAttribute('aria-hidden', 'true'); document.body.appendChild(tail); window.addEventListener('scroll', fitTail, { passive: true }); }
+      tail.style.height = need + 'px';
+      if (window.scrollY !== y0) window.scrollTo(0, y0);
+    }
   }
   function enter(el) {
     if (el.nodeType === 1 && el.classList.contains('zb-bam-panel') && !reduced()) { bamEnter(el); return; }
@@ -284,6 +243,8 @@
       if (performance.now() < until) requestAnimationFrame(step);
       else { anchoring = false; if (pendingView) { const v = pendingView; pendingView = null; bringIntoView(v); } }
     };
+    /* 先同步補一次（畫面還沒畫出來），被點的按鈕連一格都不會跳 */
+    if (a.el.isConnected) { const d = a.el.getBoundingClientRect().top - a.top; if (Math.abs(d) > 0.5) window.scrollBy(0, d); }
     requestAnimationFrame(step);
   }
   function delegate(type) {
