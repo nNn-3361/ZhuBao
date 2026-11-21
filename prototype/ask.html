@@ -131,7 +131,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </head>
 <body>
 <template id="dc-tpl">
-<div style="width: 100%; min-height: 1400px; box-sizing: border-box; background: #F6F2EA; font-family: 'Noto Sans TC', system-ui, sans-serif; color: #1F2A24">
+<div style="width: 100%; min-height: 100vh; box-sizing: border-box; background: #F6F2EA; font-family: 'Noto Sans TC', system-ui, sans-serif; color: #1F2A24">
 
 <header style="border-bottom: 1px solid #E4DED2; background: #FCFAF6">
 <div style="max-width: 1200px; margin: 0 auto; padding: 14px 24px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px">
@@ -212,7 +212,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </sc-if>
 
 <sc-if value="{{hasQ}}" hint-placeholder-val="{{true}}">
-<div style="display: flex; justify-content: flex-end">
+<div class="zb-qrow" style="display: flex; justify-content: flex-end">
 <div style="max-width: 80%; background: #2E5E4E; color: #FFFFFF; border-radius: 16px 16px 4px 16px; padding: 12px 16px; font-size: 15px; line-height: 1.6">{{q}}</div>
 </div>
 </sc-if>
@@ -325,6 +325,16 @@ class Component extends DCLogic {
       (this._tm || []).forEach(clearTimeout);
       const hist = AI.remember(k, text);
       this.setState({ q: text, qa: k, phase: 'thinking', step: 0, hist, cur: hist[0].t });
+      /* 第二題開始：上一題的長回答換成較短的「整理中」卡片，捲動位置卻留在原地，
+         畫面就像突然跑到最底下（只剩空白和說明文字）。新問題送出時，讓新問題出現在上方列下面，
+         內容本來就在換，這一下不會有「畫面在滑」的感覺。 */
+      const row = document.querySelector('.zb-qrow');
+      if (row) {
+        const bar = document.querySelector('.zb-nav, header');
+        const top = Math.max(60, bar ? bar.getBoundingClientRect().bottom + 12 : 72);
+        const r = row.getBoundingClientRect();
+        if (r.top < top || r.top > window.innerHeight * 0.45) window.scrollTo(0, Math.max(0, window.scrollY + r.top - top));
+      }
       const end = k ? 'answer' : 'fallback';
       this._tm = [setTimeout(() => this.setState({ step: 1 }), 600), setTimeout(() => this.setState({ step: 2 }), 1200), setTimeout(() => this.setState({ phase: end }), 1900)];
     };
