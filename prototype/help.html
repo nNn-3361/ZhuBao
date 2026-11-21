@@ -104,7 +104,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 <nav class="zb-nav-links" aria-label="主選單" style="display: flex; gap: 4px; flex-wrap: wrap">
 <a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
-<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
 <a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
 <a href="childcare.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">托育</a>
 <a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
@@ -116,7 +115,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
 <nav id="zb-menu" class="zb-nav-menu" aria-label="主選單" style="border-top: 1px solid #E4DED2; background: #FCFAF6; padding: 8px 16px 16px; display: flex; flex-direction: column">
 <a href="index.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">主頁</a>
-<a href="diary.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">寶寶日記</a>
 <a href="benefits.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">補助及其他福利</a>
 <a href="childcare.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">托育</a>
 <a href="activities.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">親子活動</a>
@@ -251,19 +249,19 @@ class Component extends DCLogic {
     const desks = DESK.map((d) => ({ need: d.need, icon: d.icon, items: d.items,
       iconWrap: 'width: 36px; height: 36px; flex-shrink: 0; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: ' + d.bg + '; color: ' + d.color }));
     const FAQ = [
-      ['竹寶的資格判斷準嗎？', '竹寶依官方公布的規則，用你填的資料判斷。結果只供參考，最後能不能領，以主管機關審核為準。'],
+      ['竹寶的資格判斷準嗎？', '竹寶只依你填的資料，初步整理成「可能適用」或「可能不適用」，不是資格審查結果。最後能不能領，以主管機關審核為準。'],
       ['我的資料存在哪裡？', '只存在你的手機。竹寶不收姓名與身分證字號，也不會把資料傳給其他單位。'],
       ['竹寶可以幫我申請補助嗎？', '竹寶不代辦。每一項補助都會帶你到官方的申請頁面，並告訴你要準備哪些文件。'],
       ['寶寶資料填錯了怎麼辦？', '點「修改寶寶資料」重新填寫，主頁與補助頁會馬上重新計算。'],
-      ['竹寶會一直通知我嗎？', '只有遇到期限、疫苗、健檢這類和寶寶有關的事才會提醒你，也可以在設定裡關掉。'],
+      ['竹寶會一直通知我嗎？', '只有補助期限和新竹市政府的育兒公告會通知你，也可以在右上角選單裡關掉。'],
       ['竹寶是政府的服務嗎？', '竹寶是 N.A.W.Y 團隊為 115 年新竹政策黑客松做的原型。內容都連到政府的官方頁面。']
     ];
     const faqs = FAQ.map((f, i) => ({ q: f[0], a: f[1], open: s.faq === i, expanded: s.faq === i ? 'true' : 'false',
       chev: s.faq === i ? 'm18 15-6-6-6 6' : 'm6 9 6 6 6-6', toggle: () => this.setState({ faq: s.faq === i ? null : i }) }));
     const steps = [
       { n: '1', t: '填寶寶資料', d: '出生日期、戶籍區和幾個簡單問題，不用填姓名。' },
-      { n: '2', t: '看主頁和補助', d: '主頁告訴你這個年紀要注意什麼，補助頁列出能領的每一項。' },
-      { n: '3', t: '按按鈕去辦', d: '每一項都連到官方頁面，期限快到時竹寶會提醒你。' }
+      { n: '2', t: '看主頁和補助', d: '主頁列出接下來可以注意的補助，補助頁依年齡列出可能適用的每一項。' },
+      { n: '3', t: '按按鈕去辦', d: '每一項都連到官方頁面。打開補助提醒，期限前會收到通知。' }
     ];
     return {
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',

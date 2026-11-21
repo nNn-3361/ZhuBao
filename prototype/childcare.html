@@ -104,7 +104,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 <nav class="zb-nav-links" aria-label="主選單" style="display: flex; gap: 4px; flex-wrap: wrap">
 <a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
-<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
 <a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
 <a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 14px">托育</a>
 <a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
@@ -116,7 +115,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
 <nav id="zb-menu" class="zb-nav-menu" aria-label="主選單" style="border-top: 1px solid #E4DED2; background: #FCFAF6; padding: 8px 16px 16px; display: flex; flex-direction: column">
 <a href="index.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">主頁</a>
-<a href="diary.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">寶寶日記</a>
 <a href="benefits.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">補助及其他福利</a>
 <a href="#" aria-current="page" style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 16px">托育<span style="font-size: 12px; font-weight: 400">目前位置</span></a>
 <a href="activities.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">親子活動</a>
@@ -209,7 +207,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <p style="margin: 0; font-size: 15px; line-height: 1.7">{{r.note}}</p>
 <div style="padding-top: 10px; border-top: 1px solid #E4DED2; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; color: #5F6B64">
 <span style="min-width: 0; overflow-wrap: anywhere">來源 <a href="{{r.srcUrl}}">{{r.srcTitle}}</a></span>
-<sc-if value="{{r.canContact}}" hint-placeholder-val="{{true}}"><a href="#" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">預約參觀</a></sc-if>
+<sc-if value="{{r.canContact}}" hint-placeholder-val="{{true}}"><a href="{{r.srcUrl}}" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">看官方說明</a></sc-if>
 </div>
 </div>
 </sc-if>
@@ -223,7 +221,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 </section>
 
-<p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64; border-top: 1px solid #E4DED2; padding-top: 16px">竹寶不做媒合排名，也不收托育單位費用。空位與收費以各單位與主管機關公告為準。</p>
+<p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64; border-top: 1px solid #E4DED2; padding-top: 16px">這裡只列出部分托育單位，完整名冊請看社會處。空位與收費以各單位與主管機關公告為準。</p>
 
 </div>
 </div>
@@ -247,7 +245,7 @@ class Component extends DCLogic {
     const DATA = [
       { name: '新竹市私立茱蒂園托嬰中心', type: '準公共托嬰中心', district: '北區', age: '未滿 2 歲', quasi: true, tags: ['準公共化'], vacancy: '請洽中心', fee: '請洽中心', note: '列在新竹市社會處 115 年準公共化托嬰中心名冊。', src: 'roster' },
       { name: '東區公共托嬰中心', type: '公共托嬰', district: '東區', age: '未滿 2 歲', quasi: false, tags: ['市府公共托嬰'], vacancy: '依招生公告', fee: '依招生公告', note: '新竹市政府設立的公共托嬰中心。', src: 'eastPub', contact: false },
-      { name: '關東公共托嬰中心', type: '公共托嬰', district: '東區', age: '未滿 2 歲', quasi: false, planned: true, tags: ['已開工'], vacancy: '開放報名時通知你', fee: '依招生公告', note: '市府公告已開工，開放報名時會在主頁提醒你。', src: 'kd', contact: false }
+      { name: '關東公共托嬰中心', type: '公共托嬰', district: '東區', age: '未滿 2 歲', quasi: false, planned: true, tags: ['已開工'], vacancy: '依招生公告', fee: '依招生公告', note: '市府公告已開工，招生時間請看社會處公告。', src: 'kd', contact: false }
     ];
     const TYPE_STYLE = {
       '準公共托嬰中心': 'font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #ECE8E0; color: #3D4842',

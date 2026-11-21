@@ -97,7 +97,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </head>
 <body>
 <template id="dc-tpl">
-<div style="width: 100%; min-height: 1600px; box-sizing: border-box; background: #F6F2EA; font-family: 'Noto Sans TC', system-ui, sans-serif; color: #1F2A24">
+<div style="width: 100%; min-height: 100vh; box-sizing: border-box; background: #F6F2EA; font-family: 'Noto Sans TC', system-ui, sans-serif; color: #1F2A24">
 
 <header style="border-bottom: 1px solid #E4DED2; background: #FCFAF6; position: relative">
 <div style="max-width: 1200px; margin: 0 auto; padding: 14px 24px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px">
@@ -107,7 +107,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 <nav class="zb-nav-links" aria-label="主選單" style="display: flex; gap: 4px; flex-wrap: wrap">
 <a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 14px">主頁</a>
-<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
 <a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
 <a href="childcare.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">托育</a>
 <a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
@@ -119,7 +118,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
 <nav id="zb-menu" class="zb-nav-menu" aria-label="主選單" style="border-top: 1px solid #E4DED2; background: #FCFAF6; padding: 8px 16px 16px; display: flex; flex-direction: column">
 <a href="#" aria-current="page" style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 16px">主頁<span style="font-size: 12px; font-weight: 400">目前位置</span></a>
-<a href="diary.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">寶寶日記</a>
 <a href="benefits.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">補助及其他福利</a>
 <a href="childcare.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">托育</a>
 <a href="activities.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">親子活動</a>
@@ -144,66 +142,30 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 </section>
 
-<section aria-labelledby="h-stage" class="zb-sec">
+<section aria-labelledby="h-soon" class="zb-sec">
 <div class="zb-sec-head">
-<h2 id="h-stage">這個年紀要注意的事</h2>
-<p>生命線由下往上長大。點一個竹節就會在下面展開，一次只開一節。</p>
+<h2 id="h-soon">接下來可以注意的補助</h2>
+<p>依你填的資料初步整理，點一項看要確認的資料與官方說明。</p>
 </div>
-<nav aria-label="年齡階段" style="display: flex; flex-direction: column">
-<sc-for list="{{stages}}" as="st" hint-placeholder-count="6">
-<div class="zb-bam-row" data-k="r{{st.title}}" data-on="{{st.pressed}}">
-<div class="{{st.bamCls}}" aria-hidden="true" onClick="{{st.pick}}"><span class="zb-culm zb-culm-a"></span><span class="zb-node"></span><svg class="zb-leaf zb-leaf-r" viewBox="0 0 30 14"><path d="M1 7C8 0 22 0 29 7C22 14 8 14 1 7Z"></path></svg><svg class="zb-leaf zb-leaf-l" viewBox="0 0 30 14"><path d="M29 7C22 0 8 0 1 7C8 14 22 14 29 7Z"></path></svg><span class="zb-culm zb-culm-b"></span></div>
-<button type="button" aria-expanded="{{st.pressed}}" onClick="{{st.pick}}" style="{{st.btn}}">
-<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
-<span style="font-size: 16px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap">{{st.title}}<sc-if value="{{st.isNow}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: #2E5E4E; color: #FFFFFF">現在</span></sc-if></span>
-<span style="font-size: 13px; color: #5F6B64; font-weight: 400">{{st.note}}・{{st.count}} 件事</span>
-</span>
-<svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-</button>
+<div class="zb-list" style="display: flex; flex-direction: column; gap: 10px">
+<a href="benefits.html" style="display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 16px; background: #FCFAF6; border: 1px solid #E4DED2; text-decoration: none; color: #1F2A24; min-height: 44px"><span style="display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0"><span style="font-size: 16px; font-weight: 600">育兒津貼</span><span style="font-size: 13px; color: #5F6B64">未滿 2 歲・需申辦・詳見市府公告</span></span><span style="flex-shrink: 0; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: #E4EEE7; color: #2E5E4E; white-space: nowrap">可能適用</span></a>
+<a href="benefits.html" style="display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 16px; background: #FCFAF6; border: 1px solid #E4DED2; text-decoration: none; color: #1F2A24; min-height: 44px"><span style="display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0"><span style="font-size: 16px; font-weight: 600">產後健康照護（第 2 次）</span><span style="font-size: 13px; color: #5F6B64">公費・產後 1 到 3 個月內（12/10 前）</span></span><span style="flex-shrink: 0; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: #E4EEE7; color: #2E5E4E; white-space: nowrap">可能適用</span></a>
+<a href="benefits.html" style="display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 16px; background: #FCFAF6; border: 1px solid #E4DED2; text-decoration: none; color: #1F2A24; min-height: 44px"><span style="display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0"><span style="font-size: 16px; font-weight: 600">低收入戶產婦及嬰兒營養費</span><span style="font-size: 13px; color: #5F6B64">每案 2 萬元・出生後 3 個月內（12/10 前）申請</span></span><span style="flex-shrink: 0; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: #E4EEE7; color: #2E5E4E; white-space: nowrap">可能適用</span></a>
+<a href="benefits.html" style="align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; color: #2E5E4E; font-weight: 600; font-size: 15px; text-decoration: none">看全部補助</a>
 </div>
-<sc-if value="{{st.open}}" hint-placeholder-val="{{false}}">
-<div class="zb-bam-panel" data-k="p{{st.title}}">
-<div class="{{st.spineCls}}" aria-hidden="true"><span class="zb-culm zb-culm-b"></span></div>
-<div class="zb-bam-body">
-<span style="font-size: 13px; font-weight: 600; color: #2E5E4E">{{stageTitle}}</span>
-<sc-for list="{{topics}}" as="t" hint-placeholder-count="5">
-<article class="zb-acc" data-k="{{t.title}}" data-open="{{t.expanded}}">
-<button type="button" class="zb-acc-head" aria-expanded="{{t.expanded}}" onClick="{{t.toggle}}">
-<span class="zb-acc-title">
-<span style="font-size: 12px; font-weight: 600; color: {{t.color}}">{{t.cat}}</span>
-<span style="font-size: 16px; font-weight: 600; line-height: 1.45">{{t.title}}</span>
-</span>
-<svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-</button>
-<sc-if value="{{t.open}}" hint-placeholder-val="{{false}}">
-<div class="zb-topic-body zb-acc-body">
-<ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.7">
-<sc-for list="{{t.points}}" as="p" hint-placeholder-count="3"><li>{{p}}</li></sc-for>
-</ul>
-<a href="{{t.url}}" style="align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">{{t.cta}}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
-<span style="font-size: 12px; color: #5F6B64">資料來源：{{t.src}}</span>
-</div>
-</sc-if>
-</article>
-</sc-for>
-</div>
-</div>
-</sc-if>
-</sc-for>
-</nav>
 </section>
 
 <section aria-labelledby="h-news" style="display: flex; flex-direction: column; gap: 14px">
 <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 8px">
 <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
 <h2 id="h-news" style="margin: 0; font-size: 20px; font-weight: 600">最新消息</h2>
-<p style="margin: 0; font-size: 14px; color: #5F6B64">新竹市政府與衛福部的育兒公告，點一張看全文。</p>
+<p style="margin: 0; font-size: 14px; color: #5F6B64">新竹市政府的育兒公告，點一張看全文。</p>
 </div>
 </div>
 <div id="zb-news" data-k="news" data-zb-static="true"></div>
 </section>
 
-<p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64; border-top: 1px solid #E4DED2; padding-top: 16px">健康與疫苗內容整理自國民健康署與疾病管制署，實際安排請依兒童健康手冊與醫師建議。寶寶身體不舒服請就醫，緊急狀況請撥 119。</p>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #5F6B64">「可能適用」只是依你填的資料初步整理，實際資格以主管機關審核為準。</p>
 
 </main>
 </div>
@@ -216,81 +178,14 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { menuOpen: false, stage: 'm2', open: null };
+    this.state = { menuOpen: false };
   }
   renderVals() {
     const s = this.state;
-    const HPA = 'https://www.hpa.gov.tw/Pages/List.aspx?nodeid=202';
-    const CDC = 'https://www.cdc.gov.tw/Category/Page/TxRW-x3WzvPhvEtxM628GA';
-    const MAMMY = 'https://mammy.hpa.gov.tw/';
-    const CARE = 'https://mohw.gov.tw/cp-7177-82800-1.html';
-    const CAT = {
-      food: ['飲食', '#5F6B64', '#EFEAE0', 'M7 3v8a3 3 0 0 0 6 0V3M10 3v18M17 3c-1.7 1.5-2 4-2 6s1 3 2 3v9'],
-      vax: ['預防接種', '#5F6B64', '#EFEAE0', 'm18 2 4 4M17 7l3-3M19 9 8.7 19.3a2.4 2.4 0 0 1-3.4 0l-.6-.6a2.4 2.4 0 0 1 0-3.4L15 5M9 11l4 4M5 19l-3 3M14 4l6 6'],
-      check: ['健康檢查', '#5F6B64', '#EFEAE0', 'M9 3h6v4H9zM5 5h4M15 5h4v16H5V5M9 13l2 2 4-4'],
-      grow: ['發展', '#5F6B64', '#EFEAE0', 'M12 20V10M12 10c0-3 2.5-5 6-5 0 3.5-2.5 5-6 5ZM12 13c0-2.5-2-4-5-4 0 3 2 4 5 4Z'],
-      safe: ['安全與照顧觀念', '#5F6B64', '#EFEAE0', 'M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6Z'],
-      carer: ['照顧者', '#56625B', '#ECE8E0', 'M20.8 5.6a5 5 0 0 0-7.1 0L12 7.3l-1.7-1.7a5 5 0 0 0-7.1 7.1L12 21.5l8.8-8.8a5 5 0 0 0 0-7.1Z']
-    };
-    const STAGES = [
-      { id: 'm0', title: '0–2 個月', note: '已經過了', phase: 'past', topics: [
-        { id: 'food', cat: 'food', title: '餓了就餵，不用另外喝水', points: ['母乳或配方奶都按寶寶的需求餵，新生兒大約每 2 到 3 小時一次。', '6 個月前不需要另外喝水或果汁。'], url: MAMMY, cta: '看孕產婦關懷網', src: '國民健康署' },
-        { id: 'vax', cat: 'vax', title: 'B 型肝炎疫苗第 1、2 劑', points: ['出生後 24 小時內儘速接種第 1 劑，滿 1 個月接種第 2 劑。', '公費免費，接種紀錄會寫在兒童健康手冊。'], url: CDC, cta: '看疾管署接種時程', src: '疾病管制署' },
-        { id: 'check', cat: 'check', title: '第 1 次兒童預防保健', points: ['出生到 2 個月內做第 1 次免費健檢。', '未滿 7 歲共有 7 次免費健檢。'], url: HPA, cta: '看國健署說明', src: '國民健康署' }
-      ] },
-      { id: 'm2', title: '2–4 個月', note: '再 57 天滿 4 個月', phase: 'now', topics: [
-        { id: 'vax', cat: 'vax', title: '滿 2 個月打五合一和肺炎鏈球菌疫苗', points: ['滿 2 個月：五合一疫苗第 1 劑、13 價結合型肺炎鏈球菌疫苗第 1 劑。', '滿 4 個月（2027/1/10 起）打這兩種的第 2 劑。', '都是公費免費，帶兒童健康手冊和健保卡到合約院所。'], url: CDC, cta: '看疾管署接種時程', src: '疾病管制署' },
-        { id: 'check', cat: 'check', title: '第 2 次兒童預防保健（免費）', points: ['2 到 4 個月之間做，醫師會量身高體重、看發展並做衛教。', '可以和打疫苗排在同一天。'], url: HPA, cta: '看國健署說明', src: '國民健康署' },
-        { id: 'food', cat: 'food', title: '只喝奶，先不用急著吃副食品', points: ['繼續母乳或配方奶，不需要喝水或果汁。', '國健署建議純母乳哺育到 6 個月，之後再加副食品。', '想提早開始的話，先問兒科醫師。'], url: MAMMY, cta: '看哺餵說明', src: '國民健康署' },
-        { id: 'grow', cat: 'grow', title: '會笑、會追視、趴著會抬頭', points: ['這個階段常見：看到人會笑、眼睛會跟著東西移動、趴著時可以抬頭。', '每個寶寶速度不同。有疑問時，在健檢時問醫師。'], url: HPA, cta: '看兒童健康手冊說明', src: '國民健康署' },
-        { id: 'safe', cat: 'safe', title: '仰睡、不要搖晃寶寶', points: ['睡覺讓寶寶仰睡，嬰兒床不放枕頭、棉被和玩偶。', '不要用力搖晃寶寶，哭鬧時可以先把寶寶放在安全的床上，讓自己冷靜一下。', '坐車要用後向的嬰兒安全座椅。'], url: MAMMY, cta: '看安全睡眠說明', src: '國民健康署' },
-        { id: 'carer', cat: 'carer', title: '照顧自己也很重要', points: ['產後情緒低落很常見，持續兩週以上請找醫師或專線聊聊。', '孕產婦關懷專線 0800-870-870，免付費。'], url: CARE, cta: '看專線說明', src: '衛生福利部' }
-      ] },
-      { id: 'm4', title: '4–6 個月', note: '1/10 開始', phase: 'next', topics: [
-        { id: 'vax', cat: 'vax', title: '第 2 劑疫苗，滿 5 個月打卡介苗', points: ['滿 4 個月：五合一、肺炎鏈球菌第 2 劑。', '滿 5 個月：卡介苗（建議 5 到 8 個月之間）。'], url: CDC, cta: '看疾管署接種時程', src: '疾病管制署' },
-        { id: 'check', cat: 'check', title: '第 3 次兒童預防保健', points: ['4 到 10 個月之間做第 3 次免費健檢。'], url: HPA, cta: '看國健署說明', src: '國民健康署' },
-        { id: 'food', cat: 'food', title: '觀察寶寶是不是準備好吃副食品', points: ['能扶著坐穩、對大人吃東西有興趣、不會用舌頭把湯匙推出來，都是準備好的訊號。'], url: MAMMY, cta: '看副食品說明', src: '國民健康署' },
-        { id: 'safe', cat: 'safe', title: '開始會翻身，換尿布不要離開', points: ['寶寶開始會翻身，放在尿布台或沙發上時，手不要離開。'], url: MAMMY, cta: '看居家安全說明', src: '國民健康署' }
-      ] },
-      { id: 'm6', title: '6–12 個月', note: '2027/3 開始', phase: 'later', topics: [
-        { id: 'food', cat: 'food', title: '開始吃副食品', points: ['從單一食材、少量開始，不加鹽和糖。', '1 歲前不要吃蜂蜜。'], url: MAMMY, cta: '看副食品說明', src: '國民健康署' },
-        { id: 'vax', cat: 'vax', title: '6 個月的疫苗與流感疫苗', points: ['滿 6 個月：五合一第 3 劑、B 型肝炎第 3 劑。', '6 個月以上在流感季可以打公費流感疫苗。'], url: CDC, cta: '看疾管署接種時程', src: '疾病管制署' },
-        { id: 'grow', cat: 'grow', title: '長牙後開始清潔牙齒', points: ['長牙後用紗布或軟毛牙刷清潔。', '未滿 6 歲可以每半年免費塗氟一次。'], url: HPA, cta: '看國健署說明', src: '國民健康署' },
-        { id: 'safe', cat: 'safe', title: '會爬了，家裡要收好小東西', points: ['插座、樓梯口、小物件與藥品都要收好或加裝防護。'], url: MAMMY, cta: '看居家安全說明', src: '國民健康署' }
-      ] },
-      { id: 'y1', title: '1–2 歲', note: '2027/9 開始', phase: 'later', topics: [
-        { id: 'vax', cat: 'vax', title: '滿 1 歲的疫苗', points: ['滿 1 歲起有麻疹腮腺炎德國麻疹、水痘等疫苗，詳細月齡請看疾管署時程。'], url: CDC, cta: '看疾管署接種時程', src: '疾病管制署' },
-        { id: 'grow', cat: 'grow', title: '語言與走路', points: ['多和寶寶說話、一起看繪本。', '2 歲前盡量不要看螢幕。'], url: HPA, cta: '看國健署說明', src: '國民健康署' }
-      ] },
-      { id: 'y2', title: '2–6 歲', note: '2028/9 開始', phase: 'later', topics: [
-        { id: 'check', cat: 'check', title: '入學前的健檢與疫苗', points: ['2 歲到 7 歲前還有 3 次免費兒童預防保健。', '上小學前要補齊入學前的疫苗。'], url: HPA, cta: '看國健署說明', src: '國民健康署' }
-      ] }
-    ];
-    const cur = STAGES.find((x) => x.id === s.stage) || STAGES[1];
-    const dotColor = { past: '#B9B2A4', now: '#2E5E4E', next: '#6F9A82', later: '#D8D1C3' };
-    const ORDER = STAGES.slice().reverse();
-    const stages = ORDER.map((st, i) => ({
-      title: st.title, note: st.note,
-      pressed: st.id === s.stage ? 'true' : 'false', open: st.id === s.stage, count: st.topics.length, isNow: st.phase === 'now',
-      pick: () => this.setState({ stage: st.id === s.stage ? null : st.id, open: null }),
-      bamCls: 'zb-bam zb-bam-' + (st.phase === 'now' ? 'now' : st.phase === 'past' ? 'past' : 'future') + (i % 2 ? ' zb-alt' : '') + (i === 0 ? ' zb-bam-top' : '') + (i === ORDER.length - 1 && st.id !== s.stage ? ' zb-bam-bottom' : ''),
-      spineCls: 'zb-bam zb-bam-spine zb-bam-' + (st.phase === 'now' ? 'now' : st.phase === 'past' ? 'past' : 'future') + (i === ORDER.length - 1 ? ' zb-bam-bottom' : ''),
-      btn: 'min-height: 60px; margin: 4px 0; padding: 8px 12px; display: flex; align-items: center; gap: 10px; border-radius: 12px; font-family: inherit; text-align: left; cursor: pointer; font-weight: 600; color: #1F2A24; ' + (st.id === s.stage ? 'background: #FCFAF6; border: 1px solid #2E5E4E' : 'background: transparent; border: 1px solid transparent')
-    }));
-    const topics = cur.topics.map((t) => {
-      const c = CAT[t.cat]; const open = s.open === t.id;
-      return {
-        cat: c[0], color: c[1], icon: c[3], title: t.title, points: t.points, url: t.url, cta: t.cta, src: t.src,
-        iconWrap: 'width: 36px; height: 36px; flex-shrink: 0; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: ' + c[2] + '; color: ' + c[1],
-        open, expanded: open ? 'true' : 'false', chev: open ? 'm18 15-6-6-6 6' : 'm6 9 6 6 6-6',
-        toggle: () => this.setState({ open: open ? null : t.id })
-      };
-    });
     return {
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
-      stages, topics, stageTitle: (cur.phase === 'past' ? '回顧' : cur.phase === 'now' ? '現在要注意' : '先做準備'), isNow: cur.phase === 'now'
     };
   }
 }

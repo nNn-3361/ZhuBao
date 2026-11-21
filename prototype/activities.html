@@ -104,7 +104,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 <nav class="zb-nav-links" aria-label="主選單" style="display: flex; gap: 4px; flex-wrap: wrap">
 <a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
-<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
 <a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
 <a href="childcare.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">托育</a>
 <a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 14px">親子活動</a>
@@ -116,7 +115,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
 <nav id="zb-menu" class="zb-nav-menu" aria-label="主選單" style="border-top: 1px solid #E4DED2; background: #FCFAF6; padding: 8px 16px 16px; display: flex; flex-direction: column">
 <a href="index.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">主頁</a>
-<a href="diary.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">寶寶日記</a>
 <a href="benefits.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">補助及其他福利</a>
 <a href="childcare.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">托育</a>
 <a href="#" aria-current="page" style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 16px">親子活動<span style="font-size: 12px; font-weight: 400">目前位置</span></a>
@@ -130,7 +128,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 <div style="display: flex; flex-direction: column; gap: 6px">
 <h1 style="margin: 0; font-size: 26px; font-weight: 600; line-height: 1.3">親子活動</h1>
-<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">新竹市的活動有綠色標示並排在前面，過了日期的活動會自動下架。</p>
+<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">新竹市三處親子館近期的活動，整理自新竹市托育資源中心親子館網站。時間、名額與報名以官方頁面為準。</p>
 </div>
 
 <div style="display: flex; gap: 12px; align-items: flex-start; background: #E4EEE7; border-radius: 16px; padding: 14px 16px">
@@ -157,15 +155,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 </fieldset>
 </sc-for>
-<fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px">
-<legend style="font-size: 14px; font-weight: 600; padding: 0; margin-bottom: 8px">其他條件</legend>
-<sc-for list="{{toggles}}" as="t" hint-placeholder-count="1">
-<button type="button" role="switch" aria-checked="{{t.checked}}" onClick="{{t.flip}}" style="min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0; background: transparent; border: 0; font-family: inherit; font-size: 14px; color: #1F2A24; cursor: pointer; text-align: left">
-<span>{{t.label}}</span>
-<span style="{{t.track}}"><span style="{{t.knob}}"></span></span>
-</button>
-</sc-for>
-</fieldset>
 <button type="button" onClick="{{reset}}" style="min-height: 44px; border-radius: 12px; border: 1px solid #E4DED2; background: transparent; font-family: inherit; font-size: 14px; color: #5F6B64; cursor: pointer">清除篩選</button>
 </div>
 </sc-if>
@@ -188,7 +177,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <span class="zb-acc-title" style="gap: 6px">
 <span style="display: flex; gap: 6px; flex-wrap: wrap">
 <span style="{{r.areaStyle}}">{{r.area}}</span>
-<span style="font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #ECE8E0; color: #3D4842">{{r.kind}}</span>
 </span>
 <span style="font-size: 16px; font-weight: 600; line-height: 1.4">{{r.name}}</span>
 <span style="font-size: 13px; color: #5F6B64">{{r.price}}</span>
@@ -200,7 +188,8 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <dl style="margin: 0; display: grid; grid-template-columns: 44px minmax(0, 1fr); row-gap: 6px; font-size: 15px; line-height: 1.6">
 <dt style="color: #5F6B64">時間</dt><dd style="margin: 0">{{r.when}}</dd>
 <dt style="color: #5F6B64">地點</dt><dd style="margin: 0">{{r.where}}</dd>
-<dt style="color: #5F6B64">對象</dt><dd style="margin: 0">{{r.who}}</dd>
+<dt style="color: #5F6B64">適合年齡</dt><dd style="margin: 0">{{r.who}}</dd>
+<dt style="color: #5F6B64">主辦單位</dt><dd style="margin: 0">{{r.host}}</dd>
 </dl>
 <p style="margin: 0; font-size: 15px; line-height: 1.7">{{r.note}}</p>
 <a href="{{r.ctaUrl}}" style="align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">{{r.cta}}</a>
@@ -212,11 +201,11 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 <div style="background: #FCFAF6; border: 1px dashed #C9C2B4; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 6px">
 <div style="font-size: 14px; font-weight: 600">資料從哪裡來？</div>
-<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #5F6B64">竹寶只採用政府機關或主辦單位自己的頁面。過了截止日的項目會自動下架。</p>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #5F6B64">只列主辦單位官方頁面上的活動。每張卡片都附活動頁連結，出發前請再看一次是否異動。</p>
 </div>
 </section>
 
-<p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64; border-top: 1px solid #E4DED2; padding-top: 16px">竹寶不收商家刊登費，也不做付費排序。活動內容以主辦單位公告為準。</p>
+<p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64; border-top: 1px solid #E4DED2; padding-top: 16px">活動內容以主辦單位公告為準。</p>
 
 </div>
 </div>
@@ -228,44 +217,43 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { menuOpen: false, area: '全部', kind: '全部', time: '全部', age: '全部', free: false };
+    this.state = { menuOpen: false, area: '全部', age: '全部' };
   }
   renderVals() {
     const s = this.state;
     const WPCC = 'https://wpcc.hccg.gov.tw/';
+    /* 真實活動：2026/11/21 從新竹市托育資源中心親子館活動報名頁整理（只放時間、地點、年齡、主辦單位與活動頁連結） */
     const DATA = [
-      { name: '寶寶共讀時光', area: '新竹市', kind: '室內', time: ['這個週末', '11 月', '12 月'], ages: ['0–1 歲', '1–3 歲'], free: true,
-        dateBig: '每週六', dateSmall: '10:00',
-        when: '每週六 10:00–10:40', where: '北區親子館（南勢六街 11 號 2 樓）', price: '免費，需線上預約', who: '0–3 歲寶寶與家長',
-        note: '說故事姊姊帶唸繪本、唱兒歌，0 歲寶寶也可以參加。', cta: '預約場次', url: WPCC + 'enrollment/' },
-      { name: '7 米聖誕樹點燈展', area: '新竹縣', place: '竹北市', kind: '室內', time: ['這個週末', '11 月', '12 月'], ages: ['0–1 歲', '1–3 歲', '3–6 歲'], free: true,
-        dateBig: '展至', dateSmall: '2027/1/3',
-        when: '即日起至 2027/1/3', where: '竹北遠百', price: '免費參觀', who: '全年齡',
-        note: '室內展區，推嬰兒車也方便。同場有羽絨外套愛心認購。', cta: '活動資訊', url: 'https://n.yam.com/Article/20261113740563' },
-      { name: '冬日暖暖節・聖誕序曲', area: '新竹市', kind: '市集', time: ['11 月'], ages: ['1–3 歲', '3–6 歲'], free: true,
-        dateBig: '11/28', dateSmall: '週六–週日',
-        when: '11/28（六）– 11/29（日）', where: '東區 IFG 遠雄廣場', price: '免費入場', who: '全年齡',
-        note: '冬日市集、街頭表演與聖誕手作攤位。', cta: '活動資訊', url: 'https://www.twmarket.tw/' },
-      { name: '安全玩具自己做', area: '新竹市', kind: '手作', time: ['12 月'], ages: ['3–6 歲'], free: true,
-        dateBig: '12/5', dateSmall: '週六 10:00',
-        when: '12/5（六）10:00–11:30', where: '香山區親子館（育德街 188 號）', price: '免費，需報名', who: '2–6 歲幼兒與家長',
-        note: '用回收材料做會動的小魚玩具，材料由親子館準備。', cta: '報名', url: WPCC },
-      { name: '聖誕點燈市集', area: '新竹縣', place: '竹北市', kind: '市集', time: ['12 月'], ages: ['1–3 歲', '3–6 歲'], free: true,
-        dateBig: '12/12', dateSmall: '週六 12:00',
-        when: '12/12（六）12:00–19:00', where: '新竹縣政府前廣場', price: '免費入場', who: '全年齡，有親子互動區',
-        note: '約 150 組攤位，有手作 DIY、創意闖關和大型氣墊。', cta: '活動資訊', url: 'https://eventgo.tw/event/916079da-2617-4d5a-8ea3-52a5c8691bda' },
-      { name: '冬日親子野餐日', area: '其他縣市', place: '桃園市', kind: '戶外', time: ['12 月'], ages: ['0–1 歲', '1–3 歲', '3–6 歲'], free: true,
-        dateBig: '12/20', dateSmall: '週日 10:00',
-        when: '12/20（日）10:00–16:00', where: '桃園市藝文特區廣場', price: '免費', who: '全年齡',
-        note: '草地野餐、親子瑜伽和繪本角，備有哺乳與換尿布帳篷。', cta: '活動資訊', url: '#' },
-      { name: '公園草地親子野餐', area: '新竹市', kind: '戶外', time: ['12 月'], ages: ['0–1 歲', '1–3 歲', '3–6 歲'], free: true,
-        dateBig: '12/13', dateSmall: '週日 10:00',
-        when: '12/13（日）10:00–15:00', where: '東區 新竹公園草地', price: '免費，自備野餐墊', who: '全年齡',
-        note: '現場有說故事、泡泡秀和親子律動，備有哺乳與換尿布帳篷。', cta: '活動資訊', url: '#' },
-      { name: '親子樂園 兒童免費入園（限時 3 天）', area: '新竹縣', place: '關西鎮', kind: '戶外', time: ['12 月'], ages: ['0–1 歲', '1–3 歲', '3–6 歲'], free: true,
-        dateBig: '12/25', dateSmall: '–12/27',
-        when: '12/25（五）– 12/27（日）', where: '新竹縣關西鎮親子樂園', price: '12 歲以下兒童免費，大人需購票', who: '12 歲以下兒童與家長',
-        note: '只有這 3 天，憑兒童健保卡或戶口名簿入園。嬰兒車可租借。', cta: '活動資訊', url: '#' }
+      { name: '彩色滴管－大象艾瑪', place: '東區親子館', ages: ['2–6 歲'],
+        dateBig: '11/22', dateSmall: '週日 10:00', when: '2026/11/22（日）10:00–11:30', where: '東區親子館・中央路 241 號 3 樓（衛生社福大樓）', who: '2 歲到 4 歲 11 個月',
+        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '用繪本《大象艾瑪》認識顏色，用滴管完成彩色大象。', url: WPCC + 'course/?mode=detail&id=12151' },
+      { name: '滑溜布探險', place: '東區親子館', ages: ['2–6 歲'],
+        dateBig: '11/22', dateSmall: '週日 13:30', when: '2026/11/22（日）13:30–15:00', where: '東區親子館・中央路 241 號 3 樓（衛生社福大樓）', who: '2 歲到 4 歲 11 個月',
+        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '使用滑溜布進行體能活動。', url: WPCC + 'course/?mode=detail&id=12150' },
+      { name: '親子故事瑜伽：蔬菜樂園好好玩', place: '香山區親子館', ages: ['2–6 歲'],
+        dateBig: '11/22', dateSmall: '週日 10:00', when: '2026/11/22（日）10:00–11:30', where: '香山區親子館・育德街 188 號 1 樓（香山區行政大樓）', who: '2 歲 6 個月到 5 歲 11 個月',
+        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '用故事和親子瑜伽認識各種蔬菜。', url: WPCC + 'course/?mode=detail&id=12076' },
+      { name: '蔬果大遊行', place: '香山區親子館', ages: ['2–6 歲'],
+        dateBig: '11/22', dateSmall: '週日 13:30', when: '2026/11/22（日）13:30–15:00', where: '香山區親子館・育德街 188 號 1 樓（香山區行政大樓）', who: '3 歲到 6 歲 11 個月',
+        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '扮演農夫與風雨水，用節奏遊戲認識植物成長。', url: WPCC + 'course/?mode=detail&id=12077' },
+      { name: '小手玩平衡：滾珠畫', place: '東區親子館', ages: ['1–2 歲'],
+        dateBig: '11/24', dateSmall: '週二 15:30', when: '2026/11/24（二）15:30–17:00', where: '東區親子館・中央路 241 號 3 樓（衛生社福大樓）', who: '1 歲 6 個月到 1 歲 11 個月',
+        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '用顏料和彈珠在托盤裡滾動，完成滾珠畫。', url: WPCC + 'course/?mode=detail&id=12028' },
+      { name: '音樂與戲劇：雪人之舞', place: '北區親子館', ages: ['1–2 歲'],
+        dateBig: '11/25', dateSmall: '週三 10:00', when: '2026/11/25（三）10:00–11:30', where: '北區親子館・南勢六街 11 號 2 樓（南勢社會福利館）', who: '1 歲 5 個月到 2 歲',
+        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '練習肢體動作、樂器與音樂律動。', url: WPCC + 'course/?mode=detail&id=12084' },
+      { name: '敲一敲、變一變', place: '東區親子館', ages: ['2–6 歲'],
+        dateBig: '11/26', dateSmall: '週四 13:30', when: '2026/11/26（四）13:30–15:00', where: '東區親子館・中央路 241 號 3 樓（衛生社福大樓）', who: '2 歲到 4 歲 11 個月',
+        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '用各色顏料敲一敲，看看會變出什麼。', url: WPCC + 'course/?mode=detail&id=12149' },
+      { name: '企鵝體操', place: '東區親子館', ages: ['1–2 歲'],
+        dateBig: '11/26', dateSmall: '週四 15:30', when: '2026/11/26（四）15:30–17:00', where: '東區親子館・中央路 241 號 3 樓（衛生社福大樓）', who: '1 歲 6 個月到 1 歲 11 個月',
+        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '跟著繪本裡的企鵝一起做體操。', url: WPCC + 'course/?mode=detail&id=12018' },
+      { name: '故事花園：企鵝體操', place: '北區親子館', ages: ['0–1 歲', '1–2 歲', '2–6 歲'],
+        dateBig: '11/27', dateSmall: '週五 10:00', when: '2026/11/27（五）10:00–11:30', where: '北區親子館・南勢六街 11 號 2 樓（南勢社會福利館）', who: '0 歲到 6 歲 11 個月',
+        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '繪本故事加手作。', url: WPCC + 'course/?mode=detail&id=12102' },
+      { name: '身體大發現', place: '東區親子館', ages: ['1–2 歲'],
+        dateBig: '11/27', dateSmall: '週五 13:30', when: '2026/11/27（五）13:30–15:00', where: '東區親子館・中央路 241 號 3 樓（衛生社福大樓）', who: '1 歲 6 個月到 1 歲 11 個月',
+        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '親子遊戲加藝術創作。', url: WPCC + 'course/?mode=detail&id=12033' }
     ];
     const base = 'min-height: 40px; padding: 0 14px; border-radius: 999px; font-family: inherit; font-size: 14px; cursor: pointer; ';
     const on = base + 'background: #2E5E4E; color: #FFFFFF; border: 1px solid #2E5E4E; font-weight: 600';
@@ -280,27 +268,23 @@ class Component extends DCLogic {
       track: 'width: 44px; height: 26px; border-radius: 999px; flex-shrink: 0; position: relative; display: inline-block; background: ' + (s[key] ? '#2E5E4E' : '#D8D1C3'),
       knob: 'position: absolute; top: 3px; left: ' + (s[key] ? '21px' : '3px') + '; width: 20px; height: 20px; border-radius: 999px; background: #FFFFFF'
     });
-    const order = { '新竹市': 0, '新竹縣': 1, '其他縣市': 2 };
     const filtered = DATA.filter((d) =>
-      (s.area === '全部' || d.area === s.area) &&
-      (s.kind === '全部' || d.kind === s.kind) &&
-      (s.time === '全部' || d.time.indexOf(s.time) >= 0) &&
-      (s.age === '全部' || d.ages.indexOf(s.age) >= 0) &&
-      (!s.free || d.free)
-    ).sort((a, b) => order[a.area] - order[b.area]);
+      (s.area === '全部' || d.place === s.area) &&
+      (s.age === '全部' || d.ages.indexOf(s.age) >= 0)
+    );
     const cityArea = 'display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #E4EEE7; color: #2E5E4E';
     const otherArea = 'display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 3px 10px; border-radius: 999px; border: 1px solid #E4DED2; color: #5F6B64';
     const results = filtered.map((d) => {
-      const isCity = d.area === '新竹市';
+      const isCity = true;
       const hasDate = !!d.dateBig;
       return {
-        name: d.name, kind: d.kind, isCity, area: d.area + (d.place ? '・' + d.place : ''),
+        name: d.name, kind: '', isCity, area: d.place, host: d.host,
         areaStyle: isCity ? cityArea : otherArea,
         accStyle: isCity ? 'border-left: 4px solid #2E5E4E' : '',
         dateBox: hasDate ? 'width: 64px; min-height: 60px; flex-shrink: 0; align-self: center; border-radius: 12px; background: #E4EEE7; color: #2E5E4E; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-align: center' : 'display: none',
         dateBig: d.dateBig || '', dateSmall: d.dateSmall || '',
         mine: false, when: d.when, where: d.where, price: d.price, who: d.who, note: d.note,
-        cta: d.cta, ctaUrl: d.url, srcTitle: '活動資訊', srcUrl: d.url
+        cta: '看活動頁', ctaUrl: d.url, srcTitle: '活動頁', srcUrl: d.url
       };
     });
     return {
@@ -308,13 +292,11 @@ class Component extends DCLogic {
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
       filters: [
-        mk('area', '地區', ['全部', '新竹市', '新竹縣', '其他縣市']),
-        mk('kind', '類型', ['全部', '戶外', '室內', '手作', '市集']),
-        mk('time', '時間', ['全部', '這個週末', '11 月', '12 月']),
-        mk('age', '適合年齡（寶寶現在 2 個月）', ['全部', '0–1 歲', '1–3 歲', '3–6 歲'])
+        mk('area', '地點', ['全部', '東區親子館', '北區親子館', '香山區親子館']),
+        mk('age', '適合年齡', ['全部', '0–1 歲', '1–2 歲', '2–6 歲'])
       ],
-      toggles: [tg('free', '只看免費')],
-      reset: () => this.setState({ area: '全部', kind: '全部', time: '全部', age: '全部', free: false }),
+      toggles: [],
+      reset: () => this.setState({ area: '全部', age: '全部' }),
       results, noResult: results.length === 0, emptyText: '沒有符合條件的活動。可以放寬條件，或清除篩選。',
       resultText: '共 ' + results.length + ' 場活動'
     };

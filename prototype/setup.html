@@ -139,7 +139,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 <nav class="zb-nav-links" aria-label="主選單" style="display: flex; gap: 4px; flex-wrap: wrap">
 <a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
-<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
 <a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
 <a href="childcare.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">托育</a>
 <a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
@@ -151,7 +150,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
 <nav id="zb-menu" class="zb-nav-menu" aria-label="主選單" style="border-top: 1px solid #E4DED2; background: #FCFAF6; padding: 8px 16px 16px; display: flex; flex-direction: column">
 <a href="index.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">主頁</a>
-<a href="diary.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">寶寶日記</a>
 <a href="benefits.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">補助及其他福利</a>
 <a href="childcare.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">托育</a>
 <a href="activities.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">親子活動</a>
@@ -237,7 +235,7 @@ class Component extends DCLogic {
         pick: () => this.setState({ [key]: o })
       }))
     }, extra || {});
-    /* 出生日期：和寶寶日記同一種月曆，可以切換月份，也可以選未來日期（預產期） */
+    /* 出生日期：自製月曆，可以切換月份，也可以選未來日期（預產期） */
     const WK = ['日', '一', '二', '三', '四', '五', '六'];
     const now = new Date(), T = { y: now.getFullYear(), m: now.getMonth(), d: now.getDate() };
     const bd = s.bd, bdDate = new Date(bd.y, bd.m, bd.d);
@@ -265,7 +263,7 @@ class Component extends DCLogic {
         mk('district', '戶籍行政區', ['東區', '北區', '香山區']),
         mk('residency', '父或母是否設籍新竹市？', ['是', '否', '不確定'], { hint: '用來判斷新竹市的補助' }),
         mk('order', '這是第幾胎？', ['第 1 胎', '第 2 胎', '第 3 胎以上'], { hint: '部分補助金額依胎次不同' }),
-        mk('care', '寶寶目前主要由誰照顧？', ['自己或家人', '保母', '托嬰中心'], { hint: '決定可以領育兒津貼還是托育補助' }),
+        mk('care', '寶寶目前主要由誰照顧？', ['自己或家人', '保母', '托嬰中心'], { hint: '影響育兒津貼和托育補助哪一項可能適用' }),
         mk('lowIncome', '是否為低收入或中低收入戶？', ['是', '否', '不想回答'], { optional: true })
       ]
     };

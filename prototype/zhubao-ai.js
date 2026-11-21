@@ -12,77 +12,35 @@
   };
   const DEMO = {
     money: { q: '寶寶出生後，我可以領哪些補助？', keys: [['補助', '領'], ['補助', '哪些'], ['津貼', '哪些']],
-      answer: '依你的資料，有 4 項可以留意：2 筆生育補助、每月的育兒津貼，還有一項是低收入戶才有的營養費。',
+      answer: '依你填的資料，有 4 項可能適用：2 筆生育補助、每月的育兒津貼，還有一項是低收入戶才有的營養費。實際資格以主管機關審核為準。',
       mine: '寶寶 2026/9/10 出生、第 1 胎、由自己或家人照顧。你填的地區是北區，但還沒確認父或母是否設籍新竹市，這會影響市府的生育津貼。',
       prepTitle: '竹寶幫你整理', prep: [
-        '中央生育補助：每胎 10 萬元。有參加社會保險的人不用申請，會自動入帳。',
+        '中央生育補助：每胎 10 萬元。有參加社會保險的人，依規定由保險人辦理給付，方式請看官方說明。',
         '新竹市生育津貼：每胎 3 萬元。父或母要設籍新竹市，向戶政事務所申請。',
-        '育兒津貼：未滿 2 歲、自己或家人帶就可以申辦，金額與申辦方式請看市府公告。',
+        '育兒津貼：未滿 2 歲、自己或家人帶的寶寶可能適用，金額、資格與申辦方式請看市府公告。',
         '低收入戶產婦及嬰兒營養費：2 萬元，只限新竹市列冊低收入戶，要在 2026/12/10 前向區公所申請。'],
-      next: [['看補助及其他福利', 'benefits.html'], ['補填戶籍資料', 'setup.html']],
+      next: [['看補助', 'benefits.html'], ['修改寶寶資料', 'setup.html']],
       srcs: [S.dosi, S.civil, S.allow, S.lawLow] },
-    why: { q: '為什麼要記寶寶日記？', keys: [['為什麼', '記'], ['日記'], ['為什麼', '紀錄']],
-      answer: '寶寶還不會說話，日記就是他的身體狀況。記下喝奶、尿布、睡眠和體溫，可以早點發現需要注意的變化，看醫生時也不用靠回想。',
-      mine: '你這 7 天記了喝奶、尿布和睡眠，都在常見範圍內。看醫生或健檢時，可以直接把寶寶日記的 7 天摘要給醫師看。',
-      prepTitle: '每一項在看什麼', prep: [
-        '喝奶：次數和份量突然變少，可能是身體不舒服的早期訊號。',
-        '尿布：濕尿布變少可能是喝不夠或脫水，比看奶量更直接。',
-        '便便顏色：淡黃或灰白色要儘快就醫，請對照兒童健康手冊裡的嬰兒大便辨識卡。',
-        '睡眠與睡姿：記下睡姿，提醒全家讓寶寶仰睡，也能看出作息穩不穩定。',
-        '體溫：未滿 3 個月發燒要儘快就醫，記下時間和溫度，醫師判斷更快。',
-        '身高體重：畫成生長曲線，連續偏離才需要擔心，比單次數字更有意義。'],
-      next: [['打開寶寶日記', 'diary.html']],
-      srcs: [S.book, S.hpaChild] },
-    stool: { q: '寶寶的便便顏色很淡，正常嗎？', keys: [['便便'], ['大便'], ['便', '顏色']],
-      answer: '如果便便是淡黃色或灰白色，可能和膽道閉鎖有關，請儘快帶寶寶就醫。竹寶沒辦法判斷病情，要由醫師確認。',
-      mine: '你今天 10:05 在寶寶日記記錄的便便是黃色，屬於常見顏色。之後如果記到淡黃或灰白色，竹寶會馬上提醒你。',
-      prepTitle: '先對照，再就醫', prep: [
-        '打開兒童健康手冊裡的嬰兒大便辨識卡，對照便便的顏色。',
-        '拍下便便的照片，就醫時給醫師看。',
-        '帶兒童健康手冊和健保卡。'],
-      next: [['記到寶寶日記', 'diary.html'], ['看緊急專線', 'help.html']],
-      srcs: [S.book] }
-  };
-  const QA = {
-    month: { q: '寶寶這個月要做什麼？', keys: [['這個月'], ['要做什麼'], ['這個月', '注意']],
-      answer: '這個月有 3 件事：帶寶寶打 2 個月的疫苗、安排第 2 次兒童預防保健，還有媽媽的第 2 次產後健康照護。',
-      mine: '寶寶 11/10 滿 2 個月，今天是 11/14。媽媽的產後健康照護第 2 次要在 12/10 前完成，還剩 26 天。',
-      prepTitle: '照順序做', prep: [
-        '五合一疫苗和 13 價肺炎鏈球菌疫苗第 1 劑：滿 2 個月就能打，公費免費。帶兒童健康手冊和健保卡到合約院所。',
-        '第 2 次兒童預防保健：公費免費，建議月齡請看兒童健康手冊。',
-        '第 2 次產後健康照護：12/10 前，到有提供產檢的健保特約院所，帶健保卡和孕媽咪健康手冊。'],
-      next: [['看這個年紀要注意的事', 'index.html']],
-      srcs: [S.cdc, S.hpaChild, S.hpaPost] },
     switch: { q: '送托之後，我的補助會怎麼變？', keys: [['送托'], ['托育補助']],
-      answer: '送到準公共托嬰中心或保母後，可以改領托育補助，原本的育兒津貼就不會同時領。',
-      mine: '你現在自己帶寶寶，所以符合育兒津貼，托育補助顯示「不符合」。打算送托時，北區有準公共托嬰中心可以先參觀。',
-      prepTitle: '送托前可以先做', prep: ['確認托育單位是不是「準公共」，才能領托育補助。', '送托後依社會處規定提出托育補助申請。'],
-      next: [['看托育', 'childcare.html'], ['看補助及其他福利', 'benefits.html']],
+      answer: '送到準公共托嬰中心或保母後，可能改適用托育補助，育兒津貼和托育補助不會同時領，實際以社會處規定為準。',
+      mine: '你填的是自己或家人帶寶寶，所以育兒津貼可能適用，托育補助可能不適用。打算送托時，可以先看北區的準公共托嬰中心名冊。',
+      prepTitle: '送托前可以先做', prep: ['確認托育單位是不是「準公共」，這會影響托育補助。', '送托後依社會處規定提出托育補助申請。'],
+      next: [['看托育', 'childcare.html'], ['看補助', 'benefits.html']],
       srcs: [['新竹市社會處・準公共化專區', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20']] },
-    lowinc: { q: '低收入戶的產婦營養費要準備什麼？', keys: [['營養費'], ['低收入']],
-      answer: '新竹市列冊低收入戶的產婦，每案可以領 2 萬元，要在寶寶出生後 3 個月內向區公所申請。',
-      mine: '寶寶 9/10 出生，申請期限是 2026/12/10。你在設定時略過了這一題，如果是低收入戶，記得在期限前申請。',
-      prepTitle: '帶到戶籍所在地的區公所', prep: ['申請書', '寶寶的新式戶口名簿影本與出生證明', '郵局存摺正面影本', '領款收據（請別人代辦要附委託書）'],
-      next: [['看補助及其他福利', 'benefits.html']],
-      srcs: [S.lawLow] },
-    fever: { q: '寶寶半夜發燒怎麼辦？', keys: [['發燒']],
-      answer: '竹寶沒辦法判斷寶寶的病情。3 個月以下的寶寶發燒，建議儘快就醫。',
-      mine: '寶寶現在 2 個月，屬於要特別小心的年紀。如果寶寶呼吸困難、叫不醒或抽搐，請直接撥 119。',
-      prepTitle: '就醫時帶著', prep: ['兒童健康手冊和健保卡', '發燒開始的時間與量到的體溫'],
-      next: [['看緊急專線', 'help.html']],
-      srcs: [['衛生福利部國民健康署', 'https://www.hpa.gov.tw/Pages/List.aspx?nodeid=202']] },
-    vax: { q: '2 個月要打哪些疫苗？', keys: [['疫苗'], ['打針']],
-      answer: '滿 2 個月要打五合一疫苗和 13 價肺炎鏈球菌疫苗的第 1 劑，都是公費免費。',
-      mine: '寶寶 11/10 已滿 2 個月，現在就可以打。第 2 劑在 2027/1/10 滿 4 個月之後。',
-      prepTitle: '去接種時帶著', prep: ['兒童健康手冊', '健保卡'],
-      next: [['看這個年紀要注意的事', 'index.html']],
-      srcs: [S.cdc] },
     nursery: { q: '北區有哪些準公共托嬰中心？', keys: [['托嬰'], ['準公共']],
       answer: '北區的準公共托嬰中心都列在社會處的名冊上，例如新竹市私立茱蒂園托嬰中心。',
-      mine: '你的戶籍在北區，竹寶在托育頁會把北區排在最前面。送準公共托嬰中心可以領托育補助。',
+      mine: '你的戶籍在北區，托育頁會把北區排在前面。送準公共托嬰中心可能適用托育補助。',
       prepTitle: '', prep: [],
       next: [['看托育', 'childcare.html']],
       srcs: [['新竹市社會處・115 年準公共化托嬰中心名冊', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20']] },
+  };
+  const QA = {
+    lowinc: { q: '低收入戶的產婦營養費要準備什麼？', keys: [['營養費'], ['低收入']],
+      answer: '新竹市列冊低收入戶的產婦，每案可申請 2 萬元，要在寶寶出生後 3 個月內向區公所申請。',
+      mine: '寶寶 9/10 出生，申請期限是 2026/12/10。你在設定時略過了這一題，如果是低收入戶，記得在期限前申請。',
+      prepTitle: '帶到戶籍所在地的區公所', prep: ['申請書', '寶寶的新式戶口名簿影本與出生證明', '郵局存摺正面影本', '領款收據（請別人代辦要附委託書）'],
+      next: [['看補助', 'benefits.html']],
+      srcs: [S.lawLow] },
     weekend: { q: '這週末可以帶寶寶去哪？', keys: [['週末'], ['周末'], ['去哪']],
       answer: '這週六上午北區親子館有寶寶共讀，0 歲寶寶也能參加，免費但要先預約。',
       mine: '寶寶 2 個月，適合安靜、室內、可以推嬰兒車的地方。竹北遠百的聖誕樹展也在室內。',
@@ -124,12 +82,11 @@
 
   /* 各頁先建議的問題 */
   const PAGES = {
-    'index.html': ['主頁', ['vax', 'fever', 'why']],
-    'diary.html': ['寶寶日記', ['why', 'stool', 'fever']],
+    'index.html': ['主頁', ['money', 'switch', 'weekend']],
     'benefits.html': ['補助及其他福利', ['money', 'switch', 'lowinc']],
     'childcare.html': ['托育', ['nursery', 'switch', 'money']],
-    'activities.html': ['親子活動', ['weekend', 'nursery', 'why']],
-    'help.html': ['協助', ['fever', 'stool', 'money']]
+    'activities.html': ['親子活動', ['weekend', 'nursery', 'money']],
+    'help.html': ['協助', ['money', 'switch', 'lowinc']]
   };
 
   window.ZBAI = { S, DEMO, QA, ALL, match, history, remember, clearHistory, when, MAX };
@@ -277,7 +234,7 @@
     function ask(k, text) {
       if (timer) { clearTimeout(timer); const t = body.querySelector('.zbf-thinking'); if (t) t.remove(); }
       body.appendChild(h('div', { class: 'zbf-me', text: text }));
-      const think = botCard([h('div', { class: 'zbf-think', html: '竹寶正在查資料 <span aria-hidden="true" style="display:inline-flex;gap:4px"><span class="zbf-dot"></span><span class="zbf-dot"></span><span class="zbf-dot"></span></span>' })]);
+      const think = botCard([h('div', { class: 'zbf-think', html: '竹寶正在整理答案 <span aria-hidden="true" style="display:inline-flex;gap:4px"><span class="zbf-dot"></span><span class="zbf-dot"></span><span class="zbf-dot"></span></span>' })]);
       think.classList.add('zbf-thinking');
       think.setAttribute('role', 'status');
       body.appendChild(think);
