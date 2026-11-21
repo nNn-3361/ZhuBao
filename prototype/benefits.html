@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FCFAF6">
+<script src="zhubao-family.js"></script>
 <script src="zhubao-app.js"></script>
 <title>竹寶・補助及其他福利</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -138,8 +139,8 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
 <div>
-<h1 style="margin: 0; font-size: 28px; font-weight: 600; line-height: 1.3">寶寶 2 個月 4 天</h1>
-<div style="font-size: 14px; color: #5F6B64; margin-top: 6px">2026/9/10 出生・北區・第 1 胎・自己或家人照顧　<a href="setup.html" style="white-space: nowrap">修改寶寶資料</a></div>
+<h1 style="margin: 0; font-size: 28px; font-weight: 600; line-height: 1.3; display: flex; align-items: center; gap: 10px"><i aria-hidden="true" style="width: 14px; height: 14px; border-radius: 999px; background: {{kidHex}}; flex-shrink: 0"></i>{{kidTitle}}</h1>
+<div style="font-size: 14px; color: #5F6B64; margin-top: 6px">{{kidLine}}　<a href="setup.html" style="white-space: nowrap">修改寶寶資料</a></div>
 </div>
 <div style="display: flex; gap: 8px; flex-wrap: wrap">
 <sc-for list="{{counts}}" as="c" hint-placeholder-count="4">
@@ -171,7 +172,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <div class="zb-bam-body">
 <sc-if value="{{st.empty}}" hint-placeholder-val="{{false}}"><p style="margin: 0; font-size: 15px; color: #5F6B64; background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 16px">這個階段的項目已經結束，沒有需要處理的事。</p></sc-if>
 <sc-for list="{{st.items}}" as="it" hint-placeholder-count="4">
-<div class="{{it.accCls}}" data-k="{{it.name}}" data-open="{{it.expanded}}">
+<div class="{{it.accCls}}" data-k="{{it.name}}" data-item="{{it.itemId}}" data-open="{{it.expanded}}">
 <button type="button" onClick="{{it.toggle}}" aria-expanded="{{it.expanded}}" style="width: 100%; min-height: 68px; display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: transparent; border: 0; text-align: left; font-family: inherit; color: inherit; cursor: pointer">
 <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
 <span style="font-size: 16px; font-weight: 600">{{it.name}}</span>
@@ -199,6 +200,12 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </sc-if>
 </div>
 </div>
+<sc-if value="{{it.canFollow}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px">
+<button type="button" class="zb-follow" aria-pressed="{{it.followOn}}" onClick="{{it.toggleFollow}}">{{it.followText}}</button>
+<span class="zb-follow-note" style="flex: 1 1 220px">{{it.followNote}}</span>
+</div>
+</sc-if>
 <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px dashed #E4DED2; padding-top: 14px">
 <span style="font-size: 13px; color: #5F6B64">來源：<a href="{{it.srcUrl}}">{{it.srcTitle}}</a></span>
 <sc-if value="{{it.showCta}}" hint-placeholder-val="{{true}}">
@@ -275,10 +282,30 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { menuOpen: false, residency: null, lowIncome: null, stage: 's1', open: null, other: null, ogroup: '全部' };
+    const F = window.ZBF;
+    /* 從行事曆或通知跳過來：#b-項目@寶寶，切到那個寶寶、展開那一項並對準 */
+    const jump = /^#b-([A-Za-z0-9]+)@(k[\w]+)$/.exec(location.hash);
+    if (jump && F.kid(jump[2])) F.setCurrent(jump[2]);
+    const K = F.current();
+    const yn = (v) => v === '是' ? true : v === '否' ? false : null;
+    const now = (F.stages(K).find((x) => x.phase === 'now') || { id: 's1' }).id;
+    this.state = { menuOpen: false, residency: yn(K.residency), lowIncome: yn(K.lowIncome), stage: now, open: jump ? jump[1] : null, other: null, ogroup: '全部', jump: jump ? jump[1] : null };
+    if (jump) {
+      setTimeout(() => {
+        const name = (document.querySelector('[data-item="' + jump[1] + '"]') || {});
+        const el = name.closest ? name.closest('.zb-acc') : null;
+        if (!el) return;
+        window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 76 });
+        el.classList.add('zb-flash');
+        setTimeout(() => el.classList.remove('zb-flash'), 2400);
+      }, 120);
+    }
   }
   renderVals() {
     const s = this.state;
+    const F = window.ZBF, K = F.current(), B = F.parse(K.bd), T = F.today();
+    const M1 = F.addM(B, 1), M3 = F.addM(B, 3), D1 = F.fmt(M1), D3 = F.fmt(M3);
+    const past1 = T >= M1, past3 = T >= M3;
     const ICON = {
       ok: 'M20 6 9 17l-5-5',
       check: 'M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2-3 4M12 18h.01',
@@ -315,16 +342,16 @@ class Component extends DCLogic {
         questions: s.residency === null ? [{ text: '父或母是否設籍新竹市？', yes: () => this.setState({ residency: true }), no: () => this.setState({ residency: false }) }] : [] },
       centralTop: { name: '中央生育補助', meta: '115/1/1 起生產・每胎 10 萬元', status: 'ok', src: 'dosi', cta: '',
         desc: '有參加社會保險的人，依規定由保險人辦理給付。參加國民年金或沒有參加社會保險的媽媽，可以在戶政事務所辦出生登記時一併申請，也可以線上或向勞保局申請。' },
-      lowInc: { name: '低收入戶產婦及嬰兒營養費', meta: '每案 20,000 元・產後 3 個月內', status: yn(s.lowIncome), src: 'lawLow', cta: '看法規',
-        desc: '對象是新竹市列冊的低收入戶婦女。要在寶寶出生後 3 個月內（2026/12/10 前）向戶籍所在地的區公所申請。',
+      lowInc: { name: '低收入戶產婦及嬰兒營養費', meta: '每案 20,000 元・產後 3 個月內', status: past3 ? 'expired' : yn(s.lowIncome), src: 'lawLow', cta: '看法規',
+        desc: '對象是新竹市列冊的低收入戶婦女。要在寶寶出生後 3 個月內（' + D3 + ' 前）向戶籍所在地的區公所申請。',
         questions: s.lowIncome === null ? [{ text: '是否為新竹市列冊的低收入戶？', yes: () => this.setState({ lowIncome: true }), no: () => this.setState({ lowIncome: false }) }] : [] },
-      post1: { name: '產後健康照護（第 1 次）', meta: '公費・產後 1 個月內', status: 'expired', src: 'hpaPost', cta: '',
-        desc: '第 1 次要在產後 1 個月內（2026/10/10 前），已經過了。第 2 次在產後 1 到 3 個月內，仍可預約。' },
+      post1: { name: '產後健康照護（第 1 次）', meta: '公費・產後 1 個月內', status: past1 ? 'expired' : 'ok', src: 'hpaPost', cta: '',
+        desc: '第 1 次要在產後 1 個月內（' + D1 + ' 前）' + (past1 ? '，已經過了' : '') + '。第 2 次在產後 1 到 3 個月內，仍可預約。' },
       check2: { name: '兒童預防保健', meta: '公費・未滿 7 歲共 9 次', status: 'ok', src: 'hpaNine', cta: '看官方說明',
         desc: '2026/7/1 起，未滿 7 歲的免費健檢從 7 次增為 9 次。每次的建議月齡請看兒童健康手冊。' },
       vax2: { name: '公費疫苗', meta: '依疾管署接種時程', status: 'ok', src: 'cdc', cta: '看接種時程',
         desc: '依疾管署兒童預防接種時程，帶兒童健康手冊到合約院所接種。' },
-      post2: { name: '產後健康照護（第 2 次）', meta: '公費・12/10 前', status: 'ok', src: 'hpaPost', cta: '看官方說明',
+      post2: { name: '產後健康照護（第 2 次）', meta: '公費・' + F.md(M3) + ' 前', status: past3 ? 'expired' : 'ok', src: 'hpaPost', cta: '看官方說明',
         desc: '產後 1 到 3 個月內，到有提供產檢的健保特約院所。內容包含運動、營養、避孕與下一胎諮詢。記得帶健保卡和孕媽咪健康手冊。' },
       allowance: { name: '育兒津貼', meta: '未滿 2 歲・需申辦', status: 'ok', src: 'allow', cta: '看申辦方式',
         desc: '未滿 2 歲的寶寶可以申辦育兒津貼。申辦方式請看市府公告。若之後改送托育，可能改適用托育補助，請看官方規定。' },
@@ -388,9 +415,9 @@ class Component extends DCLogic {
     const INFO = {
       birthHC: ['寶寶出生後，新竹市政府發給家長的一次性現金，幫忙支應生產和新生兒的開銷。', ['每胎 30,000 元。', '2027/1/1 起出生的寶寶改為每名 60,000 元（新竹市生育津貼發放作業要點 115/11/6 修正）。', '父或母須設籍新竹市。', '寶寶出生後向戶政事務所申請。', '父或母是否設籍新竹市，請在申請前確認。']],
       centralTop: ['中央政府對 115 年 1 月 1 日起出生的寶寶發的生育補助，補貼生產後的家庭開銷。', ['每胎 10 萬元。', '有參加勞保等社會保險的人，依規定由保險人辦理給付，實際方式請看官方說明。', '參加國民年金或沒有社會保險的媽媽，可在辦出生登記時一併申請，也可以線上或向勞保局申請。']],
-      lowInc: ['給新竹市低收入戶產婦和新生兒的營養費，補貼產後調養和寶寶營養的開銷。', ['每案 20,000 元。', '對象是新竹市列冊的低收入戶婦女。', '要在寶寶出生後 3 個月內（2026/12/10 前）向戶籍所在地的區公所申請。', '是否為新竹市列冊低收入戶，請在申請前確認。']],
-      post1: ['國健署提供的公費產後檢查，由醫師關心媽媽產後的身體恢復。', ['第 1 次要在產後 1 個月內（2026/10/10 前），已經過了。', '第 2 次在產後 1 到 3 個月內，仍可預約。']],
-      post2: ['國健署提供的第 2 次公費產後檢查，由醫師關心媽媽產後的身體恢復，免付費。', ['產後 1 到 3 個月內（2026/12/10 前）。', '到有提供產檢的健保特約院所。', '內容包含運動、營養、避孕與下一胎諮詢。', '記得帶健保卡和孕媽咪健康手冊。']],
+      lowInc: ['給新竹市低收入戶產婦和新生兒的營養費，補貼產後調養和寶寶營養的開銷。', ['每案 20,000 元。', '對象是新竹市列冊的低收入戶婦女。', '要在寶寶出生後 3 個月內（' + D3 + ' 前）向戶籍所在地的區公所申請。', '是否為新竹市列冊低收入戶，請在申請前確認。']],
+      post1: ['國健署提供的公費產後檢查，由醫師關心媽媽產後的身體恢復。', ['第 1 次要在產後 1 個月內（' + D1 + ' 前）' + (past1 ? '，已經過了' : '') + '。', '第 2 次在產後 1 到 3 個月內，仍可預約。']],
+      post2: ['國健署提供的第 2 次公費產後檢查，由醫師關心媽媽產後的身體恢復，免付費。', ['產後 1 到 3 個月內（' + D3 + ' 前）。', '到有提供產檢的健保特約院所。', '內容包含運動、營養、避孕與下一胎諮詢。', '記得帶健保卡和孕媽咪健康手冊。']],
       check2: ['國健署提供的公費兒童健康檢查，看寶寶的生長和發展，免付費。', ['2026/7/1 起，未滿 7 歲共 9 次，比以前多 2 次。', '原本 4 到 10 個月的一次，改成 4 到 6 個月、6 到 12 個月各一次。', '每次的建議月齡請看兒童健康手冊。', '記得帶健保卡和兒童健康手冊。']],
       vax2: ['政府免費提供的幼兒常規疫苗，預防嚴重的傳染病。', ['依疾管署兒童預防接種時程接種。', '帶兒童健康手冊到合約院所。', '接種項目以疾管署最新時程表為準。']],
       allowance: ['給未滿 2 歲寶寶家長的每月育兒津貼，補貼自己或家人在家照顧的開銷。', ['對象是未滿 2 歲的寶寶。', '金額與申辦方式請看市府公告。', '之後如果改送托育，可能改適用托育補助，請看官方規定。']],
@@ -427,22 +454,30 @@ class Component extends DCLogic {
       school5: ['5 歲時是否在家照顧，或讀哪一種幼兒園'],
       primary: ['是否為新竹市列冊的低收入戶或中低收入戶', '是否讀市立國小']
     };
-    const STAGES = [
-      { id: 'preg', title: '孕期', range: '懷孕期間', phase: 'past', items: [] },
-      { id: 's0', title: '出生到 2 個月', range: '9/10 – 11/9', phase: 'past', items: ['birthHC', 'centralTop', 'lowInc', 'post1'] },
-      { id: 's1', title: '2 到 4 個月', range: '11/10 – 2027/1/9', phase: 'now', items: ['post2', 'check2', 'vax2', 'allowance', 'leave', 'tempcare'] },
-      { id: 's2', title: '4 到 12 個月', range: '2027/1/10 – 9/9', phase: 'next', items: ['check3', 'vax4', 'nursery', 'careExtra'] },
-      { id: 's3', title: '1 到 2 歲', range: '2027/9/10 – 2028/9/9', phase: 'later', items: ['check4'] },
-      { id: 's4', title: '2 歲到 5 歲前', range: '2028/9/10 – 2032/7', phase: 'later', items: ['after2', 'kinder'] },
-      { id: 's5', title: '5 歲', range: '2032/8 – 2033/7', phase: 'later', items: ['school5'] },
-      { id: 's6', title: '上小學以後', range: '2033/8 起', phase: 'later', items: ['primary'] }
-    ];
+    const ITEMS_BY = { preg: [], s0: ['birthHC', 'centralTop', 'lowInc', 'post1'], s1: ['post2', 'check2', 'vax2', 'allowance', 'leave', 'tempcare'], s2: ['check3', 'vax4', 'nursery', 'careExtra'], s3: ['check4'], s4: ['after2', 'kinder'], s5: ['school5'], s6: ['primary'] };
+    const STAGES = F.stages(K).map((x) => ({ id: x.id, title: x.title, range: x.range, phase: x.phase, items: ITEMS_BY[x.id] || [] }));
+    if (s.jump) { const js = STAGES.find((x) => x.items.indexOf(s.jump) >= 0); if (js) s.stage = js.id; s.jump = null; }
     const tally = { ok: 0, check: 0, expired: 0, no: 0 };
     const dot = {
       past: 'width: 12px; height: 12px; border-radius: 999px; background: #FCFAF6; border: 2px solid #6F9A82; flex-shrink: 0',
       now: 'width: 18px; height: 18px; border-radius: 999px; background: #2E5E4E; box-shadow: 0 0 0 5px #E4EEE7; flex-shrink: 0',
       next: 'width: 12px; height: 12px; border-radius: 999px; background: #FCFAF6; border: 2px solid #C9C2B4; flex-shrink: 0',
       later: 'width: 12px; height: 12px; border-radius: 999px; background: #FCFAF6; border: 2px solid #C9C2B4; flex-shrink: 0'
+    };
+    /* 關注：只有算得出日期（可開始申請、截止）的項目才能加到行事曆 */
+    const followOf = (id) => {
+      const dates = F.benefitDates(K, id).filter((d) => d.date >= T);
+      if (!dates.length) return { canFollow: false };
+      const on = F.isFollowing('b', id, K.id);
+      return {
+        canFollow: true, followOn: on ? 'true' : 'false', followText: on ? '已關注' : '關注',
+        followNote: (on ? '已加到行事曆：' : '關注後會加到行事曆：') + dates.map((d) => F.fmt(d.date) + ' ' + d.label).join('、') + '。前 7 天和前 1 天提醒你。',
+        toggleFollow: () => {
+          if (on) F.unfollow('b', id, K.id); else F.follow({ t: 'b', id, kid: K.id });
+          if (window.ZB) { window.ZB.toast(on ? '已取消關注' : '已加到行事曆'); window.ZB.buzz && window.ZB.buzz(); window.ZB.refresh && window.ZB.refresh(); }
+          this.setState({});
+        }
+      };
     };
     const build = (id) => {
       const it = ITEMS[id];
@@ -458,7 +493,8 @@ class Component extends DCLogic {
         toggle: () => this.setState({ open: s.open === id ? null : id }),
         questions: qs, hasQuestions: qs.length > 0,
         srcTitle: SRC[it.src][0], srcUrl: SRC[it.src][1], srcConf: SRC[it.src][2],
-        cta: it.cta, showCta: !!it.cta && it.status !== 'no'
+        cta: it.cta, showCta: !!it.cta && it.status !== 'no',
+        itemId: id, ...followOf(id)
       };
     };
     const ORDER = STAGES.slice().reverse();
@@ -487,7 +523,9 @@ class Component extends DCLogic {
     const ogroup = s.ogroup || '全部';
     const chips = GROUPS.map((g) => ({ name: g, pressed: g === ogroup ? 'true' : 'false', cls: 'zb-chip' + (g === ogroup ? ' zb-chip-on' : ''), pick: () => this.setState({ ogroup: g, other: null }) }));
     const othersV = others.filter((o) => ogroup === '全部' || o.tag === ogroup).map((o) => ({ ...o, open: s.other === o.name, expanded: s.other === o.name ? 'true' : 'false', toggle: () => this.setState({ other: s.other === o.name ? null : o.name }) }));
+    const A = F.age(K);
     return {
+      kidHex: F.color(K.color).hex, kidTitle: K.name + (A.born ? ' ' + A.text : '・' + A.text), kidLine: F.line(K),
       others: othersV, chips, otherCount: othersV.length + ' 項',
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',

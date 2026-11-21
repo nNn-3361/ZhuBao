@@ -212,3 +212,71 @@ a.zb-row:hover,button.zb-row:hover{transform:none !important;box-shadow:none !im
   .zb-hints{scroll-snap-type:none !important}
 }
 @media (prefers-reduced-motion:reduce){ #dc-root .zb-entry,.zb-entry-back{animation:zbFadeIn .15s ease both !important} }
+
+/* ---------- 寶寶檔案顏色點、關注按鈕、跳轉對準 ---------- */
+.zb-kdot{display:inline-block;width:10px;height:10px;border-radius:999px;flex-shrink:0;margin-right:8px;vertical-align:1px;font-style:normal}
+.zb-kdot-lg{width:14px;height:14px;margin-right:0}
+.zb-noti[data-unread="true"] .zb-noti-title::before{display:none}
+.zb-noti[data-unread="true"] .zb-noti-top b::after{content:"・未讀"}
+.zb-follow{min-height:44px;padding:0 16px;display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:12px;border:1px solid var(--zb-accent);background:var(--zb-surface);color:var(--zb-accent);font-family:inherit;font-size:15px;font-weight:600;cursor:pointer}
+.zb-follow[aria-pressed="true"]{background:var(--zb-accent-soft);border-color:var(--zb-accent-soft)}
+.zb-follow-note{font-size:13px;color:var(--zb-sub);line-height:1.6}
+.zb-flash{animation:zbFlash 2.2s ease-out 1}
+@keyframes zbFlash{0%,35%{box-shadow:0 0 0 3px #8FC16F,0 6px 18px rgba(46,94,78,.18)}100%{box-shadow:0 0 0 0 rgba(143,193,111,0)}}
+@media (prefers-reduced-motion:reduce){.zb-flash{animation:none;box-shadow:0 0 0 3px #8FC16F}}
+
+/* ---------- 主頁行事曆（月曆） ---------- */
+.zb-cal{background:var(--zb-surface);border:1px solid var(--zb-line);border-radius:20px;padding:12px 12px 8px;display:flex;flex-direction:column;gap:8px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.zb-cal-head{display:flex;align-items:center;gap:4px}
+.zb-cal-title{flex:1;font-size:18px;font-weight:600;padding-left:6px;font-variant-numeric:tabular-nums}
+.zb-cal-nav{width:44px;height:44px;border-radius:999px;border:0;background:transparent;color:var(--zb-ink);font-family:inherit;font-size:22px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.zb-cal-today{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--zb-line);background:var(--zb-surface);font-family:inherit;font-size:13px;font-weight:600;color:var(--zb-ink);cursor:pointer;margin-right:4px}
+.zb-cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.zb-cal-w{font-size:12px;color:var(--zb-sub);text-align:center;padding:4px 0 6px}
+.zb-cal-d{min-height:52px;border:0;background:transparent;font-family:inherit;color:var(--zb-ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:3px;padding:4px 0 6px;border-radius:12px;transition:background-color .15s ease !important}
+.zb-cal-d:hover,.zb-cal-d:active{transform:none !important;box-shadow:none !important}
+.zb-cal-d:active{background:var(--zb-line-soft)}
+.zb-cal-n{width:30px;height:30px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-variant-numeric:tabular-nums}
+.zb-cal-d.zb-out .zb-cal-n{color:#B9B2A4}
+.zb-cal-d.zb-past .zb-cal-n{color:#8A938D}
+.zb-cal-d.zb-now .zb-cal-n{background:var(--zb-accent);color:#fff;font-weight:600}
+.zb-cal-d[aria-pressed="true"]{background:var(--zb-accent-soft)}
+.zb-cal-d[aria-pressed="true"]:not(.zb-now) .zb-cal-n{color:var(--zb-accent);font-weight:600}
+.zb-cal-dots{display:flex;gap:3px;height:7px;align-items:center}
+.zb-cal-dots i{width:6px;height:6px;border-radius:999px;display:block}
+.zb-cal-dots em{font-style:normal;font-size:10px;line-height:7px;color:var(--zb-sub)}
+.zb-cal-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--zb-sub);padding:4px 6px 2px}
+.zb-cal-legend span{display:inline-flex;align-items:center}
+.zb-cal-legend .zb-kdot{width:8px;height:8px;margin-right:6px}
+.zb-agenda{display:flex;flex-direction:column;gap:10px}
+.zb-agenda-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.zb-agenda-head h3{margin:0;font-size:16px;font-weight:600}
+.zb-add{min-height:44px;padding:0 16px;border-radius:999px;border:0;background:var(--zb-accent);color:#fff;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;flex-shrink:0}
+.zb-ev{display:flex;align-items:stretch;gap:12px;min-height:60px;padding:12px 14px;border-radius:16px;background:var(--zb-surface);border:1px solid var(--zb-line);text-decoration:none;color:var(--zb-ink);font-family:inherit;text-align:left;width:100%;box-sizing:border-box;cursor:pointer}
+.zb-ev-bar{width:4px;border-radius:999px;flex-shrink:0}
+.zb-ev-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;justify-content:center}
+.zb-ev-title{font-size:15px;font-weight:600;line-height:1.45}
+.zb-ev-sub{font-size:13px;color:var(--zb-sub);line-height:1.5}
+.zb-ev .zb-chevr{align-self:center}
+.zb-ev:hover{transform:none !important;box-shadow:none !important}
+.zb-empty{margin:0;padding:16px;border-radius:16px;border:1px dashed var(--zb-line);font-size:14px;line-height:1.6;color:var(--zb-sub)}
+.zb-upnext{font-size:13px;color:var(--zb-sub);margin:-2px 0 0}
+
+/* ---------- 表單（新增事件、寶寶檔案） ---------- */
+.zb-field{display:flex;flex-direction:column;gap:6px}
+.zb-field>span{font-size:14px;font-weight:600}
+.zb-input{min-height:48px;padding:0 14px;border-radius:12px;border:1px solid var(--zb-line);background:var(--zb-surface);font-family:inherit;font-size:16px;color:var(--zb-ink);box-sizing:border-box;width:100%}
+textarea.zb-input{padding:12px 14px;min-height:80px;resize:vertical;line-height:1.6}
+.zb-input:focus{outline:2px solid var(--zb-accent);outline-offset:0;border-color:transparent}
+.zb-pick{display:flex;flex-wrap:wrap;gap:8px}
+.zb-pick button{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--zb-line);background:var(--zb-surface);font-family:inherit;font-size:15px;color:var(--zb-ink);cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.zb-pick button[aria-pressed="true"]{border-color:var(--zb-accent);background:var(--zb-accent-soft);color:var(--zb-accent);font-weight:600}
+.zb-pick .zb-kdot{margin-right:0}
+.zb-sheet-actions{display:flex;gap:10px}
+.zb-sheet-actions button{flex:1;min-height:48px;border-radius:12px;font-family:inherit;font-size:16px;font-weight:600;cursor:pointer}
+.zb-btn-main{border:0;background:var(--zb-accent);color:#fff}
+.zb-btn-ghost{border:1px solid var(--zb-line);background:var(--zb-surface);color:var(--zb-ink)}
+.zb-btn-danger{border:1px solid #E8CFC9;background:var(--zb-surface);color:#8E3A33}
+.zb-detail{display:grid;grid-template-columns:56px minmax(0,1fr);row-gap:6px;margin:0;font-size:15px;line-height:1.6}
+.zb-detail dt{color:var(--zb-sub)}
+.zb-detail dd{margin:0}

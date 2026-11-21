@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FCFAF6">
+<script src="zhubao-family.js"></script>
 <script src="zhubao-app.js"></script>
 <title>竹寶・親子活動</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -171,13 +172,14 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 <div class="zb-list">
 <sc-for list="{{results}}" as="r" hint-placeholder-count="4">
-<article class="zb-acc" data-k="{{r.name}}" data-open="{{r.expanded}}" style="{{r.accStyle}}">
+<article class="zb-acc" data-k="{{r.name}}" data-item="{{r.itemId}}" data-open="{{r.expanded}}" style="{{r.accStyle}}">
 <button type="button" class="zb-acc-head" aria-expanded="{{r.expanded}}" onClick="{{r.toggle}}">
 <div style="{{r.dateBox}}"><span style="font-size: 17px; font-weight: 600; line-height: 1.1">{{r.dateBig}}</span><span style="font-size: 11px">{{r.dateSmall}}</span></div>
 <span class="zb-acc-title" style="gap: 6px">
 <span style="display: flex; gap: 6px; flex-wrap: wrap">
 <span style="{{r.areaStyle}}">{{r.chipText}}</span>
 <span style="{{r.dealStyle}}">{{r.dealTag}}</span>
+<sc-if value="{{r.followTag}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #EFEAE0; color: #1F2A24; font-weight: 600">{{r.followTag}}</span></sc-if>
 </span>
 <span style="font-size: 16px; font-weight: 600; line-height: 1.4">{{r.name}}</span>
 <span style="font-size: 13px; line-height: 1.5; color: #5F6B64; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{r.price}}</span>
@@ -195,6 +197,12 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </dl>
 <sc-if value="{{r.hasNote}}" hint-placeholder-val="{{true}}">
 <p style="margin: 0; font-size: 15px; line-height: 1.7">{{r.note}}</p>
+</sc-if>
+<sc-if value="{{r.canFollow}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px">
+<button type="button" class="zb-follow" aria-pressed="{{r.followOn}}" onClick="{{r.toggleFollow}}">{{r.followText}}</button>
+<span class="zb-follow-note" style="flex: 1 1 220px">{{r.followNote}}</span>
+</div>
 </sc-if>
 <a href="{{r.ctaUrl}}" style="align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">{{r.cta}}</a>
 </div>
@@ -217,6 +225,18 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.state = { menuOpen: false, region: '全部', city: '全部', deal: '全部', kind: '全部' };
+    /* 從行事曆或通知跳過來：#a-活動編號，展開那張活動卡片並對準 */
+    const jump = /^#a-(\d+)$/.exec(location.hash);
+    if (jump) {
+      this.state.jumpId = jump[1];
+      setTimeout(() => {
+        const el = document.querySelector('[data-item="' + jump[1] + '"]');
+        if (!el) return;
+        window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 76 });
+        el.classList.add('zb-flash');
+        setTimeout(() => el.classList.remove('zb-flash'), 2400);
+      }, 120);
+    }
   }
   renderVals() {
     const s = this.state;
@@ -340,9 +360,38 @@ class Component extends DCLogic {
       if (d.deal.indexOf('免費') >= 0) t.push('免費參加');
       return t.join('・');
     };
+    const F = window.ZBF;
+    const evId = (d) => { const m = /id=(\d+)/.exec(d.url || ''); return m ? m[1] : ''; };
+    const evDate = (d) => { const m = /(\d{4})\/(\d{1,2})\/(\d{1,2})[^\d]*(\d{1,2}:\d{2})?/.exec(d.when || ''); return m ? { date: m[1] + '-' + m[2].padStart(2, '0') + '-' + m[3].padStart(2, '0'), time: m[4] || '' } : null; };
+    if (s.jumpId) { const j = ALL.find((d) => d.kind === '期間活動' && evId(d) === s.jumpId); if (j) { s.card = j.name; s.region = '全部'; s.city = '全部'; s.deal = '全部'; s.kind = '全部'; } s.jumpId = null; return this.renderVals(); }
+    /* 關注活動：選這個活動是幫哪個孩子（或全家）關注，行事曆上用那個顏色 */
+    const followOf = (d) => {
+      const id = evId(d), when = evDate(d);
+      if (d.kind !== '期間活動' || !id || !when || F.parse(when.date) < F.today()) return { canFollow: false, followTag: '' };
+      const f = F.activityFollow(id);
+      const done = (msg) => { if (window.ZB) { window.ZB.toast(msg); window.ZB.buzz && window.ZB.buzz(); window.ZB.refresh && window.ZB.refresh(); } this.setState({}); };
+      return {
+        canFollow: true, followOn: f ? 'true' : 'false', followText: f ? '已關注' : '關注',
+        followTag: f ? '已關注・' + F.kidName(f.kid) : '',
+        followNote: f ? '已加到行事曆（' + F.kidName(f.kid) + '）。前 7 天和前 1 天提醒你。' : '關注後會加到主頁行事曆，前 7 天和前 1 天提醒你。',
+        toggleFollow: () => {
+          if (f) { F.unfollow('a', id); done('已取消關注'); return; }
+          const opts = F.kids().concat([{ id: '', name: '全家' }]);
+          const esc = (x) => String(x).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+          window.ZB.sheet('zb-follow-kid', '幫誰關注這個活動？', '<p class="zb-follow-note" style="margin:0">' + esc(d.name) + '・' + esc(d.when) + '</p><div class="zb-pick">'
+            + opts.map((k) => '<button type="button" data-k="' + k.id + '" aria-pressed="false"><i class="zb-kdot" style="background:' + F.kidHex(k.id) + '"></i>' + esc(k.name) + '</button>').join('') + '</div>', (el) => {
+            el.querySelectorAll('[data-k]').forEach((b) => b.addEventListener('click', () => {
+              F.follow({ t: 'a', id, kid: b.getAttribute('data-k'), name: d.name, date: when.date, time: when.time, place: d.place || '' });
+              window.ZB.closeSheet(); done('已加到行事曆');
+            }));
+          });
+        }
+      };
+    };
     const results = filtered.map((d) => {
       const isEvent = d.kind === '期間活動';
       return {
+        itemId: evId(d), ...followOf(d),
         name: d.name, area: d.city, host: d.host,
         areaStyle: isEvent ? cityChip : 'display: none',
         dealTag: dealLabel(d), dealStyle: hasDeal(d) ? dealChip : plainChip,
