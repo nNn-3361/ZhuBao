@@ -131,7 +131,10 @@
       { height: '0px', paddingTop: '0px', paddingBottom: '0px', opacity: 0 },
       { height: f.height, paddingTop: f.paddingTop, paddingBottom: f.paddingBottom, opacity: 1 }
     ], { duration: 320, easing: EASE });
-    a.onfinish = () => { el.style.overflow = ''; if (anchoring) pendingView = el; else bringIntoView(el); };
+    /* 篩選條件打開時不自動捲動：原本展開後約 0.5 秒頁面會自己往上捲 100–200px，
+       家長這時去點選項，按鈕剛好從手指底下移走，看起來像「點中間沒反應、要點下面一點」 */
+    const still = el.closest('section[aria-label="篩選"], .zb-filter');
+    a.onfinish = () => { el.style.overflow = ''; if (still) return; if (anchoring) pendingView = el; else bringIntoView(el); };
   }
   function leave(el) {
     if (el.nodeType !== 1 || !el.matches(ANIM_SEL) || reduced() || el.__leaving) { el.remove(); return; }
