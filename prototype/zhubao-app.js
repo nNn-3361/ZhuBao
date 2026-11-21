@@ -35,12 +35,13 @@
     { href: 'help.html', label: '協助', sub: '緊急專線、常見問題、資料隱私' }
   ];
   const TITLES = { 'index.html': '主頁', 'benefits.html': '補助及其他福利', 'childcare.html': '托育', 'activities.html': '親子活動', 'ask.html': '問竹寶', 'help.html': '協助', 'setup.html': '寶寶資料' };
-  /* 通知只來自已關注的項目（補助日期、活動、自己建立的事件），前 7 天和前 1 天各提醒一次 */
+  /* 通知：已關注的項目（補助日期、活動、自己建立的事件）＋每個孩子都有的健檢與疫苗，前 7 天和前 1 天各提醒一次 */
   const F = window.ZBF;
   if (F && F.leaving) return;
   let NOTI = F ? F.reminders() : [];
   const SETTINGS = [
-    { id: 'due', label: '關注提醒', sub: '已關注的補助、活動與自己建立的事件，前 7 天和前 1 天提醒' }
+    { id: 'due', label: '關注提醒', sub: '已關注的補助、活動與自己建立的事件，前 7 天和前 1 天提醒' },
+    { id: 'health', label: '健檢與疫苗提醒', sub: '每個孩子都有的公費兒童健檢與常規疫苗，不用關注。依生日在健檢期限、建議接種日前 7 天和前 1 天提醒' }
   ];
   const hasTabs = PAGE !== 'setup.html' && PAGE !== 'phone.html';
   if (hasTabs) document.documentElement.classList.add('zb-has-tabs');
@@ -58,7 +59,7 @@
   const logo = '<svg width="18" height="18" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"/><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>';
 
   const readIds = () => store.get('zb-noti-read', []);
-  const settings = () => Object.assign({ due: true }, store.get('zb-noti-set', {}));
+  const settings = () => Object.assign({ due: true, health: true }, store.get('zb-noti-set', {}));
   const unread = () => { const r = readIds(); const s = settings(); return NOTI.filter((n) => s[n.set] && r.indexOf(n.id) < 0); };
   const markRead = (id) => { const r = readIds(); if (r.indexOf(id) < 0) { r.push(id); store.set('zb-noti-read', r); } updateBell(); };
 
@@ -127,7 +128,7 @@
     const noti = list.length
       ? '<div class="zb-group">' + list.map((n) => '<a class="zb-row zb-noti" href="' + n.href + '" data-id="' + n.id + '" data-unread="' + (r.indexOf(n.id) < 0) + '"><span class="zb-noti-top"><b>' + esc(n.kind) + '</b><span>' + esc(n.when) + '</span></span><span class="zb-noti-title"><i class="zb-kdot" style="background:' + F.kidHex(n.kid) + '"></i>' + esc(n.title) + '</span><span class="zb-noti-body">' + esc(n.body) + '</span></a>').join('') + '</div>'
         + (unread().length ? '<button type="button" class="zb-sheet-x" data-act="all" style="align-self:center">全部標為已讀</button>' : '')
-      : '<div class="zb-group"><div class="zb-row"><span class="zb-row-main"><span>目前沒有通知</span><span class="zb-row-sub">' + (st.due ? '在補助或活動按「關注」，日期前 7 天和前 1 天會提醒你。' : '關注提醒關掉了，可以在下方通知設定打開。') + '</span></span></div></div>';
+      : '<div class="zb-group"><div class="zb-row"><span class="zb-row-main"><span>目前沒有通知</span><span class="zb-row-sub">' + (st.due || st.health ? '健檢期限、疫苗接種日，以及你關注的補助和活動，前 7 天和前 1 天會提醒你。' : '提醒都關掉了，可以在下方通知設定打開。') + '</span></span></div></div>';
     const html = '<span class="zb-group-label">通知</span>' + noti
       + '<span class="zb-group-label">寶寶檔案</span>'
       + '<div class="zb-group">' + F.kids().map((k) => { const on = k.id === F.current().id; return '<button type="button" class="zb-row zb-kid" data-kid="' + k.id + '" aria-pressed="' + on + '"><i class="zb-kdot zb-kdot-lg" style="background:' + F.color(k.color).hex + '"></i><span class="zb-row-main"><span>' + esc(k.name) + '・' + esc(F.age(k).short) + '</span><span class="zb-row-sub">' + esc(F.line(k)) + '</span></span>' + (on ? '<span class="zb-row-end zb-ok">目前</span>' : '<span class="zb-row-end">切換</span>') + '</button>'; }).join('')
@@ -186,8 +187,15 @@
   /* ---------- 推播橫幅 ---------- */
   let pushEl = null, pushTimer = 0;
   function push(id) {
-    const n = NOTI.find((x) => x.id === id) || unread()[0] || NOTI[0];
-    if (!n) { toast('目前沒有已關注項目的提醒'); return; }
+    let n;
+    if (id === 'health') {
+      /* 展示用：有正在提醒的就送那則，沒有就模擬下一個健檢或疫苗日期的 7 天前通知 */
+      n = unread().find((x) => x.set === 'health') || NOTI.find((x) => x.set === 'health') || (F.healthPreview && F.healthPreview());
+      if (!n) { toast('還沒出生的寶寶，出生後會開始提醒健檢與疫苗'); return; }
+    } else {
+      n = NOTI.find((x) => x.id === id) || unread().find((x) => x.set === 'due') || NOTI.find((x) => x.set === 'due');
+      if (!n) { toast('目前沒有已關注項目的提醒'); return; }
+    }
     if (pushEl) pushEl.remove();
     clearTimeout(pushTimer);
     const el = document.createElement('button');
