@@ -67,9 +67,11 @@ body{font-variant-numeric:tabular-nums}
 /* ---------- 上方「通知」按鈕 ---------- */
 .zb-bell{display:none}
 @media (max-width:760px){
-  .zb-has-tabs .zb-bell{display:inline-flex;position:fixed;top:calc(var(--zb-safe-t) + 8px);right:12px;z-index:70;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--zb-line);background:var(--zb-surface);font-family:"Noto Sans TC",system-ui,sans-serif;font-size:14px;font-weight:600;color:var(--zb-ink);cursor:pointer}
+  /* 外框小一點（約 32 高），但整顆按鈕仍是 44×44 以上的可點範圍 */
+  .zb-has-tabs .zb-bell{display:inline-flex;position:fixed;top:calc(var(--zb-safe-t) + 4px);right:8px;z-index:70;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 4px;border:0;border-radius:999px;background:transparent;font-family:"Noto Sans TC",system-ui,sans-serif;font-size:13px;font-weight:600;color:var(--zb-ink);cursor:pointer}
+  .zb-bell-in{display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 10px;box-sizing:border-box;border-radius:999px;border:1px solid var(--zb-line);background:var(--zb-surface)}
 }
-.zb-bell b{min-width:20px;height:20px;padding:0 6px;box-sizing:border-box;border-radius:999px;background:var(--zb-accent);color:#fff;font-size:12px;line-height:20px;text-align:center}
+.zb-bell b{min-width:18px;height:18px;padding:0 5px;box-sizing:border-box;border-radius:999px;background:var(--zb-accent);color:#fff;font-size:11px;line-height:18px;text-align:center}
 .zb-bell b[hidden]{display:none}
 .zb-bell:active{transform:scale(.95) !important;box-shadow:none !important}
 
@@ -207,6 +209,6 @@ a.zb-row:hover,button.zb-row:hover{transform:none !important;box-shadow:none !im
   /* 儲存按鈕黏在面板底部，小提醒展開時也不用捲到最下面才能存 */
   #dc-root .zb-entry>button:last-child{align-self:stretch !important;position:sticky;bottom:0;z-index:2;box-shadow:0 0 0 8px var(--zb-bg),0 -16px 16px 8px var(--zb-bg)}
   html:has(.zb-entry){overflow:hidden}
-  .zb-hints{scroll-padding-inline:16px}
+  .zb-hints{scroll-snap-type:none !important}
 }
 @media (prefers-reduced-motion:reduce){ #dc-root .zb-entry,.zb-entry-back{animation:zbFadeIn .15s ease both !important} }

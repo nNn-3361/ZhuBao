@@ -238,7 +238,7 @@
       bell = document.createElement('button');
       bell.type = 'button';
       bell.className = 'zb-bell';
-      bell.innerHTML = '通知<b></b>';
+      bell.innerHTML = '<span class="zb-bell-in">通知<b></b></span>';
       bell.addEventListener('click', () => { buzz(); showNoti(); });
       document.body.appendChild(bell);
       updateBell();
