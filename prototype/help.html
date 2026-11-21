@@ -203,8 +203,8 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 <sc-if value="{{confirmClear}}" hint-placeholder-val="{{false}}">
 <div role="alert" style="background: #FCFAF6; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.6">
-<span>確定要清除嗎？寶寶資料和提醒都會刪除，無法復原。</span>
-<div style="display: flex; gap: 8px"><button type="button" onClick="{{cancelClear}}" style="min-height: 40px; padding: 0 14px; border-radius: 12px; border: 1px solid #E4DED2; background: #FFFFFF; font-family: inherit; font-size: 14px; cursor: pointer">取消</button><a href="setup.html" style="min-height: 40px; display: inline-flex; align-items: center; padding: 0 14px; border-radius: 12px; background: #A2413A; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">確定清除</a></div>
+<span>確定要清除嗎？寶寶檔案、關注、事件和問竹寶紀錄都會刪除，回到第一次使用，無法復原。</span>
+<div style="display: flex; gap: 8px"><button type="button" onClick="{{cancelClear}}" style="min-height: 40px; padding: 0 14px; border-radius: 12px; border: 1px solid #E4DED2; background: #FFFFFF; font-family: inherit; font-size: 14px; cursor: pointer">取消</button><button type="button" onClick="{{doClear}}" style="min-height: 40px; display: inline-flex; align-items: center; padding: 0 14px; border-radius: 12px; border: 0; background: #A2413A; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">確定清除</button></div>
 </div>
 </sc-if>
 </section>
@@ -271,7 +271,8 @@ class Component extends DCLogic {
       hotlines, desks, faqs, steps,
       confirmClear: !!s.confirmClear,
       askClear: () => this.setState({ confirmClear: true }),
-      cancelClear: () => this.setState({ confirmClear: false })
+      cancelClear: () => this.setState({ confirmClear: false }),
+      doClear: () => window.ZBF.reset()
     };
   }
 }

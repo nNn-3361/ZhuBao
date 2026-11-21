@@ -30,21 +30,26 @@
   const md = (d) => (d.getMonth() + 1) + '/' + d.getDate();
 
   /* ---------- 寶寶檔案 ---------- */
-  /* 示範：哥哥 2024/2/20 出生（藍），妹妹 2026/9/10 出生（綠） */
-  const SEED_KIDS = [
-    { id: 'k2', name: '妹妹', color: 'green', bd: '2026-09-10', district: '北區', residency: '不確定', order: '第 2 胎', care: '自己或家人', lowIncome: '不想回答' },
-    { id: 'k1', name: '哥哥', color: 'blue', bd: '2024-02-20', district: '北區', residency: '不確定', order: '第 1 胎', care: '自己或家人', lowIncome: '不想回答' }
-  ];
+  /* 預設是空的：第一次打開要先到寶寶資料頁建立檔案（模擬第一次使用的家長）。 */
+  const DATA_VER = 3;
+  /* 清掉這台裝置上竹寶的所有資料（寶寶檔案、關注、事件、通知、問竹寶紀錄），回到第一次使用的樣子 */
+  function wipe() {
+    try { Object.keys(localStorage).forEach((k) => { if (k.indexOf('zb-') === 0) localStorage.removeItem(k); }); } catch (e) {}
+    try { Object.keys(sessionStorage).forEach((k) => { if (k.indexOf('zb-') === 0 && k !== 'zb-web') sessionStorage.removeItem(k); }); } catch (e) {}
+  }
+  /* 舊版會預放示範的哥哥、妹妹：資料版本不同就先清空一次 */
+  if (store.get('zb-ver', 0) !== DATA_VER) { wipe(); store.set('zb-ver', DATA_VER); }
+  function reset() { wipe(); store.set('zb-ver', DATA_VER); try { location.replace('setup.html'); } catch (e) {} }
   function kids() {
-    let k = store.get('zb-kids', null);
-    if (!Array.isArray(k) || !k.length) { k = SEED_KIDS.map((x) => Object.assign({}, x)); store.set('zb-kids', k); seedFollows(); }
-    return k;
+    const k = store.get('zb-kids', null);
+    return Array.isArray(k) ? k.filter((x) => x && x.id && x.bd) : [];
   }
   const kid = (id) => kids().find((k) => k.id === id) || null;
   function current() {
     const all = kids();
-    return all.find((k) => k.id === store.get('zb-kid', '')) || all[0];
+    return all.find((k) => k.id === store.get('zb-kid', '')) || all[0] || null;
   }
+  const hasKids = () => kids().length > 0;
   const setCurrent = (id) => store.set('zb-kid', id);
   function saveKid(k) {
     const all = kids();
@@ -73,7 +78,8 @@
     let m = (t.getFullYear() - b.getFullYear()) * 12 + t.getMonth() - b.getMonth();
     if (addM(b, m) > t) m -= 1;
     const d = days(addM(b, m), t);
-    if (m < 24) return { born: true, months: m, text: (m ? m + ' 個月 ' : '') + d + ' 天', short: m ? m + ' 個月' : d + ' 天' };
+    if (m === 0 && d === 0) return { born: true, months: 0, text: '今天出生', short: '今天出生' };
+    if (m < 24) return { born: true, months: m, text: (m ? m + ' 個月' + (d ? ' ' + d + ' 天' : '') : d + ' 天'), short: m ? m + ' 個月' : d + ' 天' };
     const y = Math.floor(m / 12), mm = m % 12;
     return { born: true, months: m, text: y + ' 歲' + (mm ? ' ' + mm + ' 個月' : ''), short: y + ' 歲' + (mm ? ' ' + mm + ' 個月' : '') };
   }
@@ -150,7 +156,7 @@
     if (!r || !k || (r.skip && r.skip(k))) return [];
     const b = parse(k.bd), t = today(), out = [];
     if (r.start) { const d = r.start(b); if (d > t) out.push({ type: 'start', label: '可開始申請', date: d }); }
-    if (r.end) { const d = r.end(b); const s = r.start ? r.start(b) : null; if (!s || d >= s) out.push({ type: 'end', label: '截止', date: d }); }
+    if (r.end) { const d = r.end(b); const s = r.start ? r.start(b) : null; if ((!s || d >= s) && d >= t) out.push({ type: 'end', label: '截止', date: d }); }
     return out;
   }
   const ruleName = (item) => (RULES.find((x) => x.item === item) || {}).name || '';
@@ -168,26 +174,6 @@
   const events = () => store.get('zb-events', []);
   function saveEvent(e) { const all = events().filter((x) => x.id !== e.id); if (!e.id) e.id = 'e' + Date.now().toString(36); all.push(e); store.set('zb-events', all); return e; }
   const removeEvent = (id) => store.set('zb-events', events().filter((x) => x.id !== id));
-
-  function seedFollows() {
-    if (store.get('zb-follow', null) === null) {
-      store.set('zb-follow', [
-        { t: 'b', id: 'post2', kid: 'k2' },
-        { t: 'b', id: 'lowInc', kid: 'k2' },
-        { t: 'b', id: 'leave', kid: 'k1' },
-        { t: 'a', id: '12151', kid: 'k1', name: '彩色滴管－大象艾瑪', date: '2026-11-22', time: '10:00', place: '東區親子館' },
-        { t: 'a', id: '12149', kid: 'k1', name: '敲一敲、變一變', date: '2026-11-26', time: '13:30', place: '東區親子館' },
-        { t: 'a', id: '12102', kid: '', name: '故事花園：企鵝體操', date: '2026-11-27', time: '10:00', place: '北區親子館' }
-      ]);
-    }
-    if (store.get('zb-events', null) === null) {
-      const t = today();
-      store.set('zb-events', [
-        { id: 'e1', title: '參觀托嬰中心', date: ymd(addD(t, 8)), time: '10:00', kid: 'k2', note: '先打電話預約參觀時間。' },
-        { id: 'e2', title: '帶妹妹看醫生', date: ymd(addD(t, 12)), time: '09:30', kid: 'k2', note: '記得帶健保卡和兒童健康手冊。' }
-      ]);
-    }
-  }
 
   /* 行事曆上的所有事件（已關注的補助日期、已關注的活動、自己建立的事件） */
   function calendar() {
@@ -229,6 +215,15 @@
     return out;
   }
 
-  window.ZBF = { COLORS, FAMILY, WK, today, ymd, parse, addM, addD, days, fmt, md, kids, kid, current, setCurrent, saveKid, removeKid, color, kidHex, kidName, age, line, stages, CONDS, conds, benefitDates, ruleName,
+  /* 還沒有寶寶檔案就先到寶寶資料頁；其他頁不先畫出來 */
+  const PAGE = (location.pathname.split('/').pop() || 'index.html') || 'index.html';
+  let leaving = false;
+  if (!hasKids() && PAGE !== 'setup.html' && PAGE !== 'phone.html') {
+    leaving = true;
+    try { document.documentElement.style.visibility = 'hidden'; } catch (e) {}
+    location.replace('setup.html');
+  }
+
+  window.ZBF = { leaving, reset, hasKids, COLORS, FAMILY, WK, today, ymd, parse, addM, addD, days, fmt, md, kids, kid, current, setCurrent, saveKid, removeKid, color, kidHex, kidName, age, line, stages, CONDS, conds, benefitDates, ruleName,
     follows, isFollowing, follow, unfollow, activityFollow, events, saveEvent, removeEvent, calendar, reminders, fkey };
 })();

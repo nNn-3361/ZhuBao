@@ -98,6 +98,8 @@ a.zb-row:hover,button.zb-row:hover{transform:none !important;box-shadow:none !im
 .zb-row-sub{font-size:13px;color:var(--zb-sub);line-height:1.5}
 .zb-row-end{font-size:13px;color:var(--zb-sub);flex-shrink:0}
 .zb-row-end.zb-ok{color:var(--zb-accent);font-weight:600}
+.zb-row-end.zb-danger{color:#8E3A33;font-weight:600}
+.zb-row[data-armed="1"]{background:#F5E4E0}
 .zb-chevr{flex-shrink:0;color:#B9B2A4}
 .zb-me{display:flex;flex-direction:column;gap:4px;padding:16px;background:var(--zb-accent);color:#fff;border-radius:16px}
 .zb-me b{font-size:18px}

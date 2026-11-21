@@ -315,6 +315,12 @@ class Component extends DCLogic {
     const F = window.ZBF, K = F.current(), B = F.parse(K.bd), T = F.today();
     const M1 = F.addM(B, 1), M3 = F.addM(B, 3), D1 = F.fmt(M1), D3 = F.fmt(M3);
     const past1 = T >= M1, past3 = T >= M3;
+    /* 依年紀判斷：已經過了年齡或期限的項目整張變灰（已過期限） */
+    const A0 = F.age(K), mo = A0.born ? A0.months : -1;
+    const PH = {}; F.stages(K).forEach((x) => { PH[x.id] = x.phase; });
+    const gone = (id) => PH[id] === 'past';
+    const sent = K.care && K.care !== '自己或家人';
+    const setRes = (v) => { F.saveKid(Object.assign({}, K, { residency: v ? '是' : '否' })); if (window.ZB && window.ZB.refresh) window.ZB.refresh(); this.setState({ residency: v }); };
     const ICON = {
       ok: 'M20 6 9 17l-5-5',
       check: 'M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2-3 4M12 18h.01',
@@ -352,46 +358,46 @@ class Component extends DCLogic {
     const has = (c) => s.conds.indexOf(c) >= 0;
     const fit = (cs) => (s.showAll || cs.some(has)) ? 'ok' : 'no';
     const ITEMS = {
-      birthHC: { name: '新竹市生育津貼', meta: '每胎 30,000 元・戶政事務所', status: yn(s.residency), src: 'civil', cta: '看官方說明',
+      birthHC: { name: '新竹市生育津貼', meta: (B >= new Date(2027, 0, 1) ? '每名 60,000 元（2027/1/1 起出生）' : '每胎 30,000 元') + '・戶政事務所', status: yn(s.residency), src: 'civil', cta: '看官方說明',
         desc: '父或母須設籍新竹市，寶寶出生後向戶政事務所申請。',
-        questions: s.residency === null ? [{ text: '父或母是否設籍新竹市？', yes: () => this.setState({ residency: true }), no: () => this.setState({ residency: false }) }] : [] },
-      centralTop: { name: '中央生育補助', meta: '115/1/1 起生產・每胎 10 萬元', status: 'ok', src: 'dosi', cta: '',
+        questions: s.residency === null ? [{ text: '父或母是否設籍新竹市？', yes: () => setRes(true), no: () => setRes(false) }] : [] },
+      centralTop: { name: '中央生育補助', meta: '115/1/1 起生產・每胎 10 萬元', status: B < new Date(2026, 0, 1) ? 'no' : 'ok', src: 'dosi', cta: '',
         desc: '有參加社會保險的人，依規定由保險人辦理給付。參加國民年金或沒有參加社會保險的媽媽，可以在戶政事務所辦出生登記時一併申請，也可以線上或向勞保局申請。' },
       lowInc: { name: '低收入戶產婦及嬰兒營養費', meta: '每案 20,000 元・產後 3 個月內', status: past3 ? 'expired' : fit(['low']), src: 'lawLow', cta: '看官方說明' },
       multiBirth: { name: '勞保生育給付（多胞胎加給）', meta: '雙生以上按比例增給・勞保', status: fit(['multi']), src: 'lawLabor', cta: '看官方說明' },
-      confine: { name: '到宅坐月子服務', meta: '每小時 300 元・預產期前 3 個月起申請', status: 'ok', src: 'confine', cta: '到平台申請' },
-      haoyun: { name: '好孕專車', meta: '產檢交通車資補助', status: 'ok', src: 'haoyun', cta: '看官方說明' },
+      confine: { name: '到宅坐月子服務', meta: '每小時 300 元・預產期前 3 個月起申請', status: gone('s0') && !(s.showAll || has('preg')) ? 'expired' : 'ok', src: 'confine', cta: '到平台申請' },
+      haoyun: { name: '好孕專車', meta: '產檢交通車資補助', status: gone('preg') && !(s.showAll || has('preg')) ? 'expired' : 'ok', src: 'haoyun', cta: '看官方說明' },
       post1: { name: '產後健康照護（第 1 次）', meta: '公費・產後 1 個月內', status: past1 ? 'expired' : 'ok', src: 'hpaPost', cta: '',
         desc: '第 1 次要在產後 1 個月內（' + D1 + ' 前）' + (past1 ? '，已經過了' : '') + '。第 2 次在產後 1 到 3 個月內，仍可預約。' },
-      check2: { name: '兒童預防保健', meta: '公費・未滿 7 歲共 9 次', status: 'ok', src: 'hpaNine', cta: '看官方說明',
+      check2: { name: '兒童預防保健', meta: '公費・未滿 7 歲共 9 次', status: gone('s1') ? 'expired' : 'ok', src: 'hpaNine', cta: '看官方說明',
         desc: '2026/7/1 起，未滿 7 歲的免費健檢從 7 次增為 9 次。每次的建議月齡請看兒童健康手冊。' },
-      vax2: { name: '公費疫苗', meta: '依疾管署接種時程', status: 'ok', src: 'cdc', cta: '看官方說明',
+      vax2: { name: '公費疫苗', meta: '依疾管署接種時程', status: gone('s1') ? 'expired' : 'ok', src: 'cdc', cta: '看官方說明',
         desc: '依疾管署兒童預防接種時程，帶兒童健康手冊到合約院所接種。' },
       post2: { name: '產後健康照護（第 2 次）', meta: '公費・產後 1 到 3 個月', status: past3 ? 'expired' : 'ok', src: 'hpaPost', cta: '看官方說明',
         desc: '產後 1 到 3 個月內，到有提供產檢的健保特約院所。內容包含運動、營養、避孕與下一胎諮詢。記得帶健保卡和孕媽咪健康手冊。' },
-      allowance: { name: '育兒津貼', meta: '未滿 2 歲・需申辦', status: fit(['home']), src: 'allow', cta: '看官方說明',
+      allowance: { name: '育兒津貼', meta: '未滿 2 歲・需申辦', status: mo >= 24 ? 'expired' : fit(['home']), src: 'allow', cta: '看官方說明',
         desc: '未滿 2 歲的寶寶可以申辦育兒津貼。申辦方式請看市府公告。若之後改送托育，可能改適用托育補助，請看官方規定。' },
       tempcare: { name: '臨時托育', meta: '新竹市社會處臨托服務', status: 'ok', src: 'temp', cta: '看官方說明',
         desc: '臨時有事時，可以把寶寶短時間托給合格的托育單位。據點與預約方式請看社會處臨托服務頁面。' },
-      check3: { name: '兒童預防保健（續）', meta: '公費・未滿 7 歲共 9 次', status: 'ok', src: 'hpaNine', cta: '看官方說明',
+      check3: { name: '兒童預防保健（續）', meta: '公費・未滿 7 歲共 9 次', status: gone('s2') ? 'expired' : 'ok', src: 'hpaNine', cta: '看官方說明',
         desc: '建議月齡請看兒童健康手冊。' },
-      vax4: { name: '公費疫苗（續）', meta: '依疾管署接種時程', status: 'ok', src: 'cdc', cta: '看官方說明',
+      vax4: { name: '公費疫苗（續）', meta: '依疾管署接種時程', status: gone('s5') ? 'expired' : 'ok', src: 'cdc', cta: '看官方說明',
         desc: '接種項目以疾管署最新時程表和兒童健康手冊為準。' },
-      nursery: { name: '托育補助', meta: '送托準公共機構', status: fit(['care']), src: 'quasi', cta: '',
-        desc: '目前填的是自己或家人照顧，依目前資料可能不適用。之後如果送準公共托嬰中心或保母，請領規定請看社會處準公共化專區。' },
-      leave: { name: '育嬰留職停薪津貼', meta: '投保薪資 8 成・父母各最多 6 個月', status: fit(['leave']), src: 'bliLeave', cta: '看官方說明',
+      nursery: { name: '托育補助', meta: '送托準公共機構', status: mo >= 24 ? 'expired' : fit(['care']), src: 'quasi', cta: '',
+        desc: sent ? '目前填的是送' + K.care + '。如果是準公共托嬰中心或保母，可能適用托育補助，請領規定請看社會處準公共化專區。' : '目前填的是自己或家人照顧，依目前資料可能不適用。之後如果送準公共托嬰中心或保母，請領規定請看社會處準公共化專區。' },
+      leave: { name: '育嬰留職停薪津貼', meta: '投保薪資 8 成・父母各最多 6 個月', status: mo >= 36 ? 'expired' : fit(['leave']), src: 'bliLeave', cta: '看官方說明',
         desc: '爸爸或媽媽在寶寶 3 歲前請育嬰留停，可向勞保局請領津貼。' },
-      careExtra: { name: '托育補助加額', meta: '中低收、低收、第 2 胎起再加', status: fit(['care']), src: 'eyCare', cta: '',
-        desc: '送準公共或公共托育時，部分家庭的托育補助會再提高。目前填的是自己或家人照顧，依目前資料可能不適用。' },
-      after2: { name: '育兒津貼（2 歲以後）', meta: '每月 5,000 元起・沒讀平價幼兒園', status: 'ok', src: 'moeAllow', cta: '看官方說明',
+      careExtra: { name: '托育補助加額', meta: '中低收、低收、第 2 胎起再加', status: mo >= 24 ? 'expired' : fit(['care']), src: 'eyCare', cta: '',
+        desc: '送準公共或公共托育時，部分家庭的托育補助會再提高。' + (sent ? '目前填的是送' + K.care + '，是' + K.order + '，可以看看能不能再加。' : '目前填的是自己或家人照顧，依目前資料可能不適用。') },
+      after2: { name: '育兒津貼（2 歲以後）', meta: '每月 5,000 元起・沒讀平價幼兒園', status: gone('s4') ? 'expired' : 'ok', src: 'moeAllow', cta: '看官方說明',
         desc: '滿 2 歲後如果在家帶，或讀沒有加入準公共的私立幼兒園，可以繼續領育兒津貼。' },
-      school5: { name: '幼兒園就學補助（5 歲）', meta: '每月 5,000 元起・沒讀平價幼兒園', status: 'ok', src: 'moeAllow', cta: '看官方說明',
+      school5: { name: '幼兒園就學補助（5 歲）', meta: '每月 5,000 元起・沒讀平價幼兒園', status: gone('s5') ? 'expired' : 'ok', src: 'moeAllow', cta: '看官方說明',
         desc: '5 歲起到上小學前，沒有讀平價幼兒園的孩子可以領就學補助，接續 2 歲以後的育兒津貼。' },
       primary: { name: '國小就學費用減免', meta: '低收全免・中低收減 60%', status: fit(['low']), src: 'hcSchool', cta: '看官方說明',
         desc: '新竹市低收入戶、中低收入戶的孩子讀市立國小，註冊時可以減免就學費用。' },
-      kinder: { name: '平價幼兒園繳費上限', meta: '第 1 胎每月 1,000 至 3,000 元', status: 'ok', src: 'eyCare', cta: '看官方說明',
+      kinder: { name: '平價幼兒園繳費上限', meta: '第 1 胎每月 1,000 至 3,000 元', status: gone('s5') ? 'expired' : 'ok', src: 'eyCare', cta: '看官方說明',
         desc: '2 歲以上讀公立、非營利或準公共幼兒園，家長每月最多只要繳固定金額。' },
-      check4: { name: '兒童預防保健（續）', meta: '公費・未滿 7 歲共 9 次', status: 'ok', src: 'hpaNine', cta: '看官方說明',
+      check4: { name: '兒童預防保健（續）', meta: '公費・未滿 7 歲共 9 次', status: gone('s5') ? 'expired' : 'ok', src: 'hpaNine', cta: '看官方說明',
         desc: '建議月齡請看兒童健康手冊。' }
     };
     const RES = {
@@ -534,7 +540,7 @@ class Component extends DCLogic {
       const ph = st.phase === 'now' ? 'now' : (st.phase === 'past' || st.phase === 'any') ? 'past' : 'future';
       return {
         id: st.id, title: st.title, range: st.range, isNow: st.phase === 'now',
-        countText: st.items.length === 0 ? '已結束' : nFit === st.items.length ? st.items.length + ' 項' : st.items.length + ' 項，' + nFit + ' 項可能適用',
+        countText: st.items.length === 0 ? '已結束' : nFit === st.items.length ? st.items.length + ' 項' : built.every((b) => b.status === 'expired') ? st.items.length + ' 項，都已過期限' : st.items.length + ' 項，' + nFit + ' 項可能適用',
         titleColor: st.phase === 'past' ? '#5F6B64' : '#1F2A24',
         bamCls: 'zb-bam zb-bam-' + ph + (i % 2 ? ' zb-alt' : '') + (i === 0 ? ' zb-bam-top' : '') + (i === ORDER.length - 1 && !selected ? ' zb-bam-bottom' : ''),
         pressed: selected ? 'true' : 'false', open: selected, empty: built.length === 0, hasRes: (RES[st.id] || []).length > 0,

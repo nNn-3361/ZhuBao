@@ -376,6 +376,7 @@
   ['click', 'submit', 'input', 'change'].forEach(delegate);
   try { document.documentElement.style.overflowAnchor = 'none'; } catch (e) {}
   window.addEventListener('DOMContentLoaded', () => {
+    if (window.ZBF && window.ZBF.leaving) return;
     tpl = document.getElementById('dc-tpl');
     root = document.getElementById('dc-root');
     comp = new window.Component({});
