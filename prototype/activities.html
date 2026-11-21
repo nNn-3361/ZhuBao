@@ -128,7 +128,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 <div style="display: flex; flex-direction: column; gap: 6px">
 <h1 style="margin: 0; font-size: 26px; font-weight: 600; line-height: 1.3">親子活動</h1>
-<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">新竹市三處親子館近期的活動，整理自新竹市托育資源中心親子館網站。時間、名額與報名以官方頁面為準。</p>
+<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">全台各縣市對孕婦、兒童有優惠的場館，加上新竹市親子館近期活動。優惠內容整理自各館官方票價頁，購票時通常要帶證明文件，實際以官方頁面為準。</p>
 </div>
 
 <div style="display: flex; gap: 12px; align-items: flex-start; background: #E4EEE7; border-radius: 16px; padding: 14px 16px">
@@ -176,22 +176,26 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <div style="{{r.dateBox}}"><span style="font-size: 17px; font-weight: 600; line-height: 1.1">{{r.dateBig}}</span><span style="font-size: 11px">{{r.dateSmall}}</span></div>
 <span class="zb-acc-title" style="gap: 6px">
 <span style="display: flex; gap: 6px; flex-wrap: wrap">
-<span style="{{r.areaStyle}}">{{r.area}}</span>
+<span style="{{r.areaStyle}}">{{r.chipText}}</span>
+<span style="{{r.dealStyle}}">{{r.dealTag}}</span>
 </span>
 <span style="font-size: 16px; font-weight: 600; line-height: 1.4">{{r.name}}</span>
-<span style="font-size: 13px; color: #5F6B64">{{r.price}}</span>
+<span style="font-size: 13px; line-height: 1.5; color: #5F6B64; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{r.price}}</span>
 </span>
 <svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
 </button>
 <sc-if value="{{r.open}}" hint-placeholder-val="{{false}}">
 <div class="zb-acc-body">
-<dl style="margin: 0; display: grid; grid-template-columns: 44px minmax(0, 1fr); row-gap: 6px; font-size: 15px; line-height: 1.6">
-<dt style="color: #5F6B64">時間</dt><dd style="margin: 0">{{r.when}}</dd>
+<dl style="margin: 0; display: grid; grid-template-columns: 64px minmax(0, 1fr); row-gap: 6px; font-size: 15px; line-height: 1.6">
+<dt style="color: #5F6B64">{{r.whenLabel}}</dt><dd style="margin: 0">{{r.when}}</dd>
 <dt style="color: #5F6B64">地點</dt><dd style="margin: 0">{{r.where}}</dd>
 <dt style="color: #5F6B64">適合年齡</dt><dd style="margin: 0">{{r.who}}</dd>
 <dt style="color: #5F6B64">主辦單位</dt><dd style="margin: 0">{{r.host}}</dd>
+<dt style="color: #5F6B64">優惠</dt><dd style="margin: 0">{{r.dealText}}</dd>
 </dl>
+<sc-if value="{{r.hasNote}}" hint-placeholder-val="{{true}}">
 <p style="margin: 0; font-size: 15px; line-height: 1.7">{{r.note}}</p>
+</sc-if>
 <a href="{{r.ctaUrl}}" style="align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">{{r.cta}}</a>
 </div>
 </sc-if>
@@ -212,88 +216,161 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { menuOpen: false, area: '全部', age: '全部' };
+    this.state = { menuOpen: false, region: '全部', city: '全部', deal: '全部', kind: '全部' };
   }
   renderVals() {
     const s = this.state;
     const WPCC = 'https://wpcc.hccg.gov.tw/';
-    /* 真實活動：2026/11/21 從新竹市托育資源中心親子館活動報名頁整理（只放時間、地點、年齡、主辦單位與活動頁連結） */
-    const DATA = [
-      { name: '彩色滴管－大象艾瑪', place: '東區親子館', ages: ['2–6 歲'],
-        dateBig: '11/22', dateSmall: '週日 10:00', when: '2026/11/22（日）10:00–11:30', where: '東區親子館・中央路 241 號 3 樓（衛生社福大樓）', who: '2 歲到 4 歲 11 個月',
-        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '用繪本《大象艾瑪》認識顏色，用滴管完成彩色大象。', url: WPCC + 'course/?mode=detail&id=12151' },
-      { name: '滑溜布探險', place: '東區親子館', ages: ['2–6 歲'],
-        dateBig: '11/22', dateSmall: '週日 13:30', when: '2026/11/22（日）13:30–15:00', where: '東區親子館・中央路 241 號 3 樓（衛生社福大樓）', who: '2 歲到 4 歲 11 個月',
-        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '使用滑溜布進行體能活動。', url: WPCC + 'course/?mode=detail&id=12150' },
-      { name: '親子故事瑜伽：蔬菜樂園好好玩', place: '香山區親子館', ages: ['2–6 歲'],
-        dateBig: '11/22', dateSmall: '週日 10:00', when: '2026/11/22（日）10:00–11:30', where: '香山區親子館・育德街 188 號 1 樓（香山區行政大樓）', who: '2 歲 6 個月到 5 歲 11 個月',
-        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '用故事和親子瑜伽認識各種蔬菜。', url: WPCC + 'course/?mode=detail&id=12076' },
-      { name: '蔬果大遊行', place: '香山區親子館', ages: ['2–6 歲'],
-        dateBig: '11/22', dateSmall: '週日 13:30', when: '2026/11/22（日）13:30–15:00', where: '香山區親子館・育德街 188 號 1 樓（香山區行政大樓）', who: '3 歲到 6 歲 11 個月',
-        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '扮演農夫與風雨水，用節奏遊戲認識植物成長。', url: WPCC + 'course/?mode=detail&id=12077' },
-      { name: '小手玩平衡：滾珠畫', place: '東區親子館', ages: ['1–2 歲'],
-        dateBig: '11/24', dateSmall: '週二 15:30', when: '2026/11/24（二）15:30–17:00', where: '東區親子館・中央路 241 號 3 樓（衛生社福大樓）', who: '1 歲 6 個月到 1 歲 11 個月',
-        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '用顏料和彈珠在托盤裡滾動，完成滾珠畫。', url: WPCC + 'course/?mode=detail&id=12028' },
-      { name: '音樂與戲劇：雪人之舞', place: '北區親子館', ages: ['1–2 歲'],
-        dateBig: '11/25', dateSmall: '週三 10:00', when: '2026/11/25（三）10:00–11:30', where: '北區親子館・南勢六街 11 號 2 樓（南勢社會福利館）', who: '1 歲 5 個月到 2 歲',
-        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '練習肢體動作、樂器與音樂律動。', url: WPCC + 'course/?mode=detail&id=12084' },
-      { name: '敲一敲、變一變', place: '東區親子館', ages: ['2–6 歲'],
-        dateBig: '11/26', dateSmall: '週四 13:30', when: '2026/11/26（四）13:30–15:00', where: '東區親子館・中央路 241 號 3 樓（衛生社福大樓）', who: '2 歲到 4 歲 11 個月',
-        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '用各色顏料敲一敲，看看會變出什麼。', url: WPCC + 'course/?mode=detail&id=12149' },
-      { name: '企鵝體操', place: '東區親子館', ages: ['1–2 歲'],
-        dateBig: '11/26', dateSmall: '週四 15:30', when: '2026/11/26（四）15:30–17:00', where: '東區親子館・中央路 241 號 3 樓（衛生社福大樓）', who: '1 歲 6 個月到 1 歲 11 個月',
-        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '跟著繪本裡的企鵝一起做體操。', url: WPCC + 'course/?mode=detail&id=12018' },
-      { name: '故事花園：企鵝體操', place: '北區親子館', ages: ['0–1 歲', '1–2 歲', '2–6 歲'],
-        dateBig: '11/27', dateSmall: '週五 10:00', when: '2026/11/27（五）10:00–11:30', where: '北區親子館・南勢六街 11 號 2 樓（南勢社會福利館）', who: '0 歲到 6 歲 11 個月',
-        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '繪本故事加手作。', url: WPCC + 'course/?mode=detail&id=12102' },
-      { name: '身體大發現', place: '東區親子館', ages: ['1–2 歲'],
-        dateBig: '11/27', dateSmall: '週五 13:30', when: '2026/11/27（五）13:30–15:00', where: '東區親子館・中央路 241 號 3 樓（衛生社福大樓）', who: '1 歲 6 個月到 1 歲 11 個月',
-        host: '新竹市政府（新竹市托育資源中心親子館）', price: '免費，需線上預約', note: '親子遊戲加藝術創作。', url: WPCC + 'course/?mode=detail&id=12033' }
+    const HC = '新竹市政府（新竹市托育資源中心親子館）';
+    const ev = (o) => Object.assign({ city: '新竹市', kind: '期間活動', deal: ['免費'], dealText: '免費參加，需線上預約', host: HC }, o);
+    /* 期間活動：2026/11/21 從新竹市托育資源中心親子館活動報名頁整理 */
+    const EVENTS = [
+      ev({ name: '彩色滴管－大象艾瑪', place: '東區親子館', dateBig: '11/22', dateSmall: '週日 10:00', when: '2026/11/22（日）10:00–11:30', where: '新竹市東區・中央路 241 號 3 樓（東區親子館）', who: '2 歲到 4 歲 11 個月', note: '用繪本《大象艾瑪》認識顏色，用滴管完成彩色大象。', url: WPCC + 'course/?mode=detail&id=12151' }),
+      ev({ name: '滑溜布探險', place: '東區親子館', dateBig: '11/22', dateSmall: '週日 13:30', when: '2026/11/22（日）13:30–15:00', where: '新竹市東區・中央路 241 號 3 樓（東區親子館）', who: '2 歲到 4 歲 11 個月', note: '使用滑溜布進行體能活動。', url: WPCC + 'course/?mode=detail&id=12150' }),
+      ev({ name: '親子故事瑜伽：蔬菜樂園好好玩', place: '香山區親子館', dateBig: '11/22', dateSmall: '週日 10:00', when: '2026/11/22（日）10:00–11:30', where: '新竹市香山區・育德街 188 號 1 樓（香山區親子館）', who: '2 歲 6 個月到 5 歲 11 個月', note: '用故事和親子瑜伽認識各種蔬菜。', url: WPCC + 'course/?mode=detail&id=12076' }),
+      ev({ name: '蔬果大遊行', place: '香山區親子館', dateBig: '11/22', dateSmall: '週日 13:30', when: '2026/11/22（日）13:30–15:00', where: '新竹市香山區・育德街 188 號 1 樓（香山區親子館）', who: '3 歲到 6 歲 11 個月', note: '扮演農夫與風雨水，用節奏遊戲認識植物成長。', url: WPCC + 'course/?mode=detail&id=12077' }),
+      ev({ name: '小手玩平衡：滾珠畫', place: '東區親子館', dateBig: '11/24', dateSmall: '週二 15:30', when: '2026/11/24（二）15:30–17:00', where: '新竹市東區・中央路 241 號 3 樓（東區親子館）', who: '1 歲 6 個月到 1 歲 11 個月', note: '用顏料和彈珠在托盤裡滾動，完成滾珠畫。', url: WPCC + 'course/?mode=detail&id=12028' }),
+      ev({ name: '音樂與戲劇：雪人之舞', place: '北區親子館', dateBig: '11/25', dateSmall: '週三 10:00', when: '2026/11/25（三）10:00–11:30', where: '新竹市北區・南勢六街 11 號 2 樓（北區親子館）', who: '1 歲 5 個月到 2 歲', note: '練習肢體動作、樂器與音樂律動。', url: WPCC + 'course/?mode=detail&id=12084' }),
+      ev({ name: '敲一敲、變一變', place: '東區親子館', dateBig: '11/26', dateSmall: '週四 13:30', when: '2026/11/26（四）13:30–15:00', where: '新竹市東區・中央路 241 號 3 樓（東區親子館）', who: '2 歲到 4 歲 11 個月', note: '用各色顏料敲一敲，看看會變出什麼。', url: WPCC + 'course/?mode=detail&id=12149' }),
+      ev({ name: '企鵝體操', place: '東區親子館', dateBig: '11/26', dateSmall: '週四 15:30', when: '2026/11/26（四）15:30–17:00', where: '新竹市東區・中央路 241 號 3 樓（東區親子館）', who: '1 歲 6 個月到 1 歲 11 個月', note: '跟著繪本裡的企鵝一起做體操。', url: WPCC + 'course/?mode=detail&id=12018' }),
+      ev({ name: '故事花園：企鵝體操', place: '北區親子館', dateBig: '11/27', dateSmall: '週五 10:00', when: '2026/11/27（五）10:00–11:30', where: '新竹市北區・南勢六街 11 號 2 樓（北區親子館）', who: '0 歲到 6 歲 11 個月', note: '繪本故事加手作。', url: WPCC + 'course/?mode=detail&id=12102' }),
+      ev({ name: '身體大發現', place: '東區親子館', dateBig: '11/27', dateSmall: '週五 13:30', when: '2026/11/27（五）13:30–15:00', where: '新竹市東區・中央路 241 號 3 樓（東區親子館）', who: '1 歲 6 個月到 1 歲 11 個月', note: '親子遊戲加藝術創作。', url: WPCC + 'course/?mode=detail&id=12033' })
     ];
+    /* 常設場館：2026/11/21 從各館官方票價頁整理，只列官方頁面寫明的優惠對象與條件 */
+    const pl = (o) => Object.assign({ kind: '常設場館', who: '全齡，適合親子同行', when: '開放時間以官方頁面為準', note: '' }, o);
+    const PLACES = [
+      pl({ city: '基隆市', name: '國立海洋科技博物館', where: '基隆市中正區', host: '國立海洋科技博物館（教育部）', deal: ['兒童'],
+        dealText: '6 歲以上學童與學生買優待價；每週三主題館、區域探索館與特展免費參觀，海洋劇場第一場免費。', url: 'https://www.nmmst.gov.tw/chhtml/content/216/10847' }),
+      pl({ city: '臺北市', name: '國立故宮博物院（北部院區）', where: '臺北市士林區', host: '國立故宮博物院', deal: ['兒童'], when: '週二至週日 09:00–17:00（16:30 停止售票）',
+        dealText: '未滿 18 歲免費（不分國籍）；第一展覽館 B1 兒童學藝中心免費參觀。', note: '兒童學藝中心歡迎兒童與親子家庭入場。', url: 'https://www.npm.gov.tw/Articles.aspx?sno=02007004&l=1' }),
+      pl({ city: '臺北市', name: '臺北市立動物園', where: '臺北市文山區', host: '臺北市政府', deal: ['兒童'],
+        dealText: '0–5 歲兒童入園免票；6–11 歲兒童買優待票；臺北市國小數位學生證免票。', url: 'https://www.zoo.gov.taipei/cp.aspx?n=763493FD7ECCAA11&s=F3BC09EC36168CB6' }),
+      pl({ city: '臺北市', name: '國立臺灣科學教育館', where: '臺北市士林區', host: '國立臺灣科學教育館（教育部）', deal: ['兒童'],
+        dealText: '常設展 6 歲（含）以下兒童免費入場。', note: '部分劇場設施官方標示孕婦不宜入場，現場請留意說明。', url: 'https://www.ntsec.gov.tw/article/detail.aspx?a=23' }),
+      pl({ city: '新北市', name: '新北市立十三行博物館', where: '新北市八里區', host: '新北市政府文化局', deal: ['兒童'],
+        dealText: '未滿 12 歲孩童免費參觀。', url: 'https://www.sshm.ntpc.gov.tw/xmdoc/cont?xsmsid=0G244537677948124632' }),
+      pl({ city: '桃園市', name: '小人國主題樂園', where: '桃園市龍潭區', host: '小人國主題樂園（民營）', deal: ['孕婦', '兒童'],
+        dealText: '孕婦可買博愛票；3–6 歲幼童有幼童票；未滿 3 歲或身高未滿 90 公分免費，需家長陪同。', note: '購買優惠票請帶證明文件。', url: 'https://www.wow.com.tw/tw/about/price.aspx' }),
+      pl({ city: '新竹市', name: '新竹市立動物園', where: '新竹市東區', host: '新竹市政府', deal: ['兒童'],
+        dealText: '未滿 6 歲兒童、設籍新竹市未滿 12 歲兒童免票；6–12 歲兒童買優待票。', note: '免費入場請出示有效證明文件。', url: 'https://www.hccg.gov.tw/newzoo/app/artwebsite?module=artwebsite&id=40' }),
+      pl({ city: '新竹縣', name: '六福村主題遊樂園', where: '新竹縣關西鎮', host: '六福村主題遊樂園（民營）', deal: ['孕婦', '兒童'],
+        dealText: '孕婦可買博愛票；未滿 3 歲或身高 100 公分以下、有家長陪伴的幼兒免費入園。', note: '購買博愛票請出示相關證件。', url: 'https://www.leofoovillage.com.tw/Infos/Tickets/' }),
+      pl({ city: '苗栗縣', name: '臺灣客家文化館', where: '苗栗縣銅鑼鄉', host: '客家委員會客家文化發展中心', deal: ['免費'], when: '09:00–17:00，週二休館（遇國定假日、連假照常開館）',
+        dealText: '入館免費。', note: '館內有兒童故事劇場，可線上預約。', url: 'https://thcdc.hakka.gov.tw/1240/1241/1242/1246/1639/post' }),
+      pl({ city: '臺中市', name: '國立自然科學博物館', where: '臺中市北區', host: '國立自然科學博物館（教育部）', deal: ['兒童'], when: '週二至週日 09:00–17:00',
+        dealText: '未滿 6 歲兒童展示場、植物園溫室、科學中心免費；6–12 歲兒童展示場 60 元。', note: '2026 年每週五下午 2 點到 5 點展示場免費。', url: 'https://www.nmns.edu.tw/ch/visit/ticket/' }),
+      pl({ city: '臺中市', name: '麗寶樂園（探索世界）', where: '臺中市后里區', host: '麗寶樂園渡假區（民營）', deal: ['孕婦', '兒童'],
+        dealText: '孕婦持媽媽手冊可買博幼票；3–6 歲幼童買博幼票；3 歲以下且身高未達 100 公分免費入園。', url: 'https://www.lihpaoresort.com/LihpaolandApp/ticket/discover' }),
+      pl({ city: '彰化縣', name: '彰化育兒親子館', where: '彰化縣彰化市', host: '彰化縣政府社會處', deal: [], when: '週二至週日 09:00–12:00、14:00–16:30，週一及國定假日休館', who: '0–6 歲（以未滿 3 歲為主）與家長',
+        dealText: '', note: '有說故事、爬行兒與學步兒課程，也能借繪本和教玩具。', url: 'https://www.chcg.gov.tw/DTO/social/07other/other01_con.aspx?topsn=1755&data_id=18251' }),
+      pl({ city: '南投縣', name: '九族文化村', where: '南投縣魚池鄉', host: '九族文化村（民營）', deal: ['孕婦', '兒童'],
+        dealText: '孕婦與 3–6 歲幼童可憑證買博幼票；未滿 3 歲或身高未滿 100 公分免費，需家長陪同。', url: 'https://www.nine.com.tw/page/about/index.aspx?kind=235&lang=TW' }),
+      pl({ city: '雲林縣', name: '劍湖山世界主題樂園', where: '雲林縣古坑鄉', host: '劍湖山世界（民營）', deal: ['孕婦', '兒童'],
+        dealText: '孕婦憑孕婦健康手冊可買博幼票；3–7 歲幼童買博幼票；未滿 3 歲或身高未達 100 公分免費。', url: 'https://www.janfusun.com.tw/html/page/index.php?unid=2&cid=5&cid2=99' }),
+      pl({ city: '嘉義縣', name: '國立故宮博物院南部院區', where: '嘉義縣太保市', host: '國立故宮博物院', deal: ['兒童'],
+        dealText: '未滿 18 歲免費（不分國籍），憑證明文件到售票處兌換免費參觀券。', url: 'https://south.npm.gov.tw/Visit/Ticket.htm' }),
+      pl({ city: '嘉義市', name: '嘉義市立博物館', where: '嘉義市東區', host: '嘉義市政府文化局', deal: ['兒童'],
+        dealText: '未滿 6 歲兒童免費；6–12 歲兒童買優待票。', url: 'https://museum.chiayi.gov.tw/FAQDetailC001700.aspx?Cond=4da3cb65-ad24-48c9-b4ca-ccd3f7c61b7a' }),
+      pl({ city: '臺南市', name: '國立臺灣歷史博物館', where: '臺南市安南區', host: '國立臺灣歷史博物館（文化部）', deal: ['兒童'],
+        dealText: '未滿 6 歲兒童免票；6–12 歲兒童與學生買優待票。', url: 'https://www.nmth.gov.tw/cp.aspx?n=4089' }),
+      pl({ city: '臺南市', name: '南科考古館', where: '臺南市善化區', host: '國立臺灣史前文化博物館', deal: ['兒童'], when: '週二至週日 09:00–17:00',
+        dealText: '未滿 6 歲兒童免費；6–12 歲兒童買優待票。', url: 'https://www.nmp.gov.tw/cp.aspx?n=2010' }),
+      pl({ city: '高雄市', name: '國立科學工藝博物館', where: '高雄市三民區', host: '國立科學工藝博物館（教育部）', deal: ['兒童'],
+        dealText: '未滿 6 歲兒童免費入館（請憑證）。', url: 'https://www.nstm.gov.tw/Reference/VisitorInformation/Price.htm' }),
+      pl({ city: '高雄市', name: '義大遊樂世界', where: '高雄市大樹區', host: '義大遊樂世界（民營）', deal: ['孕婦', '兒童'],
+        dealText: '孕婦本人憑媽媽手冊可買優待票；3–6 歲兒童買優待票；未滿 3 歲或未超過 90 公分免費，需家長陪同。', note: '部分設施禁止孕婦搭乘，現場請留意說明。', url: 'https://www.edathemepark.com.tw/Info' }),
+      pl({ city: '屏東縣', name: '國立海洋生物博物館', where: '屏東縣車城鄉', host: '國立海洋生物博物館（教育部）', deal: ['兒童'],
+        dealText: '身高 115 公分以下或未滿 6 歲、有家長同行的兒童免費；6 歲以上學童買優待票。', url: 'https://www.nmmba.gov.tw/cp.aspx?n=A6476B49BA86BBD5' }),
+      pl({ city: '宜蘭縣', name: '蘭陽博物館', where: '宜蘭縣頭城鎮', host: '宜蘭縣政府', deal: ['兒童'],
+        dealText: '身高未滿 115 公分或未滿 6 歲兒童免費。', note: '館內有兒童考古探索廳，12 歲以下需由成人陪同。', url: 'https://www.lym.gov.tw/ch/audience-service/visit/lym/' }),
+      pl({ city: '花蓮縣', name: '遠雄海洋公園', where: '花蓮縣壽豐鄉', host: '遠雄海洋公園（民營）', deal: ['孕婦', '兒童'],
+        dealText: '孕婦或持媽媽手冊者可買博愛票；3–6 歲幼童買幼童票。', url: 'https://www.farglory-oceanpark.com.tw/tickets' }),
+      pl({ city: '臺東縣', name: '卑南遺址公園', where: '臺東縣臺東市', host: '國立臺灣史前文化博物館', deal: ['兒童'], when: '週二至週日 09:00–17:00',
+        dealText: '未滿 6 歲兒童免費；6–12 歲兒童買優待票。', url: 'https://www.nmp.gov.tw/cp.aspx?n=2000' }),
+      pl({ city: '澎湖縣', name: '澎湖水族館', where: '澎湖縣白沙鄉', host: '澎湖水族館', deal: ['兒童'],
+        dealText: '未滿 6 歲或身高未達 110 公分兒童免費。', url: 'https://www.penghu-aquarium.com/information' }),
+      pl({ city: '金門縣', name: '金沙親子圖書遊藝館', where: '金門縣金沙鎮・文化路 450 巷 52 號（博學館一樓）', host: '金門縣文化局', deal: [], when: '週五、六、日 09:00–12:00、13:30–17:00',
+        dealText: '', note: '和金門歷史民俗博物館在同一個園區。', url: 'https://kmcpao.kinmen.gov.tw/docDetail.aspx?docID=10115' }),
+      pl({ city: '連江縣', name: '馬祖民俗文物館', where: '連江縣南竿鄉', host: '連江縣政府', deal: [],
+        dealText: '', note: '設有優待票，適用對象請見官方頁面。', url: 'https://www.matsu-nsa.gov.tw/zh-TW/attractions/1463' })
+    ];
+    const REGIONS = {
+      '北部': ['基隆市', '臺北市', '新北市', '桃園市', '新竹市', '新竹縣', '宜蘭縣'],
+      '中部': ['苗栗縣', '臺中市', '彰化縣', '南投縣', '雲林縣'],
+      '南部': ['嘉義縣', '嘉義市', '臺南市', '高雄市', '屏東縣'],
+      '東部': ['花蓮縣', '臺東縣'],
+      '離島': ['澎湖縣', '金門縣', '連江縣']
+    };
+    const CITY_ORDER = Object.keys(REGIONS).reduce((a, k) => a.concat(REGIONS[k]), []);
+    const ALL = PLACES.concat(EVENTS);
     const base = 'min-height: 40px; padding: 0 14px; border-radius: 999px; font-family: inherit; font-size: 14px; cursor: pointer; ';
     const on = base + 'background: #2E5E4E; color: #FFFFFF; border: 1px solid #2E5E4E; font-weight: 600';
     const off = base + 'background: #FCFAF6; color: #1F2A24; border: 1px solid #E4DED2';
-    const mk = (key, label, opts) => ({
+    const mk = (key, label, opts, extra) => ({
       label,
-      options: opts.map((o) => ({ label: o, pressed: s[key] === o ? 'true' : 'false', style: s[key] === o ? on : off, pick: () => this.setState({ [key]: o }) }))
+      options: opts.map((o) => ({ label: o, pressed: s[key] === o ? 'true' : 'false', style: s[key] === o ? on : off, pick: () => this.setState(Object.assign({ [key]: o, card: null }, extra || {})) }))
     });
-    const tg = (key, label) => ({
-      label, checked: s[key] ? 'true' : 'false',
-      flip: () => this.setState({ [key]: !s[key] }),
-      track: 'width: 44px; height: 26px; border-radius: 999px; flex-shrink: 0; position: relative; display: inline-block; background: ' + (s[key] ? '#2E5E4E' : '#D8D1C3'),
-      knob: 'position: absolute; top: 3px; left: ' + (s[key] ? '21px' : '3px') + '; width: 20px; height: 20px; border-radius: 999px; background: #FFFFFF'
-    });
-    const filtered = DATA.filter((d) =>
-      (s.area === '全部' || d.place === s.area) &&
-      (s.age === '全部' || d.ages.indexOf(s.age) >= 0)
+    const hasDeal = (d) => d.deal.length > 0;
+    const dealOk = (d) => {
+      if (s.deal === '全部') return true;
+      if (s.deal === '有優惠') return hasDeal(d);
+      if (s.deal === '孕婦優惠') return d.deal.indexOf('孕婦') >= 0;
+      if (s.deal === '兒童優惠') return d.deal.indexOf('兒童') >= 0;
+      if (s.deal === '免費參加') return d.deal.indexOf('免費') >= 0;
+      return !hasDeal(d);
+    };
+    const regionCities = s.region === '全部' ? CITY_ORDER : REGIONS[s.region];
+    const filtered = ALL.filter((d) =>
+      regionCities.indexOf(d.city) >= 0 &&
+      (s.city === '全部' || d.city === s.city) &&
+      (s.kind === '全部' || d.kind === s.kind) &&
+      dealOk(d)
     );
-    const cityArea = 'display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #E4EEE7; color: #2E5E4E';
-    const otherArea = 'display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 3px 10px; border-radius: 999px; border: 1px solid #E4DED2; color: #5F6B64';
+    const rank = (d) => (d.deal.indexOf('孕婦') >= 0 ? 0 : hasDeal(d) ? 1 : 2);
+    filtered.sort((a, b) => rank(a) - rank(b) || CITY_ORDER.indexOf(a.city) - CITY_ORDER.indexOf(b.city) || (a.kind === b.kind ? 0 : a.kind === '常設場館' ? -1 : 1));
+    const chip = 'display: inline-flex; align-items: center; font-size: 12px; padding: 3px 10px; border-radius: 999px; ';
+    const cityChip = chip + 'border: 1px solid #E4DED2; color: #5F6B64';
+    const dealChip = chip + 'background: #E4EEE7; color: #2E5E4E; font-weight: 600';
+    const plainChip = chip + 'background: #EFEAE0; color: #5F6B64';
+    const dealLabel = (d) => {
+      if (!hasDeal(d)) return '沒有標示優惠';
+      const t = [];
+      if (d.deal.indexOf('孕婦') >= 0) t.push('孕婦優惠');
+      if (d.deal.indexOf('兒童') >= 0) t.push('兒童優惠');
+      if (d.deal.indexOf('免費') >= 0) t.push('免費參加');
+      return t.join('・');
+    };
     const results = filtered.map((d) => {
-      const isCity = true;
-      const hasDate = !!d.dateBig;
+      const isEvent = d.kind === '期間活動';
       return {
-        name: d.name, kind: '', isCity, area: d.place, host: d.host,
-        areaStyle: isCity ? cityArea : otherArea,
-        accStyle: isCity ? 'border-left: 4px solid #2E5E4E' : '',
-        dateBox: hasDate ? 'width: 64px; min-height: 60px; flex-shrink: 0; align-self: center; border-radius: 12px; background: #E4EEE7; color: #2E5E4E; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-align: center' : 'display: none',
-        dateBig: d.dateBig || '', dateSmall: d.dateSmall || '',
-        mine: false, when: d.when, where: d.where, price: d.price, who: d.who, note: d.note,
-        cta: '看活動頁', ctaUrl: d.url, srcTitle: '活動頁', srcUrl: d.url
+        name: d.name, area: d.city, host: d.host,
+        areaStyle: isEvent ? cityChip : 'display: none',
+        dealTag: dealLabel(d), dealStyle: hasDeal(d) ? dealChip : plainChip,
+        chipText: isEvent ? d.city + "・" + d.place : "常設場館",
+        accStyle: hasDeal(d) ? 'border-left: 4px solid #2E5E4E' : '',
+        dateBox: 'width: 64px; min-height: 60px; flex-shrink: 0; align-self: center; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-align: center; ' + (isEvent ? 'background: #E4EEE7; color: #2E5E4E' : 'background: #EFEAE0; color: #1F2A24'),
+        dateBig: isEvent ? d.dateBig : d.city, dateSmall: isEvent ? d.dateSmall : '常設場館',
+        whenLabel: isEvent ? '時間' : '開放',
+        when: d.when, where: d.where, who: d.who, note: d.note, hasNote: !!d.note,
+        price: hasDeal(d) ? d.dealText : '費用與優惠請見官方頁面',
+        dealText: hasDeal(d) ? d.dealText : '官方頁面沒有寫明孕婦或兒童優惠',
+        cta: isEvent ? '看活動頁' : '看官方票價與說明', ctaUrl: d.url
       };
     });
+    const cityOpts = s.region === '全部' ? null : mk('city', '縣市', ['全部'].concat(REGIONS[s.region]));
+    const filters = [mk('region', '地區', ['全部'].concat(Object.keys(REGIONS)), { city: '全部' })];
+    if (cityOpts) filters.push(cityOpts);
+    filters.push(mk('deal', '優惠', ['全部', '有優惠', '孕婦優惠', '兒童優惠', '免費參加', '沒有標示優惠']));
+    filters.push(mk('kind', '類型', ['全部', '常設場館', '期間活動']));
     return {
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
-      filters: [
-        mk('area', '地點', ['全部', '東區親子館', '北區親子館', '香山區親子館']),
-        mk('age', '適合年齡', ['全部', '0–1 歲', '1–2 歲', '2–6 歲'])
-      ],
+      filters,
       toggles: [],
-      reset: () => this.setState({ area: '全部', age: '全部' }),
-      results, noResult: results.length === 0, emptyText: '沒有符合條件的活動。可以放寬條件，或清除篩選。',
-      resultText: '共 ' + results.length + ' 場活動'
+      reset: () => this.setState({ region: '全部', city: '全部', deal: '全部', kind: '全部', card: null }),
+      results, noResult: results.length === 0, emptyText: '沒有符合條件的場館或活動。可以放寬條件，或清除篩選。',
+      resultText: '共 ' + results.length + ' 筆'
     };
   }
 }
