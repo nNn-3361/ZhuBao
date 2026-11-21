@@ -161,6 +161,50 @@
   }
   const ruleName = (item) => (RULES.find((x) => x.item === item) || {}).name || '';
 
+  /* ---------- 不分資格、有期限的資源：每個孩子都有，不用關注就會提醒 ----------
+     兒童預防保健（國健署，2026/7/1 起未滿 7 歲共 9 次）：提醒每次的「最後期限」。
+       來源：衛福部新聞稿 mohw.gov.tw/cp-2704-85990-1.html（4–10 個月拆成 4–6、6–12 個月；3–7 歲拆成 3–5、5–7 歲），
+       其餘期限沿用國健署兒童免費健康檢查 hpa.gov.tw nodeid=202（未滿 1 歲 6 個月、1 歲 6 個月至未滿 2 歲、2 歲至未滿 3 歲）。
+     公費常規疫苗（疾管署「現行兒童預防接種時程」115.09 版，115/10/1 起）：提醒「建議接種」的月齡。
+       來源：cdc.gov.tw/Category/Page/TxRW-x3WzvPhvEtxM628GA。出生 24 小時內的 B 肝第 1 劑在醫院打，流感疫苗每年一次，不列入。 */
+  const HEALTH = [
+    { id: 'hc1', kind: 'check', name: '第 1 次兒童預防保健', what: '出生到未滿 2 個月', due: (b) => addD(addM(b, 2), -1) },
+    { id: 'hc2', kind: 'check', name: '第 2 次兒童預防保健', what: '2 到未滿 4 個月', due: (b) => addD(addM(b, 4), -1) },
+    { id: 'hc3', kind: 'check', name: '第 3 次兒童預防保健', what: '4 到未滿 6 個月', due: (b) => addD(addM(b, 6), -1) },
+    { id: 'hc4', kind: 'check', name: '第 4 次兒童預防保健', what: '6 到未滿 12 個月', due: (b) => addD(addM(b, 12), -1) },
+    { id: 'hc5', kind: 'check', name: '第 5 次兒童預防保健', what: '1 歲 6 個月前', due: (b) => addD(addM(b, 18), -1) },
+    { id: 'hc6', kind: 'check', name: '第 6 次兒童預防保健', what: '1 歲 6 個月到未滿 2 歲', due: (b) => addD(addM(b, 24), -1) },
+    { id: 'hc7', kind: 'check', name: '第 7 次兒童預防保健', what: '2 到未滿 3 歲', due: (b) => addD(addM(b, 36), -1) },
+    { id: 'hc8', kind: 'check', name: '第 8 次兒童預防保健', what: '3 到未滿 5 歲', due: (b) => addD(addM(b, 60), -1) },
+    { id: 'hc9', kind: 'check', name: '第 9 次兒童預防保健', what: '5 到未滿 7 歲', due: (b) => addD(addM(b, 84), -1) },
+    { id: 'vx1', kind: 'vax', name: '公費疫苗・滿 1 個月', what: 'B 型肝炎疫苗第 2 劑', due: (b) => addM(b, 1) },
+    { id: 'vx2', kind: 'vax', name: '公費疫苗・滿 2 個月', what: '五合一疫苗第 1 劑、13 價肺炎鏈球菌疫苗第 1 劑', due: (b) => addM(b, 2) },
+    { id: 'vx4', kind: 'vax', name: '公費疫苗・滿 4 個月', what: '五合一疫苗第 2 劑、13 價肺炎鏈球菌疫苗第 2 劑', due: (b) => addM(b, 4) },
+    { id: 'vx5', kind: 'vax', name: '公費疫苗・滿 5 個月', what: '卡介苗（建議 5 到 8 個月接種）', due: (b) => addM(b, 5) },
+    { id: 'vx6', kind: 'vax', name: '公費疫苗・滿 6 個月', what: 'B 型肝炎疫苗第 3 劑、五合一疫苗第 3 劑', due: (b) => addM(b, 6) },
+    { id: 'vx12', kind: 'vax', name: '公費疫苗・滿 12 個月', what: '13 價肺炎鏈球菌疫苗第 3 劑、水痘疫苗、麻疹腮腺炎德國麻疹混合疫苗第 1 劑', due: (b) => addM(b, 12) },
+    { id: 'vx15', kind: 'vax', name: '公費疫苗・滿 15 個月', what: '日本腦炎疫苗第 1 劑', due: (b) => addM(b, 15) },
+    { id: 'vx18', kind: 'vax', name: '公費疫苗・滿 18 個月', what: '五合一疫苗第 4 劑、A 型肝炎疫苗第 1 劑', due: (b) => addM(b, 18) },
+    { id: 'vx27', kind: 'vax', name: '公費疫苗・滿 27 個月', what: '日本腦炎疫苗第 2 劑、A 型肝炎疫苗第 2 劑', due: (b) => addM(b, 27) },
+    { id: 'vx60', kind: 'vax', name: '公費疫苗・滿 5 歲', what: '麻疹腮腺炎德國麻疹混合疫苗第 2 劑、白喉破傷風非細胞性百日咳及不活化小兒麻痺混合疫苗（滿 5 歲到入國小前）', due: (b) => addM(b, 60) }
+  ];
+  /* 補助頁上對應的卡片（點通知會打開這張） */
+  const healthItem = (h, b) => {
+    const m = Math.round((h.due(b) - b) / (30.44 * 86400000));
+    if (h.kind === 'check') return m <= 4 ? 'check2' : m <= 12 ? 'check3' : 'check4';
+    return m <= 4 ? 'vax2' : 'vax4';
+  };
+  /* 某個孩子接下來的健檢期限與疫苗月齡（今天以後，最近的在前） */
+  function healthDates(k) {
+    const b = parse(k.bd), t = today();
+    return HEALTH.map((h) => {
+      const d = h.due(b);
+      return { key: 'h:' + h.id + '@' + k.id, kind: h.kind, date: d, title: k.name + '的' + h.name,
+        sub: (h.kind === 'check' ? '期限前完成・' + h.what : '建議接種・' + h.what), kid: k.id, href: 'benefits.html#b-' + healthItem(h, b) + '@' + k.id };
+    }).filter((x) => x.date >= t).sort((a, b) => a.date - b.date);
+  }
+  const healthNext = () => { const all = []; kids().forEach((k) => { if (parse(k.bd) <= today()) all.push(...healthDates(k)); }); return all.sort((a, b) => a.date - b.date)[0] || null; };
+
   /* ---------- 關注 ---------- */
   /* 補助：{ t:'b', id:'post2', kid:'k2' }；活動：{ t:'a', id:'12151', kid:'k1' 或 ''（全家）, name, date, time, place } */
   const follows = () => store.get('zb-follow', []);
@@ -198,7 +242,7 @@
     return out;
   }
 
-  /* 通知：只通知已關注的，前 7 天和前 1 天各提醒一次 */
+  /* 通知：已關注的（補助日期、活動、自己的事件）＋每個孩子都有的健檢與疫苗，前 7 天和前 1 天各提醒一次 */
   function reminders() {
     const t = today(), out = [];
     calendar().forEach((e) => {
@@ -211,8 +255,27 @@
       out.push({ id: 'r7:' + e.key, kind: '7 天前提醒', at: addD(d, -7), when: whenTxt(addD(d, -7)), title, body: '7 天後，' + day + '・' + e.sub, href, kid: e.kid, set: 'due' });
       if (left === 1) out.push({ id: 'r1:' + e.key, kind: '明天提醒', at: addD(d, -1), when: whenTxt(addD(d, -1)), title, body: '明天，' + day + '・' + e.sub, href, kid: e.kid, set: 'due' });
     });
+    /* 健檢與疫苗：每個已出生的孩子都提醒，不用關注 */
+    kids().forEach((k) => {
+      if (parse(k.bd) > t) return;
+      healthDates(k).forEach((h) => {
+        const left = days(t, h.date);
+        if (left < 1 || left > 7) return;
+        const whenTxt = (sent) => { const g = days(sent, t); return g === 0 ? '今天 08:00' : g === 1 ? '昨天 08:00' : md(sent); };
+        const day = md(h.date) + '（' + WK[h.date.getDay()] + '）';
+        const label = h.kind === 'check' ? '健檢期限' : '疫苗';
+        out.push({ id: 'h7:' + h.key, kind: label + '・7 天前提醒', at: addD(h.date, -7), when: whenTxt(addD(h.date, -7)), title: h.title, body: '7 天後，' + day + '・' + h.sub, href: h.href, kid: h.kid, set: 'health' });
+        if (left === 1) out.push({ id: 'h1:' + h.key, kind: label + '・明天提醒', at: addD(h.date, -1), when: whenTxt(addD(h.date, -1)), title: h.title, body: '明天，' + day + '・' + h.sub, href: h.href, kid: h.kid, set: 'health' });
+      });
+    });
     out.sort((a, b) => b.at - a.at);
     return out;
+  }
+  /* 展示用：模擬「下一個健檢或疫苗日期的 7 天前」會收到的通知 */
+  function healthPreview() {
+    const h = healthNext(); if (!h) return null;
+    const day = md(h.date) + '（' + WK[h.date.getDay()] + '）';
+    return { id: 'h7:' + h.key, kind: (h.kind === 'check' ? '健檢期限' : '疫苗') + '・7 天前提醒', title: h.title, body: '7 天後，' + day + '・' + h.sub, href: h.href, kid: h.kid, set: 'health' };
   }
 
   /* 還沒有寶寶檔案就先到寶寶資料頁；其他頁不先畫出來 */
@@ -225,5 +288,5 @@
   }
 
   window.ZBF = { leaving, reset, hasKids, COLORS, FAMILY, WK, today, ymd, parse, addM, addD, days, fmt, md, kids, kid, current, setCurrent, saveKid, removeKid, color, kidHex, kidName, age, line, stages, CONDS, conds, benefitDates, ruleName,
-    follows, isFollowing, follow, unfollow, activityFollow, events, saveEvent, removeEvent, calendar, reminders, fkey };
+    follows, isFollowing, follow, unfollow, activityFollow, events, saveEvent, removeEvent, calendar, reminders, fkey, HEALTH, healthDates, healthNext, healthPreview };
 })();
