@@ -191,30 +191,10 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <span style="font-size: 16px; font-weight: 600; line-height: 1.4">{{r.name}}</span>
 <span style="font-size: 13px; line-height: 1.5; color: #5F6B64; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{r.price}}</span>
 </span>
-<svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+<svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform: none"><path d="m9 6 6 6-6 6"></path></svg>
 </button>
-<sc-if value="{{r.open}}" hint-placeholder-val="{{false}}">
-<div class="zb-acc-body">
-<dl style="margin: 0; display: grid; grid-template-columns: 64px minmax(0, 1fr); row-gap: 6px; font-size: 15px; line-height: 1.6">
-<dt style="color: #5F6B64">{{r.whenLabel}}</dt><dd style="margin: 0">{{r.when}}</dd>
-<dt style="color: #5F6B64">地點</dt><dd style="margin: 0">{{r.where}}</dd>
-<dt style="color: #5F6B64">適合年齡</dt><dd style="margin: 0">{{r.who}}</dd>
-<dt style="color: #5F6B64">主辦單位</dt><dd style="margin: 0">{{r.host}}</dd>
-<dt style="color: #5F6B64">優惠</dt><dd style="margin: 0">{{r.dealText}}</dd>
-</dl>
-<sc-if value="{{r.hasNote}}" hint-placeholder-val="{{true}}">
-<p style="margin: 0; font-size: 15px; line-height: 1.7">{{r.note}}</p>
-</sc-if>
-<sc-if value="{{r.canFollow}}" hint-placeholder-val="{{false}}">
-<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px">
-<button type="button" class="zb-follow" aria-pressed="{{r.followOn}}" onClick="{{r.toggleFollow}}">{{r.followText}}</button>
-<span class="zb-follow-note" style="flex: 1 1 220px">{{r.followNote}}</span>
-</div>
-</sc-if>
-<a href="{{r.ctaUrl}}" style="align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">{{r.cta}}</a>
-</div>
-</sc-if>
 </article>
+
 </sc-for>
 </div>
 
@@ -223,6 +203,33 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 </div>
 </div>
+<sc-if value="{{sheet}}" hint-placeholder-val="{{false}}">
+<div class="zb-sheet zb-csheet" data-k="cs-{{sheet.name}}">
+<div class="zb-sheet-back" onClick="{{sheet.close}}"></div>
+<div class="zb-sheet-panel" role="dialog" aria-modal="true" aria-label="{{sheet.name}}" tabindex="-1">
+<span class="zb-grab" aria-hidden="true"></span>
+<div class="zb-sheet-head"><div class="zb-csheet-title"><span style="display: flex; gap: 6px; flex-wrap: wrap"><span style="{{sheet.areaStyle}}">{{sheet.chipText}}</span><span style="{{sheet.dealStyle}}">{{sheet.dealTag}}</span></span><h2>{{sheet.name}}</h2></div><button type="button" class="zb-sheet-x" data-sheet-close="1" onClick="{{sheet.close}}">完成</button></div>
+<div class="zb-csheet-body">
+<dl style="margin: 0; display: grid; grid-template-columns: 64px minmax(0, 1fr); row-gap: 6px; font-size: 15px; line-height: 1.6">
+<dt style="color: #5F6B64">{{sheet.whenLabel}}</dt><dd style="margin: 0">{{sheet.when}}</dd>
+<dt style="color: #5F6B64">地點</dt><dd style="margin: 0">{{sheet.where}}</dd>
+<dt style="color: #5F6B64">適合年齡</dt><dd style="margin: 0">{{sheet.who}}</dd>
+<dt style="color: #5F6B64">主辦單位</dt><dd style="margin: 0">{{sheet.host}}</dd>
+<dt style="color: #5F6B64">優惠</dt><dd style="margin: 0">{{sheet.dealText}}</dd>
+</dl>
+<sc-if value="{{sheet.hasNote}}" hint-placeholder-val="{{true}}">
+<p style="margin: 0; font-size: 15px; line-height: 1.7">{{sheet.note}}</p>
+</sc-if>
+<sc-if value="{{sheet.canFollow}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px">
+<button type="button" class="zb-follow" aria-pressed="{{sheet.followOn}}" onClick="{{sheet.toggleFollow}}">{{sheet.followText}}</button>
+<span class="zb-follow-note" style="flex: 1 1 220px">{{sheet.followNote}}</span>
+</div>
+</sc-if>
+<a href="{{sheet.ctaUrl}}" style="align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">{{sheet.cta}}</a>
+</div>
+</div>
+</sc-if>
 </template>
 <div id="dc-root"></div>
 <script src="zhubao-ai.js"></script>
@@ -439,6 +446,9 @@ Component.prototype.renderVals = function () {
   v.filterOpen = !!s.filterOpen; v.filterExpanded = s.filterOpen ? 'true' : 'false';
   v.toggleFilter = () => { this.setState({ filterOpen: !s.filterOpen }); const c = document.getElementById('zb-city'); if (c) c.value = this.state.city; };
   v.results = v.results.map((r) => ({ ...r, open: s.card === r.name, expanded: s.card === r.name ? 'true' : 'false', toggle: () => this.setState({ card: s.card === r.name ? null : r.name }) }));
+  /* 點開的卡片：細節從下方滑出面板顯示，列表本身不動 */
+  const o = v.results.find((r) => r.open);
+  v.sheet = o ? Object.assign({}, o, { close: () => this.setState({ card: null }) }) : null;
   return v;
 };
 window.Component = Component;

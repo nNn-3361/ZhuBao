@@ -137,6 +137,15 @@
     a.onfinish = () => { el.style.overflow = ''; if (still) return; if (anchoring) pendingView = el; else bringIntoView(el); };
   }
   function leave(el) {
+    /* 卡片詳情面板：往下滑出去再移除（只動 transform，不重排版面） */
+    if (el.nodeType === 1 && el.classList.contains('zb-csheet')) {
+      if (el.__leaving) return;
+      el.__leaving = true;
+      if (reduced() || el.__instant) { el.remove(); return; }
+      el.classList.add('zb-closing');
+      setTimeout(() => el.remove(), 200);
+      return;
+    }
     if (el.nodeType !== 1 || !el.matches(ANIM_SEL) || reduced() || el.__leaving) { el.remove(); return; }
     el.__leaving = true;
     const f = frames(el);
@@ -209,14 +218,84 @@
       }
     });
   }
+  /* ---------- 卡片詳情的底部面板 ----------
+     頁面在模板最後放一個 .zb-csheet（補助、托育、活動）。點卡片時細節從下方滑上來，原本的列表完全不動；
+     長內容在面板裡捲動。往下拉、點背景、按「完成」、按 Esc、按返回鍵（Android 返回、iOS 邊緣滑動）都會關閉。 */
+  let cs = null, csHist = false, csSkip = false, csFocus = null;
+  const csClose = (el) => { const b = el && el.querySelector('[data-sheet-close]'); if (b) b.click(); };
+  window.addEventListener('popstate', () => {
+    if (csSkip) { csSkip = false; return; }
+    if (cs) { csHist = false; csClose(cs); }
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && cs) csClose(cs); });
+  function csDrag(el) {
+    const panel = el.querySelector('.zb-sheet-panel');
+    const back = el.querySelector('.zb-sheet-back');
+    let y0 = null, t0 = 0, dy = 0, id = null;
+    panel.addEventListener('pointerdown', (e) => {
+      const onHead = e.target.closest('.zb-sheet-head, .zb-grab');
+      if (e.button > 0 || (!onHead && panel.scrollTop > 0) || e.target.closest('button, a, input, select, textarea')) return;
+      y0 = e.clientY; t0 = performance.now(); dy = 0; id = e.pointerId;
+    });
+    panel.addEventListener('pointermove', (e) => {
+      if (y0 == null || e.pointerId !== id) return;
+      dy = Math.max(0, e.clientY - y0);
+      if (dy > 4) {
+        panel.style.animation = 'none'; panel.style.transition = 'none';
+        panel.style.transform = 'translate3d(0,' + dy + 'px,0)';
+        back.style.animation = 'none'; back.style.opacity = String(Math.max(0, 1 - dy / 400));
+      }
+    });
+    const end = () => {
+      if (y0 == null) return;
+      const v = dy / Math.max(1, performance.now() - t0);
+      y0 = null;
+      if (dy > 110 || (dy > 30 && v > 0.6)) {
+        el.__instant = true;
+        panel.style.transition = 'transform .2s ease-in'; panel.style.transform = 'translate3d(0,100%,0)';
+        back.style.transition = 'opacity .2s ease-in'; back.style.opacity = '0';
+        setTimeout(() => csClose(el), 190);
+      } else if (dy > 0) {
+        panel.style.transition = 'transform .3s cubic-bezier(.23,1,.32,1)'; panel.style.transform = '';
+        back.style.transition = 'opacity .3s ease'; back.style.opacity = '';
+      }
+    };
+    panel.addEventListener('pointerup', end);
+    panel.addEventListener('pointercancel', end);
+  }
+  function syncCardSheet() {
+    const el = root.querySelector('.zb-csheet:not(.zb-closing)');
+    const html = document.documentElement;
+    if (el && !cs) {
+      cs = el;
+      const a = document.activeElement;
+      csFocus = a && a !== document.body && root.contains(a) && !el.contains(a) ? a : null;
+      html.classList.add('zb-csheet-open');
+      html.style.overflow = 'hidden';
+      csDrag(el);
+      const panel = el.querySelector('.zb-sheet-panel');
+      if (panel) panel.focus({ preventScroll: true });
+      try { history.pushState({ zbCard: 1 }, ''); csHist = true; } catch (e) { csHist = false; }
+    } else if (el && el !== cs) {
+      cs = el; csDrag(el);
+    } else if (!el && cs) {
+      cs = null;
+      html.classList.remove('zb-csheet-open');
+      html.style.overflow = '';
+      if (csHist) { csHist = false; csSkip = true; try { history.back(); } catch (e) { csSkip = false; } }
+      if (csFocus && csFocus.isConnected) csFocus.focus({ preventScroll: true });
+      csFocus = null;
+    }
+  }
   let first = true;
   function render() {
     const vals = comp.renderVals();
     const frag = document.createDocumentFragment();
     tpl.content.childNodes.forEach((c) => renderNode(c, vals).forEach((n) => frag.appendChild(n)));
-    if (first) { root.replaceChildren(frag); first = false; return; }
+    if (first) { root.replaceChildren(frag); first = false; syncCardSheet(); return; }
     morphChildren(root, frag);
     holdAnchor();
+    syncCardSheet();
   }
   ['click', 'submit', 'input', 'change'].forEach(delegate);
   try { document.documentElement.style.overflowAnchor = 'none'; } catch (e) {}

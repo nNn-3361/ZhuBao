@@ -288,3 +288,14 @@ textarea.zb-input{padding:12px 14px;min-height:80px;resize:vertical;line-height:
 #dc-root button[aria-pressed]:hover:not(:active){transform:none !important;box-shadow:none !important}
 #dc-root fieldset button[aria-pressed="false"]:hover{border-color:#8FB39E !important;color:#2E5E4E !important}
 }
+
+/* 卡片詳情的底部面板（補助、托育、活動）：列表不動，細節從下方滑上來，長內容在面板裡捲動 */
+.zb-csheet .zb-sheet-panel{padding-top:8px;gap:0;will-change:transform;-webkit-overflow-scrolling:touch}
+.zb-csheet .zb-grab{margin-bottom:0}
+.zb-csheet .zb-sheet-head{position:sticky;top:0;z-index:2;align-items:flex-start;gap:12px;margin:0 -16px;padding:6px 16px 12px;background:var(--zb-bg);border-bottom:1px solid var(--zb-line);touch-action:none}
+.zb-csheet-title{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.zb-csheet .zb-sheet-head h2{font-size:18px;line-height:1.45;overflow-wrap:anywhere}
+.zb-csheet .zb-sheet-x{flex-shrink:0}
+.zb-csheet-body{display:flex;flex-direction:column;gap:14px;padding-top:14px}
+.zb-csheet-open .zbf-fab{opacity:0 !important;pointer-events:none !important}
+.zb-csheet .zb-sheet-panel:focus{outline:none}

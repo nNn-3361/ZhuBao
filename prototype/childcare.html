@@ -192,28 +192,10 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <span style="font-size: 16px; font-weight: 600; line-height: 1.4">{{r.name}}</span>
 <span style="font-size: 13px; color: #5F6B64">{{r.district}}・{{r.age}}・費用{{r.fee}}</span>
 </span>
-<svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+<svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform: none"><path d="m9 6 6 6-6 6"></path></svg>
 </button>
-<sc-if value="{{r.open}}" hint-placeholder-val="{{false}}">
-<div class="zb-acc-body">
-<div style="display: flex; gap: 6px; flex-wrap: wrap">
-<sc-for list="{{r.tags}}" as="tg" hint-placeholder-count="2">
-<span style="font-size: 12px; padding: 2px 8px; border-radius: 999px; border: 1px solid #E4DED2; color: #5F6B64">{{tg}}</span>
-</sc-for>
-</div>
-<dl style="margin: 0; display: grid; grid-template-columns: 56px minmax(0, 1fr); row-gap: 6px; font-size: 15px; line-height: 1.6">
-<sc-if value="{{r.hasOrg}}" hint-placeholder-val="{{false}}"><dt style="color: #5F6B64">所屬中心</dt><dd style="margin: 0">{{r.org}}</dd></sc-if>
-<dt style="color: #5F6B64">空位</dt><dd style="margin: 0">{{r.vacancy}}</dd>
-<dt style="color: #5F6B64">費用</dt><dd style="margin: 0">{{r.fee}}</dd>
-</dl>
-<p style="margin: 0; font-size: 15px; line-height: 1.7">{{r.note}}</p>
-<div style="padding-top: 10px; border-top: 1px solid #E4DED2; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; color: #5F6B64">
-<span style="min-width: 0; overflow-wrap: anywhere">來源 <a href="{{r.srcUrl}}">{{r.srcTitle}}</a></span>
-<sc-if value="{{r.canContact}}" hint-placeholder-val="{{true}}"><a href="{{r.srcUrl}}" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">{{r.cta}}</a></sc-if>
-</div>
-</div>
-</sc-if>
 </article>
+
 </sc-for>
 </div>
 
@@ -222,6 +204,31 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 </div>
 </div>
+<sc-if value="{{sheet}}" hint-placeholder-val="{{false}}">
+<div class="zb-sheet zb-csheet" data-k="cs-{{sheet.name}}">
+<div class="zb-sheet-back" onClick="{{sheet.close}}"></div>
+<div class="zb-sheet-panel" role="dialog" aria-modal="true" aria-label="{{sheet.name}}" tabindex="-1">
+<span class="zb-grab" aria-hidden="true"></span>
+<div class="zb-sheet-head"><div class="zb-csheet-title"><span style="display: flex; gap: 6px; flex-wrap: wrap"><span style="{{sheet.typeStyle}}">{{sheet.type}}</span><sc-if value="{{sheet.quasi}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #E4EEE7; color: #2E5E4E">可能適用托育補助</span></sc-if></span><h2>{{sheet.name}}</h2></div><button type="button" class="zb-sheet-x" data-sheet-close="1" onClick="{{sheet.close}}">完成</button></div>
+<div class="zb-csheet-body">
+<div style="display: flex; gap: 6px; flex-wrap: wrap">
+<sc-for list="{{sheet.tags}}" as="tg" hint-placeholder-count="2">
+<span style="font-size: 12px; padding: 2px 8px; border-radius: 999px; border: 1px solid #E4DED2; color: #5F6B64">{{tg}}</span>
+</sc-for>
+</div>
+<dl style="margin: 0; display: grid; grid-template-columns: 56px minmax(0, 1fr); row-gap: 6px; font-size: 15px; line-height: 1.6">
+<sc-if value="{{sheet.hasOrg}}" hint-placeholder-val="{{false}}"><dt style="color: #5F6B64">所屬中心</dt><dd style="margin: 0">{{sheet.org}}</dd></sc-if>
+<dt style="color: #5F6B64">空位</dt><dd style="margin: 0">{{sheet.vacancy}}</dd>
+<dt style="color: #5F6B64">費用</dt><dd style="margin: 0">{{sheet.fee}}</dd>
+</dl>
+<p style="margin: 0; font-size: 15px; line-height: 1.7">{{sheet.note}}</p>
+<div style="padding-top: 10px; border-top: 1px solid #E4DED2; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; color: #5F6B64">
+<span style="min-width: 0; overflow-wrap: anywhere">來源 <a href="{{sheet.srcUrl}}">{{sheet.srcTitle}}</a></span>
+<sc-if value="{{sheet.canContact}}" hint-placeholder-val="{{true}}"><a href="{{sheet.srcUrl}}" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">{{sheet.cta}}</a></sc-if>
+</div>
+</div>
+</div>
+</sc-if>
 </template>
 <div id="dc-root"></div>
 <script src="zhubao-ai.js"></script>
@@ -307,6 +314,9 @@ Component.prototype.renderVals = function () {
   v.filterOpen = !!s.filterOpen; v.filterExpanded = s.filterOpen ? 'true' : 'false';
   v.toggleFilter = () => this.setState({ filterOpen: !s.filterOpen });
   v.results = v.results.map((r) => ({ ...r, open: s.card === r.name, expanded: s.card === r.name ? 'true' : 'false', toggle: () => this.setState({ card: s.card === r.name ? null : r.name }) }));
+  /* 點開的卡片：細節從下方滑出面板顯示，列表本身不動 */
+  const o = v.results.find((r) => r.open);
+  v.sheet = o ? Object.assign({}, o, { close: () => this.setState({ card: null }) }) : null;
   return v;
 };
 window.Component = Component;
