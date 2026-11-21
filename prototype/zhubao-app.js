@@ -15,6 +15,13 @@
     set(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} }
   };
 
+  /* ---------- 友善模式：區塊底下「怎麼用」的說明文字（class="zb-guide"）只在開啟時顯示，預設關閉 ---------- */
+  const guideStyle = document.createElement('style');
+  guideStyle.textContent = 'html:not(.zb-friendly) .zb-guide{display:none !important}';
+  document.head.appendChild(guideStyle);
+  const setFriendly = (on) => { document.documentElement.classList.toggle('zb-friendly', !!on); };
+  setFriendly(store.get('zb-friendly', false));
+
   /* ---------- 1. 電腦大螢幕 → 手機外框展示 ---------- */
   if (params.get('web') === '1') ss.set('zb-web', '1');
   if (params.get('web') === '0') ss.set('zb-web', '0');
@@ -49,7 +56,7 @@
 
   const css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = 'zhubao-app.css?v=20261121';
+  css.href = 'zhubao-app.css?v=20261121b';
   document.head.appendChild(css);
 
   const buzz = () => { try { if (navigator.vibrate) navigator.vibrate(8); } catch (e) {} };
@@ -140,6 +147,8 @@
       + '<button type="button" class="zb-row" data-act="sync"><span class="zb-row-main"><span>同步寶寶資料</span><span class="zb-row-sub" data-sync>上次同步：' + esc(store.get('zb-sync', '今天 16:02')) + '</span></span><span class="zb-row-end zb-ok">立即同步</span></button></div>'
       + '<span class="zb-group-label">通知設定</span>'
       + '<div class="zb-group">' + SETTINGS.map((x) => '<div class="zb-row"><span class="zb-row-main"><span id="zs-' + x.id + '">' + x.label + '</span><span class="zb-row-sub">' + x.sub + '</span></span><button type="button" class="zb-switch" role="switch" aria-labelledby="zs-' + x.id + '" aria-checked="' + (st[x.id] ? 'true' : 'false') + '" data-set="' + x.id + '"></button></div>').join('') + '</div>'
+      + '<span class="zb-group-label">顯示</span>'
+      + '<div class="zb-group"><div class="zb-row"><span class="zb-row-main"><span id="zs-friendly">友善模式</span><span class="zb-row-sub">在各區塊標題下顯示怎麼使用的說明，例如「點一張看全文」</span></span><button type="button" class="zb-switch" role="switch" aria-labelledby="zs-friendly" aria-checked="' + (store.get('zb-friendly', false) ? 'true' : 'false') + '" data-friendly></button></div></div>'
       + '<span class="zb-group-label">重新開始</span>'
       + '<div class="zb-group"><button type="button" class="zb-row" data-act="reset"><span class="zb-row-main"><span>清除資料重新開始</span><span class="zb-row-sub" data-reset-sub>刪除這支手機上的寶寶檔案、關注、事件和問竹寶紀錄，回到第一次使用</span></span><span class="zb-row-end zb-danger">清除</span></button></div>'
       + '<p style="margin:0;font-size:12px;line-height:1.6;color:#5F6B64">竹寶的資料只用來整理可能適用的補助與提醒。實際資格以主管機關審核為準。</p>';
@@ -156,6 +165,11 @@
         const s = settings(); const k = b.getAttribute('data-set'); s[k] = !s[k]; store.set('zb-noti-set', s);
         b.setAttribute('aria-checked', s[k] ? 'true' : 'false'); buzz(); updateBell();
       }));
+      const fr = el.querySelector('[data-friendly]');
+      fr.addEventListener('click', () => {
+        const on = !store.get('zb-friendly', false); store.set('zb-friendly', on); setFriendly(on);
+        fr.setAttribute('aria-checked', on ? 'true' : 'false'); buzz();
+      });
       /* 清除資料：按兩次才清，避免誤觸 */
       const rs = el.querySelector('[data-act="reset"]');
       rs.addEventListener('click', () => {
@@ -211,6 +225,7 @@
           if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
           el.querySelector('[data-fb-form]').remove();
           const done = el.querySelector('[data-fb-done]'); done.style.display = 'flex';
+          const x = el.querySelector('.zb-sheet-x'); if (x) x.style.display = 'none';
           const panel = el.querySelector('.zb-sheet-panel'); panel.scrollTop = 0; panel.focus({ preventScroll: true });
           el.querySelector('[data-fb-close]').addEventListener('click', () => closeSheet());
         }, 700);

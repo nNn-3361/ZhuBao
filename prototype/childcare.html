@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FCFAF6">
-<script src="zhubao-family.js?v=20261121"></script>
-<script src="zhubao-app.js?v=20261121"></script>
+<script src="zhubao-family.js?v=20261121b"></script>
+<script src="zhubao-app.js?v=20261121b"></script>
 <title>竹寶・找托育</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&amp;display=swap">
@@ -129,7 +129,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 <div style="display: flex; flex-direction: column; gap: 6px">
 <h1 style="margin: 0; font-size: 26px; font-weight: 600; line-height: 1.3">找托嬰中心與保母</h1>
-<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">只列出主管機關登記的合格托育單位。依你的戶籍區（{{homeDistrict}}）優先排序。</p>
+<p class="zb-guide" style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">只列出主管機關登記的合格托育單位。依你的戶籍區（{{homeDistrict}}）優先排序。</p>
 <sc-if value="{{over2}}" hint-placeholder-val="{{false}}"><p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">{{over2Text}}</p></sc-if>
 </div>
 
@@ -232,8 +232,8 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </sc-if>
 </template>
 <div id="dc-root"></div>
-<script src="zhubao-ai.js?v=20261121"></script>
-<script src="zhubao-runtime.js?v=20261121"></script>
+<script src="zhubao-ai.js?v=20261121b"></script>
+<script src="zhubao-runtime.js?v=20261121b"></script>
 <script>
 class Component extends DCLogic {
   constructor(props) {

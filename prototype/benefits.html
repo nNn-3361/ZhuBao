@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FCFAF6">
-<script src="zhubao-family.js?v=20261121"></script>
-<script src="zhubao-app.js?v=20261121"></script>
+<script src="zhubao-family.js?v=20261121b"></script>
+<script src="zhubao-app.js?v=20261121b"></script>
 <title>竹寶・補助及其他福利</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&amp;display=swap">
@@ -187,7 +187,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <section aria-labelledby="h-stage" class="zb-sec">
 <div class="zb-sec-head">
 <h2 id="h-stage">依寶寶年齡</h2>
-<p>竹節會依上面選的情況換成對應的補助與福利。點一個竹節展開，最近要申請或快截止的排前面；不分年齡的放在最下面「任何年齡」。</p>
+<p class="zb-guide">竹節會依上面選的情況換成對應的補助與福利。點一個竹節展開，最近要申請或快截止的排前面；不分年齡的放在最下面「任何年齡」。</p>
 </div>
 <div style="display: flex; flex-direction: column">
 <sc-for list="{{stages}}" as="st" hint-placeholder-count="5">
@@ -284,8 +284,8 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </sc-if>
 </template>
 <div id="dc-root"></div>
-<script src="zhubao-ai.js?v=20261121"></script>
-<script src="zhubao-runtime.js?v=20261121"></script>
+<script src="zhubao-ai.js?v=20261121b"></script>
+<script src="zhubao-runtime.js?v=20261121b"></script>
 <script>
 class Component extends DCLogic {
   constructor(props) {
