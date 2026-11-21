@@ -249,14 +249,14 @@ class Component extends DCLogic {
   load(k) {
     const b = window.ZBF.parse(k.bd);
     return { id: k.id, name: k.name, color: k.color, bd: { y: b.getFullYear(), m: b.getMonth(), d: b.getDate() }, vy: b.getFullYear(), vm: b.getMonth(),
-      district: k.district, residency: k.residency, order: k.order, care: k.care, lowIncome: k.lowIncome, confirmDel: false };
+      district: k.district, residency: k.residency, order: k.order, care: k.care, lowIncome: k.lowIncome, conds: (k.conds || []).slice(), confirmDel: false };
   }
   blank() {
     const F = window.ZBF, used = F.kids().map((k) => k.color), T = F.today();
     const free = F.COLORS.find((c) => used.indexOf(c.id) < 0) || F.COLORS[0];
     const n = F.kids().length + 1;
     return { id: '', name: '', color: free.id, bd: { y: T.getFullYear(), m: T.getMonth(), d: T.getDate() }, vy: T.getFullYear(), vm: T.getMonth(),
-      district: F.current().district, residency: F.current().residency, order: n >= 3 ? '第 3 胎以上' : '第 ' + n + ' 胎', care: '自己或家人', lowIncome: F.current().lowIncome, confirmDel: false };
+      district: F.current().district, residency: F.current().residency, order: n >= 3 ? '第 3 胎以上' : '第 ' + n + ' 胎', care: '自己或家人', lowIncome: F.current().lowIncome, conds: [], confirmDel: false };
   }
   renderVals() {
     const s = this.state;
@@ -286,12 +286,18 @@ class Component extends DCLogic {
         on: on ? 'true' : 'false', tab: '0', pick: () => this.setState({ bd: { y: s.vy, m: s.vm, d }, dp: false }) });
     }
     const F = window.ZBF, kids = F.kids();
+    /* 家裡的其他狀況（可複選）：補助頁上方的篩選會自動帶入 */
+    const MULTI = [['single', '單親・特殊境遇'], ['dis', '身障・早療'], ['med', '早產或需要長期就醫'], ['new', '新住民'], ['ind', '原住民'], ['multi', '多胞胎'], ['leave', '爸爸或媽媽請育嬰留停']];
+    const sc = s.conds || [];
+    const multi = { label: '家裡有這些情況嗎？', optional: true, hint: '可複選。補助頁會依這裡先幫你篩選，之後也可以在補助頁調整。',
+      options: MULTI.map((o) => { const onNow = sc.indexOf(o[0]) >= 0; return { label: o[1], pressed: onNow ? 'true' : 'false', style: onNow ? on : off,
+        pick: () => this.setState({ conds: onNow ? sc.filter((x) => x !== o[0]) : sc.concat([o[0]]) }) }; }) };
     const toast = (t) => window.ZB && window.ZB.toast(t);
     const save = () => {
       const name = (s.name || '').trim();
       if (!name) { const el = document.getElementById('kid-name'); if (el) el.focus(); toast('請先幫寶寶取個暱稱'); return; }
       const bdStr = bd.y + '-' + String(bd.m + 1).padStart(2, '0') + '-' + String(bd.d).padStart(2, '0');
-      const k = F.saveKid({ id: s.id, name, color: s.color, bd: bdStr, district: s.district, residency: s.residency, order: s.order, care: s.care, lowIncome: s.lowIncome });
+      const k = F.saveKid({ id: s.id, name, color: s.color, bd: bdStr, district: s.district, residency: s.residency, order: s.order, care: s.care, lowIncome: s.lowIncome, conds: (s.conds || []).slice() });
       F.setCurrent(k.id);
       location.replace('index.html');
     };
@@ -319,7 +325,8 @@ class Component extends DCLogic {
         mk('residency', '父或母是否設籍新竹市？', ['是', '否', '不確定'], { hint: '用來判斷新竹市的補助' }),
         mk('order', '這是第幾胎？', ['第 1 胎', '第 2 胎', '第 3 胎以上'], { hint: '部分補助金額依胎次不同' }),
         mk('care', '寶寶目前主要由誰照顧？', ['自己或家人', '保母', '托嬰中心'], { hint: '影響育兒津貼和托育補助哪一項可能適用' }),
-        mk('lowIncome', '是否為低收入或中低收入戶？', ['是', '否', '不想回答'], { optional: true })
+        mk('lowIncome', '是否為低收入或中低收入戶？', ['是', '否', '不想回答'], { optional: true }),
+        multi
       ]
     };
   }
