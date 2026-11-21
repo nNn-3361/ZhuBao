@@ -22,7 +22,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #2E5E
 .zb-culm{width:12px;flex-shrink:0;background:linear-gradient(90deg,#4F8065 0%,#80AE8F 45%,#5E8F73 100%)}
 .zb-culm-a{height:26px}
 .zb-culm-b{flex:1 1 auto;min-height:12px}
-.zb-node{width:20px;height:7px;border-radius:4px;background:#3F6F57;flex-shrink:0;position:relative;z-index:1;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.zb-node{width:20px;height:7px;border-radius:4px;background:#3F6F57;flex-shrink:0;position:relative;z-index:1;transition:transform .25s cubic-bezier(.23,1,.32,1)}
 .zb-bam-top .zb-culm-a{border-radius:6px 6px 0 0;height:20px;margin-top:6px}
 .zb-bam-bottom .zb-culm-b{border-radius:0 0 3px 3px}
 .zb-leaf{position:absolute;top:23px;width:26px;height:12px;fill:#6F9A82;pointer-events:none}
@@ -46,8 +46,8 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #2E5E
 @keyframes zbSwayL{0%,100%{transform:rotate(30deg)}30%{transform:rotate(0deg)}65%{transform:rotate(44deg)}}
 @keyframes zbWiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}60%{transform:rotate(8deg)}}
 *{-webkit-tap-highlight-color:transparent}
-button,a[style*="min-height"]{transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease,background-color .2s ease,border-color .2s ease,color .2s ease}
-button:active,a[style*="min-height"]:active{transform:scale(.94);box-shadow:none;transition-duration:.06s}
+button,a[style*="min-height"]{transition:transform .2s cubic-bezier(.23,1,.32,1),box-shadow .2s ease,background-color .2s ease,border-color .2s ease,color .2s ease}
+button:active,a[style*="min-height"]:active{transform:scale(.97);box-shadow:none;transition-duration:.1s}
 .zb-bam-row button:active{transform:none}
 @media (hover:hover){
 button:not([aria-expanded]):not([role="switch"]):not([role="checkbox"]):hover,a[style*="min-height"]:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(46,94,78,.18)}
@@ -99,11 +99,11 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-date-arrow[aria-disabled="true"]{color:#D3CCBF;cursor:default}
 .zb-date-pick{position:relative;display:inline-flex}
 .zb-date-label{position:relative;min-height:44px;padding:0 4px !important;font-size:16px;font-weight:600;letter-spacing:.02em;transition:color .2s ease}
-.zb-date-label::after{content:"";position:absolute;left:4px;right:4px;bottom:8px;height:2px;border-radius:2px;background:#2E5E4E;transform:scaleX(0);transform-origin:center;transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+.zb-date-label::after{content:"";position:absolute;left:4px;right:4px;bottom:8px;height:2px;border-radius:2px;background:#2E5E4E;transform:scaleX(0);transform-origin:center;transition:transform .28s cubic-bezier(.23,1,.32,1)}
 .zb-date-label:hover,.zb-date-label:focus-visible{color:#2E5E4E}
 .zb-date-label:hover::after,.zb-date-label:focus-visible::after{transform:scaleX(1)}
 .zb-date-label:active{transform:scale(.96) !important}
-.zb-dp-pop{position:absolute;left:-8px;top:100%;z-index:40;margin-top:6px;width:296px;box-sizing:border-box;background:#FCFAF6;border-radius:18px;box-shadow:0 14px 36px rgba(31,42,36,.16);padding:14px 14px 10px;display:flex;flex-direction:column;gap:10px;transform-origin:top left;animation:zbDpIn .22s cubic-bezier(.2,.8,.2,1)}
+.zb-dp-pop{position:absolute;left:-8px;top:100%;z-index:40;margin-top:6px;width:296px;box-sizing:border-box;background:#FCFAF6;border-radius:20px;box-shadow:0 14px 36px rgba(31,42,36,.16);padding:14px 14px 10px;display:flex;flex-direction:column;gap:10px;transform-origin:top left;animation:zbDpIn .22s cubic-bezier(.2,.8,.2,1)}
 .zb-dp-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:0 4px;font-size:15px;font-weight:600;color:#1F2A24}
 .zb-dp-sub{font-size:12px;font-weight:400;color:#5F6B64}
 .zb-dp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;justify-items:center}
@@ -118,17 +118,17 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-date-pick button.zb-dp-off:active{transform:none !important}
 .zb-date-pick button.zb-dp-blank{visibility:hidden}
 .zb-dp-act{display:flex;justify-content:flex-end;gap:4px;border-top:1px solid #EFEAE0;padding-top:8px}
-.zb-dp-act button{min-height:40px;padding:0 14px;border:0 !important;border-radius:10px;background:transparent !important;box-shadow:none !important;font-family:inherit;font-size:14px;font-weight:600;color:#2E5E4E;cursor:pointer}
+.zb-dp-act button{min-height:40px;padding:0 14px;border:0 !important;border-radius:12px;background:transparent !important;box-shadow:none !important;font-family:inherit;font-size:14px;font-weight:600;color:#2E5E4E;cursor:pointer}
 .zb-dp-act button:hover{background:#E4EEE7 !important;transform:none !important}
 .zb-dp-act button.zb-dp-ok{background:#2E5E4E !important;color:#FFFFFF}
 .zb-date-label[aria-expanded="true"]{color:#2E5E4E}.zb-date-label[aria-expanded="true"]::after{transform:scaleX(1)}
 @keyframes zbDpIn{from{opacity:0;transform:translateY(-6px) scale(.97)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.zb-dp-pop{animation:none}}
 .zb-past{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#F6E9CC;color:#5A3A08;border-radius:12px;padding:10px 14px;font-size:14px;line-height:1.6}
-.zb-past button{min-height:40px;padding:0 14px;border-radius:10px;border:1px solid #7A4F0B;background:transparent;color:#5A3A08;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.zb-past button{min-height:40px;padding:0 14px;border-radius:12px;border:1px solid #7A4F0B;background:transparent;color:#5A3A08;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
 .zb-rec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 @media (max-width:560px){.zb-rec{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.zb-rec button.zb-tile{min-height:96px;padding:14px 16px;border:0 !important;border-radius:16px;background:#E4EEE7 !important;box-shadow:none !important;font-family:inherit;color:#1F2A24;text-align:left;display:flex;flex-direction:column;justify-content:space-between;gap:6px;cursor:pointer;transition:background-color .2s ease,transform .2s cubic-bezier(.34,1.56,.64,1)}
+.zb-rec button.zb-tile{min-height:96px;padding:14px 16px;border:0 !important;border-radius:16px;background:#E4EEE7 !important;box-shadow:none !important;font-family:inherit;color:#1F2A24;text-align:left;display:flex;flex-direction:column;justify-content:space-between;gap:6px;cursor:pointer;transition:background-color .2s ease,transform .2s cubic-bezier(.23,1,.32,1)}
 .zb-rec button.zb-tile:hover{background:#D3E4D8 !important;transform:translateY(-2px) !important}
 .zb-rec button.zb-tile:active{transform:none !important;background:#C6DCCD !important;transition-duration:.06s}
 .zb-tile-name{font-size:20px;font-weight:600;color:#2E5E4E}
@@ -147,9 +147,9 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-addrow .zb-text{flex:1;min-width:0}
 .zb-add-ok{min-height:48px;padding:0 14px;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;flex-shrink:0}
 .zb-add-ok{border:0;background:#2E5E4E;color:#fff}
-button.zb-link{position:relative;min-height:44px;padding:0 4px;border:0 !important;background:transparent !important;box-shadow:none !important;font-family:inherit;font-size:14px;font-weight:600;color:#5F6B64;cursor:pointer;flex-shrink:0;transition:color .2s ease,transform .2s cubic-bezier(.34,1.56,.64,1)}
+button.zb-link{position:relative;min-height:44px;padding:0 4px;border:0 !important;background:transparent !important;box-shadow:none !important;font-family:inherit;font-size:14px;font-weight:600;color:#5F6B64;cursor:pointer;flex-shrink:0;transition:color .2s ease,transform .2s cubic-bezier(.23,1,.32,1)}
 button.zb-link.zb-qadd{color:#2E5E4E;align-self:flex-start}
-button.zb-link::after{content:"";position:absolute;left:4px;right:4px;bottom:9px;height:2px;border-radius:2px;background:#2E5E4E;transform:scaleX(0);transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+button.zb-link::after{content:"";position:absolute;left:4px;right:4px;bottom:9px;height:2px;border-radius:2px;background:#2E5E4E;transform:scaleX(0);transition:transform .28s cubic-bezier(.23,1,.32,1)}
 button.zb-link:hover,button.zb-link:focus-visible{color:#2E5E4E;transform:none !important}
 button.zb-link:hover::after,button.zb-link:focus-visible::after{transform:scaleX(1)}
 button.zb-link:active{transform:scale(.92) !important;transition-duration:.06s}
@@ -160,19 +160,19 @@ button.zb-link:active{transform:scale(.92) !important;transition-duration:.06s}
 .zb-tp-l{font-size:14px;font-weight:600;color:#5F6B64}
 .zb-tp button{font-family:inherit;cursor:pointer}
 .zb-tp button.zb-tp-v{position:relative;min-height:44px;padding:0 2px;border:0 !important;background:transparent !important;box-shadow:none !important;font-size:20px;font-weight:600;color:#1F2A24;font-variant-numeric:tabular-nums;transition:color .2s ease}
-.zb-tp-v::after{content:"";position:absolute;left:2px;right:2px;bottom:8px;height:2px;border-radius:2px;background:#2E5E4E;transform:scaleX(0);transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+.zb-tp-v::after{content:"";position:absolute;left:2px;right:2px;bottom:8px;height:2px;border-radius:2px;background:#2E5E4E;transform:scaleX(0);transition:transform .28s cubic-bezier(.23,1,.32,1)}
 .zb-tp button.zb-tp-v:hover,.zb-tp-v:focus-visible,.zb-tp-v[aria-expanded="true"]{color:#2E5E4E;transform:none !important}
 .zb-tp-v:hover::after,.zb-tp-v:focus-visible::after,.zb-tp-v[aria-expanded="true"]::after{transform:scaleX(1)}
 .zb-tp-pop{position:absolute;left:0;top:100%;z-index:30;margin-top:4px;background:#FCFAF6;border-radius:16px;box-shadow:0 12px 32px rgba(31,42,36,.16);padding:10px;display:flex;flex-direction:column;gap:8px;animation:zbTpIn .18s ease-out}
 .zb-tp-cols{display:flex;align-items:center;gap:4px}
 .zb-tp-col{position:relative;height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:2px;padding:0 2px;scrollbar-width:none;overscroll-behavior:contain}
 .zb-tp-col::-webkit-scrollbar{display:none}
-.zb-tp button.zb-tp-o{flex-shrink:0;width:56px;min-height:40px;border:0 !important;border-radius:10px;background:transparent !important;box-shadow:none !important;font-size:17px;color:#3D4842;font-variant-numeric:tabular-nums}
+.zb-tp button.zb-tp-o{flex-shrink:0;width:56px;min-height:40px;border:0 !important;border-radius:12px;background:transparent !important;box-shadow:none !important;font-size:17px;color:#3D4842;font-variant-numeric:tabular-nums}
 .zb-tp button.zb-tp-o:hover{color:#2E5E4E;background:#E4EEE7 !important;transform:none !important}
 .zb-tp button.zb-tp-o[aria-pressed="true"]{background:#2E5E4E !important;color:#FFFFFF;font-weight:600}
 .zb-tp-sep{font-size:18px;font-weight:600;color:#5F6B64}
 .zb-tp-act{display:flex;gap:4px;justify-content:flex-end;border-top:1px solid #EFEAE0;padding-top:8px}
-.zb-tp-act button{min-height:40px;padding:0 12px;border:0 !important;border-radius:10px;background:transparent !important;box-shadow:none !important;font-size:14px;color:#2E5E4E;font-weight:600}
+.zb-tp-act button{min-height:40px;padding:0 12px;border:0 !important;border-radius:12px;background:transparent !important;box-shadow:none !important;font-size:14px;color:#2E5E4E;font-weight:600}
 .zb-tp-act button:hover{background:#E4EEE7 !important;transform:none !important}
 .zb-tp-act button.zb-tp-ok{background:#2E5E4E !important;color:#fff}
 @keyframes zbTpIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
@@ -188,12 +188,12 @@ button.zb-link:active{transform:scale(.92) !important;transition-duration:.06s}
 .zb-edit{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid #B9CDBF;background:transparent;color:#2E5E4E;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
 .zb-bar{height:100%;padding:0;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;font-family:inherit;cursor:pointer;border-radius:8px 8px 0 0}
 .zb-bar:hover{background:rgba(46,94,78,.06)}
-.zb-toast{position:fixed;left:50%;bottom:20px;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:880;width:min(520px,calc(100% - 32px));box-sizing:border-box;background:#1F2A24;color:#F6F2EA;border-radius:16px;padding:12px 12px 14px 16px;box-shadow:0 12px 32px rgba(31,42,36,.28);display:flex;flex-direction:column;gap:10px;overflow:hidden;animation:zbToastIn .32s cubic-bezier(.34,1.56,.64,1)}
+.zb-toast{position:fixed;left:50%;bottom:20px;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:880;width:min(520px,calc(100% - 32px));box-sizing:border-box;background:#1F2A24;color:#F6F2EA;border-radius:16px;padding:12px 12px 14px 16px;box-shadow:0 12px 32px rgba(31,42,36,.28);display:flex;flex-direction:column;gap:10px;overflow:hidden;animation:zbToastIn .32s cubic-bezier(.23,1,.32,1)}
 @media (max-width:760px){.zb-toast{left:16px;right:86px;width:auto;transform:none;animation-name:zbToastInM}}
 .zb-toast-row{display:flex;align-items:center;gap:10px}
 .zb-toast-msg{flex:1;min-width:0;font-size:14px;line-height:1.5;display:flex;flex-direction:column}
 .zb-toast-msg strong{font-size:15px;font-weight:600}
-.zb-toast-undo{min-height:40px;padding:0 12px;border-radius:10px;border:0;background:transparent;color:#B7D3BE;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;flex-shrink:0}
+.zb-toast-undo{min-height:40px;padding:0 12px;border-radius:12px;border:0;background:transparent;color:#B7D3BE;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;flex-shrink:0}
 .zb-toast-undo:hover{background:rgba(255,255,255,.08)}
 .zb-toast-chips{display:flex;gap:8px;flex-wrap:wrap}
 .zb-chip{min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(246,242,234,.35);background:transparent;color:#F6F2EA;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
@@ -218,13 +218,13 @@ button.zb-link:active{transform:scale(.92) !important;transition-duration:.06s}
 <span style="font-size: 17px; font-weight: 600; letter-spacing: 0.04em">竹寶</span>
 </div>
 <nav class="zb-nav-links" aria-label="主選單" style="display: flex; gap: 4px; flex-wrap: wrap">
-<a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
-<a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 14px">寶寶日記</a>
-<a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
-<a href="childcare.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">托育</a>
-<a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
-<a href="ask.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">AI 問答</a>
-<a href="help.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">協助</a>
+<a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
+<a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 14px">寶寶日記</a>
+<a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
+<a href="childcare.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">托育</a>
+<a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
+<a href="ask.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">問竹寶</a>
+<a href="help.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">協助</a>
 </nav>
 <button type="button" class="zb-nav-toggle" aria-expanded="{{menuExpanded}}" aria-controls="zb-menu" onClick="{{toggleMenu}}" style="min-height: 44px; align-items: center; gap: 8px; padding: 0 14px; border-radius: 12px; border: 1px solid #E4DED2; background: #FCFAF6; font-family: inherit; font-size: 14px; color: #1F2A24; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="{{menuIcon}}"></path></svg>{{menuLabel}}</button>
 </div>
@@ -235,7 +235,7 @@ button.zb-link:active{transform:scale(.92) !important;transition-duration:.06s}
 <a href="benefits.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">補助及其他福利</a>
 <a href="childcare.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">托育</a>
 <a href="activities.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">親子活動</a>
-<a href="ask.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">AI 問答</a>
+<a href="ask.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">問竹寶</a>
 <a href="help.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">協助</a>
 </nav>
 </sc-if>
@@ -280,7 +280,8 @@ button.zb-link:active{transform:scale(.92) !important;transition-duration:.06s}
 </section>
 
 <sc-if value="{{formOpen}}" hint-placeholder-val="{{true}}">
-<section aria-label="補充細節" class="zb-anim" style="background: #FCFAF6; border: 1px solid #2E5E4E; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+<div class="zb-entry-back" aria-hidden="true" onClick="{{closeForm}}"></div>
+<section aria-label="補充細節" class="zb-anim zb-entry" role="dialog" style="background: #FCFAF6; border: 1px solid #2E5E4E; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
 <h2 style="margin: 0; font-size: 17px; font-weight: 600">{{formTitle}}</h2>
 <button type="button" class="zb-link" onClick="{{closeForm}}">取消</button>
@@ -477,8 +478,8 @@ class Component extends DCLogic {
     /* Demo 的「現在」：今天 11/14 16:53，打開頁面後照真實時間往後走，睡覺計時才會準 */
     const nowMin = () => 16 * 60 + 53 + Math.floor((Date.now() - this._t0) / 60000);
     const K = {
-      feed: ['喝奶', '#2E5E4E', '#E4EEE7'], diaper: ['尿布', '#7A4F0B', '#F6E9CC'], sleep: ['睡眠', '#2F5470', '#E3ECF2'],
-      temp: ['體溫', '#8E3A33', '#F5E4E0'], grow: ['身高體重', '#6B3655', '#F3E8EE'], note: ['筆記', '#56625B', '#ECE8E0']
+      feed: ['喝奶', '#5F6B64', '#EFEAE0'], diaper: ['尿布', '#5F6B64', '#EFEAE0'], sleep: ['睡眠', '#5F6B64', '#EFEAE0'],
+      temp: ['體溫', '#5F6B64', '#EFEAE0'], grow: ['身高體重', '#5F6B64', '#EFEAE0'], note: ['筆記', '#5F6B64', '#EFEAE0']
     };
     /* ---- 日期：11/8 到今天 11/14 ---- */
     const WK = ['日', '一', '二', '三', '四', '五', '六'];
@@ -694,10 +695,10 @@ class Component extends DCLogic {
     const longest = sleeps.reduce((a, e) => Math.max(a, e.min || 0), 0);
     const temps = entries.filter((e) => e.k === 'temp' && e.d).sort((a, b) => a.t.localeCompare(b.t));
     const summary = [
-      { label: '喝奶', color: '#2E5E4E', value: feeds.length + ' 次', detail: '瓶餵共 ' + ml + ' ml・親餵 ' + feeds.filter((e) => e.d.indexOf('親餵') >= 0).length + ' 次', ref: '2 個月寶寶一天常見 6 到 8 次，依寶寶需求餵。' },
-      { label: '尿布', color: '#7A4F0B', value: wet + ' 片濕', detail: '便便 ' + pooList.length + ' 次' + (lastPoo ? '・最近一次' + lastPoo : ''), ref: '一天 6 片以上濕尿布，通常表示奶喝得夠。' },
-      { label: '睡眠', color: '#2F5470', value: Math.floor(sleepMin / 60) + ' 小時 ' + (sleepMin % 60) + ' 分', detail: longest ? '最長一段 ' + dur(longest) : '還沒有睡眠紀錄', ref: '0 到 3 個月一天大約睡 14 到 17 小時' + (isToday ? '，晚上還沒記的會再加上去。' : '。') },
-      { label: '體溫', color: '#8E3A33', value: temps.length ? temps[temps.length - 1].d : (isToday ? '今天沒量' : '沒有量'), detail: '身體不舒服時再量就好', ref: '未滿 3 個月，38 度以上請儘快就醫。' }
+      { label: '喝奶', color: '#5F6B64', value: feeds.length + ' 次', detail: '瓶餵共 ' + ml + ' ml・親餵 ' + feeds.filter((e) => e.d.indexOf('親餵') >= 0).length + ' 次', ref: '2 個月寶寶一天常見 6 到 8 次，依寶寶需求餵。' },
+      { label: '尿布', color: '#5F6B64', value: wet + ' 片濕', detail: '便便 ' + pooList.length + ' 次' + (lastPoo ? '・最近一次' + lastPoo : ''), ref: '一天 6 片以上濕尿布，通常表示奶喝得夠。' },
+      { label: '睡眠', color: '#5F6B64', value: Math.floor(sleepMin / 60) + ' 小時 ' + (sleepMin % 60) + ' 分', detail: longest ? '最長一段 ' + dur(longest) : '還沒有睡眠紀錄', ref: '0 到 3 個月一天大約睡 14 到 17 小時' + (isToday ? '，晚上還沒記的會再加上去。' : '。') },
+      { label: '體溫', color: '#5F6B64', value: temps.length ? temps[temps.length - 1].d : (isToday ? '今天沒量' : '沒有量'), detail: '身體不舒服時再量就好', ref: '未滿 3 個月，38 度以上請儘快就醫。' }
     ];
     const ALERT = {
       stool: ['便便顏色需要注意', '你記錄了淡黃或灰白色的便便。請儘快帶寶寶就醫，並把這筆紀錄給醫師看。'],
@@ -706,10 +707,10 @@ class Component extends DCLogic {
     };
     const seen = {};
     const alertsOut = entries.filter((e) => e.alert && !seen[e.alert] && (seen[e.alert] = true)).map((e) => ({ title: ALERT[e.alert][0], body: ALERT[e.alert][1],
-      style: 'display: flex; gap: 12px; align-items: flex-start; background: #F5E4E0; color: #8E3A33; border-radius: 14px; padding: 14px 16px' }));
+      style: 'display: flex; gap: 12px; align-items: flex-start; background: #F5E4E0; color: #8E3A33; border-radius: 16px; padding: 14px 16px' }));
     if (!alertsOut.length) alertsOut.push({ title: isToday ? '今天一切正常' : '這一天一切正常',
       body: '喝奶、尿布和便便顏色都在常見範圍內。' + (isToday ? '記得在 12/10 前預約第 2 次產後健康照護。' : ''),
-      style: 'display: flex; gap: 12px; align-items: flex-start; background: #E4EEE7; color: #2E5E4E; border-radius: 14px; padding: 14px 16px' });
+      style: 'display: flex; gap: 12px; align-items: flex-start; background: #E4EEE7; color: #2E5E4E; border-radius: 16px; padding: 14px 16px' });
     const log = entries.slice().sort((a, b) => b.t.localeCompare(a.t)).map((e, n) => ({
       id: e.id || ('b' + s.day + '-' + e.t + e.k), time: e.t, kind: K[e.k][0], kindColor: K[e.k][1],
       detail: e.d || '還沒補充細節', detailStyle: e.d ? '' : 'color: #9AA39D',

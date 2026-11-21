@@ -22,7 +22,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2p
 .zb-culm{width:12px;flex-shrink:0;background:linear-gradient(90deg,#4F8065 0%,#80AE8F 45%,#5E8F73 100%)}
 .zb-culm-a{height:26px}
 .zb-culm-b{flex:1 1 auto;min-height:12px}
-.zb-node{width:20px;height:7px;border-radius:4px;background:#3F6F57;flex-shrink:0;position:relative;z-index:1;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.zb-node{width:20px;height:7px;border-radius:4px;background:#3F6F57;flex-shrink:0;position:relative;z-index:1;transition:transform .25s cubic-bezier(.23,1,.32,1)}
 .zb-bam-top .zb-culm-a{border-radius:6px 6px 0 0;height:20px;margin-top:6px}
 .zb-bam-bottom .zb-culm-b{border-radius:0 0 3px 3px}
 .zb-leaf{position:absolute;top:23px;width:26px;height:12px;fill:#6F9A82;pointer-events:none}
@@ -46,8 +46,8 @@ button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2p
 @keyframes zbSwayL{0%,100%{transform:rotate(30deg)}30%{transform:rotate(0deg)}65%{transform:rotate(44deg)}}
 @keyframes zbWiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}60%{transform:rotate(8deg)}}
 *{-webkit-tap-highlight-color:transparent}
-button,a[style*="min-height"]{transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease,background-color .2s ease,border-color .2s ease,color .2s ease}
-button:active,a[style*="min-height"]:active{transform:scale(.94);box-shadow:none;transition-duration:.06s}
+button,a[style*="min-height"]{transition:transform .2s cubic-bezier(.23,1,.32,1),box-shadow .2s ease,background-color .2s ease,border-color .2s ease,color .2s ease}
+button:active,a[style*="min-height"]:active{transform:scale(.97);box-shadow:none;transition-duration:.1s}
 .zb-bam-row button:active{transform:none}
 @media (hover:hover){
 button:not([aria-expanded]):not([role="switch"]):not([role="checkbox"]):hover,a[style*="min-height"]:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(46,94,78,.18)}
@@ -103,13 +103,13 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <span style="font-size: 17px; font-weight: 600; letter-spacing: 0.04em">竹寶</span>
 </div>
 <nav class="zb-nav-links" aria-label="主選單" style="display: flex; gap: 4px; flex-wrap: wrap">
-<a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
-<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
-<a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
-<a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 14px">托育</a>
-<a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
-<a href="ask.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">AI 問答</a>
-<a href="help.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">協助</a>
+<a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
+<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
+<a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
+<a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 14px">托育</a>
+<a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
+<a href="ask.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">問竹寶</a>
+<a href="help.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">協助</a>
 </nav>
 <button type="button" class="zb-nav-toggle" aria-expanded="{{menuExpanded}}" aria-controls="zb-menu" onClick="{{toggleMenu}}" style="min-height: 44px; align-items: center; gap: 8px; padding: 0 14px; border-radius: 12px; border: 1px solid #E4DED2; background: #FCFAF6; font-family: inherit; font-size: 14px; color: #1F2A24; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="{{menuIcon}}"></path></svg>{{menuLabel}}</button>
 </div>
@@ -120,7 +120,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <a href="benefits.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">補助及其他福利</a>
 <a href="#" aria-current="page" style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 16px">托育<span style="font-size: 12px; font-weight: 400">目前位置</span></a>
 <a href="activities.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">親子活動</a>
-<a href="ask.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">AI 問答</a>
+<a href="ask.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">問竹寶</a>
 <a href="help.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">協助</a>
 </nav>
 </sc-if>
@@ -133,7 +133,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">只列出主管機關登記的合格托育單位。依你的戶籍區（北區）優先排序。</p>
 </div>
 
-<div style="display: flex; gap: 12px; align-items: flex-start; background: #F6E9CC; border-radius: 14px; padding: 14px 16px">
+<div style="display: flex; gap: 12px; align-items: flex-start; background: #F6E9CC; border-radius: 16px; padding: 14px 16px">
 <div style="font-size: 14px; line-height: 1.6; color: #5A3A08">送托會影響補助：自己帶和送托能領的補助不同。送托前，請先看<a href="https://society.hccg.gov.tw/ch/home.jsp?id=10330&amp;parentpath=0%2C3%2C20" style="color: #5A3A08">社會處準公共化專區</a>的請領規定，或回到<a href="benefits.html" style="color: #5A3A08">補助及其他福利</a>看你目前的狀態。</div>
 </div>
 
@@ -199,7 +199,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <div class="zb-acc-body">
 <div style="display: flex; gap: 6px; flex-wrap: wrap">
 <sc-for list="{{r.tags}}" as="tg" hint-placeholder-count="2">
-<span style="font-size: 12px; padding: 2px 8px; border-radius: 6px; border: 1px solid #E4DED2; color: #5F6B64">{{tg}}</span>
+<span style="font-size: 12px; padding: 2px 8px; border-radius: 999px; border: 1px solid #E4DED2; color: #5F6B64">{{tg}}</span>
 </sc-for>
 </div>
 <dl style="margin: 0; display: grid; grid-template-columns: 56px minmax(0, 1fr); row-gap: 6px; font-size: 15px; line-height: 1.6">
@@ -251,8 +251,8 @@ class Component extends DCLogic {
     ];
     const TYPE_STYLE = {
       '準公共托嬰中心': 'font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #ECE8E0; color: #3D4842',
-      '公共托嬰': 'font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #E3ECF2; color: #2F5470',
-      '居家保母': 'font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #F3E8EE; color: #6B3655'
+      '公共托嬰': 'font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #EFEAE0; color: #5F6B64',
+      '居家保母': 'font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #EFEAE0; color: #5F6B64'
     };
     const base = 'min-height: 40px; padding: 0 14px; border-radius: 999px; font-family: inherit; font-size: 14px; cursor: pointer; ';
     const on = base + 'background: #2E5E4E; color: #FFFFFF; border: 1px solid #2E5E4E; font-weight: 600';

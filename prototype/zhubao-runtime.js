@@ -67,7 +67,7 @@
     const css = document.createElement('style');
     css.textContent = '#zb-loader{position:fixed;inset:0;z-index:9999;background:#F6F2EA;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;font-family:"Noto Sans TC",system-ui,sans-serif;color:#1F2A24;transition:opacity .4s ease}'
       + '#zb-loader .zb-card{max-width:520px;width:100%;display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center}'
-      + '#zb-loader .zb-seg{fill:#5E8F73;transform-box:fill-box;transform-origin:bottom;animation:zbGrow .55s cubic-bezier(.34,1.56,.64,1) both}'
+      + '#zb-loader .zb-seg{fill:#5E8F73;transform-box:fill-box;transform-origin:bottom;animation:zbGrow .55s cubic-bezier(.23,1,.32,1) both}'
       + '#zb-loader .zb-nd{fill:#2E5E4E;transform-box:fill-box;transform-origin:center;animation:zbPop .35s ease-out both}'
       + '#zb-loader .s1{animation-delay:.1s}#zb-loader .n1{animation-delay:.55s}#zb-loader .s2{animation-delay:.6s}#zb-loader .n2{animation-delay:1.05s}#zb-loader .s3{animation-delay:1.1s}'
       + '#zb-loader .zb-lf{fill:#8FC16F;transform-box:fill-box;animation:zbPop .4s ease-out both,zbLeaf 2.6s ease-in-out infinite}'

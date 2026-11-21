@@ -2,10 +2,10 @@
    內容整理自新竹市政府與衛福部疾管署的官方公告，改寫成給爸媽看的白話。 */
 (function () {
   const TAGS = {
-    vax: ['疫苗', '#2F5470', '#E3ECF2'],
-    health: ['健康', '#8E3A33', '#F6E3E1'],
-    money: ['補助', '#7A4F0B', '#F6E9CC'],
-    care: ['托育', '#6B3655', '#F3E8EE']
+    vax: ['疫苗', '#5F6B64', '#EFEAE0'],
+    health: ['健康', '#5F6B64', '#EFEAE0'],
+    money: ['補助', '#5F6B64', '#EFEAE0'],
+    care: ['托育', '#5F6B64', '#EFEAE0']
   };
   const NEWS = [
     { tag: 'vax', src: '衛福部疾管署', date: '11/3',
@@ -63,7 +63,7 @@
     + '@media (max-width:760px){.zbn-vp{margin-right:-16px}}'
     + '.zbn-track{display:flex;gap:' + GAP + 'px;transition:transform .5s cubic-bezier(.22,.9,.24,1);will-change:transform}'
     + '.zbn-track.zbn-drag{transition:none}'
-    + '.zbn-card{flex:0 0 calc(100% - 44px);box-sizing:border-box;min-height:176px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:16px 18px;border-radius:16px;border:1px solid #E4DED2;background:#FCFAF6;font-family:inherit;color:#1F2A24;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease,border-color .2s ease,opacity .35s ease}'
+    + '.zbn-card{flex:0 0 calc(100% - 44px);box-sizing:border-box;min-height:176px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:16px 18px;border-radius:16px;border:1px solid #E4DED2;background:#FCFAF6;font-family:inherit;color:#1F2A24;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;transition:transform .25s cubic-bezier(.23,1,.32,1),box-shadow .2s ease,border-color .2s ease,opacity .35s ease}'
     + '.zbn-card[data-active="false"]{opacity:.55}'
     + '.zbn-card[data-active="true"]:hover{transform:translateY(-3px);border-color:#B9CDBF;box-shadow:0 8px 20px rgba(46,94,78,.12)}'
     + '.zbn-card:active{transform:none;opacity:.88}'
@@ -77,7 +77,7 @@
     + '.zbn-dots{display:flex;align-items:center;gap:0;flex:1;min-width:0;margin-left:-8px}'
     + '.zbn-dot{width:22px;height:32px;padding:0;border:0;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none;transition:width .35s cubic-bezier(.22,.9,.24,1)}'
     + 'button.zbn-dot,button.zbn-dot:hover,button.zbn-dot:active,button.zbn-dot:focus,button.zbn-dot:focus-visible{outline:none !important;box-shadow:none !important;transform:none !important;background:transparent !important}' /* 只讓圓點本身有反應，外面的點擊範圍不顯示方框 */
-    + '.zbn-dot i{display:block;width:7px;height:7px;border-radius:999px;background:#D3CCBF;overflow:hidden;position:relative;transition:width .35s cubic-bezier(.22,.9,.24,1),background .2s ease,transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease}'
+    + '.zbn-dot i{display:block;width:7px;height:7px;border-radius:999px;background:#D3CCBF;overflow:hidden;position:relative;transition:width .35s cubic-bezier(.22,.9,.24,1),background .2s ease,transform .25s cubic-bezier(.23,1,.32,1),box-shadow .2s ease}'
     + '.zbn-dot:hover i{background:#9FBBA8;transform:scale(1.35)}'
     + '.zbn-dot:active i{transform:scale(.8)}'
     + '.zbn-dot:focus-visible i{box-shadow:0 0 0 2px #FCFAF6,0 0 0 4px #2E5E4E}'
@@ -87,7 +87,7 @@
     + '.zbn-dot[aria-current="true"]:active i{transform:scale(.94)}'
     + '.zbn-dot[aria-current="true"] i::after{content:"";position:absolute;inset:0;background:#2E5E4E;border-radius:999px;transform-origin:left;transform:scaleX(1)}'
     + '.zbn-run .zbn-dot[aria-current="true"] i::after{animation:zbnFill ' + MS + 'ms linear forwards}'
-    + '.zbn-btn{min-height:36px;min-width:36px;padding:0 12px;border-radius:10px;border:1px solid #E4DED2;background:#FCFAF6;color:#2E5E4E;font:600 13px "Noto Sans TC",system-ui,sans-serif;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .22s cubic-bezier(.34,1.56,.64,1),background .15s ease,border-color .15s ease}'
+    + '.zbn-btn{min-height:36px;min-width:36px;padding:0 12px;border-radius:12px;border:1px solid #E4DED2;background:#FCFAF6;color:#2E5E4E;font:600 13px "Noto Sans TC",system-ui,sans-serif;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .22s cubic-bezier(.23,1,.32,1),background .15s ease,border-color .15s ease}'
     + '.zbn-btn:hover{background:#E4EEE7;border-color:#2E5E4E;transform:translateY(-2px)}'
     + '.zbn-btn:active{transform:scale(.9)}'
     + '.zbn-btn:focus-visible{outline:2px solid #2E5E4E;outline-offset:2px}'
@@ -99,7 +99,7 @@
     + '.zbn-pop p{margin:0;font-size:15px;line-height:1.8;color:#3D4842}'
     + '.zbn-head{display:flex;align-items:center;gap:8px}'
     + '.zbn-head .zbn-meta{flex:1}'
-    + '.zbn-x{width:40px;height:40px;border-radius:12px;border:0;background:transparent;color:#5F6B64;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s ease,transform .22s cubic-bezier(.34,1.56,.64,1)}'
+    + '.zbn-x{width:40px;height:40px;border-radius:12px;border:0;background:transparent;color:#5F6B64;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s ease,transform .22s cubic-bezier(.23,1,.32,1)}'
     + '.zbn-x:hover{background:#E4EEE7;color:#2E5E4E;transform:rotate(90deg)}'
     + '.zbn-x:active{transform:scale(.88)}'
     + '.zbn-x:focus-visible{outline:2px solid #2E5E4E;outline-offset:0}'
@@ -107,7 +107,7 @@
     + '.zbn-you b{font-size:12px;color:#2E5E4E}'
     + '.zbn-you span{font-size:14px;line-height:1.7}'
     + '.zbn-acts{display:flex;flex-wrap:wrap;gap:8px}'
-    + '.zbn-acts a{min-height:44px;display:inline-flex;align-items:center;padding:0 16px;border-radius:12px;font-size:14px;font-weight:600;text-decoration:none;border:1px solid #2E5E4E;color:#2E5E4E;transition:transform .22s cubic-bezier(.34,1.56,.64,1),background .15s ease}'
+    + '.zbn-acts a{min-height:44px;display:inline-flex;align-items:center;padding:0 16px;border-radius:12px;font-size:14px;font-weight:600;text-decoration:none;border:1px solid #2E5E4E;color:#2E5E4E;transition:transform .22s cubic-bezier(.23,1,.32,1),background .15s ease}'
     + '.zbn-acts a:first-child{background:#2E5E4E;color:#fff}'
     + '.zbn-acts a:hover{transform:translateY(-2px)}.zbn-acts a:active{transform:scale(.95)}'
     + '.zbn-acts a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2px}'
