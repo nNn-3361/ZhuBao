@@ -129,7 +129,8 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 <div style="display: flex; flex-direction: column; gap: 6px">
 <h1 style="margin: 0; font-size: 26px; font-weight: 600; line-height: 1.3">找托嬰中心與保母</h1>
-<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">只列出主管機關登記的合格托育單位。依你的戶籍區（北區）優先排序。</p>
+<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">只列出主管機關登記的合格托育單位。依你的戶籍區（{{homeDistrict}}）優先排序。</p>
+<sc-if value="{{over2}}" hint-placeholder-val="{{false}}"><p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">{{over2Text}}</p></sc-if>
 </div>
 
 <div style="display: flex; gap: 12px; align-items: flex-start; background: #F6E9CC; border-radius: 16px; padding: 14px 16px">
@@ -278,18 +279,22 @@ class Component extends DCLogic {
       track: 'width: 44px; height: 26px; border-radius: 999px; flex-shrink: 0; position: relative; display: inline-block; background: ' + (s[key] ? '#2E5E4E' : '#D8D1C3'),
       knob: 'position: absolute; top: 3px; left: ' + (s[key] ? '21px' : '3px') + '; width: 20px; height: 20px; border-radius: 999px; background: #FFFFFF'
     });
+    const F = window.ZBF, K = F.current(), HOME = K ? K.district : '北區', KA = K ? F.age(K) : null;
     const typeMap = { '托嬰中心': '準公共托嬰中心', '公共托嬰': '公共托嬰', '居家保母': '居家保母' };
     const filtered = DATA.filter((d) =>
       (s.type === '全部' || d.type === typeMap[s.type]) &&
       (s.district === '全部' || d.district === s.district) &&
       (!s.quasiOnly || d.quasi)
-    ).sort((a, b) => (a.district === '北區' ? 0 : 1) - (b.district === '北區' ? 0 : 1));
+    ).sort((a, b) => (a.district === HOME ? 0 : 1) - (b.district === HOME ? 0 : 1));
     const results = filtered.map((d) => ({
       name: d.name, type: d.type, typeStyle: TYPE_STYLE[d.type], district: d.district, age: d.age,
       quasi: d.quasi && !d.planned, planned: !!d.planned, tags: d.tags, vacancy: d.vacancy, fee: d.fee, note: d.note,
       srcTitle: SRC[d.src][0], srcUrl: SRC[d.src][1], conf: SRC[d.src][2], canContact: d.contact !== false, org: d.org || '', hasOrg: !!d.org, cta: d.cta || '看官方說明'
     }));
     return {
+      homeDistrict: HOME,
+      over2: !!(KA && KA.born && KA.months >= 24),
+      over2Text: K ? K.name + '已經滿 2 歲。這裡的托嬰中心和保母大多收未滿 2 歲的孩子；2 歲以上可以看補助頁的「平價幼兒園繳費上限」和「育兒津貼（2 歲以後）」。' : '',
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),

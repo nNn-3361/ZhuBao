@@ -37,6 +37,7 @@
   const TITLES = { 'index.html': '主頁', 'benefits.html': '補助及其他福利', 'childcare.html': '托育', 'activities.html': '親子活動', 'ask.html': '問竹寶', 'help.html': '協助', 'setup.html': '寶寶資料' };
   /* 通知只來自已關注的項目（補助日期、活動、自己建立的事件），前 7 天和前 1 天各提醒一次 */
   const F = window.ZBF;
+  if (F && F.leaving) return;
   let NOTI = F ? F.reminders() : [];
   const SETTINGS = [
     { id: 'due', label: '關注提醒', sub: '已關注的補助、活動與自己建立的事件，前 7 天和前 1 天提醒' }
@@ -138,6 +139,8 @@
       + '<button type="button" class="zb-row" data-act="sync"><span class="zb-row-main"><span>同步寶寶資料</span><span class="zb-row-sub" data-sync>上次同步：' + esc(store.get('zb-sync', '今天 16:02')) + '</span></span><span class="zb-row-end zb-ok">立即同步</span></button></div>'
       + '<span class="zb-group-label">通知設定</span>'
       + '<div class="zb-group">' + SETTINGS.map((x) => '<div class="zb-row"><span class="zb-row-main"><span id="zs-' + x.id + '">' + x.label + '</span><span class="zb-row-sub">' + x.sub + '</span></span><button type="button" class="zb-switch" role="switch" aria-labelledby="zs-' + x.id + '" aria-checked="' + (st[x.id] ? 'true' : 'false') + '" data-set="' + x.id + '"></button></div>').join('') + '</div>'
+      + '<span class="zb-group-label">重新開始</span>'
+      + '<div class="zb-group"><button type="button" class="zb-row" data-act="reset"><span class="zb-row-main"><span>清除資料重新開始</span><span class="zb-row-sub" data-reset-sub>刪除這支手機上的寶寶檔案、關注、事件和問竹寶紀錄，回到第一次使用</span></span><span class="zb-row-end zb-danger">清除</span></button></div>'
       + '<p style="margin:0;font-size:12px;line-height:1.6;color:#5F6B64">竹寶的資料只用來整理可能適用的補助與提醒。實際資格以主管機關審核為準。</p>';
     sheet('zb-more', '選單', html, (el) => {
       el.querySelectorAll('[data-id]').forEach((a) => a.addEventListener('click', () => markRead(a.getAttribute('data-id'))));
@@ -152,6 +155,18 @@
         const s = settings(); const k = b.getAttribute('data-set'); s[k] = !s[k]; store.set('zb-noti-set', s);
         b.setAttribute('aria-checked', s[k] ? 'true' : 'false'); buzz(); updateBell();
       }));
+      /* 清除資料：按兩次才清，避免誤觸 */
+      const rs = el.querySelector('[data-act="reset"]');
+      rs.addEventListener('click', () => {
+        buzz();
+        if (rs.getAttribute('data-armed') !== '1') {
+          rs.setAttribute('data-armed', '1');
+          rs.querySelector('.zb-row-end').textContent = '確定清除';
+          rs.querySelector('[data-reset-sub]').textContent = '再按一次就會全部清除，無法復原';
+          return;
+        }
+        F.reset();
+      });
       const sync = el.querySelector('[data-act="sync"]');
       sync.addEventListener('click', () => {
         const end = sync.querySelector('.zb-row-end');
@@ -305,7 +320,7 @@
   window.addEventListener('message', (e) => {
     const d = e.data || {};
     if (d.zb === 'push') push(d.id);
-    if (d.zb === 'reset') { try { ['zb-kids', 'zb-kid', 'zb-follow', 'zb-events', 'zb-noti-read'].forEach((k) => localStorage.removeItem(k)); sessionStorage.removeItem('zb-pushed'); } catch (x) {} location.href = 'index.html'; }
+    if (d.zb === 'reset') F.reset();
     if (d.zb === 'replay') { try { sessionStorage.removeItem('zb-loaded'); sessionStorage.removeItem('zb-pushed'); } catch (x) {} location.href = 'index.html'; }
   });
   const refresh = () => { NOTI = F ? F.reminders() : []; updateBell(); };

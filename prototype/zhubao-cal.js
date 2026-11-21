@@ -3,7 +3,7 @@
    左右滑或按箭頭換月。「新增事件」讓家長自己記其他事（托嬰中心報名、看醫生等）。 */
 (function () {
   const F = window.ZBF;
-  if (!F) return;
+  if (!F || F.leaving) return;
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const chev = '<svg class="zb-chevr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>';
   const toast = (t) => window.ZB && window.ZB.toast ? window.ZB.toast(t) : null;

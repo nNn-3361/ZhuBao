@@ -10,44 +10,109 @@
     hpaChild: ['國健署・兒童預防保健', 'https://www.hpa.gov.tw/Pages/List.aspx?nodeid=202'],
     book: ['國健署・兒童健康手冊（內附嬰兒大便辨識卡）', 'https://www.mohw.gov.tw/cp-88-214-1.html']
   };
-  const DEMO = {
-    money: { q: '寶寶出生後，我可以領哪些補助？', keys: [['補助', '領'], ['補助', '哪些'], ['津貼', '哪些']],
-      answer: '依你填的資料，有 4 項可能適用：2 筆生育補助、每月的育兒津貼，還有一項是低收入戶才有的營養費。實際資格以主管機關審核為準。',
-      mine: '寶寶 2026/9/10 出生、第 2 胎、由自己或家人照顧。你填的地區是北區，但還沒確認父或母是否設籍新竹市，這會影響市府的生育津貼。',
-      prepTitle: '竹寶幫你整理', prep: [
-        '中央生育補助：每胎 10 萬元。有參加社會保險的人，依規定由保險人辦理給付，方式請看官方說明。',
-        '新竹市生育津貼：每胎 3 萬元。父或母要設籍新竹市，向戶政事務所申請。',
-        '育兒津貼：未滿 2 歲、自己或家人帶的寶寶可能適用，金額、資格與申辦方式請看市府公告。',
-        '低收入戶產婦及嬰兒營養費：2 萬元，只限新竹市列冊低收入戶，要在 2026/12/10 前向區公所申請。'],
-      next: [['看補助', 'benefits.html'], ['修改寶寶資料', 'setup.html']],
-      srcs: [S.dosi, S.civil, S.allow, S.lawLow] },
-    switch: { q: '送托之後，我的補助會怎麼變？', keys: [['送托'], ['托育補助']],
+  /* 示範問答：依目前的寶寶檔案（生日、戶籍區、胎次、照顧方式、低收入）組出回答，換寶寶或改資料後就跟著變 */
+  const F = window.ZBF;
+  const K = F && !F.leaving ? F.current() : null;
+  const kidInfo = (() => {
+    if (!K) return null;
+    const b = F.parse(K.bd), t = F.today(), a = F.age(K);
+    const m = a.born ? a.months : -1;
+    const y = b.getMonth() < 8 || (b.getMonth() === 8 && b.getDate() === 1) ? b.getFullYear() + 5 : b.getFullYear() + 6;
+    const s5 = new Date(y, 7, 1), s6 = new Date(y + 1, 7, 1);
+    const home = K.care === '自己或家人';
+    const careTxt = home ? '由自己或家人照顧' : '送' + K.care + '照顧';
+    const resTxt = K.residency === '是' ? '父或母設籍新竹市' : K.residency === '否' ? '父母都沒有設籍新竹市' : '還沒確認父或母是否設籍新竹市';
+    return { b, t, a, m, s5, s6, home, careTxt, resTxt, born: a.born, name: K.name,
+      bdTxt: F.fmt(b) + (a.born ? ' 出生' : ' 預產期'), d3: F.addM(b, 3) };
+  })();
+  const who = () => kidInfo ? kidInfo.name : '寶寶';
+  function moneyQA() {
+    const base = { q: '寶寶出生後，我可以領哪些補助？', keys: [['補助', '領'], ['補助', '哪些'], ['津貼', '哪些']],
+      next: [['看補助', 'benefits.html'], ['修改寶寶資料', 'setup.html']], prepTitle: '竹寶幫你整理' };
+    if (!kidInfo) return Object.assign(base, { answer: '先填寶寶資料，竹寶會依生日、戶籍和照顧方式幫你整理。', mine: '還沒有寶寶資料。', prep: [], srcs: [S.dosi, S.civil, S.allow] });
+    const I = kidInfo, prep = [], srcs = [];
+    const early = !I.born || I.m < 3;
+    if (early) {
+      if (I.b >= new Date(2026, 0, 1)) { prep.push('中央生育補助：115/1/1 起出生每胎 10 萬元。有參加社會保險的人，依規定由保險人辦理給付，方式請看官方說明。'); srcs.push(S.dosi); }
+      if (K.residency !== '否') { prep.push('新竹市生育津貼：每胎 ' + (I.b >= new Date(2027, 0, 1) ? '6 萬元（2027/1/1 起出生）' : '3 萬元') + '。父或母要設籍新竹市，向戶政事務所申請。'); srcs.push(S.civil); }
+      if (K.lowIncome === '是') { prep.push('低收入戶產婦及嬰兒營養費：2 萬元，只限新竹市列冊低收入戶，要在 ' + F.fmt(I.d3) + ' 前向區公所申請。'); srcs.push(S.lawLow); }
+    }
+    if (I.m < 24) {
+      if (I.home) { prep.push('育兒津貼：未滿 2 歲、自己或家人帶的寶寶可能適用，金額、資格與申辦方式請看市府公告。'); srcs.push(S.allow); }
+      else { prep.push('托育補助：送準公共托嬰中心或保母可能適用，由托育單位協助申請。'); srcs.push(['新竹市社會處・準公共化專區', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20']); }
+    } else if (I.t < I.s5) {
+      prep.push('育兒津貼（2 歲以後）：在家照顧或讀沒有加入準公共的私立幼兒園，第 1 名子女每月 5,000 元起；讀平價幼兒園則改用繳費上限。');
+      srcs.push(['教育部・2 歲以上幼兒育兒津貼及就學補助作業要點', 'https://edu.law.moe.gov.tw/LawContent.aspx?id=GL001909']);
+    } else if (I.t < I.s6) {
+      prep.push('幼兒園就學補助（5 歲）：沒讀平價幼兒園的孩子每月 5,000 元起，' + I.s5.getFullYear() + '/8/1 起受理、當年 12/31 前申請；讀平價幼兒園則改用繳費上限。');
+      srcs.push(['教育部・2 歲以上幼兒育兒津貼及就學補助作業要點', 'https://edu.law.moe.gov.tw/LawContent.aspx?id=GL001909']);
+    } else if (K.lowIncome === '是') {
+      prep.push('國小就學費用減免：低收入戶學生全免、中低收入戶減免 60%，市立學校在註冊時直接減免。');
+      srcs.push(['新竹市低收入戶學生與中低收入戶學生就學費用減免辦法', 'https://www.hc.edu.tw/edub/rule/vgk/201801110813343362611.pdf']);
+    }
+    if ((K.conds || []).indexOf('leave') >= 0 && I.m < 36) { prep.push('育嬰留職停薪津貼：寶寶 3 歲前請育嬰留停，按投保薪資 8 成發給，父母各最多 6 個月。'); srcs.push(['勞保局・育嬰留職停薪津貼給付標準', 'https://www.bli.gov.tw/0109300.html']); }
+    const answer = prep.length
+      ? '依你填的資料，' + who() + '目前有 ' + prep.length + ' 項錢的補助可能適用。實際資格以主管機關審核為準，補助頁有完整清單。'
+      : who() + '這個年紀，依你填的資料沒有找到一定能領的現金補助。補助頁還有其他福利和服務可以看。';
+    return Object.assign(base, { answer, prep, srcs: srcs.length ? srcs : [S.dosi],
+      mine: who() + ' ' + I.bdTxt + '、' + K.order + '、' + I.careTxt + '。戶籍在' + K.district + '，' + I.resTxt + (K.residency === '是' ? '。' : '，這會影響市府的生育津貼。') });
+  }
+  function switchQA() {
+    const I = kidInfo;
+    let mine = '先填寶寶資料，竹寶會依照顧方式說明。';
+    if (I) {
+      if (I.born && I.t >= I.s6) mine = who() + '已經到上小學的年紀，托育補助、育兒津貼和幼兒園就學補助都不再適用。低收入或中低收入戶可以看國小就學費用減免。';
+      else if (I.born && I.t >= I.s5) mine = who() + '已經到學齡 5 歲，托嬰的托育補助不再適用。讀公立、非營利或準公共幼兒園改用繳費上限，沒讀平價幼兒園可以領幼兒園就學補助。';
+      else if (I.born && I.m >= 24) mine = who() + '已經滿 2 歲，托嬰的托育補助不再適用。讀公立、非營利或準公共幼兒園改用繳費上限，在家照顧或讀一般私立幼兒園可領 2 歲以後的育兒津貼。';
+      else if (I.home) mine = '你填的是自己或家人帶' + who() + '，所以育兒津貼可能適用，托育補助可能不適用。打算送托時，可以先看' + K.district + '的準公共托嬰中心與保母。';
+      else mine = '你填的是送' + K.care + '，所以托育補助可能適用，育兒津貼可能不適用。記得確認' + K.care + '是不是「準公共」。';
+    }
+    return { q: '送托之後，我的補助會怎麼變？', keys: [['送托'], ['托育補助']],
       answer: '送到準公共托嬰中心或保母後，可能改適用托育補助，育兒津貼和托育補助不會同時領，實際以社會處規定為準。',
-      mine: '你填的是自己或家人帶寶寶，所以育兒津貼可能適用，托育補助可能不適用。打算送托時，可以先看北區的準公共托嬰中心名冊。',
-      prepTitle: '送托前可以先做', prep: ['確認托育單位是不是「準公共」，這會影響托育補助。', '送托後依社會處規定提出托育補助申請。'],
+      mine, prepTitle: '送托前可以先做', prep: ['確認托育單位是不是「準公共」，這會影響托育補助。', '送托後依社會處規定提出托育補助申請。'],
       next: [['看托育', 'childcare.html'], ['看補助', 'benefits.html']],
-      srcs: [['新竹市社會處・準公共化專區', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20']] },
-    nursery: { q: '北區有哪些準公共托嬰中心？', keys: [['托嬰'], ['準公共']],
-      answer: '北區的準公共托嬰中心都列在社會處的名冊上，例如新竹市私立茱蒂園托嬰中心。',
-      mine: '你的戶籍在北區，托育頁會把北區排在前面。送準公共托嬰中心可能適用托育補助。',
-      prepTitle: '', prep: [],
-      next: [['看托育', 'childcare.html']],
-      srcs: [['新竹市社會處・115 年準公共化托嬰中心名冊', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20']] },
-  };
-  const QA = {
-    lowinc: { q: '低收入戶的產婦營養費要準備什麼？', keys: [['營養費'], ['低收入']],
+      srcs: [['新竹市社會處・準公共化專區', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20']] };
+  }
+  function nurseryQA() {
+    const dist = K ? K.district : '北區';
+    const ROSTER = { '北區': '例如新竹市私立茱蒂園托嬰中心。', '東區': '東區另有市府的東區公共托嬰中心，關東公共托嬰中心也已開工。', '香山區': '香山區也可以請南／香山區居家托育服務中心協助媒合準公共保母。' };
+    return { q: dist + '有哪些準公共托嬰中心？', keys: [['托嬰'], ['準公共']],
+      answer: dist + '的準公共托嬰中心都列在社會處的名冊上，' + ROSTER[dist],
+      mine: '你的戶籍在' + dist + '，托育頁會把' + dist + '排在前面。送準公共托嬰中心可能適用托育補助' + (kidInfo && kidInfo.born && kidInfo.m >= 24 ? '；不過' + who() + '已滿 2 歲，托嬰中心大多收未滿 2 歲。' : '。'),
+      prepTitle: '', prep: [], next: [['看托育', 'childcare.html']],
+      srcs: [['新竹市社會處・115 年準公共化托嬰中心名冊', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20']] };
+  }
+  function lowincQA() {
+    const I = kidInfo;
+    let mine = '先填寶寶資料，竹寶會幫你算申請期限。';
+    if (I) {
+      const li = K.lowIncome === '是' ? '你填的是低收入或中低收入戶，' : K.lowIncome === '否' ? '你填的不是低收入戶，這項可能不適用。' : '你在設定時略過了這一題，如果是低收入戶，';
+      if (K.lowIncome === '否') mine = li;
+      else if (!I.born) mine = '預產期是 ' + F.fmt(I.b) + '，出生後 3 個月內要申請，期限大約是 ' + F.fmt(I.d3) + '。' + li + '記得在期限前申請。';
+      else if (I.t >= I.d3) mine = who() + ' ' + F.fmt(I.b) + ' 出生，申請期限 ' + F.fmt(I.d3) + ' 已經過了。';
+      else mine = who() + ' ' + F.md(I.b) + ' 出生，申請期限是 ' + F.fmt(I.d3) + '。' + li + '記得在期限前申請。';
+    }
+    return { q: '低收入戶的產婦營養費要準備什麼？', keys: [['營養費'], ['低收入']],
       answer: '新竹市列冊低收入戶的產婦，每案可申請 2 萬元，要在寶寶出生後 3 個月內向區公所申請。',
-      mine: '寶寶 9/10 出生，申請期限是 2026/12/10。你在設定時略過了這一題，如果是低收入戶，記得在期限前申請。',
-      prepTitle: '帶到戶籍所在地的區公所', prep: ['申請書', '寶寶的新式戶口名簿影本與出生證明', '郵局存摺正面影本', '領款收據（請別人代辦要附委託書）'],
-      next: [['看補助', 'benefits.html']],
-      srcs: [S.lawLow] },
-    weekend: { q: '這週末可以帶寶寶去哪？', keys: [['週末'], ['周末'], ['去哪']],
-      answer: '這週六上午北區親子館有寶寶共讀，0 歲寶寶也能參加，免費但要先預約。',
-      mine: '寶寶 2 個月，適合安靜、室內、可以推嬰兒車的地方。竹北遠百的聖誕樹展也在室內。',
-      prepTitle: '', prep: [],
-      next: [['看親子活動', 'activities.html']],
-      srcs: [['新竹市托育資源中心親子館', 'https://wpcc.hccg.gov.tw/']] }
-  };
+      mine, prepTitle: '帶到戶籍所在地的區公所', prep: ['申請書', '寶寶的新式戶口名簿影本與出生證明', '郵局存摺正面影本', '領款收據（請別人代辦要附委託書）'],
+      next: [['看補助', 'benefits.html']], srcs: [S.lawLow] };
+  }
+  function weekendQA() {
+    const I = kidInfo;
+    let mine = '先填寶寶資料，竹寶會依年紀推薦。';
+    if (I) {
+      if (!I.born) mine = '寶寶還沒出生，孕婦可以先看有孕婦優惠的場館，活動頁會把孕婦優惠排在前面。';
+      else if (I.m < 12) mine = who() + ' ' + I.a.short + '，適合安靜、室內、可以推嬰兒車的地方，親子館的寶寶共讀很適合。';
+      else if (I.m < 36) mine = who() + ' ' + I.a.short + '，親子館的遊戲空間和音樂、律動課程很適合，記得先預約場次。';
+      else mine = who() + ' ' + I.a.short + '，可以試試博物館、科學館這類有兒童優惠的常設場館。';
+    }
+    return { q: '這週末可以帶寶寶去哪？', keys: [['週末'], ['周末'], ['去哪']],
+      answer: '新竹市的親子館有寶寶共讀和親子課程，免費但要先預約場次。活動頁可以依縣市、優惠和類型篩選。',
+      mine, prepTitle: '', prep: [], next: [['看親子活動', 'activities.html']],
+      srcs: [['新竹市托育資源中心親子館', 'https://wpcc.hccg.gov.tw/']] };
+  }
+  const DEMO = { money: moneyQA(), switch: switchQA(), nursery: nurseryQA() };
+  const QA = { lowinc: lowincQA(), weekend: weekendQA() };
   const ALL = Object.assign({}, DEMO, QA);
   const norm = (x) => String(x || '').replace(/[\s，。？?！!、,.]/g, '');
   function match(text) {
@@ -93,7 +158,7 @@
 
   /* ---------- 浮動小助手 ---------- */
   const page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
-  if (page === 'ask.html' || page === 'setup.html') return;
+  if (page === 'ask.html' || page === 'setup.html' || (F && F.leaving)) return;
   const ctx = PAGES[page] || PAGES['index.html'];
   const reduced = () => { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
   const LOGO = '<svg width="{s}" height="{s}" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"></circle><path class="zbf-sprout" d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>';

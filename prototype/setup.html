@@ -68,6 +68,8 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 }
 /*zb-ui-end*/
 </style>
+<style>.zb-first .zb-nav-links,.zb-first .zb-nav-toggle,.zb-first #zb-menu{display:none !important}</style>
+<script>try { if (window.ZBF && !window.ZBF.hasKids()) document.documentElement.classList.add('zb-first'); } catch (e) {}</script>
 <style>#dc-root>div{margin-left:auto;margin-right:auto}
 .zb-setup{max-width:768px;margin:0 auto;padding:32px 24px 56px;box-sizing:border-box}
 .zb-setup-card{background:#FCFAF6;border:1px solid #E4DED2;border-radius:20px;padding:32px 36px;display:flex;flex-direction:column;gap:24px}
@@ -166,8 +168,10 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <h1>{{headTitle}}</h1>
 <p>回答幾個簡單的問題，我們會依新竹市與中央的規定，整理出寶寶可以用的補助和每個年紀要注意的事。</p>
 </div>
-<p class="zb-su-note">只要一個暱稱（例如哥哥、妹妹），不收真實姓名與身分證字號。資料只存在這台裝置，隨時可以在設定中清除。</p>
+<p class="zb-su-note">只要一個暱稱（例如哥哥、妹妹），不收真實姓名與身分證字號。資料只存在這台裝置，隨時可以在右上角選單清除。</p>
 
+<sc-if value="{{firstTime}}" hint-placeholder-val="{{false}}"><p class="zb-su-note">已經先填好一組示範答案，可以直接按最下面的「建立檔案並開始使用」，也可以改成你的情況。</p></sc-if>
+<sc-if value="{{hasKids}}" hint-placeholder-val="{{false}}">
 <section class="zb-su-sec" aria-labelledby="pf-l">
 <span id="pf-l" class="zb-su-label">寶寶檔案</span>
 <span class="zb-su-hint">家裡有不只一個孩子，就幫每個孩子各建一個檔案。點一個檔案可以修改。</span>
@@ -176,6 +180,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <button type="button" aria-pressed="{{newOn}}" onClick="{{startNew}}">＋ 建立新檔案</button>
 </div>
 </section>
+</sc-if>
 
 <section class="zb-su-sec" aria-labelledby="nm-l">
 <label id="nm-l" class="zb-su-label" for="kid-name">暱稱</label>
@@ -226,6 +231,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 
 <div class="zb-su-foot">
 <button type="button" class="zb-su-save" onClick="{{save}}" style="height: 52px; max-width: 360px; width: 100%; display: flex; align-items: center; justify-content: center; background: #2E5E4E; color: #FFFFFF; border: 0; border-radius: 12px; font-family: inherit; font-size: 16px; font-weight: 600; cursor: pointer">{{saveText}}</button>
+<sc-if value="{{hasKids}}" hint-placeholder-val="{{false}}"><button type="button" onClick="{{cancel}}" style="min-height: 44px; padding: 0 16px; border: 0; background: transparent; font-family: inherit; font-size: 14px; color: #5F6B64; cursor: pointer">不儲存，回到主頁</button></sc-if>
 <sc-if value="{{canDelete}}" hint-placeholder-val="{{false}}"><button type="button" onClick="{{remove}}" style="min-height: 44px; padding: 0 16px; border: 0; background: transparent; font-family: inherit; font-size: 14px; color: #8E3A33; cursor: pointer">{{deleteText}}</button></sc-if>
 <p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64; text-align: center">結果僅供參考，最終資格以主管機關審核為準。</p>
 </div>
@@ -244,19 +250,24 @@ class Component extends DCLogic {
     document.addEventListener('click', (e) => { const t = e.target; if (t && t.isConnected && this.state.dp && !t.closest('.zb-date-pick')) this.setState({ dp: false }); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && this.state.dp) this.setState({ dp: false }); });
     const F = window.ZBF;
-    this.state = Object.assign({ menuOpen: false, dp: false, confirmDel: false }, new URLSearchParams(location.search).get('new') === '1' ? this.blank() : this.load(F.current()));
+    const cur = F.current();
+    this.state = Object.assign({ menuOpen: false, dp: false, confirmDel: false }, (!cur || new URLSearchParams(location.search).get('new') === '1') ? this.blank() : this.load(cur));
   }
   load(k) {
     const b = window.ZBF.parse(k.bd);
     return { id: k.id, name: k.name, color: k.color, bd: { y: b.getFullYear(), m: b.getMonth(), d: b.getDate() }, vy: b.getFullYear(), vm: b.getMonth(),
       district: k.district, residency: k.residency, order: k.order, care: k.care, lowIncome: k.lowIncome, conds: (k.conds || []).slice(), confirmDel: false };
   }
+  /* 新檔案：已經填好一組示範用的預設答案，可以直接用，也可以改。
+     第一個檔案預設快滿 3 個月的寶寶：產後第 2 次健康照護再幾天就截止，關注後馬上看得到行事曆和提醒 */
   blank() {
-    const F = window.ZBF, used = F.kids().map((k) => k.color), T = F.today();
-    const free = F.COLORS.find((c) => used.indexOf(c.id) < 0) || F.COLORS[0];
-    const n = F.kids().length + 1;
-    return { id: '', name: '', color: free.id, bd: { y: T.getFullYear(), m: T.getMonth(), d: T.getDate() }, vy: T.getFullYear(), vm: T.getMonth(),
-      district: F.current().district, residency: F.current().residency, order: n >= 3 ? '第 3 胎以上' : '第 ' + n + ' 胎', care: '自己或家人', lowIncome: F.current().lowIncome, conds: [], confirmDel: false };
+    const F = window.ZBF, all = F.kids(), used = all.map((k) => k.color), T = F.today(), cur = F.current();
+    const free = (all.length ? F.COLORS.find((c) => used.indexOf(c.id) < 0) : F.color('green')) || F.COLORS[0];
+    const n = all.length + 1;
+    const b = all.length ? T : F.addD(F.addM(T, -3), 5);
+    return { id: '', name: all.length ? '' : '小竹', color: free.id, bd: { y: b.getFullYear(), m: b.getMonth(), d: b.getDate() }, vy: b.getFullYear(), vm: b.getMonth(),
+      district: cur ? cur.district : '北區', residency: cur ? cur.residency : '是', order: n >= 3 ? '第 3 胎以上' : '第 ' + n + ' 胎', care: '自己或家人',
+      lowIncome: cur ? cur.lowIncome : '不想回答', conds: [], confirmDel: false };
   }
   renderVals() {
     const s = this.state;
@@ -303,6 +314,7 @@ class Component extends DCLogic {
     };
     return {
       headTitle: s.id ? '修改' + (s.name || '寶寶') + '的資料' : kids.length ? '建立新的寶寶檔案' : '先認識你的寶寶',
+      hasKids: kids.length > 0, firstTime: kids.length === 0,
       profiles: kids.map((k) => ({ name: k.name, hex: F.color(k.color).hex, on: k.id === s.id ? 'true' : 'false', pick: () => this.setState(this.load(k)) })),
       newOn: s.id ? 'false' : 'true', startNew: () => this.setState(this.blank()),
       nameVal: s.name || '', setName: (e) => { this.state.name = e.target.value; },
@@ -310,6 +322,7 @@ class Component extends DCLogic {
       saveText: s.id ? '儲存並回到主頁' : '建立檔案並開始使用', save,
       canDelete: !!s.id && kids.length > 1, deleteText: s.confirmDel ? '再按一次刪除「' + s.name + '」的檔案' : '刪除這個檔案',
       remove: () => { if (!s.confirmDel) { this.setState({ confirmDel: true }); return; } F.removeKid(s.id); toast('已刪除'); this.setState(this.load(F.current())); },
+      cancel: () => { location.replace('index.html'); },
       bdLabel: bd.y + ' 年 ' + (bd.m + 1) + ' 月 ' + bd.d + ' 日（' + WK[bdDate.getDay()] + '）',
       dpOpen: !!s.dp, dpExp: s.dp ? 'true' : 'false',
       openPicker: () => this.setState({ dp: !s.dp, vy: bd.y, vm: bd.m }),
