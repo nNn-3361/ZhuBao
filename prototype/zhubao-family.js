@@ -108,8 +108,33 @@
     return list;
   }
 
+  /* 補助頁上方的篩選條件（可複選）。family＝家庭狀況，care＝照顧方式 */
+  const CONDS = [
+    { id: 'low', name: '經濟困難', group: 'family' },
+    { id: 'single', name: '單親・特殊境遇', group: 'family' },
+    { id: 'dis', name: '身障・早療', group: 'family' },
+    { id: 'med', name: '醫療', group: 'family' },
+    { id: 'new', name: '新住民', group: 'family' },
+    { id: 'ind', name: '原住民', group: 'family' },
+    { id: 'multi', name: '多胞胎', group: 'family' },
+    { id: 'preg', name: '懷孕・下一胎', group: 'family' },
+    { id: 'home', name: '自己或家人照顧', group: 'care' },
+    { id: 'care', name: '送托（保母、托嬰中心）', group: 'care' },
+    { id: 'leave', name: '請育嬰留停', group: 'care' }
+  ];
+  /* 依寶寶檔案自動帶入的條件：寶寶資料頁勾的狀況＋低收入、照顧方式、還沒出生 */
+  function conds(k) {
+    const out = (k.conds || []).filter((c) => CONDS.some((x) => x.id === c));
+    const add = (c) => { if (out.indexOf(c) < 0) out.push(c); };
+    if (k.lowIncome === '是') add('low');
+    if (k.care === '自己或家人') add('home'); else if (k.care) add('care');
+    if (parse(k.bd) > today()) add('preg');
+    return out;
+  }
+
   /* 補助日期規則：只用補助頁上已寫明、有官方來源的時間點 */
   const RULES = [
+    { item: 'confine', name: '到宅坐月子服務', start: (b) => addM(b, -3) },
     { item: 'birthHC', name: '新竹市生育津貼', start: (b) => b, skip: (k) => k.residency === '否' },
     { item: 'lowInc', name: '低收入戶產婦及嬰兒營養費', start: (b) => b, end: (b) => addD(addM(b, 3), -1), skip: (k) => k.lowIncome === '否' },
     { item: 'post1', name: '產後健康照護（第 1 次）', start: (b) => b, end: (b) => addD(addM(b, 1), -1) },
@@ -204,6 +229,6 @@
     return out;
   }
 
-  window.ZBF = { COLORS, FAMILY, WK, today, ymd, parse, addM, addD, days, fmt, md, kids, kid, current, setCurrent, saveKid, removeKid, color, kidHex, kidName, age, line, stages, benefitDates, ruleName,
+  window.ZBF = { COLORS, FAMILY, WK, today, ymd, parse, addM, addD, days, fmt, md, kids, kid, current, setCurrent, saveKid, removeKid, color, kidHex, kidName, age, line, stages, CONDS, conds, benefitDates, ruleName,
     follows, isFollowing, follow, unfollow, activityFollow, events, saveEvent, removeEvent, calendar, reminders, fkey };
 })();
