@@ -201,13 +201,14 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </sc-for>
 </div>
 <dl style="margin: 0; display: grid; grid-template-columns: 56px minmax(0, 1fr); row-gap: 6px; font-size: 15px; line-height: 1.6">
+<sc-if value="{{r.hasOrg}}" hint-placeholder-val="{{false}}"><dt style="color: #5F6B64">所屬中心</dt><dd style="margin: 0">{{r.org}}</dd></sc-if>
 <dt style="color: #5F6B64">空位</dt><dd style="margin: 0">{{r.vacancy}}</dd>
 <dt style="color: #5F6B64">費用</dt><dd style="margin: 0">{{r.fee}}</dd>
 </dl>
 <p style="margin: 0; font-size: 15px; line-height: 1.7">{{r.note}}</p>
 <div style="padding-top: 10px; border-top: 1px solid #E4DED2; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; color: #5F6B64">
 <span style="min-width: 0; overflow-wrap: anywhere">來源 <a href="{{r.srcUrl}}">{{r.srcTitle}}</a></span>
-<sc-if value="{{r.canContact}}" hint-placeholder-val="{{true}}"><a href="{{r.srcUrl}}" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">看官方說明</a></sc-if>
+<sc-if value="{{r.canContact}}" hint-placeholder-val="{{true}}"><a href="{{r.srcUrl}}" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; background: #2E5E4E; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">{{r.cta}}</a></sc-if>
 </div>
 </div>
 </sc-if>
@@ -235,19 +236,21 @@ class Component extends DCLogic {
     const SRC = {
       roster: ['新竹市社會處・115 年準公共化托嬰中心名冊（115.03.11）', 'https://society.hccg.gov.tw/uploaddowndoc?file=Daycare%2F202603201414590.pdf&filedisplay=%E6%96%B0%E7%AB%B9%E5%B8%82115%E5%B9%B4%E6%BA%96%E5%85%AC%E6%89%98%E5%AC%B0%E4%B8%AD%E5%BF%83%E6%B8%85%E5%86%8A.pdf&flag=doc', ''],
       eastPub: ['新竹市政府・東區公托完工公告', 'https://www.hccg.gov.tw/ch/home.jsp?id=48&parentpath=0,16&mcustomize=municipalnews_view.jsp&dataserno=202111100004&ou=message,ou=ap_root,o=hccg,c=tw&toolsflag=Y&mserno=201601300313', ''],
-      home: ['衛生福利部・托育服務（居家托育服務中心）', 'https://www.mohw.gov.tw/cp-88-230-1.html', ''],
+      homeE: ['新竹市東區居家托育服務中心（03）5753677', 'https://www.3677east.tw/OnePage.aspx?mid=80', ''],
+      homeN: ['新竹市北區居家托育服務中心（03）5355006', 'http://www.mommybaby.org.tw/', ''],
+      homeS: ['新竹市南/香山區居家托育服務中心（03）5301632', 'http://www.mammy.org.tw/', ''],
       kd: ['新竹市社會處・關東公托開工公告', 'https://society.hccg.gov.tw/ch/home.jsp?id=13&parentpath=0,2&mcustomize=municipalnews_view.jsp&toolsflag=Y&dataserno=92e5e4a3-b53f-4b04-9e5f-d5fed34ba88d&t=MunicipalNews&mserno=201601300041', ''],
     };
     const DATA = [
       { name: '新竹市私立茱蒂園托嬰中心', type: '準公共托嬰中心', district: '北區', age: '未滿 2 歲', quasi: true, tags: ['準公共化'], vacancy: '請洽中心', fee: '請洽中心', note: '列在新竹市社會處 115 年準公共化托嬰中心名冊。', src: 'roster' },
       { name: '東區公共托嬰中心', type: '公共托嬰', district: '東區', age: '未滿 2 歲', quasi: false, tags: ['市府公共托嬰'], vacancy: '依招生公告', fee: '依招生公告', note: '新竹市政府設立的公共托嬰中心。', src: 'eastPub', contact: false },
       { name: '關東公共托嬰中心', type: '公共托嬰', district: '東區', age: '未滿 2 歲', quasi: false, planned: true, tags: ['已開工'], vacancy: '依招生公告', fee: '依招生公告', note: '市府公告已開工，招生時間請看社會處公告。', src: 'kd', contact: false },
-      { name: '陳美玲保母', type: '居家保母', district: '北區', age: '0–2 歲', quasi: true, tags: ['準公共化'], vacancy: '目前收托 1 位，還有 1 個名額', fee: '每月 17,000 元起', note: '保母人員技術士證，托育年資 12 年。可配合家長上班時間 7:30–18:00。（西大路一帶）', src: 'home' },
-      { name: '林淑芬保母', type: '居家保母', district: '北區', age: '0–2 歲', quasi: true, tags: ['準公共化'], vacancy: '目前額滿，可登記候補', fee: '每月 16,500 元起', note: '保母人員技術士證，托育年資 8 年。家中有安全圍欄與獨立午睡區。（中正路一帶）', src: 'home' },
-      { name: '王雅婷保母', type: '居家保母', district: '東區', age: '0–3 歲', quasi: true, tags: ['準公共化'], vacancy: '目前收托 2 位，還有 1 個名額', fee: '每月 18,000 元起', note: '幼保科系畢業，托育年資 6 年。可接受夜間延托（需另議）。（光復路一段一帶）', src: 'home' },
-      { name: '張惠君保母', type: '居家保母', district: '東區', age: '0–2 歲', quasi: false, tags: ['一般居家保母'], vacancy: '還有 2 個名額', fee: '每月 19,000 元起', note: '保母人員技術士證，托育年資 10 年。（建功路一帶）', src: 'home' },
-      { name: '黃佩珊保母', type: '居家保母', district: '香山區', age: '0–2 歲', quasi: true, tags: ['準公共化'], vacancy: '目前收托 1 位，還有 2 個名額', fee: '每月 15,500 元起', note: '保母人員技術士證，托育年資 5 年。住家一樓，推嬰兒車進出方便。（中華路五段一帶）', src: 'home' },
-      { name: '吳秀蘭保母', type: '居家保母', district: '香山區', age: '0–3 歲', quasi: true, tags: ['準公共化'], vacancy: '目前收托 3 位，還有 1 個名額', fee: '每月 16,000 元起', note: '保母人員技術士證，托育年資 15 年。（牛埔東路一帶）', src: 'home' }
+      { name: '居家托育人員・南勢里', type: '居家保母', district: '北區', age: '0–2 歲', quasi: true, tags: ['準公共化'], vacancy: '收托 1 位，可再收 1 位', fee: '每月 17,000 元起（依契約）', org: '北區居家托育服務中心', note: '保母人員技術士證，托育年資 12 年。服務地點在北區南勢里一帶。請由北區居家托育服務中心協助媒合。', src: 'homeN', cta: '請中心協助媒合' },
+      { name: '居家托育人員・西雅里', type: '居家保母', district: '北區', age: '0–2 歲', quasi: true, tags: ['準公共化'], vacancy: '目前額滿，可請中心登記候補', fee: '每月 16,500 元起（依契約）', org: '北區居家托育服務中心', note: '保母人員技術士證，托育年資 8 年。服務地點在北區西雅里一帶。請由北區居家托育服務中心協助媒合。', src: 'homeN', cta: '請中心協助媒合' },
+      { name: '居家托育人員・光復里', type: '居家保母', district: '東區', age: '0–3 歲', quasi: true, tags: ['準公共化'], vacancy: '收托 2 位，可再收 1 位', fee: '每月 18,000 元起（依契約）', org: '東區居家托育服務中心', note: '幼保相關科系畢業，托育年資 6 年。服務地點在東區光復里一帶。請由東區居家托育服務中心協助媒合。', src: 'homeE', cta: '請中心協助媒合' },
+      { name: '居家托育人員・建功里', type: '居家保母', district: '東區', age: '0–2 歲', quasi: false, tags: ['一般'], vacancy: '可再收 2 位', fee: '每月 19,000 元起（依契約）', org: '東區居家托育服務中心', note: '保母人員技術士證，托育年資 10 年。服務地點在東區建功里一帶。請由東區居家托育服務中心協助媒合。', src: 'homeE', cta: '請中心協助媒合' },
+      { name: '居家托育人員・牛埔里', type: '居家保母', district: '香山區', age: '0–2 歲', quasi: true, tags: ['準公共化'], vacancy: '收托 1 位，可再收 2 位', fee: '每月 15,500 元起（依契約）', org: '南/香山區居家托育服務中心', note: '保母人員技術士證，托育年資 5 年。服務地點在香山區牛埔里一帶。請由南/香山區居家托育服務中心協助媒合。', src: 'homeS', cta: '請中心協助媒合' },
+      { name: '居家托育人員・香山里', type: '居家保母', district: '香山區', age: '0–3 歲', quasi: true, tags: ['準公共化'], vacancy: '收托 3 位，可再收 1 位', fee: '每月 16,000 元起（依契約）', org: '南/香山區居家托育服務中心', note: '保母人員技術士證，托育年資 15 年。服務地點在香山區香山里一帶。請由南/香山區居家托育服務中心協助媒合。', src: 'homeS', cta: '請中心協助媒合' }
     ];
     const TYPE_STYLE = {
       '準公共托嬰中心': 'font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #ECE8E0; color: #3D4842',
@@ -276,7 +279,7 @@ class Component extends DCLogic {
     const results = filtered.map((d) => ({
       name: d.name, type: d.type, typeStyle: TYPE_STYLE[d.type], district: d.district, age: d.age,
       quasi: d.quasi && !d.planned, planned: !!d.planned, tags: d.tags, vacancy: d.vacancy, fee: d.fee, note: d.note,
-      srcTitle: SRC[d.src][0], srcUrl: SRC[d.src][1], conf: SRC[d.src][2], canContact: d.contact !== false
+      srcTitle: SRC[d.src][0], srcUrl: SRC[d.src][1], conf: SRC[d.src][2], canContact: d.contact !== false, org: d.org || '', hasOrg: !!d.org, cta: d.cta || '看官方說明'
     }));
     return {
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
