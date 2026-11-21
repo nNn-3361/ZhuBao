@@ -140,7 +140,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 <nav class="zb-nav-links" aria-label="主選單" style="display: flex; gap: 4px; flex-wrap: wrap">
 <a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
-<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
 <a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
 <a href="childcare.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">托育</a>
 <a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
@@ -152,7 +151,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
 <nav id="zb-menu" class="zb-nav-menu" aria-label="主選單" style="border-top: 1px solid #E4DED2; background: #FCFAF6; padding: 8px 16px 16px; display: flex; flex-direction: column">
 <a href="index.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">主頁</a>
-<a href="diary.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">寶寶日記</a>
 <a href="benefits.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">補助及其他福利</a>
 <a href="childcare.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">托育</a>
 <a href="activities.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">親子活動</a>
@@ -165,7 +163,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <main class="zb-ask" style="max-width: 1080px; margin: 0 auto; padding: 24px 24px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
 <div style="display: flex; flex-direction: column; gap: 6px">
 <h1 style="margin: 0; font-size: 26px; font-weight: 600">問竹寶</h1>
-<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">依寶寶的資料，用白話回答補助、托育、健康的問題。每個回答都附官方來源。</p>
+<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5F6B64">依寶寶的資料，用白話回答補助、托育和親子活動的問題。每個回答都附官方來源，實際資格以主管機關為準。</p>
 </div>
 
 <div class="zb-ask-grid">
@@ -208,7 +206,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"></circle><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
 <span style="font-size: 13px; font-weight: 600; color: #2E5E4E">竹寶</span>
 </div>
-<p style="margin: 0; font-size: 16px; line-height: 1.7">嗨，我是竹寶。我知道寶寶 2 個月 4 天、住北區、由自己或家人照顧。補助、健康、托育的問題都可以打在下面問我，我會照你的情況回答，並附上官方來源。</p>
+<p style="margin: 0; font-size: 16px; line-height: 1.7">嗨，我是竹寶。我知道寶寶 2 個月 4 天、住北區、由自己或家人照顧。補助、托育的問題都可以打在下面問我，我會照你的情況回答，並附上官方來源。</p>
 </article>
 </sc-if>
 
@@ -219,10 +217,10 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </sc-if>
 
 <sc-if value="{{isThinking}}" hint-placeholder-val="{{false}}">
-<article aria-label="竹寶正在查資料" role="status" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 4px 16px 16px 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<article aria-label="竹寶正在整理答案" role="status" style="background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 4px 16px 16px 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
 <div style="display: flex; align-items: center; gap: 10px">
 <svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"></circle><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
-<span style="font-size: 14px; font-weight: 600; color: #2E5E4E">竹寶正在查資料</span>
+<span style="font-size: 14px; font-weight: 600; color: #2E5E4E">竹寶正在整理答案</span>
 <span aria-hidden="true" style="display: inline-flex; gap: 4px"><span class="zb-dot"></span><span class="zb-dot"></span><span class="zb-dot"></span></span>
 </div>
 <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 14px">

@@ -63,9 +63,9 @@ iframe{position:absolute;left:0;top:50px;width:390px;height:794px;border:0;backg
 <div class="box">
 <h2>送出推播通知</h2>
 <p>模擬手機收到竹寶的提醒，點一下通知會打開對應的頁面。</p>
-<button type="button" class="btn primary" data-push="vax">疫苗提醒<small>1/10 滿 4 個月</small></button>
+<button type="button" class="btn primary" data-push="allow">補助提醒<small>育兒津貼記得申辦</small></button>
 <button type="button" class="btn" data-push="care">補助期限<small>12/10 前</small></button>
-<button type="button" class="btn" data-push="diary">日記提醒<small>還沒記體溫</small></button>
+<button type="button" class="btn" data-push="news">最新消息<small>關東公共托嬰開工</small></button>
 </div>
 
 <div class="box">
@@ -84,7 +84,7 @@ iframe{position:absolute;left:0;top:50px;width:390px;height:794px;border:0;backg
 
 <script>
 (function () {
-  const PAGES = [['index.html', '主頁'], ['diary.html', '寶寶日記'], ['benefits.html', '補助'], ['ask.html', '問竹寶'], ['childcare.html', '托育'], ['activities.html', '親子活動'], ['help.html', '協助'], ['setup.html', '寶寶資料']];
+  const PAGES = [['index.html', '主頁'], ['benefits.html', '補助'], ['childcare.html', '托育'], ['activities.html', '活動'], ['ask.html', '問竹寶'], ['help.html', '協助'], ['setup.html', '寶寶資料']];
   const frame = document.getElementById('app');
   const start = new URLSearchParams(location.search).get('p') || 'index.html';
   const safe = /^[a-z]+\.html(#[\w-]*)?$/.test(start) ? start : 'index.html';

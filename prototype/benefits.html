@@ -111,7 +111,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 <nav class="zb-nav-links" aria-label="主選單" style="display: flex; gap: 4px; flex-wrap: wrap">
 <a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
-<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
 <a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 14px">補助及其他福利</a>
 <a href="childcare.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">托育</a>
 <a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
@@ -123,7 +122,6 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
 <nav id="zb-menu" class="zb-nav-menu" aria-label="主選單" style="border-top: 1px solid #E4DED2; background: #FCFAF6; padding: 8px 16px 16px; display: flex; flex-direction: column">
 <a href="index.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">主頁</a>
-<a href="diary.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">寶寶日記</a>
 <a href="#" aria-current="page" style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 16px">補助及其他福利<span style="font-size: 12px; font-weight: 400">目前位置</span></a>
 <a href="childcare.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">托育</a>
 <a href="activities.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">親子活動</a>
@@ -150,7 +148,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <section aria-labelledby="h-stage" class="zb-sec">
 <div class="zb-sec-head">
 <h2 id="h-stage">依寶寶年齡</h2>
-<p>點一個竹節，就會在下面展開那個階段的補助與福利，一次只開一節。點每一項看 AI 說明。</p>
+<p>點一個竹節，就會在下面展開那個階段可能適用的補助與福利。點每一項看說明和還要確認的資料。</p>
 </div>
 <div style="display: flex; flex-direction: column">
 <sc-for list="{{stages}}" as="st" hint-placeholder-count="5">
@@ -190,6 +188,12 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; font-size: 15px; line-height: 1.7">
 <sc-for list="{{it.points}}" as="pt" hint-placeholder-count="3"><li>{{pt.t}}</li></sc-for>
 </ul>
+<sc-if value="{{it.hasNeed}}" hint-placeholder-val="{{true}}">
+<span style="font-size: 13px; font-weight: 600; color: #5F6B64; margin-top: 6px">還要確認的資料</span>
+<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; font-size: 15px; line-height: 1.7">
+<sc-for list="{{it.need}}" as="nd" hint-placeholder-count="2"><li>{{nd.t}}</li></sc-for>
+</ul>
+</sc-if>
 </div>
 </div>
 <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px dashed #E4DED2; padding-top: 14px">
@@ -252,7 +256,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 </section>
 
-<p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64; border-top: 1px solid #E4DED2; padding-top: 16px">資格由官方規則判定，AI 只負責白話說明。結果僅供參考，最終資格以主管機關審核為準。</p>
+<p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64; border-top: 1px solid #E4DED2; padding-top: 16px">「可能適用」只是依你填的資料初步整理，不代表已通過資格審查。實際資格以主管機關審核為準。</p>
 
 </div>
 </div>
@@ -272,14 +276,12 @@ class Component extends DCLogic {
       ok: 'M20 6 9 17l-5-5',
       check: 'M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2-3 4M12 18h.01',
       no: 'M5 12h14',
-      auto: 'M12 4v11m0 0 4-4m-4 4-4-4M4 20h16',
       expired: 'M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0'
     };
     const PILL = {
-      ok: ['#E4EEE7', '#2E5E4E', '符合'],
-      check: ['#F6E9CC', '#7A4F0B', '需確認'],
-      no: ['#ECE8E0', '#56625B', '不符合'],
-      auto: ['#EFEAE0', '#5F6B64', '自動入帳'],
+      ok: ['#E4EEE7', '#2E5E4E', '可能適用'],
+      check: ['#E4EEE7', '#2E5E4E', '可能適用'],
+      no: ['#ECE8E0', '#56625B', '可能不適用'],
       expired: ['#F5E4E0', '#8E3A33', '已過期限']
     };
     const pill = (k) => 'display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap; background: ' + PILL[k][0] + '; color: ' + PILL[k][1];
@@ -299,10 +301,10 @@ class Component extends DCLogic {
       birthHC: { name: '新竹市生育津貼', meta: '每胎 30,000 元・戶政事務所', status: yn(s.residency), src: 'civil', cta: '看官方說明',
         desc: '父或母須設籍新竹市，寶寶出生後向戶政事務所申請。',
         questions: s.residency === null ? [{ text: '父或母是否設籍新竹市？', yes: () => this.setState({ residency: true }), no: () => this.setState({ residency: false }) }] : [] },
-      centralTop: { name: '中央生育補助', meta: '115/1/1 起生產・每胎 10 萬元', status: 'auto', src: 'dosi', cta: '',
-        desc: '有參加社會保險的人不用另外申請。參加國民年金或沒有參加社會保險的媽媽，可以在戶政事務所辦出生登記時一併申請，也可以線上或向勞保局申請。' },
+      centralTop: { name: '中央生育補助', meta: '115/1/1 起生產・每胎 10 萬元', status: 'ok', src: 'dosi', cta: '',
+        desc: '有參加社會保險的人，依規定由保險人辦理給付。參加國民年金或沒有參加社會保險的媽媽，可以在戶政事務所辦出生登記時一併申請，也可以線上或向勞保局申請。' },
       lowInc: { name: '低收入戶產婦及嬰兒營養費', meta: '每案 20,000 元・產後 3 個月內', status: yn(s.lowIncome), src: 'lawLow', cta: '看法規',
-        desc: '對象是新竹市列冊的低收入戶婦女。要在寶寶出生後 3 個月內（2026/12/10 前）向戶籍所在地的區公所申請。這題你選擇略過，可以在這裡補答。',
+        desc: '對象是新竹市列冊的低收入戶婦女。要在寶寶出生後 3 個月內（2026/12/10 前）向戶籍所在地的區公所申請。',
         questions: s.lowIncome === null ? [{ text: '是否為新竹市列冊的低收入戶？', yes: () => this.setState({ lowIncome: true }), no: () => this.setState({ lowIncome: false }) }] : [] },
       post1: { name: '產後健康照護（第 1 次）', meta: '公費・產後 1 個月內', status: 'expired', src: 'hpaPost', cta: '',
         desc: '第 1 次要在產後 1 個月內（2026/10/10 前），已經過了。第 2 次在產後 1 到 3 個月內，仍可預約。' },
@@ -313,7 +315,7 @@ class Component extends DCLogic {
       post2: { name: '產後健康照護（第 2 次）', meta: '公費・12/10 前', status: 'ok', src: 'hpaPost', cta: '看官方說明',
         desc: '產後 1 到 3 個月內，到有提供產檢的健保特約院所。內容包含運動、營養、避孕與下一胎諮詢。記得帶健保卡和孕媽咪健康手冊。' },
       allowance: { name: '育兒津貼', meta: '未滿 2 歲・需申辦', status: 'ok', src: 'allow', cta: '看申辦方式',
-        desc: '未滿 2 歲的寶寶可以申辦育兒津貼。申辦方式請看市府公告。若之後改送托育，會改領托育補助。' },
+        desc: '未滿 2 歲的寶寶可以申辦育兒津貼。申辦方式請看市府公告。若之後改送托育，可能改適用托育補助，請看官方規定。' },
       tempcare: { name: '臨時托育', meta: '新竹市社會處臨托服務', status: 'ok', src: 'temp', cta: '看官方說明',
         desc: '臨時有事時，可以把寶寶短時間托給合格的托育單位。據點與預約方式請看社會處臨托服務頁面。' },
       check3: { name: '兒童預防保健（續）', meta: '公費・1 歲半前共 4 次', status: 'ok', src: 'hpaChild', cta: '看官方說明',
@@ -321,7 +323,7 @@ class Component extends DCLogic {
       vax4: { name: '公費疫苗（續）', meta: '依疾管署接種時程', status: 'ok', src: 'cdc', cta: '看接種時程',
         desc: '接種項目以疾管署最新時程表和兒童健康手冊為準。' },
       nursery: { name: '托育補助', meta: '送托準公共機構', status: 'no', src: 'quasi', cta: '',
-        desc: '目前由自己或家人照顧，所以不符合。之後如果送準公共托嬰中心或保母，請領規定請看社會處準公共化專區。' },
+        desc: '目前填的是自己或家人照顧，依目前資料可能不適用。之後如果送準公共托嬰中心或保母，請領規定請看社會處準公共化專區。' },
       check4: { name: '兒童預防保健（續）', meta: '公費・1 歲半前共 4 次', status: 'ok', src: 'hpaChild', cta: '看官方說明',
         desc: '建議月齡請看兒童健康手冊。' }
     };
@@ -334,7 +336,7 @@ class Component extends DCLogic {
         { tag: '親子館', text: '北區親子館：南勢六街 11 號 2 樓（南勢社會福利館），03-5230866', url: 'https://wpcc.hccg.gov.tw/', src: '新竹市托育資源中心' }
       ],
       s2: [
-        { tag: '公共托嬰', text: '關東公共托嬰中心已開工，招生時會提醒你', url: 'https://society.hccg.gov.tw/ch/home.jsp?id=13&parentpath=0,2&mcustomize=municipalnews_view.jsp&toolsflag=Y&dataserno=92e5e4a3-b53f-4b04-9e5f-d5fed34ba88d&t=MunicipalNews&mserno=201601300041', src: '新竹市社會處' },
+        { tag: '公共托嬰', text: '關東公共托嬰中心已開工，招生資訊請看社會處公告', url: 'https://society.hccg.gov.tw/ch/home.jsp?id=13&parentpath=0,2&mcustomize=municipalnews_view.jsp&toolsflag=Y&dataserno=92e5e4a3-b53f-4b04-9e5f-d5fed34ba88d&t=MunicipalNews&mserno=201601300041', src: '新竹市社會處' },
         { tag: '親子館', text: '東區親子館：中央路 241 號 3 樓（衛生社福大樓），03-5330761', url: 'https://wpcc.hccg.gov.tw/', src: '新竹市托育資源中心' }
       ],
       s3: [
@@ -350,19 +352,34 @@ class Component extends DCLogic {
       { name: '好孕專車', tag: '懷孕期間', who: '孕產婦', what: '產檢交通車資補助', where: '新竹市', note: '準備下一胎時可以用，搭車去產檢的車資可向市府申請補助。', cta: '看市府公告', url: 'https://society.hccg.gov.tw/ch/home.jsp?id=13&parentpath=0,2&mcustomize=municipalnews_view.jsp&dataserno=056cfd89-4747-4689-8936-b5db75043300&aplistdn=ou%3Dmunicipalnews,ou%3Dmessage,ou%3Dap_root,o%3Dhccg,c%3Dtw&toolsflag=Y&mserno=201601300108' }
     ];
     const INFO = {
-      birthHC: ['寶寶出生後，新竹市政府發給家長的一次性現金，幫忙支應生產和新生兒的開銷。', ['每胎 30,000 元。', '父或母須設籍新竹市。', '寶寶出生後向戶政事務所申請。', '竹寶還不確定父或母是否設籍新竹市，可以到上方「修改資料」補上。']],
-      centralTop: ['中央政府對 115 年 1 月 1 日起出生的寶寶發的生育補助，補貼生產後的家庭開銷。', ['每胎 10 萬元。', '有參加社會保險的人不用另外申請，會自動入帳。', '參加國民年金或沒有社會保險的媽媽，可在辦出生登記時一併申請，也可以線上或向勞保局申請。']],
-      lowInc: ['給新竹市低收入戶產婦和新生兒的營養費，補貼產後調養和寶寶營養的開銷。', ['每案 20,000 元。', '對象是新竹市列冊的低收入戶婦女。', '要在寶寶出生後 3 個月內（2026/12/10 前）向戶籍所在地的區公所申請。', '竹寶還不確定是否為低收入戶，可以到上方「修改資料」補上。']],
+      birthHC: ['寶寶出生後，新竹市政府發給家長的一次性現金，幫忙支應生產和新生兒的開銷。', ['每胎 30,000 元。', '父或母須設籍新竹市。', '寶寶出生後向戶政事務所申請。', '父或母是否設籍新竹市，請在申請前確認。']],
+      centralTop: ['中央政府對 115 年 1 月 1 日起出生的寶寶發的生育補助，補貼生產後的家庭開銷。', ['每胎 10 萬元。', '有參加勞保等社會保險的人，依規定由保險人辦理給付，實際方式請看官方說明。', '參加國民年金或沒有社會保險的媽媽，可在辦出生登記時一併申請，也可以線上或向勞保局申請。']],
+      lowInc: ['給新竹市低收入戶產婦和新生兒的營養費，補貼產後調養和寶寶營養的開銷。', ['每案 20,000 元。', '對象是新竹市列冊的低收入戶婦女。', '要在寶寶出生後 3 個月內（2026/12/10 前）向戶籍所在地的區公所申請。', '是否為新竹市列冊低收入戶，請在申請前確認。']],
       post1: ['國健署提供的公費產後檢查，由醫師關心媽媽產後的身體恢復。', ['第 1 次要在產後 1 個月內（2026/10/10 前），已經過了。', '第 2 次在產後 1 到 3 個月內，仍可預約。']],
       post2: ['國健署提供的第 2 次公費產後檢查，由醫師關心媽媽產後的身體恢復，免付費。', ['產後 1 到 3 個月內（2026/12/10 前）。', '到有提供產檢的健保特約院所。', '內容包含運動、營養、避孕與下一胎諮詢。', '記得帶健保卡和孕媽咪健康手冊。']],
       check2: ['國健署提供的公費兒童健康檢查，看寶寶的生長和發展，免付費。', ['未滿 7 歲共 7 次，其中 4 次在 1 歲 6 個月前。', '每次的建議月齡請看兒童健康手冊。', '記得帶健保卡和兒童健康手冊。']],
       vax2: ['政府免費提供的幼兒常規疫苗，預防嚴重的傳染病。', ['依疾管署兒童預防接種時程接種。', '帶兒童健康手冊到合約院所。', '接種項目以疾管署最新時程表為準。']],
-      allowance: ['給未滿 2 歲寶寶家長的每月育兒津貼，補貼自己或家人在家照顧的開銷。', ['對象是未滿 2 歲的寶寶。', '金額與申辦方式請看市府公告。', '之後如果改送托育，會改領托育補助。']],
+      allowance: ['給未滿 2 歲寶寶家長的每月育兒津貼，補貼自己或家人在家照顧的開銷。', ['對象是未滿 2 歲的寶寶。', '金額與申辦方式請看市府公告。', '之後如果改送托育，可能改適用托育補助，請看官方規定。']],
       tempcare: ['臨時有事時，可以把寶寶短時間托給合格托育單位照顧的服務。', ['據點、時段和預約方式請看社會處臨托服務頁面。', '費用請見官方頁面。']],
       check3: ['國健署提供的公費兒童健康檢查，看寶寶的生長和發展，免付費。', ['1 歲 6 個月前共 4 次。', '建議月齡請看兒童健康手冊。']],
       vax4: ['政府免費提供的幼兒常規疫苗，預防嚴重的傳染病。', ['接種項目以疾管署最新時程表和兒童健康手冊為準。']],
-      nursery: ['送托到準公共托嬰中心或保母時，政府補助一部分托育費用。', ['目前由自己或家人照顧，所以不符合。', '之後如果送托，請領規定請看社會處準公共化專區。']],
+      nursery: ['送托到準公共托嬰中心或保母時，政府補助一部分托育費用。', ['目前填的是自己或家人照顧，依目前資料可能不適用。', '之後如果送托，請領規定請看社會處準公共化專區。']],
       check4: ['國健署提供的公費兒童健康檢查，看寶寶的生長和發展，免付費。', ['建議月齡請看兒童健康手冊。']]
+    };
+    /* 點開時列出「還要確認的資料」：竹寶不知道、但會影響資格的條件 */
+    const NEED = {
+      birthHC: ['父或母是否設籍新竹市（設籍期間依官方規定）'],
+      centralTop: ['媽媽參加的是勞保等社會保險，還是國民年金或沒有投保'],
+      lowInc: ['是否為新竹市列冊的低收入戶', '是否在寶寶出生後 3 個月內申請'],
+      post2: ['是否在產後 1 到 3 個月內，院所是否有提供這項服務'],
+      check2: ['這次健檢的建議月齡（看兒童健康手冊）'],
+      vax2: ['這次要打的疫苗與月齡（看疾管署時程與兒童健康手冊）'],
+      allowance: ['寶寶是否由自己或家人照顧、沒有送托', '戶籍、所得等其他條件請看市府公告'],
+      tempcare: ['據點是否有空的時段，以及收費方式'],
+      check3: ['這次健檢的建議月齡（看兒童健康手冊）'],
+      vax4: ['這次要打的疫苗與月齡（看疾管署時程與兒童健康手冊）'],
+      nursery: ['之後是否會送準公共托嬰中心或保母'],
+      check4: ['這次健檢的建議月齡（看兒童健康手冊）']
     };
     const STAGES = [
       { id: 'preg', title: '孕期', range: '懷孕期間', phase: 'past', items: [] },
@@ -371,7 +388,7 @@ class Component extends DCLogic {
       { id: 's2', title: '4 到 12 個月', range: '2027/1/10 – 9/9', phase: 'next', items: ['check3', 'vax4', 'nursery'] },
       { id: 's3', title: '1 到 2 歲', range: '2027/9/10 起', phase: 'later', items: ['check4'] }
     ];
-    const tally = { ok: 0, check: 0, auto: 0, expired: 0, no: 0 };
+    const tally = { ok: 0, check: 0, expired: 0, no: 0 };
     const dot = {
       past: 'width: 12px; height: 12px; border-radius: 999px; background: #FCFAF6; border: 2px solid #6F9A82; flex-shrink: 0',
       now: 'width: 18px; height: 18px; border-radius: 999px; background: #2E5E4E; box-shadow: 0 0 0 5px #E4EEE7; flex-shrink: 0',
@@ -383,9 +400,10 @@ class Component extends DCLogic {
       const qs = it.questions || [];
       return {
         status: it.status, name: it.name, meta: it.meta, desc: it.desc,
+        need: (NEED[id] || []).map((x) => ({ t: x })), hasNeed: (NEED[id] || []).length > 0 && it.status !== 'expired',
         label: PILL[it.status][2], what: INFO[id][0], points: INFO[id][1].map((x) => ({ t: x })),
         icon: ICON[it.status], pillStyle: pill(it.status),
-        showPill: it.status !== 'auto' && it.status !== 'expired', accCls: 'zb-acc' + (it.status === 'expired' ? ' zb-acc-past' : ''),
+        showPill: it.status !== 'expired', accCls: 'zb-acc' + (it.status === 'expired' ? ' zb-acc-past' : ''),
         open: s.open === id, expanded: s.open === id ? 'true' : 'false',
         chev: s.open === id ? 'm6 15 6-6 6 6' : 'm6 9 6 6 6-6',
         toggle: () => this.setState({ open: s.open === id ? null : id }),
@@ -402,7 +420,7 @@ class Component extends DCLogic {
       const selected = s.stage === st.id;
       return {
         id: st.id, title: st.title, range: st.range, isNow: st.phase === 'now',
-        countText: st.items.length === 0 ? '已結束' : (nCheck > 0 ? st.items.length + ' 項，' + nCheck + ' 項需確認' : st.items.length + ' 項'),
+        countText: st.items.length === 0 ? '已結束' : st.items.length + ' 項',
         titleColor: st.phase === 'past' ? '#5F6B64' : '#1F2A24',
         bamCls: 'zb-bam zb-bam-' + (st.phase === 'now' ? 'now' : st.phase === 'past' ? 'past' : 'future') + (i % 2 ? ' zb-alt' : '') + (i === 0 ? ' zb-bam-top' : '') + (i === ORDER.length - 1 && !selected ? ' zb-bam-bottom' : ''),
         pressed: selected ? 'true' : 'false', open: selected, empty: built.length === 0, hasRes: (RES[st.id] || []).length > 0,
@@ -414,8 +432,8 @@ class Component extends DCLogic {
     });
     const sel = stages.find((x) => x.id === s.stage) || stages[2];
     const counts = [
-      { k: 'ok', text: '可申請 ' + tally.ok }, { k: 'check', text: '需確認 ' + tally.check }
-    ].filter((c) => tally[c.k] > 0).map((c) => ({ text: c.text, icon: ICON[c.k], style: pill(c.k) }));
+      { k: 'ok', text: '可能適用 ' + (tally.ok + tally.check) }
+    ].filter(() => tally.ok + tally.check > 0).map((c) => ({ text: c.text, icon: ICON[c.k], style: pill(c.k) }));
     const othersV = others.map((o) => ({ ...o, open: s.other === o.name, expanded: s.other === o.name ? 'true' : 'false', toggle: () => this.setState({ other: s.other === o.name ? null : o.name }) }));
     return {
       others: othersV,
