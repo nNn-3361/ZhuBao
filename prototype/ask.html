@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FCFAF6">
 <script src="zhubao-app.js"></script>
-<title>竹寶・AI 問答</title>
+<title>竹寶・問竹寶</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600&amp;display=swap">
 <style>
@@ -22,7 +22,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #2E5E
 .zb-culm{width:12px;flex-shrink:0;background:linear-gradient(90deg,#4F8065 0%,#80AE8F 45%,#5E8F73 100%)}
 .zb-culm-a{height:26px}
 .zb-culm-b{flex:1 1 auto;min-height:12px}
-.zb-node{width:20px;height:7px;border-radius:4px;background:#3F6F57;flex-shrink:0;position:relative;z-index:1;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.zb-node{width:20px;height:7px;border-radius:4px;background:#3F6F57;flex-shrink:0;position:relative;z-index:1;transition:transform .25s cubic-bezier(.23,1,.32,1)}
 .zb-bam-top .zb-culm-a{border-radius:6px 6px 0 0;height:20px;margin-top:6px}
 .zb-bam-bottom .zb-culm-b{border-radius:0 0 3px 3px}
 .zb-leaf{position:absolute;top:23px;width:26px;height:12px;fill:#6F9A82;pointer-events:none}
@@ -46,8 +46,8 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #2E5E
 @keyframes zbSwayL{0%,100%{transform:rotate(30deg)}30%{transform:rotate(0deg)}65%{transform:rotate(44deg)}}
 @keyframes zbWiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}60%{transform:rotate(8deg)}}
 *{-webkit-tap-highlight-color:transparent}
-button,a[style*="min-height"]{transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease,background-color .2s ease,border-color .2s ease,color .2s ease}
-button:active,a[style*="min-height"]:active{transform:scale(.94);box-shadow:none;transition-duration:.06s}
+button,a[style*="min-height"]{transition:transform .2s cubic-bezier(.23,1,.32,1),box-shadow .2s ease,background-color .2s ease,border-color .2s ease,color .2s ease}
+button:active,a[style*="min-height"]:active{transform:scale(.97);box-shadow:none;transition-duration:.1s}
 .zb-bam-row button:active{transform:none}
 @media (hover:hover){
 button:not([aria-expanded]):not([role="switch"]):not([role="checkbox"]):hover,a[style*="min-height"]:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(46,94,78,.18)}
@@ -96,10 +96,10 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-hist-head{display:flex;align-items:center;gap:4px;padding:4px 4px 4px 8px}
 .zb-hist-toggle{flex:1;min-width:0;min-height:40px;display:flex;align-items:center;gap:8px;padding:0;border:0;background:transparent;font-family:inherit;color:#1F2A24;text-align:left;cursor:default}
 .zb-hist-toggle .zb-chev{display:none;margin-left:auto}
-.zb-hist-clear{min-height:36px;padding:0 10px;border-radius:10px;border:0;background:transparent;color:#5F6B64;font-family:inherit;font-size:13px;cursor:pointer;transition:background .15s ease,color .15s ease,transform .2s cubic-bezier(.34,1.56,.64,1)}
+.zb-hist-clear{min-height:36px;padding:0 10px;border-radius:12px;border:0;background:transparent;color:#5F6B64;font-family:inherit;font-size:13px;cursor:pointer;transition:background .15s ease,color .15s ease,transform .2s cubic-bezier(.23,1,.32,1)}
 .zb-hist-clear:hover{background:#F1ECE2;color:#1F2A24}.zb-hist-clear:active{transform:scale(.92)}
 .zb-hist-list{display:flex;flex-direction:column;gap:2px}
-.zb-hist-item{position:relative;min-height:52px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 10px 8px 16px;border-radius:12px;border:0;background:transparent;font-family:inherit;text-align:left;cursor:pointer;color:#1F2A24;transition:background .15s ease,transform .22s cubic-bezier(.34,1.56,.64,1)}
+.zb-hist-item{position:relative;min-height:52px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 10px 8px 16px;border-radius:12px;border:0;background:transparent;font-family:inherit;text-align:left;cursor:pointer;color:#1F2A24;transition:background .15s ease,transform .22s cubic-bezier(.23,1,.32,1)}
 .zb-hist-item::before{content:"";position:absolute;left:6px;top:12px;bottom:12px;width:3px;border-radius:2px;background:#D9E5DC;transition:background .15s ease}
 .zb-hist-item:hover{background:#F1ECE2;transform:translateX(3px)}
 .zb-hist-item:active{transform:none;opacity:.8}
@@ -110,7 +110,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-hist-t{font-size:12px;color:#5F6B64}
 .zb-hints{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .zb-hints-label{font-size:12px;color:#5F6B64;margin-right:2px}
-.zb-hint{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid #E4DED2;background:#FCFAF6;color:#1F2A24;font-family:inherit;font-size:13px;cursor:pointer;transition:background .15s ease,border-color .15s ease,color .15s ease,transform .22s cubic-bezier(.34,1.56,.64,1)}
+.zb-hint{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid #E4DED2;background:#FCFAF6;color:#1F2A24;font-family:inherit;font-size:13px;cursor:pointer;transition:background .15s ease,border-color .15s ease,color .15s ease,transform .22s cubic-bezier(.23,1,.32,1)}
 .zb-hint:hover{background:#E4EEE7;border-color:#2E5E4E;color:#2E5E4E;transform:translateY(-2px)}
 .zb-hint:active{transform:scale(.94)}
 @keyframes zbFilled{0%{box-shadow:0 0 0 0 rgba(46,94,78,.35)}100%{box-shadow:0 0 0 8px rgba(46,94,78,0)}}
@@ -139,13 +139,13 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <span style="font-size: 17px; font-weight: 600; letter-spacing: 0.04em">竹寶</span>
 </div>
 <nav class="zb-nav-links" aria-label="主選單" style="display: flex; gap: 4px; flex-wrap: wrap">
-<a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
-<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
-<a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
-<a href="childcare.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">托育</a>
-<a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
-<a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 14px">AI 問答</a>
-<a href="help.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">協助</a>
+<a href="index.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">主頁</a>
+<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
+<a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
+<a href="childcare.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">托育</a>
+<a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
+<a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 14px">問竹寶</a>
+<a href="help.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">協助</a>
 </nav>
 <button type="button" class="zb-nav-toggle" aria-expanded="{{menuExpanded}}" aria-controls="zb-menu" onClick="{{toggleMenu}}" style="min-height: 44px; align-items: center; gap: 8px; padding: 0 14px; border-radius: 12px; border: 1px solid #E4DED2; background: #FCFAF6; font-family: inherit; font-size: 14px; color: #1F2A24; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="{{menuIcon}}"></path></svg>{{menuLabel}}</button>
 </div>
@@ -156,7 +156,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <a href="benefits.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">補助及其他福利</a>
 <a href="childcare.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">托育</a>
 <a href="activities.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">親子活動</a>
-<a href="#" aria-current="page" style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 16px">AI 問答<span style="font-size: 12px; font-weight: 400">目前位置</span></a>
+<a href="#" aria-current="page" style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 16px">問竹寶<span style="font-size: 12px; font-weight: 400">目前位置</span></a>
 <a href="help.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">協助</a>
 </nav>
 </sc-if>
@@ -299,6 +299,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </article>
 </sc-if>
 
+<div class="zb-composer">
 <div class="zb-hints" role="group" aria-label="試試看這些問題，點一下會填進輸入框">
 <span class="zb-hints-label">試試看</span>
 <sc-for list="{{hints}}" as="hn" hint-placeholder-count="3">
@@ -307,9 +308,10 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 <form onSubmit="{{send}}" style="display: flex; gap: 8px; background: #FCFAF6; border: 1px solid #E4DED2; border-radius: 16px; padding: 8px">
 <label for="ask" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">輸入問題</label>
-<input id="ask" type="text" placeholder="輸入問題，例如：寶寶出生後，我可以領哪些補助？" autocomplete="off" style="flex: 1; min-width: 0; height: 48px; border: 0; background: transparent; padding: 0 10px; font-family: inherit; font-size: 16px; color: #1F2A24">
+<input id="ask" type="text" placeholder="想問什麼，打在這裡" autocomplete="off" style="flex: 1; min-width: 0; height: 48px; border: 0; background: transparent; padding: 0 10px; font-family: inherit; font-size: 16px; color: #1F2A24">
 <button type="submit" style="min-height: 48px; padding: 0 18px; border-radius: 12px; border: 0; background: #2E5E4E; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">送出</button>
 </form>
+</div>
 <p style="margin: 0; font-size: 12px; line-height: 1.6; color: #5F6B64">竹寶的 AI 只負責白話說明，資格以主管機關審核為準。寶寶有緊急狀況請直接撥 119，或看<a href="help.html">協助</a>頁的專線。</p>
 </section>
 

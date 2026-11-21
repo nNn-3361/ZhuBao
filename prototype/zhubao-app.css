@@ -1,6 +1,12 @@
 /* 竹寶 App 外殼：手機版底部分頁列、通知、更多選單、推播橫幅。
-   規則：一個主色（#2E5E4E）、一組暖灰；圓角只用 12（按鈕、列）、16（卡片）、20（底部面板）、999（膠囊）。
-   不用分類／狀態圖示，只用顏色＋文字。大區塊按下只淡淡變暗，小按鈕才縮一下。 */
+   設計規則（依 Appllama App Design Skill 逐條對照）：
+   - 顏色：一個主色（#2E5E4E 竹綠）＋一組暖灰。分類一律用暖灰文字，不另外配色；
+     只有狀態才用顏色：綠＝符合／目前，黃＝需確認，紅＝緊急或異常。
+   - 圓角只用 4（細小標記）、12（按鈕、列、標籤）、16（卡片）、20（面板、大卡）、999（膠囊）。
+   - 可以點的東西至少 44×44。按下回饋 100 毫秒內出現：小按鈕縮到 .97，大區塊只淡淡變暗。
+   - 動畫 300 毫秒內、強力減速曲線，不回彈；分頁切換不加動畫；尊重「減少動態效果」。
+   - 品牌只有淺色（骨白＋綠），刻意不做深色模式。
+   不用分類／狀態圖示，只用顏色＋文字。 */
 :root{
   --zb-bg:#F6F2EA;--zb-surface:#FCFAF6;--zb-line:#E4DED2;--zb-line-soft:#EFEAE0;
   --zb-ink:#1F2A24;--zb-sub:#5F6B64;--zb-accent:#2E5E4E;--zb-accent-ink:#1F4337;--zb-accent-soft:#E4EEE7;
@@ -20,6 +26,9 @@ body{font-variant-numeric:tabular-nums}
   /* 上方列：精簡、固定在頂端，跟著頁面捲動時保持可見 */
   #dc-root header{position:sticky !important;top:0;z-index:60;padding-top:var(--zb-safe-t);background:var(--zb-surface) !important}
   #dc-root header>div{padding:6px 16px !important;min-height:52px}
+  /* 上方列的分隔線：在最上面時看不到，內容捲到列底下才出現（像手機 App 的導覽列） */
+  .zb-has-tabs #dc-root header{border-bottom-color:transparent !important;transition:border-color .2s ease}
+  .zb-scrolled.zb-has-tabs #dc-root header{border-bottom-color:var(--zb-line) !important}
   #dc-root header>div>div:first-child svg{width:28px;height:28px}
   #dc-root header>div>div:first-child span:not(:first-of-type){display:none}
   .zb-has-tabs #dc-root .zb-nav-toggle,.zb-has-tabs #dc-root .zb-nav-menu{display:none !important}
@@ -38,7 +47,9 @@ body{font-variant-numeric:tabular-nums}
   .zbn-pop{max-width:none !important;border-radius:20px 20px 0 0 !important;max-height:88vh !important;max-height:88dvh !important;padding:10px 20px calc(20px + var(--zb-safe-b)) !important;animation:zbSheetIn .32s var(--zb-ease) both !important}
   .zbn-pop::before{content:"";align-self:center;width:36px;height:5px;border-radius:999px;background:#D8D1C3;flex-shrink:0}
   /* AI 問答：輸入框黏在分頁列上方，像聊天 App */
-  .zb-has-tabs .zb-ask form{position:sticky;bottom:calc(var(--zb-tab-h) + var(--zb-safe-b) + 8px);z-index:20;box-shadow:0 -10px 24px 6px var(--zb-bg)}
+  .zb-composer{display:flex;flex-direction:column;gap:10px}
+  .zb-has-tabs .zb-ask .zb-composer{position:sticky;bottom:calc(var(--zb-tab-h) + var(--zb-safe-b));z-index:20;margin:0 -16px;padding:10px 16px 8px;background:var(--zb-bg);border-top:1px solid transparent;transition:border-color .2s ease}
+  .zb-has-tabs .zb-ask .zb-composer.zb-stuck{border-top-color:var(--zb-line)}
 }
 
 /* ---------- 底部分頁列 ---------- */
@@ -56,7 +67,7 @@ body{font-variant-numeric:tabular-nums}
 /* ---------- 上方「通知」按鈕 ---------- */
 .zb-bell{display:none}
 @media (max-width:760px){
-  .zb-has-tabs .zb-bell{display:inline-flex;position:fixed;top:calc(var(--zb-safe-t) + 8px);right:12px;z-index:70;align-items:center;gap:6px;min-height:40px;padding:0 12px;border-radius:999px;border:1px solid var(--zb-line);background:var(--zb-surface);font-family:"Noto Sans TC",system-ui,sans-serif;font-size:14px;font-weight:600;color:var(--zb-ink);cursor:pointer}
+  .zb-has-tabs .zb-bell{display:inline-flex;position:fixed;top:calc(var(--zb-safe-t) + 8px);right:12px;z-index:70;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--zb-line);background:var(--zb-surface);font-family:"Noto Sans TC",system-ui,sans-serif;font-size:14px;font-weight:600;color:var(--zb-ink);cursor:pointer}
 }
 .zb-bell b{min-width:20px;height:20px;padding:0 6px;box-sizing:border-box;border-radius:999px;background:var(--zb-accent);color:#fff;font-size:12px;line-height:20px;text-align:center}
 .zb-bell b[hidden]{display:none}
@@ -73,7 +84,7 @@ body{font-variant-numeric:tabular-nums}
 .zb-sheet-panel>*{flex-shrink:0}
 .zb-sheet-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .zb-sheet-head h2{margin:0;font-size:19px;font-weight:600}
-.zb-sheet-x{min-height:40px;padding:0 14px;border-radius:999px;border:0;background:var(--zb-accent-soft);color:var(--zb-accent);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.zb-sheet-x{min-height:44px;padding:0 14px;border-radius:999px;border:0;background:var(--zb-accent-soft);color:var(--zb-accent);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
 .zb-sheet-x:active{transform:scale(.95) !important}
 .zb-group{background:var(--zb-surface);border:1px solid var(--zb-line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
 .zb-group-label{font-size:13px;font-weight:600;color:var(--zb-sub);padding:0 4px;margin-bottom:-6px}
@@ -89,7 +100,7 @@ a.zb-row:hover,button.zb-row:hover{transform:none !important;box-shadow:none !im
 .zb-me{display:flex;flex-direction:column;gap:4px;padding:16px;background:var(--zb-accent);color:#fff;border-radius:16px}
 .zb-me b{font-size:18px}
 .zb-me span{font-size:13px;opacity:.9}
-.zb-me a{color:#fff;font-size:14px;font-weight:600;align-self:flex-start;min-height:36px;display:inline-flex;align-items:center}
+.zb-me a{color:#fff;font-size:14px;font-weight:600;align-self:flex-start;min-height:44px;display:inline-flex;align-items:center}
 /* 開關：仿手機系統開關 */
 .zb-switch{position:relative;width:51px;height:31px;flex-shrink:0;border-radius:999px;border:0;padding:0;background:#D8D1C3;cursor:pointer;transition:background-color .2s ease !important}
 .zb-switch::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:999px;background:#fff;box-shadow:0 2px 4px rgba(31,42,36,.2);transition:transform .25s var(--zb-ease)}
@@ -162,7 +173,40 @@ a.zb-row:hover,button.zb-row:hover{transform:none !important;box-shadow:none !im
 @media (max-width:760px) and (pointer:coarse){
   .zb-typing .zb-tabs,.zb-typing .zbf-fab{display:none !important}
   .zb-typing.zb-has-tabs #dc-root{padding-bottom:var(--zb-safe-b)}
-  .zb-typing.zb-has-tabs .zb-ask form{bottom:8px}
+  .zb-typing.zb-has-tabs .zb-ask .zb-composer{bottom:0}
 }
 /* 手機外框裡沒有滑鼠游標的概念：滑過不浮起，只保留按下的回饋 */
 .zb-in-frame button:hover:not(:active),.zb-in-frame a:hover:not(:active){transform:none !important;box-shadow:none !important}
+
+/* ---------- 依 Appllama App Design Skill 逐頁審查後的調整（手機版） ---------- */
+@media (max-width:760px){
+  /* 可以點的東西至少 44 高：小連結用透明的上下留白擴大可點範圍，不改變版面 */
+  #dc-root a:not([style*="min-height"]):not(.zb-row):not(.zb-tab){padding-top:12px;padding-bottom:12px;margin-top:-12px;margin-bottom:-12px}
+  #dc-root .zb-date-arrow{width:44px !important}
+  #dc-root button[aria-pressed]{min-height:44px}
+  .zb-hint{min-height:44px}
+  #dc-root .zbn-dot{height:44px !important}
+  /* 小助手按鈕：往下捲時讓開，不擋住卡片右邊的箭頭和標籤；往上捲或停下來就回來 */
+  .zb-has-tabs .zbf-fab{transition:transform .22s var(--zb-ease),opacity .18s ease !important}
+  .zb-fab-away .zbf-fab:not([aria-expanded="true"]){transform:translateY(24px) scale(.9) !important;opacity:0;pointer-events:none}
+}
+/* 手機沒有滑鼠：滑過的浮起效果只留給有滑鼠的電腦，避免點完卡在浮起狀態 */
+@media (hover:none){
+  .zbf-fab:hover:not(:active){transform:none;box-shadow:0 6px 18px rgba(31,42,36,.18),0 0 0 1px #E4DED2}
+}
+@media (prefers-reduced-motion:reduce){
+  .zb-fab-away .zbf-fab:not([aria-expanded="true"]){transform:none !important}
+}
+
+/* 寶寶日記：點格子後的「自己打字」框，在手機上改成從下方滑上來的面板（短暫插入的輸入，用面板而不是長在頁面底下） */
+.zb-entry-back{display:none}
+@media (max-width:760px){
+  .zb-entry-back{display:block;position:fixed;inset:0;z-index:940;background:rgba(31,42,36,.4);animation:zbFadeIn .24s ease both}
+  #dc-root .zb-entry{position:fixed;left:0;right:0;bottom:0;z-index:950;max-height:88vh;max-height:88dvh;overflow-y:auto;overscroll-behavior:contain;border:0 !important;border-radius:20px 20px 0 0 !important;padding:8px 16px calc(16px + var(--zb-safe-b)) !important;background:var(--zb-bg) !important;animation:zbSheetIn .32s var(--zb-ease) both !important}
+  #dc-root .zb-entry::before{content:"";align-self:center;width:36px;height:5px;border-radius:999px;background:#D8D1C3;flex-shrink:0}
+  /* 儲存按鈕黏在面板底部，小提醒展開時也不用捲到最下面才能存 */
+  #dc-root .zb-entry>button:last-child{align-self:stretch !important;position:sticky;bottom:0;z-index:2;box-shadow:0 0 0 8px var(--zb-bg),0 -16px 16px 8px var(--zb-bg)}
+  html:has(.zb-entry){overflow:hidden}
+  .zb-hints{scroll-padding-inline:16px}
+}
+@media (prefers-reduced-motion:reduce){ #dc-root .zb-entry,.zb-entry-back{animation:zbFadeIn .15s ease both !important} }

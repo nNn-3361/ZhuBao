@@ -22,7 +22,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2p
 .zb-culm{width:12px;flex-shrink:0;background:linear-gradient(90deg,#4F8065 0%,#80AE8F 45%,#5E8F73 100%)}
 .zb-culm-a{height:26px}
 .zb-culm-b{flex:1 1 auto;min-height:12px}
-.zb-node{width:20px;height:7px;border-radius:4px;background:#3F6F57;flex-shrink:0;position:relative;z-index:1;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.zb-node{width:20px;height:7px;border-radius:4px;background:#3F6F57;flex-shrink:0;position:relative;z-index:1;transition:transform .25s cubic-bezier(.23,1,.32,1)}
 .zb-bam-top .zb-culm-a{border-radius:6px 6px 0 0;height:20px;margin-top:6px}
 .zb-bam-bottom .zb-culm-b{border-radius:0 0 3px 3px}
 .zb-leaf{position:absolute;top:23px;width:26px;height:12px;fill:#6F9A82;pointer-events:none}
@@ -46,8 +46,8 @@ button:focus-visible,a:focus-visible{outline:2px solid #2E5E4E;outline-offset:2p
 @keyframes zbSwayL{0%,100%{transform:rotate(30deg)}30%{transform:rotate(0deg)}65%{transform:rotate(44deg)}}
 @keyframes zbWiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}60%{transform:rotate(8deg)}}
 *{-webkit-tap-highlight-color:transparent}
-button,a[style*="min-height"]{transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease,background-color .2s ease,border-color .2s ease,color .2s ease}
-button:active,a[style*="min-height"]:active{transform:scale(.94);box-shadow:none;transition-duration:.06s}
+button,a[style*="min-height"]{transition:transform .2s cubic-bezier(.23,1,.32,1),box-shadow .2s ease,background-color .2s ease,border-color .2s ease,color .2s ease}
+button:active,a[style*="min-height"]:active{transform:scale(.97);box-shadow:none;transition-duration:.1s}
 .zb-bam-row button:active{transform:none}
 @media (hover:hover){
 button:not([aria-expanded]):not([role="switch"]):not([role="checkbox"]):hover,a[style*="min-height"]:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(46,94,78,.18)}
@@ -106,13 +106,13 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <span style="font-size: 17px; font-weight: 600; letter-spacing: 0.04em">竹寶</span>
 </div>
 <nav class="zb-nav-links" aria-label="主選單" style="display: flex; gap: 4px; flex-wrap: wrap">
-<a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 14px">主頁</a>
-<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
-<a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
-<a href="childcare.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">托育</a>
-<a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
-<a href="ask.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">AI 問答</a>
-<a href="help.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 10px; text-decoration: none; color: #5F6B64; font-size: 14px">協助</a>
+<a href="#" aria-current="page" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; background: #E4EEE7; color: #2E5E4E; font-weight: 600; font-size: 14px">主頁</a>
+<a href="diary.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">寶寶日記</a>
+<a href="benefits.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">補助及其他福利</a>
+<a href="childcare.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">托育</a>
+<a href="activities.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">親子活動</a>
+<a href="ask.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">問竹寶</a>
+<a href="help.html" style="min-height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #5F6B64; font-size: 14px">協助</a>
 </nav>
 <button type="button" class="zb-nav-toggle" aria-expanded="{{menuExpanded}}" aria-controls="zb-menu" onClick="{{toggleMenu}}" style="min-height: 44px; align-items: center; gap: 8px; padding: 0 14px; border-radius: 12px; border: 1px solid #E4DED2; background: #FCFAF6; font-family: inherit; font-size: 14px; color: #1F2A24; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="{{menuIcon}}"></path></svg>{{menuLabel}}</button>
 </div>
@@ -123,7 +123,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <a href="benefits.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">補助及其他福利</a>
 <a href="childcare.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">托育</a>
 <a href="activities.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">親子活動</a>
-<a href="ask.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">AI 問答</a>
+<a href="ask.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">問竹寶</a>
 <a href="help.html" style="min-height: 52px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; text-decoration: none; color: #1F2A24; font-size: 16px; border-bottom: 1px solid #EFEAE0">協助</a>
 </nav>
 </sc-if>
@@ -225,11 +225,11 @@ class Component extends DCLogic {
     const MAMMY = 'https://mammy.hpa.gov.tw/';
     const CARE = 'https://mohw.gov.tw/cp-7177-82800-1.html';
     const CAT = {
-      food: ['飲食', '#2E5E4E', '#E4EEE7', 'M7 3v8a3 3 0 0 0 6 0V3M10 3v18M17 3c-1.7 1.5-2 4-2 6s1 3 2 3v9'],
-      vax: ['預防接種', '#2F5470', '#E3ECF2', 'm18 2 4 4M17 7l3-3M19 9 8.7 19.3a2.4 2.4 0 0 1-3.4 0l-.6-.6a2.4 2.4 0 0 1 0-3.4L15 5M9 11l4 4M5 19l-3 3M14 4l6 6'],
-      check: ['健康檢查', '#7A4F0B', '#F6E9CC', 'M9 3h6v4H9zM5 5h4M15 5h4v16H5V5M9 13l2 2 4-4'],
-      grow: ['發展', '#6B3655', '#F3E8EE', 'M12 20V10M12 10c0-3 2.5-5 6-5 0 3.5-2.5 5-6 5ZM12 13c0-2.5-2-4-5-4 0 3 2 4 5 4Z'],
-      safe: ['安全與照顧觀念', '#8E3A33', '#F5E4E0', 'M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6Z'],
+      food: ['飲食', '#5F6B64', '#EFEAE0', 'M7 3v8a3 3 0 0 0 6 0V3M10 3v18M17 3c-1.7 1.5-2 4-2 6s1 3 2 3v9'],
+      vax: ['預防接種', '#5F6B64', '#EFEAE0', 'm18 2 4 4M17 7l3-3M19 9 8.7 19.3a2.4 2.4 0 0 1-3.4 0l-.6-.6a2.4 2.4 0 0 1 0-3.4L15 5M9 11l4 4M5 19l-3 3M14 4l6 6'],
+      check: ['健康檢查', '#5F6B64', '#EFEAE0', 'M9 3h6v4H9zM5 5h4M15 5h4v16H5V5M9 13l2 2 4-4'],
+      grow: ['發展', '#5F6B64', '#EFEAE0', 'M12 20V10M12 10c0-3 2.5-5 6-5 0 3.5-2.5 5-6 5ZM12 13c0-2.5-2-4-5-4 0 3 2 4 5 4Z'],
+      safe: ['安全與照顧觀念', '#5F6B64', '#EFEAE0', 'M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6Z'],
       carer: ['照顧者', '#56625B', '#ECE8E0', 'M20.8 5.6a5 5 0 0 0-7.1 0L12 7.3l-1.7-1.7a5 5 0 0 0-7.1 7.1L12 21.5l8.8-8.8a5 5 0 0 0 0-7.1Z']
     };
     const STAGES = [
@@ -281,7 +281,7 @@ class Component extends DCLogic {
       const c = CAT[t.cat]; const open = s.open === t.id;
       return {
         cat: c[0], color: c[1], icon: c[3], title: t.title, points: t.points, url: t.url, cta: t.cta, src: t.src,
-        iconWrap: 'width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: ' + c[2] + '; color: ' + c[1],
+        iconWrap: 'width: 36px; height: 36px; flex-shrink: 0; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: ' + c[2] + '; color: ' + c[1],
         open, expanded: open ? 'true' : 'false', chev: open ? 'm18 15-6-6-6 6' : 'm6 9 6 6 6-6',
         toggle: () => this.setState({ open: open ? null : t.id })
       };

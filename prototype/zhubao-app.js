@@ -70,7 +70,8 @@
   const markRead = (id) => { const r = readIds(); if (r.indexOf(id) < 0) { r.push(id); store.set('zb-noti-read', r); } updateBell(); };
 
   /* ---------- 底部面板 ---------- */
-  let openSheet = null, lastFocus = null;
+  let openSheet = null, lastFocus = null, sheetHist = false, skipPop = false;
+  window.addEventListener('popstate', () => { if (skipPop) { skipPop = false; return; } if (openSheet) closeSheet(false, true); });
   function sheet(id, title, html, onReady) {
     closeSheet(true);
     lastFocus = document.activeElement;
@@ -89,11 +90,15 @@
     document.documentElement.style.overflow = 'hidden';
     if (onReady) onReady(el);
     syncTabs();
+    /* 面板開著時按返回（Android 返回鍵、iOS 邊緣滑動、瀏覽器上一頁）：先關面板，不離開這一頁 */
+    try { history.pushState({ zbSheet: id }, ''); sheetHist = true; } catch (e) { sheetHist = false; }
   }
-  function closeSheet(now) {
+  function closeSheet(now, fromBack) {
     const el = openSheet;
     if (!el) return;
     openSheet = null;
+    if (sheetHist && !fromBack) { sheetHist = false; skipPop = true; try { history.back(); } catch (e) { skipPop = false; } }
+    sheetHist = false;
     document.documentElement.style.overflow = '';
     syncTabs();
     if (now || reduced()) { el.remove(); } else { el.classList.add('zb-closing'); setTimeout(() => el.remove(), 200); }
@@ -243,10 +248,25 @@
       nt.setAttribute('aria-hidden', 'true');
       nt.textContent = TITLES[PAGE] || '';
       document.body.appendChild(nt);
+      let lastY = window.scrollY, idle = 0;
+      const root = document.documentElement;
       const onScroll = () => {
+        const y = window.scrollY;
         const h = document.querySelector('#dc-root h1');
-        const past = h ? h.getBoundingClientRect().bottom < 60 : window.scrollY > 80;
+        const past = h ? h.getBoundingClientRect().bottom < 60 : y > 80;
         nt.classList.toggle('zb-on', past);
+        /* 內容捲到上方列底下時，才出現分隔線 */
+        root.classList.toggle('zb-scrolled', y > 4);
+        /* 往下捲時小助手按鈕先讓開；往上捲、停下來或到底就回來 */
+        const atEnd = y + window.innerHeight >= document.documentElement.scrollHeight - 8;
+        if (y > lastY + 6 && y > 120 && !atEnd) root.classList.add('zb-fab-away');
+        else if (y < lastY - 6 || atEnd || y <= 120) root.classList.remove('zb-fab-away');
+        lastY = y;
+        clearTimeout(idle);
+        idle = setTimeout(() => root.classList.remove('zb-fab-away'), 900);
+        /* 問竹寶：輸入列黏在下方時加上分隔線 */
+        const comp = document.querySelector('.zb-composer');
+        if (comp) { const tabs = document.querySelector('.zb-tabs'); const limit = tabs ? tabs.getBoundingClientRect().top : window.innerHeight; const nx = comp.nextElementSibling; comp.classList.toggle('zb-stuck', !!nx && nx.getBoundingClientRect().top > limit + 1); }
       };
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
