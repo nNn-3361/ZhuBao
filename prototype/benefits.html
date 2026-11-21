@@ -94,12 +94,17 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-chips{display:flex;flex-wrap:wrap;gap:8px}
 .zb-chip{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid #E4DED2;background:#FCFAF6;color:#1F2A24;font-family:inherit;font-size:14px;cursor:pointer}
 .zb-chip-on{background:#2E5E4E;border-color:#2E5E4E;color:#FFFFFF;font-weight:600}
-.zb-filter{background:#FCFAF6;border:1px solid #E4DED2;border-radius:20px;padding:20px}
+.zb-filter{background:#FCFAF6;border:1px solid #E4DED2;border-radius:16px;overflow:hidden}
+.zb-filter-head{width:100%;min-height:60px;display:flex;align-items:center;gap:12px;padding:12px 16px;background:transparent;border:0;font-family:inherit;color:#1F2A24;text-align:left;cursor:pointer}
+.zb-filter-body{border-top:1px solid #EFEAE0;padding:16px;display:flex;flex-direction:column;gap:16px}
+.zb-filter-note{margin:0;font-size:14px;line-height:1.6;color:#5F6B64}
+.zb-filter-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+.zb-filter-done{margin-left:auto;min-height:44px;padding:0 20px;border-radius:12px;border:1px solid #E4DED2;background:#FCFAF6;font-family:inherit;font-size:15px;font-weight:600;color:#2E5E4E;cursor:pointer}
 .zb-fgroup{display:flex;flex-direction:column;gap:8px}
 .zb-flabel{font-size:13px;font-weight:600;color:#5F6B64;display:flex;gap:8px;align-items:baseline}
 .zb-flabel span{font-weight:400;font-size:12px}
 .zb-reset{align-self:flex-start;min-height:44px;padding:0 4px;border:0;background:transparent;font-family:inherit;font-size:14px;color:#2E5E4E;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-@media (max-width:480px){.zb-filter{padding:16px}.zb-chip{padding:0 14px}}
+@media (max-width:480px){.zb-filter-head{padding:12px 14px}.zb-filter-body{padding:14px}.zb-chip{padding:0 14px}}
 @media (max-width:480px){.zb-acc-head{padding:12px 14px;gap:10px}.zb-acc-body{padding:0 14px 14px}}
 @media (hover:hover){.zb-bam-row:hover button[aria-expanded="false"]{background:#F1EDE4 !important}}
 .zb-list .zb-acc-body{border-top:1px solid #EFEAE0;padding-top:14px}
@@ -155,11 +160,14 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 </div>
 
-<section aria-labelledby="h-filter" class="zb-sec zb-filter">
-<div class="zb-sec-head">
-<h2 id="h-filter">你家的情況</h2>
-<p>{{filterNote}}</p>
-</div>
+<section aria-labelledby="h-filter" class="zb-filter" data-open="{{filterOpen}}">
+<button type="button" class="zb-filter-head" aria-expanded="{{filterOpen}}" aria-controls="zb-filter-body" onClick="{{toggleFilter}}">
+<span class="zb-acc-title"><span id="h-filter" style="font-size: 16px; font-weight: 600">篩選條件</span><span style="font-size: 13px; color: #5F6B64">{{filterSub}}</span></span>
+<svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+</button>
+<sc-if value="{{filterShow}}" hint-placeholder-val="{{false}}">
+<div id="zb-filter-body" class="zb-filter-body">
+<p class="zb-filter-note">{{filterNote}}</p>
 <sc-for list="{{condGroups}}" as="g" hint-placeholder-count="2">
 <div class="zb-fgroup" role="group" aria-label="{{g.label}}">
 <span class="zb-flabel">{{g.label}}<span>可複選</span></span>
@@ -168,7 +176,12 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 </div>
 </div>
 </sc-for>
+<div class="zb-filter-foot">
 <sc-if value="{{canReset}}" hint-placeholder-val="{{false}}"><button type="button" class="zb-reset" onClick="{{resetConds}}">改回依寶寶資料的選擇</button></sc-if>
+<button type="button" class="zb-filter-done" onClick="{{toggleFilter}}">收起</button>
+</div>
+</div>
+</sc-if>
 </section>
 
 <section aria-labelledby="h-stage" class="zb-sec">
@@ -197,10 +210,10 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <div class="{{it.accCls}}" data-k="{{it.name}}" data-item="{{it.itemId}}" data-open="{{it.expanded}}">
 <button type="button" onClick="{{it.toggle}}" aria-expanded="{{it.expanded}}" style="width: 100%; min-height: 68px; display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: transparent; border: 0; text-align: left; font-family: inherit; color: inherit; cursor: pointer">
 <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
-<span style="font-size: 16px; font-weight: 600">{{it.name}}</span>
+<sc-if value="{{it.showPill}}" hint-placeholder-val="{{true}}"><span style="{{it.pillStyle}}; align-self: flex-start; margin-bottom: 2px">{{it.label}}</span></sc-if>
+<span style="font-size: 16px; font-weight: 600; line-height: 1.4">{{it.name}}</span>
 <span style="font-size: 13px; color: #5F6B64; font-variant-numeric: tabular-nums">{{it.meta}}</span>
 </div>
-<sc-if value="{{it.showPill}}" hint-placeholder-val="{{true}}"><span style="{{it.pillStyle}}">{{it.label}}</span></sc-if>
 <svg class="zb-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5F6B64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
 </button>
 <sc-if value="{{it.open}}" hint-placeholder-val="{{false}}">
@@ -278,7 +291,7 @@ class Component extends DCLogic {
     const yn = (v) => v === '是' ? true : v === '否' ? false : null;
     const now = (F.stages(K).find((x) => x.phase === 'now') || { id: 's1' }).id;
     const conds = F.conds(K);
-    this.state = { menuOpen: false, residency: yn(K.residency), conds, showAll: conds.length === 0, stage: now, open: jump ? jump[1] : null, jump: jump ? jump[1] : null };
+    this.state = { filterOpen: false, menuOpen: false, residency: yn(K.residency), conds, showAll: conds.length === 0, stage: now, open: jump ? jump[1] : null, jump: jump ? jump[1] : null };
     if (jump) {
       setTimeout(() => {
         const name = (document.querySelector('[data-item="' + jump[1] + '"]') || {});
@@ -337,37 +350,37 @@ class Component extends DCLogic {
         questions: s.residency === null ? [{ text: '父或母是否設籍新竹市？', yes: () => this.setState({ residency: true }), no: () => this.setState({ residency: false }) }] : [] },
       centralTop: { name: '中央生育補助', meta: '115/1/1 起生產・每胎 10 萬元', status: 'ok', src: 'dosi', cta: '',
         desc: '有參加社會保險的人，依規定由保險人辦理給付。參加國民年金或沒有參加社會保險的媽媽，可以在戶政事務所辦出生登記時一併申請，也可以線上或向勞保局申請。' },
-      lowInc: { name: '低收入戶產婦及嬰兒營養費', meta: '每案 20,000 元・產後 3 個月內', status: past3 ? 'expired' : fit(['low']), src: 'lawLow', cta: '看法規' },
-      multiBirth: { name: '勞保生育給付（多胞胎加給）', meta: '雙生以上按比例增給・勞保', status: fit(['multi']), src: 'lawLabor', cta: '看法條' },
+      lowInc: { name: '低收入戶產婦及嬰兒營養費', meta: '每案 20,000 元・產後 3 個月內', status: past3 ? 'expired' : fit(['low']), src: 'lawLow', cta: '看官方說明' },
+      multiBirth: { name: '勞保生育給付（多胞胎加給）', meta: '雙生以上按比例增給・勞保', status: fit(['multi']), src: 'lawLabor', cta: '看官方說明' },
       confine: { name: '到宅坐月子服務', meta: '每小時 300 元・預產期前 3 個月起申請', status: 'ok', src: 'confine', cta: '到平台申請' },
-      haoyun: { name: '好孕專車', meta: '產檢交通車資補助', status: 'ok', src: 'haoyun', cta: '看市府公告' },
+      haoyun: { name: '好孕專車', meta: '產檢交通車資補助', status: 'ok', src: 'haoyun', cta: '看官方說明' },
       post1: { name: '產後健康照護（第 1 次）', meta: '公費・產後 1 個月內', status: past1 ? 'expired' : 'ok', src: 'hpaPost', cta: '',
         desc: '第 1 次要在產後 1 個月內（' + D1 + ' 前）' + (past1 ? '，已經過了' : '') + '。第 2 次在產後 1 到 3 個月內，仍可預約。' },
       check2: { name: '兒童預防保健', meta: '公費・未滿 7 歲共 9 次', status: 'ok', src: 'hpaNine', cta: '看官方說明',
         desc: '2026/7/1 起，未滿 7 歲的免費健檢從 7 次增為 9 次。每次的建議月齡請看兒童健康手冊。' },
-      vax2: { name: '公費疫苗', meta: '依疾管署接種時程', status: 'ok', src: 'cdc', cta: '看接種時程',
+      vax2: { name: '公費疫苗', meta: '依疾管署接種時程', status: 'ok', src: 'cdc', cta: '看官方說明',
         desc: '依疾管署兒童預防接種時程，帶兒童健康手冊到合約院所接種。' },
       post2: { name: '產後健康照護（第 2 次）', meta: '公費・產後 1 到 3 個月', status: past3 ? 'expired' : 'ok', src: 'hpaPost', cta: '看官方說明',
         desc: '產後 1 到 3 個月內，到有提供產檢的健保特約院所。內容包含運動、營養、避孕與下一胎諮詢。記得帶健保卡和孕媽咪健康手冊。' },
-      allowance: { name: '育兒津貼', meta: '未滿 2 歲・需申辦', status: fit(['home']), src: 'allow', cta: '看申辦方式',
+      allowance: { name: '育兒津貼', meta: '未滿 2 歲・需申辦', status: fit(['home']), src: 'allow', cta: '看官方說明',
         desc: '未滿 2 歲的寶寶可以申辦育兒津貼。申辦方式請看市府公告。若之後改送托育，可能改適用托育補助，請看官方規定。' },
       tempcare: { name: '臨時托育', meta: '新竹市社會處臨托服務', status: 'ok', src: 'temp', cta: '看官方說明',
         desc: '臨時有事時，可以把寶寶短時間托給合格的托育單位。據點與預約方式請看社會處臨托服務頁面。' },
       check3: { name: '兒童預防保健（續）', meta: '公費・未滿 7 歲共 9 次', status: 'ok', src: 'hpaNine', cta: '看官方說明',
         desc: '建議月齡請看兒童健康手冊。' },
-      vax4: { name: '公費疫苗（續）', meta: '依疾管署接種時程', status: 'ok', src: 'cdc', cta: '看接種時程',
+      vax4: { name: '公費疫苗（續）', meta: '依疾管署接種時程', status: 'ok', src: 'cdc', cta: '看官方說明',
         desc: '接種項目以疾管署最新時程表和兒童健康手冊為準。' },
       nursery: { name: '托育補助', meta: '送托準公共機構', status: fit(['care']), src: 'quasi', cta: '',
         desc: '目前填的是自己或家人照顧，依目前資料可能不適用。之後如果送準公共托嬰中心或保母，請領規定請看社會處準公共化專區。' },
-      leave: { name: '育嬰留職停薪津貼', meta: '投保薪資 8 成・父母各最多 6 個月', status: fit(['leave']), src: 'bliLeave', cta: '看請領方式',
+      leave: { name: '育嬰留職停薪津貼', meta: '投保薪資 8 成・父母各最多 6 個月', status: fit(['leave']), src: 'bliLeave', cta: '看官方說明',
         desc: '爸爸或媽媽在寶寶 3 歲前請育嬰留停，可向勞保局請領津貼。' },
       careExtra: { name: '托育補助加額', meta: '中低收、低收、第 2 胎起再加', status: fit(['care']), src: 'eyCare', cta: '',
         desc: '送準公共或公共托育時，部分家庭的托育補助會再提高。目前填的是自己或家人照顧，依目前資料可能不適用。' },
-      after2: { name: '育兒津貼（2 歲以後）', meta: '每月 5,000 元起・沒讀平價幼兒園', status: 'ok', src: 'moeAllow', cta: '看作業要點',
+      after2: { name: '育兒津貼（2 歲以後）', meta: '每月 5,000 元起・沒讀平價幼兒園', status: 'ok', src: 'moeAllow', cta: '看官方說明',
         desc: '滿 2 歲後如果在家帶，或讀沒有加入準公共的私立幼兒園，可以繼續領育兒津貼。' },
-      school5: { name: '幼兒園就學補助（5 歲）', meta: '每月 5,000 元起・沒讀平價幼兒園', status: 'ok', src: 'moeAllow', cta: '看作業要點',
+      school5: { name: '幼兒園就學補助（5 歲）', meta: '每月 5,000 元起・沒讀平價幼兒園', status: 'ok', src: 'moeAllow', cta: '看官方說明',
         desc: '5 歲起到上小學前，沒有讀平價幼兒園的孩子可以領就學補助，接續 2 歲以後的育兒津貼。' },
-      primary: { name: '國小就學費用減免', meta: '低收全免・中低收減 60%', status: fit(['low']), src: 'hcSchool', cta: '看法規',
+      primary: { name: '國小就學費用減免', meta: '低收全免・中低收減 60%', status: fit(['low']), src: 'hcSchool', cta: '看官方說明',
         desc: '新竹市低收入戶、中低收入戶的孩子讀市立國小，註冊時可以減免就學費用。' },
       kinder: { name: '平價幼兒園繳費上限', meta: '第 1 胎每月 1,000 至 3,000 元', status: 'ok', src: 'eyCare', cta: '看官方說明',
         desc: '2 歲以上讀公立、非營利或準公共幼兒園，家長每月最多只要繳固定金額。' },
@@ -394,20 +407,20 @@ class Component extends DCLogic {
       { id: 'pcN', conds: [], srcT: '新竹市托育資源中心・親子館預約', name: '北區親子館', tag: '育兒・親子空間', who: '0–6 歲幼兒與家長', what: '免費遊戲空間與親子課程，需預約場次', where: '南勢六街 11 號 2 樓（南勢社會福利館）', note: '電話 03-5230866。', cta: '預約場次', url: WPCC + 'enrollment/' },
       { id: 'pcE', conds: [], srcT: '新竹市托育資源中心・親子館預約', name: '東區親子館', tag: '育兒・親子空間', who: '0–6 歲幼兒與家長', what: '免費遊戲空間與親子課程，需預約場次', where: '中央路 241 號 3 樓（衛生社福大樓）', note: '電話 03-5330761。', cta: '預約場次', url: WPCC + 'enrollment/' },
       { id: 'pcX', conds: [], srcT: '新竹市托育資源中心・親子館預約', name: '香山區親子館', tag: '育兒・親子空間', who: '0–6 歲幼兒與家長', what: '免費遊戲空間與親子課程，需預約場次', where: '育德街 188 號 1 樓（香山區行政大樓）', note: '電話 03-5301268。', cta: '預約場次', url: WPCC + 'enrollment/' },
-      { id: 'guide', conds: [], srcT: '新竹市社會處・育兒指導服務', name: '育兒指導服務', tag: '育兒・親子空間', who: '新竹市家長', what: '照顧、發展和教養問題可申請專人指導，免費', where: '新竹市', note: '社會處提供申請表。', cta: '看申請表', url: 'https://society.hccg.gov.tw/ch/home.jsp?id=10375&parentpath=&mcustomize=onemessages_view.jsp&toolsflag=Y&dataserno=201603280009&t=SocietyOnes&mserno=201603090002' },
-      { id: 'ivf', conds: ['preg'], srcT: '衛福部・試管嬰兒補助', name: '試管嬰兒補助', tag: '懷孕・下一胎', who: '妻未滿 45 歲、至少一方有我國國籍的不孕夫妻', what: '每胎第 1 次療程最高 15 萬元（未滿 39 歲）', where: '人工生殖機構', note: '每胎最多補助 6 次療程；2026/9/1 起第 2、3 次療程最高也提高到 15 萬元。要在療程開始前，由人工生殖機構協助線上申請。補助諮詢專線 02-2558-0900。', cta: '看衛福部說明', url: 'https://mohw.gov.tw/cp-2704-87663-1.html' },
-      { id: 'kidMed', conds: ['med', 'low', 'dis'], srcT: '新竹市法規資料庫', name: '兒少醫療費用補助', tag: '醫療', who: '設籍並居住新竹市、未滿 18 歲的早產兒、發展遲緩兒童、低收或中低收入戶兒少等', what: '住院和看護費每年最高 30 萬元', where: '戶籍所在地區公所', note: '低收入戶等全額補助，其他對象依家庭收入補助 75%、50% 或 25%。', cta: '看法規', url: 'https://law.hccg.gov.tw/LawContent.aspx?id=FL084083' },
-      { id: 'urgent', conds: ['low', 'single'], srcT: '新竹市法規資料庫', name: '弱勢家庭兒少緊急生活扶助', tag: '經濟困難', who: '家中有失業、離婚、父母一方過世或失蹤、單親扶養等情形的新竹市兒少', what: '每人每月 3,000 元', where: '戶籍所在地區公所', note: '原則補助 6 個月，必要時最多再延長 6 個月。家庭收入、財產要在規定標準以下，區公所受理後由市府審核。', cta: '看法規', url: 'https://law.hccg.gov.tw/LawContent.aspx?id=FL084081' },
-      { id: 'kidLife', conds: ['low'], srcT: '新竹市法規資料庫', name: '弱勢兒童及少年生活扶助', tag: '經濟困難', who: '設籍並居住新竹市、遭遇困境的中低收入戶兒少，以及因懷孕生育遇到困難的兒少等', what: '每月生活扶助', where: '戶籍所在地區公所', note: '金額依衛福部公告，每年要重新申請。', cta: '看法規', url: 'https://law.hccg.gov.tw/LawContent.aspx?id=FL084083' },
-      { id: 'cdaAcc', conds: ['low'], srcT: '衛福部・兒少未來教育與發展帳戶', name: '兒少未來教育與發展帳戶', tag: '經濟困難', who: '列冊低收入戶、中低收入戶家庭的孩子，以及長期安置的兒少', what: '家長存多少，政府相對存入同額', where: '戶籍所在地社會處或區公所', note: '開戶時政府另存開戶金。存款留到孩子滿 18 歲後用於教育或發展，不會影響家庭福利資格。', cta: '看衛福部說明', url: 'https://mohw.gov.tw/cp-6653-78135-1.html' },
-      { id: 'lowCare', conds: ['low'], srcT: '新竹市法規資料庫', name: '低收入戶兒童托育津貼', tag: '經濟困難', who: '設籍新竹市、讀立案幼兒園或課後托育中心的低收入戶兒童', what: '補助托育或就學費用', where: '戶籍所在地區公所', note: '每年 4 月、10 月底前申請，附低收入戶證明和繳費收據。性質相同的補助只能擇一。', cta: '看法規', url: 'https://law.hccg.gov.tw/LawContent.aspx?id=FL083835' },
-      { id: 'special', conds: ['single'], srcT: '新竹市法規資料庫', name: '特殊境遇家庭扶助', tag: '單親・特殊境遇', who: '單親獨自扶養、家暴受害、配偶失蹤或服刑、照顧 6 歲以下子女無法工作等，且財產在標準以下的新竹市家庭', what: '子女生活津貼、兒童托育津貼等', where: '戶籍所在地區公所', note: '區公所受理後由市府審核，備齊文件後 30 日內審完。', cta: '看法規', url: 'https://law.hccg.gov.tw/LawContent.aspx?id=FL085907' },
-      { id: 'early', conds: ['dis'], srcT: '新竹市政府・早期療育', name: '早期療育費用補助', tag: '身障・早療', who: '設籍新竹市、已通報的未入學發展遲緩或身心障礙兒童', what: '療育訓練費和交通費補助', where: '新竹市兒童發展早期療育通報轉介中心、個案管理中心（伊甸新竹分事務所承辦）', note: '電話 03-5339762，週一到週五 8:00–17:00。實際補助額度依市府每年度計畫。', cta: '看市府說明', url: 'https://kids.hccg.gov.tw/explain.php?pageid=JCUyMTcjIQ%3D%3D' },
-      { id: 'disLife', conds: ['dis'], srcT: '新竹市法規資料庫', name: '身心障礙者生活補助', tag: '身障・早療', who: '有身心障礙證明、家庭收入和財產符合標準的人（含兒童）', what: '每月生活補助', where: '戶籍所在地區公所', note: '金額依障礙等級和家庭身分，依衛福部公告調整。', cta: '看法規', url: 'https://law.hccg.gov.tw/LawContent.aspx?id=FL084082' },
-      { id: 'newRes', conds: ['new'], srcT: '移民署・新住民照顧服務', name: '新住民家庭支持', tag: '新住民', who: '新住民和他們的子女', what: '育兒和生活諮詢、通譯、子女課後輔導等', where: '新竹市新住民家庭服務中心；外來人士在臺生活諮詢熱線 1990', note: '1990 熱線免費，有 7 種語言，可以問子女教育、社會福利和醫療。尚未設籍、配偶是我國國民的新住民孕婦，也有產檢補助。', cta: '看移民署說明', url: 'https://www.immigration.gov.tw/5385/5388/7178/223704/' },
-      { id: 'indNanny', conds: ['ind'], srcT: '新竹市民政處・原住民族語保母獎助計畫', name: '原住民族語保母', tag: '原住民', who: '0 歲到未滿 6 歲、還沒讀幼兒園的原住民籍幼兒家庭', what: '送托族語保母的家庭每月 2,500 元獎助', where: '新竹市政府民政處原民科，03-5216121 分機 231', note: '把孩子送托給會說族語、經市府核定的一般保母，每送托 1 名幼兒，家庭每月可領 2,500 元。會說流利族語的三親等內親屬，也可以報名當親屬保母，116 年度報名到 115/11/30 17:00 止。', cta: '看市府說明', url: 'https://dep-civil.hccg.gov.tw/ch/home.jsp?id=307&parentpath=0,8,139,280' },
-      { id: 'indNhi', conds: ['ind'], srcT: '新竹市民政處・原住民全民健康保險補助', name: '原住民健保費補助', tag: '原住民', who: '未滿 20 歲或 55 歲以上、本人和扶養人都沒有職業（健保第 6 類第 2 目）的原住民', what: '健保費自付額全額補助', where: '戶籍所在地區公所（東區 03-5218231、北區 03-5152525、香山區 03-5307105）', note: '帶印章和戶口名簿到區公所申請。', cta: '看市府說明', url: 'https://dep-civil.hccg.gov.tw/ch/home.jsp?id=283&parentpath=0,8,139,280' },
-      { id: 'indAid', conds: ['ind'], srcT: '新竹市民政處・原住民族急難救助', name: '原住民族急難救助', tag: '原住民', who: '具原住民身分的人', what: '醫療補助、生活扶助、死亡救助和重大災害救助', where: '新竹市政府民政處原民科或區公所', note: '醫療、生活扶助和死亡救助要在事情發生後 3 個月內申請。醫療補助是重傷病住院 3 天以上、失去工作 1 個月以上的情形，負擔家計者最高 2 萬元；兒少因父母一方過世、失蹤、離異等無力扶養，生活扶助最高 1 萬元。', cta: '看市府說明', url: 'https://dep-civil.hccg.gov.tw/ch/home.jsp?id=147&parentpath=0,8,139' }
+      { id: 'guide', conds: [], srcT: '新竹市社會處・育兒指導服務', name: '育兒指導服務', tag: '育兒・親子空間', who: '新竹市家長', what: '照顧、發展和教養問題可申請專人指導，免費', where: '新竹市', note: '社會處提供申請表。', cta: '看官方說明', url: 'https://society.hccg.gov.tw/ch/home.jsp?id=10375&parentpath=&mcustomize=onemessages_view.jsp&toolsflag=Y&dataserno=201603280009&t=SocietyOnes&mserno=201603090002' },
+      { id: 'ivf', conds: ['preg'], srcT: '衛福部・試管嬰兒補助', name: '試管嬰兒補助', tag: '懷孕・下一胎', who: '妻未滿 45 歲、至少一方有我國國籍的不孕夫妻', what: '每胎第 1 次療程最高 15 萬元（未滿 39 歲）', where: '人工生殖機構', note: '每胎最多補助 6 次療程；2026/9/1 起第 2、3 次療程最高也提高到 15 萬元。要在療程開始前，由人工生殖機構協助線上申請。補助諮詢專線 02-2558-0900。', cta: '看官方說明', url: 'https://mohw.gov.tw/cp-2704-87663-1.html' },
+      { id: 'kidMed', conds: ['med', 'low', 'dis'], srcT: '新竹市法規資料庫', name: '兒少醫療費用補助', tag: '醫療', who: '設籍並居住新竹市、未滿 18 歲的早產兒、發展遲緩兒童、低收或中低收入戶兒少等', what: '住院和看護費每年最高 30 萬元', where: '戶籍所在地區公所', note: '低收入戶等全額補助，其他對象依家庭收入補助 75%、50% 或 25%。', cta: '看官方說明', url: 'https://law.hccg.gov.tw/LawContent.aspx?id=FL084083' },
+      { id: 'urgent', conds: ['low', 'single'], srcT: '新竹市法規資料庫', name: '弱勢家庭兒少緊急生活扶助', tag: '經濟困難', who: '家中有失業、離婚、父母一方過世或失蹤、單親扶養等情形的新竹市兒少', what: '每人每月 3,000 元', where: '戶籍所在地區公所', note: '原則補助 6 個月，必要時最多再延長 6 個月。家庭收入、財產要在規定標準以下，區公所受理後由市府審核。', cta: '看官方說明', url: 'https://law.hccg.gov.tw/LawContent.aspx?id=FL084081' },
+      { id: 'kidLife', conds: ['low'], srcT: '新竹市法規資料庫', name: '弱勢兒童及少年生活扶助', tag: '經濟困難', who: '設籍並居住新竹市、遭遇困境的中低收入戶兒少，以及因懷孕生育遇到困難的兒少等', what: '每月生活扶助', where: '戶籍所在地區公所', note: '金額依衛福部公告，每年要重新申請。', cta: '看官方說明', url: 'https://law.hccg.gov.tw/LawContent.aspx?id=FL084083' },
+      { id: 'cdaAcc', conds: ['low'], srcT: '衛福部・兒少未來教育與發展帳戶', name: '兒少未來教育與發展帳戶', tag: '經濟困難', who: '列冊低收入戶、中低收入戶家庭的孩子，以及長期安置的兒少', what: '家長存多少，政府相對存入同額', where: '戶籍所在地社會處或區公所', note: '開戶時政府另存開戶金。存款留到孩子滿 18 歲後用於教育或發展，不會影響家庭福利資格。', cta: '看官方說明', url: 'https://mohw.gov.tw/cp-6653-78135-1.html' },
+      { id: 'lowCare', conds: ['low'], srcT: '新竹市法規資料庫', name: '低收入戶兒童托育津貼', tag: '經濟困難', who: '設籍新竹市、讀立案幼兒園或課後托育中心的低收入戶兒童', what: '補助托育或就學費用', where: '戶籍所在地區公所', note: '每年 4 月、10 月底前申請，附低收入戶證明和繳費收據。性質相同的補助只能擇一。', cta: '看官方說明', url: 'https://law.hccg.gov.tw/LawContent.aspx?id=FL083835' },
+      { id: 'special', conds: ['single'], srcT: '新竹市法規資料庫', name: '特殊境遇家庭扶助', tag: '單親・特殊境遇', who: '單親獨自扶養、家暴受害、配偶失蹤或服刑、照顧 6 歲以下子女無法工作等，且財產在標準以下的新竹市家庭', what: '子女生活津貼、兒童托育津貼等', where: '戶籍所在地區公所', note: '區公所受理後由市府審核，備齊文件後 30 日內審完。', cta: '看官方說明', url: 'https://law.hccg.gov.tw/LawContent.aspx?id=FL085907' },
+      { id: 'early', conds: ['dis'], srcT: '新竹市政府・早期療育', name: '早期療育費用補助', tag: '身障・早療', who: '設籍新竹市、已通報的未入學發展遲緩或身心障礙兒童', what: '療育訓練費和交通費補助', where: '新竹市兒童發展早期療育通報轉介中心、個案管理中心（伊甸新竹分事務所承辦）', note: '電話 03-5339762，週一到週五 8:00–17:00。實際補助額度依市府每年度計畫。', cta: '看官方說明', url: 'https://kids.hccg.gov.tw/explain.php?pageid=JCUyMTcjIQ%3D%3D' },
+      { id: 'disLife', conds: ['dis'], srcT: '新竹市法規資料庫', name: '身心障礙者生活補助', tag: '身障・早療', who: '有身心障礙證明、家庭收入和財產符合標準的人（含兒童）', what: '每月生活補助', where: '戶籍所在地區公所', note: '金額依障礙等級和家庭身分，依衛福部公告調整。', cta: '看官方說明', url: 'https://law.hccg.gov.tw/LawContent.aspx?id=FL084082' },
+      { id: 'newRes', conds: ['new'], srcT: '移民署・新住民照顧服務', name: '新住民家庭支持', tag: '新住民', who: '新住民和他們的子女', what: '育兒和生活諮詢、通譯、子女課後輔導等', where: '新竹市新住民家庭服務中心；外來人士在臺生活諮詢熱線 1990', note: '1990 熱線免費，有 7 種語言，可以問子女教育、社會福利和醫療。尚未設籍、配偶是我國國民的新住民孕婦，也有產檢補助。', cta: '看官方說明', url: 'https://www.immigration.gov.tw/5385/5388/7178/223704/' },
+      { id: 'indNanny', conds: ['ind'], srcT: '新竹市民政處・原住民族語保母獎助計畫', name: '原住民族語保母', tag: '原住民', who: '0 歲到未滿 6 歲、還沒讀幼兒園的原住民籍幼兒家庭', what: '送托族語保母的家庭每月 2,500 元獎助', where: '新竹市政府民政處原民科，03-5216121 分機 231', note: '把孩子送托給會說族語、經市府核定的一般保母，每送托 1 名幼兒，家庭每月可領 2,500 元。會說流利族語的三親等內親屬，也可以報名當親屬保母，116 年度報名到 115/11/30 17:00 止。', cta: '看官方說明', url: 'https://dep-civil.hccg.gov.tw/ch/home.jsp?id=307&parentpath=0,8,139,280' },
+      { id: 'indNhi', conds: ['ind'], srcT: '新竹市民政處・原住民全民健康保險補助', name: '原住民健保費補助', tag: '原住民', who: '未滿 20 歲或 55 歲以上、本人和扶養人都沒有職業（健保第 6 類第 2 目）的原住民', what: '健保費自付額全額補助', where: '戶籍所在地區公所（東區 03-5218231、北區 03-5152525、香山區 03-5307105）', note: '帶印章和戶口名簿到區公所申請。', cta: '看官方說明', url: 'https://dep-civil.hccg.gov.tw/ch/home.jsp?id=283&parentpath=0,8,139,280' },
+      { id: 'indAid', conds: ['ind'], srcT: '新竹市民政處・原住民族急難救助', name: '原住民族急難救助', tag: '原住民', who: '具原住民身分的人', what: '醫療補助、生活扶助、死亡救助和重大災害救助', where: '新竹市政府民政處原民科或區公所', note: '醫療、生活扶助和死亡救助要在事情發生後 3 個月內申請。醫療補助是重傷病住院 3 天以上、失去工作 1 個月以上的情形，負擔家計者最高 2 萬元；兒少因父母一方過世、失蹤、離異等無力扶養，生活扶助最高 1 萬元。', cta: '看官方說明', url: 'https://dep-civil.hccg.gov.tw/ch/home.jsp?id=147&parentpath=0,8,139' }
     ];
     const INFO = {
       birthHC: ['寶寶出生後，新竹市政府發給家長的一次性現金，幫忙支應生產和新生兒的開銷。', ['每胎 30,000 元。', '2027/1/1 起出生的寶寶改為每名 60,000 元（新竹市生育津貼發放作業要點 115/11/6 修正）。', '父或母須設籍新竹市。', '寶寶出生後向戶政事務所申請。', '父或母是否設籍新竹市，請在申請前確認。']],
@@ -514,7 +527,7 @@ class Component extends DCLogic {
       const ph = st.phase === 'now' ? 'now' : (st.phase === 'past' || st.phase === 'any') ? 'past' : 'future';
       return {
         id: st.id, title: st.title, range: st.range, isNow: st.phase === 'now',
-        countText: st.items.length === 0 ? '已結束' : st.items.length + ' 項・可能適用 ' + nFit + ' 項',
+        countText: st.items.length === 0 ? '已結束' : nFit === st.items.length ? st.items.length + ' 項' : st.items.length + ' 項，' + nFit + ' 項可能適用',
         titleColor: st.phase === 'past' ? '#5F6B64' : '#1F2A24',
         bamCls: 'zb-bam zb-bam-' + ph + (i % 2 ? ' zb-alt' : '') + (i === 0 ? ' zb-bam-top' : '') + (i === ORDER.length - 1 && !selected ? ' zb-bam-bottom' : ''),
         pressed: selected ? 'true' : 'false', open: selected, empty: built.length === 0, hasRes: (RES[st.id] || []).length > 0,
@@ -539,6 +552,10 @@ class Component extends DCLogic {
     const A = F.age(K);
     return {
       kidHex: F.color(K.color).hex, kidTitle: K.name + (A.born ? ' ' + A.text : '・' + A.text), kidLine: F.line(K),
+      filterOpen: s.filterOpen ? 'true' : 'false', filterShow: !!s.filterOpen,
+      toggleFilter: () => this.setState({ filterOpen: !s.filterOpen }),
+      /* 收起時不列出選了哪些條件，只說是否有篩選 */
+      filterSub: s.filterOpen ? '選好可以收起，收起後不會列出選了什麼' : s.showAll ? '目前顯示全部' : '已依寶寶資料篩選，點開調整',
       condGroups, canReset: !same && auto.length > 0, resetConds: () => setConds(auto.slice()),
       filterNote: s.showAll ? '目前顯示全部，不依條件判斷，每一項都先標「可能適用」。' : '已依' + K.name + '的寶寶資料先選好，可以再調整。沒選到的條件，相關項目會標「可能不適用」，仍然列出來。',
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',

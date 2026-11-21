@@ -95,7 +95,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-ask-side{position:sticky;top:16px;min-width:0;display:flex;flex-direction:column;gap:14px}
 .zb-hist{background:#FCFAF6;border:1px solid #E4DED2;border-radius:16px;padding:8px;display:flex;flex-direction:column;gap:4px}
 .zb-hist-head{display:flex;align-items:center;gap:4px;padding:4px 4px 4px 8px}
-.zb-hist-toggle{flex:1;min-width:0;min-height:40px;display:flex;align-items:center;gap:8px;padding:0;border:0;background:transparent;font-family:inherit;color:#1F2A24;text-align:left;cursor:default}
+.zb-hist-toggle{flex:1;min-width:0;min-height:44px;display:flex;align-items:center;gap:8px;padding:0;border:0;background:transparent;font-family:inherit;color:#1F2A24;text-align:left;cursor:default}
 .zb-hist-toggle .zb-chev{display:none;margin-left:auto}
 .zb-hist-clear{min-height:36px;padding:0 10px;border-radius:12px;border:0;background:transparent;color:#5F6B64;font-family:inherit;font-size:13px;cursor:pointer;transition:background .15s ease,color .15s ease,transform .2s cubic-bezier(.23,1,.32,1)}
 .zb-hist-clear:hover{background:#F1ECE2;color:#1F2A24}.zb-hist-clear:active{transform:scale(.92)}
@@ -111,7 +111,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 .zb-hist-t{font-size:12px;color:#5F6B64}
 .zb-hints{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .zb-hints-label{font-size:12px;color:#5F6B64;margin-right:2px}
-.zb-hint{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid #E4DED2;background:#FCFAF6;color:#1F2A24;font-family:inherit;font-size:13px;cursor:pointer;transition:background .15s ease,border-color .15s ease,color .15s ease,transform .22s cubic-bezier(.23,1,.32,1)}
+.zb-hint{min-height:44px;padding:0 12px;border-radius:999px;border:1px solid #E4DED2;background:#FCFAF6;color:#1F2A24;font-family:inherit;font-size:13px;cursor:pointer;transition:background .15s ease,border-color .15s ease,color .15s ease,transform .22s cubic-bezier(.23,1,.32,1)}
 .zb-hint:hover{background:#E4EEE7;border-color:#2E5E4E;color:#2E5E4E;transform:translateY(-2px)}
 .zb-hint:active{transform:scale(.94)}
 @keyframes zbFilled{0%{box-shadow:0 0 0 0 rgba(46,94,78,.35)}100%{box-shadow:0 0 0 8px rgba(46,94,78,0)}}
@@ -207,7 +207,7 @@ button:hover,button:active,a:hover,a:active{transform:none !important}
 <svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"></circle><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
 <span style="font-size: 13px; font-weight: 600; color: #2E5E4E">竹寶</span>
 </div>
-<p style="margin: 0; font-size: 16px; line-height: 1.7">嗨，我是竹寶。我知道寶寶 2 個月 4 天、住北區、由自己或家人照顧。補助、托育的問題都可以打在下面問我，我會照你的情況回答，並附上官方來源。</p>
+<p style="margin: 0; font-size: 16px; line-height: 1.7">{{greet}}</p>
 </article>
 </sc-if>
 
@@ -346,7 +346,10 @@ class Component extends DCLogic {
       style: 'min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 12px; font-size: 14px; font-weight: 600; text-decoration: none; ' + (i === 0 ? 'background: #2E5E4E; color: #FFFFFF' : 'border: 1px solid #2E5E4E; color: #2E5E4E')
     }));
     const hist = s.hist || [];
+    const ZK = window.ZBF ? window.ZBF.current() : null, ZA = ZK ? window.ZBF.age(ZK) : null;
+    const greet = ZK ? '嗨，我是竹寶。我知道' + ZK.name + (ZA.born ? ' ' + ZA.text : '的' + ZA.text) + '、住' + ZK.district + '、' + (ZK.care === '自己或家人' ? '由自己或家人照顧' : '送' + ZK.care + '照顧') + '。補助、托育的問題都可以打在下面問我，我會照你的情況回答，並附上官方來源。' : '嗨，我是竹寶。補助、托育的問題都可以打在下面問我，我會附上官方來源。';
     return {
+      greet,
       menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
       menuLabel: s.menuOpen ? '關閉' : '選單', menuIcon: s.menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16',
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
