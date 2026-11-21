@@ -75,12 +75,13 @@
   }
   function nurseryQA() {
     const dist = K ? K.district : '北區';
-    const ROSTER = { '北區': '例如新竹市私立茱蒂園托嬰中心。', '東區': '東區另有市府的東區公共托嬰中心，關東公共托嬰中心也已開工。', '香山區': '香山區也可以請南／香山區居家托育服務中心協助媒合準公共保母。' };
+    /* 數字來自新竹市社會處 115 年準公共化托嬰中心名冊（115.06.02 更新） */
+    const ROSTER = { '北區': '北區有 20 家，包含北區公共托育家園。', '東區': '東區有 51 家，包含東區公共托嬰中心；關東公共托嬰中心也已開工。', '香山區': '香山區有 4 家，包含香山區公共托育家園；也可以請南／香山區居家托育服務中心協助媒合準公共保母。' };
     return { q: dist + '有哪些準公共托嬰中心？', keys: [['托嬰'], ['準公共']],
-      answer: dist + '的準公共托嬰中心都列在社會處的名冊上，' + ROSTER[dist],
+      answer: dist + '的準公共托嬰中心都列在社會處的名冊上。' + ROSTER[dist],
       mine: '你的戶籍在' + dist + '，托育頁會把' + dist + '排在前面。送準公共托嬰中心可能適用托育補助' + (kidInfo && kidInfo.born && kidInfo.m >= 24 ? '；不過' + who() + '已滿 2 歲，托嬰中心大多收未滿 2 歲。' : '。'),
       prepTitle: '', prep: [], next: [['看托育', 'childcare.html']],
-      srcs: [['新竹市社會處・115 年準公共化托嬰中心名冊', 'https://society.hccg.gov.tw/ch/home.jsp?id=10330&parentpath=0%2C3%2C20']] };
+      srcs: [['新竹市社會處・115 年準公共化托嬰中心名冊', 'https://society.hccg.gov.tw/ch/home.jsp?id=10374&parentpath=0,4&mcustomize=onemessages_view.jsp&toolsflag=Y&dataserno=202301190001&t=SocietyOnes&mserno=201808020001']] };
   }
   function lowincQA() {
     const I = kidInfo;
