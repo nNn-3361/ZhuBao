@@ -230,7 +230,7 @@ a.zb-row:hover,button.zb-row:hover{transform:none !important;box-shadow:none !im
 .zb-cal-head{display:flex;align-items:center;gap:4px}
 .zb-cal-title{flex:1;font-size:18px;font-weight:600;padding-left:6px;font-variant-numeric:tabular-nums}
 .zb-cal-nav{width:44px;height:44px;border-radius:999px;border:0;background:transparent;color:var(--zb-ink);font-family:inherit;font-size:22px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
-.zb-cal-today{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--zb-line);background:var(--zb-surface);font-family:inherit;font-size:13px;font-weight:600;color:var(--zb-ink);cursor:pointer;margin-right:4px}
+.zb-cal-today{min-height:44px;padding:0 12px;border-radius:999px;border:1px solid var(--zb-line);background:var(--zb-surface);font-family:inherit;font-size:13px;font-weight:600;color:var(--zb-ink);cursor:pointer;margin-right:4px}
 .zb-cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
 .zb-cal-w{font-size:12px;color:var(--zb-sub);text-align:center;padding:4px 0 6px}
 .zb-cal-d{min-height:52px;border:0;background:transparent;font-family:inherit;color:var(--zb-ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:3px;padding:4px 0 6px;border-radius:12px;transition:background-color .15s ease !important}
