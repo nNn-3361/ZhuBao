@@ -182,6 +182,41 @@
       });
     });
   }
+  /* ---------- 給竹寶意見回饋：Demo 只模擬送出，不會傳到任何地方，也不會存下來 ---------- */
+  function feedback() {
+    const TYPES = ['功能建議', '資料有誤', '使用上的問題', '其他'];
+    const html = '<div data-fb-form style="display:flex;flex-direction:column;gap:14px">'
+      + '<p style="margin:0;font-size:15px;line-height:1.7;color:var(--zb-sub)">哪裡好用、哪裡不順手，或發現資料有錯，都可以告訴竹寶。</p>'
+      + '<div style="display:flex;flex-direction:column;gap:8px"><span id="zb-fb-t" style="font-size:14px;font-weight:600">想說的是</span><div class="zb-pick" role="group" aria-labelledby="zb-fb-t">'
+      + TYPES.map((t, i) => '<button type="button" data-fb-type="' + t + '" aria-pressed="' + (i === 0) + '">' + t + '</button>').join('') + '</div></div>'
+      + '<label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:14px;font-weight:600">內容</span><textarea class="zb-input" data-fb-text rows="5" maxlength="500" placeholder="例如：希望補助頁可以…"></textarea></label>'
+      + '<div class="zb-sheet-actions"><button type="button" class="zb-btn-main" data-fb-send disabled style="opacity:.45">送出</button></div>'
+      + '</div>'
+      + '<div data-fb-done style="display:none;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:12px 0 8px">'
+      + '<svg width="48" height="48" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2E5E4E"/><path d="M14 20V9M14 13c0-2.5 2-4 4.5-4M14 15.5c0-2.2-1.8-3.5-4-3.5" stroke="#F6F2EA" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>'
+      + '<b style="font-size:18px">已送出，謝謝你！</b><span style="font-size:15px;line-height:1.7;color:var(--zb-sub)">竹寶團隊會看過每一則意見，一起把竹寶變得更好用。</span>'
+      + '<div class="zb-sheet-actions" style="align-self:stretch;margin-top:6px"><button type="button" class="zb-btn-ghost" data-fb-close>完成</button></div></div>';
+    sheet('zb-feedback', '給竹寶意見回饋', html, (el) => {
+      const text = el.querySelector('[data-fb-text]'), send = el.querySelector('[data-fb-send]');
+      el.querySelectorAll('[data-fb-type]').forEach((b) => b.addEventListener('click', () => {
+        el.querySelectorAll('[data-fb-type]').forEach((x) => x.setAttribute('aria-pressed', x === b ? 'true' : 'false')); buzz();
+      }));
+      const sync = () => { const ok = text.value.trim().length > 0; send.disabled = !ok; send.style.opacity = ok ? '' : '.45'; };
+      text.addEventListener('input', sync);
+      send.addEventListener('click', () => {
+        if (send.disabled) return;
+        send.disabled = true; send.textContent = '送出中…'; buzz();
+        setTimeout(() => {
+          if (!el.isConnected) return;
+          if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+          el.querySelector('[data-fb-form]').remove();
+          const done = el.querySelector('[data-fb-done]'); done.style.display = 'flex';
+          const panel = el.querySelector('.zb-sheet-panel'); panel.scrollTop = 0; panel.focus({ preventScroll: true });
+          el.querySelector('[data-fb-close]').addEventListener('click', () => closeSheet());
+        }, 700);
+      });
+    });
+  }
   const showNoti = showMore;
 
   /* ---------- 推播橫幅 ---------- */
@@ -332,7 +367,7 @@
     if (d.zb === 'replay') { try { sessionStorage.removeItem('zb-loaded'); sessionStorage.removeItem('zb-pushed'); } catch (x) {} location.href = 'index.html'; }
   });
   const refresh = () => { NOTI = F ? F.reminders() : []; updateBell(); };
-  window.ZB = { push, toast, showNoti, showMore, sheet, closeSheet, buzz, refresh };
+  window.ZB = { push, toast, showNoti, showMore, sheet, closeSheet, buzz, refresh, feedback };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
   else mount();
 })();
