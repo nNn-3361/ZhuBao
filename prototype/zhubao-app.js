@@ -266,6 +266,11 @@
       };
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
+      /* 篩選條件打開時，小助手按鈕先收起來：不然捲動停下後它會回到右下角，正好蓋在右邊的篩選按鈕上，點下去變成打開小助手 */
+      const FSEL = 'section[aria-label="篩選"] > button[aria-expanded="true"], .zb-filter-head[aria-expanded="true"]';
+      const syncFilter = () => root.classList.toggle('zb-filter-open', !!document.querySelector(FSEL));
+      new MutationObserver(syncFilter).observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['aria-expanded'] });
+      syncFilter();
     }
     if (PAGE === 'setup.html') {
       /* 填完寶寶資料是單向的：進主頁後按返回不會再回到設定頁 */
